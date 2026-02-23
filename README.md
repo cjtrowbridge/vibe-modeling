@@ -2,7 +2,7 @@
 
 A reusable, agentic pipeline for iterating on OpenSCAD 3D models with parameterized configs, numbered revisions, and generated artifacts.
 
-This repo is an extraction of the modeling workflow originally developed in many projects, especially [DIY-Weather-Satellite-Uplink](https://github.com/cjtrowbridge/DIY-Weather-Satellite-Uplink), and generalized so it can be used for any modeling domain.
+This repo is an extraction of the modeling workflow originally developed across many of my projects, especially [DIY-Weather-Satellite-Uplink](https://github.com/cjtrowbridge/DIY-Weather-Satellite-Uplink), and generalized so it can be used for any modeling domain.
 
 ## How To Use This Pipeline
 
