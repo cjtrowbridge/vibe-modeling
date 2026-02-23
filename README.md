@@ -27,7 +27,6 @@ If the agent follows the included playbooks, it should also document what it cha
 
 ---
 ## The rest of this is stuff that your agent should be able to read and understand, so it can use the pipeline effectively. You don't necessarily need to read or understand it yourself to use the pipeline, but it may help you guide the agent or debug issues.
----
 
 ## Repository layout
 
