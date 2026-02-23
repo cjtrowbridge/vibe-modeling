@@ -1,0 +1,10 @@
+{
+  "part": "example_box",
+  "part_id": 0,
+  "box_x": 60,
+  "box_y": 40,
+  "box_z": 24,
+  "wall": 2,
+  "floor_thickness": 2,
+  "center_hole_d": 0
+}

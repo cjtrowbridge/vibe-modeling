@@ -1,0 +1,23 @@
+{
+  "part": "yagi_mount",
+  "part_id": 0,
+
+  "mount_seat_to_focus": 33,
+  "mount_stub_od": 33,
+  "mount_stub_len": 6,
+
+  "cable_hole_d": 8,
+
+  "card_size": 60,
+  "card_thickness": 6,
+
+  "element_spacing": 22,
+  "groove_w": 3,
+  "groove_depth": 2,
+  "dipole_gap": 6,
+
+  "director_len": 66,
+  "driven_len": 83,
+  "reflector_len": 87
+}
+

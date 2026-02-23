@@ -1,0 +1,22 @@
+{
+  "part": "yagi_card",
+  "part_id": 0,
+
+  "mount_seat_to_focus": 33,
+  "card_bottom_from_seat": 6,
+
+  "card_size": 60,
+  "card_size_x": 95,
+  "card_thickness": 6,
+
+  "element_spacing": 22,
+  "groove_w": 3,
+  "groove_depth": 4.382,
+  "element_end_margin": 1,
+  "dipole_gap": 6,
+
+  "director_len": 66,
+  "driven_len": 83,
+  "reflector_len": 87
+}
+

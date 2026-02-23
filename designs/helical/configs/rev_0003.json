@@ -1,0 +1,18 @@
+{
+  "part": "helical_former",
+  "part_id": 1,
+
+  "dish_diameter": 330,
+  "focus_length": 114,
+  "radome_headroom": 38,
+
+  "mount_seat_to_focus": 33,
+  "mount_stub_od": 33,
+  "mount_stub_len": 6,
+
+  "former_total_len": 66,
+  "former_outer_d": 60,
+  "former_wall": 2,
+
+  "cable_hole_d": 8
+}

@@ -1,0 +1,11 @@
+# Generated artifacts
+output/
+revisions/
+
+# Local verification scratch
+.tmp/
+
+# Common OS/editor noise
+Thumbs.db
+Desktop.ini
+.DS_Store

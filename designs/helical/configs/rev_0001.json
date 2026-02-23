@@ -1,0 +1,25 @@
+{
+  "part": "feed_mount",
+  "part_id": 0,
+
+  "dish_diameter": 330,
+  "focus_length": 114,
+  "radome_headroom": 38,
+
+  "post_od": 45,
+  "post_clearance": 0.8,
+
+  "tube_od": 33,
+  "tube_length": 33,
+
+  "clamp_wall": 4,
+  "clamp_height": 25,
+  "clamp_gap": 3,
+  "clamp_boss_d": 10,
+  "clamp_screw_d": 3.5,
+  "clamp_screw_head_d": 7,
+  "clamp_screw_head_h": 3,
+
+  "cable_hole_d": 8
+}
+

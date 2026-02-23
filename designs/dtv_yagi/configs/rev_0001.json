@@ -1,0 +1,15 @@
+{
+  "part": "dtv_yagi_insert_poc",
+  "part_id": 0,
+
+  "insert_width": 45,
+  "insert_height": 19,
+  "insert_depth": 15,
+  "insert_corner_bevel": 2,
+
+  "outer_width": 50,
+  "outer_height": 26,
+  "outer_thickness": 3,
+
+  "screw_hole_d": 6
+}

@@ -1,0 +1,17 @@
+{
+    "clamp_screw_head_d":  7,
+    "clamp_gap":  3,
+    "radome_headroom":  38,
+    "clamp_height":  25,
+    "clamp_wall":  4,
+    "cable_hole_d":  8,
+    "clamp_boss_d":  10,
+    "part":  "feed_mount",
+    "clamp_screw_d":  3.5,
+    "focus_length":  114,
+    "clamp_screw_head_h":  3,
+    "post_od":  45,
+    "post_clearance":  0.8,
+    "dish_diameter":  330
+}
+
