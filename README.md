@@ -40,7 +40,7 @@ If the agent follows the included playbooks, it should also document what it cha
   - `configs/rev_000N.json`: committed parameter sets
   - Included examples: `example_box`, `helical`, `yagi`, `yagi_card`, `dtv_yagi`
 - `output/`
-  - scratch outputs (generated; ignored)
+  - scratch outputs (generated; ignored by default; a few example artifacts are committed)
 - `revisions/`
   - revision snapshots and artifact checkpoints (generated; ignored)
 - `playbooks/`
@@ -126,3 +126,4 @@ See `playbooks/how_to_iterate_openscad_designs.md` for the full workflow.
 - `designs/helical/`, `designs/yagi/`, `designs/yagi_card/`, `designs/dtv_yagi/`
   - Real extracted designs from the original satellite-uplink project
   - `designs/dtv_yagi/` includes measurement/reference photos used during iteration
+- Matching sample artifacts for these examples are included under `output/` so users can inspect pipeline results without building first

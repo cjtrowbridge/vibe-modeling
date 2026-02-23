@@ -1,6 +1,25 @@
 # Generated artifacts
-output/
 revisions/
+
+# Scratch outputs are ignored by default, but we keep a small set of
+# example artifacts checked in so new users can see what the pipeline produces.
+output/**
+!output/
+!output/example_box/
+!output/example_box/example_box.stl
+!output/example_box/example_box.png
+!output/helical/
+!output/helical/helical_former.stl
+!output/helical/helical_former.png
+!output/yagi/
+!output/yagi/yagi_mount.stl
+!output/yagi/yagi_mount.png
+!output/yagi_card/
+!output/yagi_card/yagi_card.stl
+!output/yagi_card/yagi_card.png
+!output/dtv_yagi/
+!output/dtv_yagi/dtv_yagi_insert_poc.stl
+!output/dtv_yagi/dtv_yagi_insert_poc.png
 
 # Local verification scratch
 .tmp/
