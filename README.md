@@ -38,7 +38,7 @@ If the agent follows the included playbooks, it should also document what it cha
   - `src/lib/defaults.scad`: design defaults
   - `src/parts/*.scad`: geometry modules
   - `configs/rev_000N.json`: committed parameter sets
-  - Included examples: `example_box`, `helical`, `yagi`, `yagi_card`, `dtv_yagi`
+  - Included examples: `example_box`, `helical`, `yagi`, `yagi_card`, `dtv_yagi`, `winegard_gm6000_logic_backplane`, `gigachad_xavier_void`
 - `output/`
   - scratch outputs (generated; ignored by default; a few example artifacts are committed)
 - `revisions/`
@@ -125,5 +125,9 @@ See `playbooks/how_to_iterate_openscad_designs.md` for the full workflow.
   - Minimal generic starter design for pipeline verification
 - `designs/helical/`, `designs/yagi/`, `designs/yagi_card/`, `designs/dtv_yagi/`
   - Real extracted designs from the original satellite-uplink project
-  - `designs/dtv_yagi/` includes measurement/reference photos used during iteration
+- `designs/dtv_yagi/` includes measurement/reference photos used during iteration
+- `designs/winegard_gm6000_logic_backplane/`
+  - Parametric L-shaped replacement logic backplane prototype for a Winegard GM-6000 Carryout G2+ (4-hole pattern)
+- `designs/gigachad_xavier_void/`
+  - Parametric positive void/cutter model for subtracting a Jetson Xavier + carrier board cavity shape from a head mesh (simple back prism + top shaft prototype)
 - Matching sample artifacts for these examples are included under `output/` so users can inspect pipeline results without building first

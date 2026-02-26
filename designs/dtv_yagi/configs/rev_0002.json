@@ -1,0 +1,47 @@
+{
+  "part": "dtv_yagi_focal_alignment_poc",
+  "part_id": 1,
+
+  "insert_width": 45,
+  "insert_height": 19,
+  "insert_depth": 15,
+  "insert_corner_bevel": 2,
+
+  "outer_width": 50,
+  "outer_height": 26,
+  "outer_thickness": 3,
+
+  "screw_hole_d": 6,
+
+  "focal_rise_above_tab": 105,
+  "card_elevation_deg": 25,
+  "dish_toward_positive_z": false,
+
+  "support_prism_width": 14,
+  "support_prism_depth": 10,
+  "support_prism_y_start": 13,
+  "support_prism_top_gap": 0,
+
+  "show_focus_marker": true,
+  "focus_marker_d": 4,
+  "focus_marker_h": 4,
+
+  "show_card_preview": true,
+  "preview_card_as_background": true,
+
+  "mount_seat_to_focus": 33,
+  "card_bottom_from_seat": 6,
+  "card_size": 60,
+  "card_size_x": 95,
+  "card_thickness": 6,
+
+  "element_spacing": 22,
+  "groove_w": 3,
+  "groove_depth": 4.382,
+  "element_end_margin": 1,
+  "dipole_gap": 6,
+
+  "director_len": 66,
+  "driven_len": 83,
+  "reflector_len": 87
+}
