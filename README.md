@@ -35,10 +35,11 @@ If the agent follows the included playbooks, it should also document what it cha
   - `scad_new_revision.py` / `scad_new_revision.sh`: create next numbered revision and build it
 - `designs/<design>/`
   - `src/main.scad`: CLI entrypoint and part selection
+  - `src/*_base.scad` / `src/*_roof.scad` (optional): direct per-part print entrypoints
   - `src/lib/defaults.scad`: design defaults
   - `src/parts/*.scad`: geometry modules
   - `configs/rev_000N.json`: committed parameter sets
-  - Included examples: `example_box`, `helical`, `yagi`, `yagi_card`, `dtv_yagi`, `winegard_gm6000_logic_backplane`, `gigachad_xavier_void`
+  - Included examples: `example_box`, `helical`, `yagi`, `yagi_card`, `dtv_yagi`, `winegard_gm6000_logic_backplane`, `gigachad_xavier_void`, `cottage_pi6_plus`
 - `output/`
   - scratch outputs (generated; ignored by default; a few example artifacts are committed)
 - `revisions/`
@@ -104,7 +105,8 @@ By default this creates:
 
 - Prefer numeric `part_id` values in JSON configs.
   - Shell quoting for string defines varies across OS/shells.
-- Keep `main.scad` as the single CLI entrypoint.
+- Keep `main.scad` as the script/CLI entrypoint.
+  - Optional dedicated part entry files are fine for manual printing.
 - Put geometry modules in `src/parts/`.
 - Treat `configs/rev_000N.json` as part of the committed design history.
 
@@ -130,4 +132,6 @@ See `playbooks/how_to_iterate_openscad_designs.md` for the full workflow.
   - Parametric L-shaped replacement logic backplane prototype for a Winegard GM-6000 Carryout G2+ (4-hole pattern)
 - `designs/gigachad_xavier_void/`
   - Parametric positive void/cutter model for subtracting a Jetson Xavier + carrier board cavity shape from a head mesh (simple back prism + top shaft prototype)
+- `designs/cottage_pi6_plus/`
+  - Parametric cottage-style Orange Pi 6 Plus enclosure concept with separate base + roof and a chimney exhaust path
 - Matching sample artifacts for these examples are included under `output/` so users can inspect pipeline results without building first
