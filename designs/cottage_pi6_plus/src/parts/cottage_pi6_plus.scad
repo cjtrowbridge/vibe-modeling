@@ -72,7 +72,8 @@ module cottage_pi6_plus_base() {
   _half_outer = _outer_roof_x / 2;
   _half_inner = max(0.5, _half_outer - roof_wall);
   _eave_inner = max(0.5, roof_eave_h - roof_wall);
-  _peak_inner = max(_eave_inner + 0.8, roof_peak_h - roof_wall);
+  // Keep positive ridge thickness; previous formula could collapse to ~0 at the peak.
+  _peak_inner = max(_eave_inner + 0.8, roof_peak_h - 2 * roof_wall);
   _board_z0 = floor_thickness + mount_stud_h + stud_to_board_standoff_z;
   _board_top_z = _board_z0 + board_thickness;
   _board_cx = board_center_x();
@@ -362,7 +363,8 @@ module cottage_pi6_plus_roof() {
   _half_outer = _outer_roof_x / 2;
   _half_inner = max(0.5, _half_outer - roof_wall);
   _eave_inner = max(0.5, roof_eave_h - roof_wall);
-  _peak_inner = max(_eave_inner + 0.8, roof_peak_h - roof_wall);
+  // Keep positive ridge thickness; previous formula could collapse to ~0 at the peak.
+  _peak_inner = max(_eave_inner + 0.8, roof_peak_h - 2 * roof_wall);
   _chimney_x = chimney_center_x();
   _chimney_od = min(chimney_shaft_w, chimney_shaft_d);
   _roof_slope_abs = abs(roof_peak_h - roof_eave_h) / max(_half_outer, 0.001);
