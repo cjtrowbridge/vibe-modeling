@@ -35,7 +35,7 @@ If the agent follows the included playbooks, it should also document what it cha
   - `scad_new_revision.py` / `scad_new_revision.sh`: create next numbered revision and build it
 - `designs/<design>/`
   - `src/main.scad`: CLI entrypoint and part selection
-  - `src/*_base.scad` / `src/*_roof.scad` (optional): direct per-part print entrypoints
+  - `src/*_base.scad` / `src/*_roof.scad` / `src/*_drawer.scad` (optional): direct per-part print entrypoints
   - `src/lib/defaults.scad`: design defaults
   - `src/parts/*.scad`: geometry modules
   - `configs/rev_000N.json`: committed parameter sets

@@ -7,7 +7,7 @@
 
 // Part selector (set via -D part_id=0/1/2...)
 // NOTE: Numeric ids are safer than strings across shells/OSes.
-part_id = 0; // 0=assembled preview, 1=base, 2=roof
+part_id = 0; // 0=assembled preview, 1=base, 2=roof, 3=drawer
 
 // Orange Pi 6 Plus board + cooling envelope (first-pass values)
 board_x = 115;
@@ -17,6 +17,7 @@ cooler_envelope_z = 23.2;
 
 // Internal fit and support
 board_clearance_xy = 2.5;
+drawer_slide_clearance = 0.8;
 mount_stud_h = 3;
 stud_to_board_standoff_z = 10;
 top_clearance_z = 4;
@@ -27,6 +28,9 @@ board_stop_h = 1.1;
 mount_hole_d = 3;
 mount_head_recess_d = 6;
 mount_head_recess_h = 2.2;
+drawer_hole_set1_from_exhaust_wall = 3;
+drawer_hole_set_spacing_x = 96;
+drawer_hole_pair_spacing_y = 94;
 
 // Side chimney room (internal partition)
 chimney_room_x = 42;

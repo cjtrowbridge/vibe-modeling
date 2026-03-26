@@ -1,6 +1,16 @@
 include <../lib/util.scad>;
 
 function main_room_inner_x() = board_x + 2 * board_clearance_xy;
+function drawer_outer_x() = main_room_inner_x();
+function drawer_outer_y() = board_y + 2 * board_clearance_xy;
+function drawer_side_wall_h() = max(floor_thickness + mount_stud_h + 1.5, floor_thickness + 4);
+function drawer_divider_hole_z() = mount_stud_h + stud_to_board_standoff_z + board_thickness + divider_hole_z_from_board_top;
+function drawer_outer_h() =
+  max(
+    drawer_side_wall_h(),
+    (io_cutout_z0 - floor_thickness) + io_cutout_h + 1.0,
+    drawer_divider_hole_z() + divider_hole_h / 2 + 1.0
+  );
 function board_center_x() = -(chimney_room_divider_t + chimney_room_x) / 2;
 function main_room_right_x() = board_center_x() + main_room_inner_x() / 2;
 function divider_center_x() = main_room_right_x() + chimney_room_divider_t / 2;
@@ -8,7 +18,7 @@ function chimney_room_center_x() = main_room_right_x() + chimney_room_divider_t 
 function chimney_center_x() = chimney_room_center_x() + chimney_x_offset_from_room_center;
 
 function case_inner_x() = main_room_inner_x() + chimney_room_divider_t + chimney_room_x;
-function case_inner_y() = board_y + 2 * board_clearance_xy;
+function case_inner_y() = drawer_outer_y() + 2 * drawer_slide_clearance;
 function case_outer_x() = case_inner_x() + 2 * wall;
 function case_outer_y() = case_inner_y() + 2 * wall;
 
@@ -90,6 +100,8 @@ module cottage_pi6_plus_base() {
   _facade_trim_depth = max(1.6, wall * 0.9);
   _door_trim_w = max(1.6, wall * 0.8);
   _window_trim_w = max(1.4, wall * 0.75);
+  _drawer_entry_z0 = floor_thickness;
+  _drawer_entry_h = drawer_outer_h() + drawer_slide_clearance;
 
   assert(_inner_x > 0, "inner_x must be > 0");
   assert(_inner_y > 0, "inner_y must be > 0");
@@ -110,6 +122,8 @@ module cottage_pi6_plus_base() {
   assert(_facade_trim_depth > 0, "facade trim depth must be > 0");
   assert(_door_trim_w > 0, "door trim width must be > 0");
   assert(_window_trim_w > 0, "window trim width must be > 0");
+  assert(drawer_slide_clearance >= 0, "drawer_slide_clearance must be >= 0");
+  assert(_drawer_entry_h > 0, "drawer entry opening height must be > 0");
   assert(main_room_inner_x() >= board_x + 2 * board_clearance_xy, "main room must fit board_x and clearance");
   assert(chimney_room_x > chimney_flue_d, "chimney_room_x should exceed chimney_flue_d for airflow wall margin");
   assert(divider_hole_w > 0, "divider_hole_w must be > 0");
@@ -151,18 +165,6 @@ module cottage_pi6_plus_base() {
         // Hollow interior (top-open shell)
         translate([-_inner_x / 2, -_inner_y / 2, floor_thickness])
           cube([_inner_x, _inner_y, _body_h - floor_thickness + 0.05], center = false);
-      }
-
-      // Board mounting studs (bosses) for screw support at the four board-corner locations.
-      for (_sx = [-1, 1]) {
-        for (_sy = [-1, 1]) {
-          translate([
-            _board_cx + _sx * (board_x / 2 - corner_pad_inset),
-            _sy * (board_y / 2 - corner_pad_inset),
-            floor_thickness
-          ])
-            cylinder(d = corner_pad_d, h = mount_stud_h, $fn = 64);
-        }
       }
 
       // Internal divider wall with a beveled top to follow roof/gable pitch.
@@ -224,30 +226,128 @@ module cottage_pi6_plus_base() {
       }
     }
 
-    // Large left-side I/O opening while exact connector coordinates are pending.
+    // Large full-edge drawer entry opening on the left wall.
     translate([
       -_outer_x / 2 - 0.1,
-      -io_cutout_span_y / 2,
-      io_cutout_z0
-    ]) cube([wall + 0.3, io_cutout_span_y, io_cutout_h], center = false);
+      -_outer_y / 2 - 0.1,
+      _drawer_entry_z0 - 0.1
+    ]) cube([wall + 0.3, _outer_y + 0.2, _drawer_entry_h + 0.2], center = false);
 
-    // M2.5 mounting holes and underside bolt-head recesses at each stud.
-    for (_sx = [-1, 1]) {
-      for (_sy = [-1, 1]) {
-        _stud_x = _board_cx + _sx * (board_x / 2 - corner_pad_inset);
-        _stud_y = _sy * (board_y / 2 - corner_pad_inset);
+    // Rectangular duct pass-through in the internal divider.
+    translate([_divider_cx, divider_hole_y_offset, _divider_hole_z])
+      centered_cube([chimney_room_divider_t + 0.5, divider_hole_w, divider_hole_h]);
+  }
+}
+
+module cottage_pi6_plus_drawer() {
+  _drawer_x = drawer_outer_x();
+  _drawer_y = drawer_outer_y();
+  _drawer_floor_t = floor_thickness;
+  _drawer_wall_t = wall;
+  _drawer_side_wall_h = drawer_side_wall_h();
+  _io_cutout_z0_drawer = io_cutout_z0 - floor_thickness;
+  _divider_hole_z_drawer = drawer_divider_hole_z();
+  _drawer_end_wall_h = drawer_outer_h();
+  _drawer_cover_t = wall;
+  _drawer_cover_y = case_outer_y();
+  _drawer_cover_z0 = 0;
+  _drawer_cover_h = _drawer_end_wall_h + drawer_slide_clearance;
+  _drawer_inner_x_max = _drawer_x / 2 - _drawer_wall_t;
+  _hole_set1_x = _drawer_inner_x_max - drawer_hole_set1_from_exhaust_wall;
+  _hole_set2_x = _hole_set1_x - drawer_hole_set_spacing_x;
+  _hole_y_half_span = drawer_hole_pair_spacing_y / 2;
+
+  assert(_drawer_x > 0, "drawer_x must be > 0");
+  assert(_drawer_y > 0, "drawer_y must be > 0");
+  assert(_drawer_wall_t > 0, "drawer wall thickness must be > 0");
+  assert(_drawer_side_wall_h > _drawer_floor_t, "drawer side wall height must exceed drawer floor thickness");
+  assert(_drawer_end_wall_h >= _drawer_side_wall_h, "drawer end walls must be >= side wall height");
+  assert(drawer_slide_clearance >= 0, "drawer_slide_clearance must be >= 0");
+  assert(_drawer_cover_t > 0, "drawer cover thickness must be > 0");
+  assert(_drawer_cover_y >= _drawer_y, "drawer cover y span must be >= drawer y span");
+  assert(_drawer_cover_h > 0, "drawer cover height must be > 0");
+  assert(corner_pad_d > 0, "corner_pad_d must be > 0");
+  assert(mount_stud_h >= 0, "mount_stud_h must be >= 0");
+  assert(mount_hole_d > 0, "mount_hole_d must be > 0");
+  assert(mount_head_recess_d > mount_hole_d, "mount_head_recess_d must exceed mount_hole_d");
+  assert(mount_head_recess_h > 0, "mount_head_recess_h must be > 0");
+  assert(mount_head_recess_h <= _drawer_floor_t, "mount_head_recess_h must be <= drawer floor thickness");
+  assert(drawer_hole_set1_from_exhaust_wall >= 0, "drawer_hole_set1_from_exhaust_wall must be >= 0");
+  assert(drawer_hole_set_spacing_x > 0, "drawer_hole_set_spacing_x must be > 0");
+  assert(drawer_hole_pair_spacing_y > 0, "drawer_hole_pair_spacing_y must be > 0");
+  assert(_hole_set1_x + corner_pad_d / 2 <= _drawer_x / 2, "set1 hole centers exceed drawer +x edge");
+  assert(_hole_set2_x - corner_pad_d / 2 >= -_drawer_x / 2, "set2 hole centers exceed drawer -x edge");
+  assert(_hole_y_half_span + corner_pad_d / 2 <= _drawer_y / 2, "drawer_hole_pair_spacing_y exceeds drawer y span");
+  assert(io_cutout_span_y > 0 && io_cutout_span_y <= _drawer_y, "io_cutout_span_y must fit drawer short-end wall");
+  assert(divider_hole_w > 0 && divider_hole_w <= _drawer_y, "divider_hole_w must fit drawer short-end wall");
+  assert(_io_cutout_z0_drawer >= _drawer_floor_t, "drawer I/O opening starts below drawer floor");
+  assert(_divider_hole_z_drawer - divider_hole_h / 2 >= _drawer_floor_t, "drawer divider opening starts below drawer floor");
+
+  difference() {
+    union() {
+      // Drawer floor plate.
+      translate([-_drawer_x / 2, -_drawer_y / 2, 0])
+        cube([_drawer_x, _drawer_y, _drawer_floor_t], center = false);
+
+      // Long side rails (low walls).
+      translate([-_drawer_x / 2, -_drawer_y / 2, 0])
+        cube([_drawer_x, _drawer_wall_t, _drawer_side_wall_h], center = false);
+      translate([-_drawer_x / 2, _drawer_y / 2 - _drawer_wall_t, 0])
+        cube([_drawer_x, _drawer_wall_t, _drawer_side_wall_h], center = false);
+
+      // Short-end walls (taller) so they can carry the two functional openings.
+      translate([-_drawer_x / 2, -_drawer_y / 2, 0])
+        cube([_drawer_wall_t, _drawer_y, _drawer_end_wall_h], center = false);
+      translate([_drawer_x / 2 - _drawer_wall_t, -_drawer_y / 2, 0])
+        cube([_drawer_wall_t, _drawer_y, _drawer_end_wall_h], center = false);
+
+      // Exterior closure section that restores the removed base side wall when drawer is inserted.
+      // This intentionally leaves only the I/O opening area open.
+      translate([
+        -_drawer_x / 2 - _drawer_cover_t,
+        -_drawer_cover_y / 2,
+        _drawer_cover_z0
+      ]) cube([_drawer_cover_t, _drawer_cover_y, _drawer_cover_h], center = false);
+
+      // Board mounting studs moved from base to drawer.
+      // Set 1 is near the exhaust wall; set 2 is offset in -x.
+      for (_sx = [_hole_set1_x, _hole_set2_x]) {
+        for (_sy = [-_hole_y_half_span, _hole_y_half_span]) {
+          translate([
+            _sx,
+            _sy,
+            _drawer_floor_t
+          ])
+            cylinder(d = corner_pad_d, h = mount_stud_h, $fn = 64);
+        }
+      }
+    }
+
+    // M2.5 through-holes and underside head recesses in drawer studs.
+    for (_stud_x = [_hole_set1_x, _hole_set2_x]) {
+      for (_stud_y = [-_hole_y_half_span, _hole_y_half_span]) {
 
         translate([_stud_x, _stud_y, -0.1])
-          cylinder(d = mount_hole_d, h = floor_thickness + mount_stud_h + 0.3, $fn = 48);
+          cylinder(d = mount_hole_d, h = _drawer_floor_t + mount_stud_h + 0.3, $fn = 48);
 
         translate([_stud_x, _stud_y, -0.1])
           cylinder(d = mount_head_recess_d, h = mount_head_recess_h + 0.2, $fn = 48);
       }
     }
 
-    // Rectangular duct pass-through in the internal divider.
-    translate([_divider_cx, divider_hole_y_offset, _divider_hole_z])
-      centered_cube([chimney_room_divider_t + 0.5, divider_hole_w, divider_hole_h]);
+    // Drawer pass-through for the broad I/O side opening.
+    translate([
+      -_drawer_x / 2 - _drawer_cover_t - 0.1,
+      -io_cutout_span_y / 2,
+      _io_cutout_z0_drawer
+    ]) cube([_drawer_cover_t + _drawer_wall_t + 0.3, io_cutout_span_y, io_cutout_h], center = false);
+
+    // Drawer pass-through aligned to the divider/exhaust opening.
+    translate([
+      _drawer_x / 2 - _drawer_wall_t - 0.1,
+      divider_hole_y_offset - divider_hole_w / 2,
+      _divider_hole_z_drawer - divider_hole_h / 2
+    ]) cube([_drawer_wall_t + 0.3, divider_hole_w, divider_hole_h], center = false);
   }
 }
 
@@ -363,6 +463,17 @@ module cottage_pi6_plus_roof() {
 }
 
 module cottage_pi6_plus() {
+  _drawer_insert_x = board_center_x();
+  _drawer_insert_z = floor_thickness;
+  _drawer_exhaust_face_x = _drawer_insert_x + drawer_outer_x() / 2;
+  _divider_main_room_face_x = divider_center_x() - chimney_room_divider_t / 2;
+  _drawer_exhaust_center_z = _drawer_insert_z + drawer_divider_hole_z();
+  _divider_exhaust_center_z = floor_thickness + mount_stud_h + stud_to_board_standoff_z + board_thickness + divider_hole_z_from_board_top;
+
+  assert(abs(_drawer_exhaust_face_x - _divider_main_room_face_x) < 0.001, "drawer exhaust face must align with divider face when inserted");
+  assert(abs(_drawer_exhaust_center_z - _divider_exhaust_center_z) < 0.001, "drawer exhaust opening must align with divider opening in Z");
+
   cottage_pi6_plus_base();
+  translate([_drawer_insert_x, 0, _drawer_insert_z]) cottage_pi6_plus_drawer();
   translate([0, 0, body_wall_height]) cottage_pi6_plus_roof();
 }
