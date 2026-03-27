@@ -134,4 +134,5 @@ See `playbooks/how_to_iterate_openscad_designs.md` for the full workflow.
   - Parametric positive void/cutter model for subtracting a Jetson Xavier + carrier board cavity shape from a head mesh (simple back prism + top shaft prototype)
 - `designs/cottage_pi6_plus/`
   - Parametric cottage-style Orange Pi 6 Plus enclosure concept with separate base + roof and a chimney exhaust path
+  - Includes a separate sliding drawer part and tunables for drawer length, drawer end-wall headroom, and front-biased exhaust opening (`main_room_extra_x`, `drawer_end_wall_extra_h`, `divider_hole_front_extend_y`)
 - Matching sample artifacts for these examples are included under `output/` so users can inspect pipeline results without building first

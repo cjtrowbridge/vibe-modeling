@@ -17,6 +17,7 @@ cooler_envelope_z = 23.2;
 
 // Internal fit and support
 board_clearance_xy = 2.5;
+main_room_extra_x = 10;
 drawer_slide_clearance = 0.8;
 mount_stud_h = 3;
 stud_to_board_standoff_z = 10;
@@ -29,8 +30,9 @@ mount_hole_d = 3;
 mount_head_recess_d = 6;
 mount_head_recess_h = 2.2;
 drawer_hole_set1_from_exhaust_wall = 3;
-drawer_hole_set_spacing_x = 96;
+drawer_hole_set_spacing_x = 98;
 drawer_hole_pair_spacing_y = 94;
+drawer_end_wall_extra_h = 10;
 
 // Side chimney room (internal partition)
 chimney_room_x = 42;
@@ -38,6 +40,7 @@ chimney_room_divider_t = 2.2;
 divider_hole_w = 69;
 divider_hole_h = 24;
 divider_hole_y_offset = 0;
+divider_hole_front_extend_y = 10;
 divider_hole_z_from_board_top = 12;
 divider_roof_seal_gap = 0.3;
 
@@ -62,7 +65,9 @@ window_z = body_wall_height * (2 / 3);
 // Place decorative front windows symmetrically on both sides of the door.
 window_x_offset = (
   front_door_w / 2 +
-  ((board_x + 2 * board_clearance_xy + chimney_room_divider_t + chimney_room_x + 2 * wall) / 2 - wall)
+  ((
+    board_x + 2 * board_clearance_xy + main_room_extra_x + chimney_room_divider_t + chimney_room_x + 2 * wall
+  ) / 2 - wall)
 ) / 2;
 
 // Front porch
