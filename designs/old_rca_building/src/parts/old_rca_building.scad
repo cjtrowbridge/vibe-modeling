@@ -81,6 +81,8 @@ function _tier_y0(frac_center_to_front) = min(_tower_back_y(), _tier_front_limit
 function _tier_y_span(frac_center_to_front) = abs(_tower_back_y() - _tier_front_limit_y(frac_center_to_front));
 function _top_tier_z_top() = tower_z - side_top_tier_top_gap;
 function _front_setback_y0(ext) = wing_attach_side > 0 ? (_tower_front_y() - ext) : _tower_front_y();
+function _front_center_x0() = _tower_x0() + tower_x * front_center_x_start_frac;
+function _front_center_span_x() = tower_x * (front_center_x_end_frac - front_center_x_start_frac);
 
 module _side_setback_segment(side, z0, z1, ext, y0 = _tower_y0(), y_span = tower_y) {
   if (z1 > z0 && ext > 0 && y_span > 0) {
@@ -90,10 +92,10 @@ module _side_setback_segment(side, z0, z1, ext, y0 = _tower_y0(), y_span = tower
   }
 }
 
-module _front_setback_segment(z0, z1, ext) {
-  if (z1 > z0 && ext > 0) {
-    translate([_tower_x0(), _front_setback_y0(ext), z0])
-      cube([tower_x, ext, z1 - z0], center = false);
+module _front_setback_segment(z0, z1, ext, x0 = _tower_x0(), span_x = tower_x) {
+  if (z1 > z0 && ext > 0 && span_x > 0) {
+    translate([x0, _front_setback_y0(ext), z0])
+      cube([span_x, ext, z1 - z0], center = false);
   }
 }
 
@@ -135,6 +137,21 @@ module _assert_dims() {
   assert(front_setback_enable == 0 || front_setback_enable == 1,
     "front_setback_enable must be 0 or 1");
   assert(front_setback_step >= 0, "front_setback_step must be >= 0");
+  assert(front_center_setback_enable == 0 || front_center_setback_enable == 1,
+    "front_center_setback_enable must be 0 or 1");
+  assert(front_center_setback_step >= 0, "front_center_setback_step must be >= 0");
+  assert(front_center_extra_protrusion >= 0,
+    "front_center_extra_protrusion must be >= 0");
+  assert(front_center_x_start_frac >= 0 && front_center_x_start_frac < 1,
+    "front_center_x_start_frac must be in [0, 1)");
+  assert(front_center_x_end_frac > front_center_x_start_frac && front_center_x_end_frac <= 1,
+    "front_center_x_end_frac must be > start frac and <= 1");
+  assert(_front_center_span_x() > 0,
+    "front center tier band must have positive X span");
+  assert(front_center_tier_height_boost >= 0,
+    "front_center_tier_height_boost must be >= 0");
+  assert(_top_tier_z_top() + front_center_tier_height_boost <= tower_z,
+    "front center top-tier boost exceeds tower top");
   assert(side_top_tier_top_gap >= 0 && side_top_tier_top_gap < tower_z,
     "side_top_tier_top_gap must be >= 0 and < tower_z");
   assert(_top_tier_z_top() > 0,
@@ -292,6 +309,29 @@ module old_rca_building_outer_mass() {
       _front_setback_segment(side_left_tier0_z, side_left_tier3_z, 2 * front_setback_step);
       _front_setback_segment(side_left_tier0_z, side_left_tier2_z, 3 * front_setback_step);
       _front_setback_segment(side_left_tier0_z, side_left_tier1_z, 4 * front_setback_step);
+    }
+
+    if (front_center_setback_enable == 1 && front_center_setback_step > 0) {
+      // Additional centered front tiers (middle third of front width),
+      // with tier tops raised slightly above the primary front-tier tops
+      // and an additional protrusion beyond the primary front tiers.
+      x0 = _front_center_x0();
+      span_x = _front_center_span_x();
+      z_top = _top_tier_z_top() + front_center_tier_height_boost;
+      ext1 = front_center_setback_step + front_center_extra_protrusion;
+      ext2 = 2 * front_center_setback_step + front_center_extra_protrusion;
+      ext3 = 3 * front_center_setback_step + front_center_extra_protrusion;
+      ext4 = 4 * front_center_setback_step + front_center_extra_protrusion;
+      _front_setback_segment(side_left_tier0_z, z_top, ext1, x0, span_x);
+      _front_setback_segment(side_left_tier0_z,
+        side_left_tier3_z + front_center_tier_height_boost,
+        ext2, x0, span_x);
+      _front_setback_segment(side_left_tier0_z,
+        side_left_tier2_z + front_center_tier_height_boost,
+        ext3, x0, span_x);
+      _front_setback_segment(side_left_tier0_z,
+        side_left_tier1_z + front_center_tier_height_boost,
+        ext4, x0, span_x);
     }
 
     // Low rear-side wing to form a simple L plan.

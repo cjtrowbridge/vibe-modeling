@@ -232,6 +232,7 @@ Priority is side silhouette fidelity via major tiered setbacks only (no windows 
 - Add side-only external tiers as additive masses on the left/right tower faces (the wide side faces).
 - Use a single tier protrusion variable (`side_setback_step`, currently `7.0 mm`) and apply the same protrusion distance to all four tiers, with mirrored left/right break heights.
 - Add front-face tiers on the skinny front wall using the same four tier heights, with cumulative protrusion by `front_setback_step` (`3/6/9/12 mm` in `rev_0002`).
+- Add a second front tier set centered on the middle third of the front width (`front_center_x_start_frac = 1/3`, `front_center_x_end_frac = 2/3`), with slightly raised tier-top heights and `+3 mm` additional protrusion versus each matching primary front tier.
 - Top tier top is held below tower top by `side_top_tier_top_gap` (`10.0 mm` in `rev_0002`).
 - Tier depth-by-reach rule (from back wall toward front):
   - top tier reaches center (`0%` of center-to-front span),
@@ -291,6 +292,7 @@ Implemented in `rev_0002` `part_id = 0`:
 - `rev_0002` side facade now uses four tiers per side on wide faces with one shared `7.0 mm` protrusion value applied equally to every tier,
 - left/right side tier geometry is mirrored, with matching Z breakpoints on both wide faces,
 - `rev_0002` now also includes a front-face 4-tier set (same tier heights), with cumulative protrusions of `3/6/9/12 mm` from the front wall,
+- `rev_0002` now includes an additional centered front 4-tier set over the middle third of facade width (`1/3` to `2/3` across X), with tier tops raised by `4.0 mm` and protrusions increased by `+3.0 mm` versus the primary front-tier set (centered set becomes `6/9/12/15 mm` where primary is `3/6/9/12 mm`),
 - `rev_0002` top tier ends `10.0 mm` below the tower top (`side_top_tier_top_gap = 10.0`),
 - `rev_0002` tier depth progression is back-to-front by center-relative reach: top=`0%`, tier2=`25%`, tier3=`50%`, tier4=`75%` of center-to-front span,
 - all `rev_0002` side tiers now start at floor level (`z=0`) so tier bottoms are grounded to the base,
