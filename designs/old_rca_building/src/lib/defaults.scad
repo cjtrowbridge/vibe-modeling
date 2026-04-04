@@ -53,6 +53,24 @@ wing_z = fan_square_opening + rear_cable_slot_h + 3 * bump_margin; // no extra a
 wing_overlap_y = 5.6; // overlap in Y between tower and wing
 wing_attach_side = 1; // +1 = +Y side, -1 = -Y side
 
+// Simplified facade: side-only tiered setbacks (no window/ornament detail).
+side_setback_enable = 1;
+side_setback_step = 7.0; // uniform protrusion distance for each tier
+front_setback_enable = 1;
+front_setback_step = 3.0; // cumulative front-face protrusion by tier: 3, 6, 9, 12 mm
+side_top_tier_top_gap = 10.0; // keep top tier below tower top by this amount
+side_tier2_center_to_front_frac = 0.25; // 25% from center toward front
+side_tier3_center_to_front_frac = 0.50; // 50% from center toward front
+side_tier4_center_to_front_frac = 0.75; // 75% from center toward front
+side_left_tier0_z = 0.0; // tier base at model floor
+side_left_tier1_z = 92.0;
+side_left_tier2_z = 129.67; // normalized middle tier top
+side_left_tier3_z = 167.33; // normalized middle tier top
+side_right_tier0_z = 0.0; // mirrored to left, tier base at model floor
+side_right_tier1_z = 92.0; // mirrored to left
+side_right_tier2_z = 129.67; // mirrored to left
+side_right_tier3_z = 167.33; // mirrored to left
+
 // Phone void rotated 90 deg around Z from prior draft:
 // - narrow axis in X (phone thickness + face gaps)
 // - wide axis in Y (phone width + side gaps)

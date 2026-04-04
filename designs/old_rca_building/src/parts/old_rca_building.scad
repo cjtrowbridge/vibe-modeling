@@ -72,6 +72,30 @@ function _cage_bump_strip_y1() = wing_attach_side > 0 ? _void_y1() : _cage_windo
 function _cage_bump_strip_span_y() = _cage_bump_strip_y1() - _cage_bump_strip_y0();
 function _overall_height() = max(tower_z, wing_z);
 function _void_enclosed_height() = tower_z - support_z;
+function _tower_x1() = -_tower_x0();
+function _tower_y1() = -_tower_y0();
+function _tower_back_y() = wing_attach_side > 0 ? _tower_y1() : _tower_y0();
+function _tower_front_y() = wing_attach_side > 0 ? _tower_y0() : _tower_y1();
+function _tier_front_limit_y(frac_center_to_front) = _tower_front_y() * frac_center_to_front;
+function _tier_y0(frac_center_to_front) = min(_tower_back_y(), _tier_front_limit_y(frac_center_to_front));
+function _tier_y_span(frac_center_to_front) = abs(_tower_back_y() - _tier_front_limit_y(frac_center_to_front));
+function _top_tier_z_top() = tower_z - side_top_tier_top_gap;
+function _front_setback_y0(ext) = wing_attach_side > 0 ? (_tower_front_y() - ext) : _tower_front_y();
+
+module _side_setback_segment(side, z0, z1, ext, y0 = _tower_y0(), y_span = tower_y) {
+  if (z1 > z0 && ext > 0 && y_span > 0) {
+    x0 = side < 0 ? (_tower_x0() - ext) : _tower_x1();
+    translate([x0, y0, z0])
+      cube([ext, y_span, z1 - z0], center = false);
+  }
+}
+
+module _front_setback_segment(z0, z1, ext) {
+  if (z1 > z0 && ext > 0) {
+    translate([_tower_x0(), _front_setback_y0(ext), z0])
+      cube([tower_x, ext, z1 - z0], center = false);
+  }
+}
 
 module _assert_dims() {
   assert(wall > 0, "wall must be > 0");
@@ -105,6 +129,36 @@ module _assert_dims() {
   assert(wing_overlap_y >= 0 && wing_overlap_y < tower_y, "wing_overlap_y out of range");
   assert(wing_attach_side == 1 || wing_attach_side == -1,
     "wing_attach_side must be 1 or -1");
+  assert(side_setback_enable == 0 || side_setback_enable == 1,
+    "side_setback_enable must be 0 or 1");
+  assert(side_setback_step >= 0, "side_setback_step must be >= 0");
+  assert(front_setback_enable == 0 || front_setback_enable == 1,
+    "front_setback_enable must be 0 or 1");
+  assert(front_setback_step >= 0, "front_setback_step must be >= 0");
+  assert(side_top_tier_top_gap >= 0 && side_top_tier_top_gap < tower_z,
+    "side_top_tier_top_gap must be >= 0 and < tower_z");
+  assert(_top_tier_z_top() > 0,
+    "top tier top height must be above z=0");
+  assert(side_tier2_center_to_front_frac >= 0 && side_tier2_center_to_front_frac <= 1,
+    "side_tier2_center_to_front_frac must be in [0, 1]");
+  assert(side_tier3_center_to_front_frac >= 0 && side_tier3_center_to_front_frac <= 1,
+    "side_tier3_center_to_front_frac must be in [0, 1]");
+  assert(side_tier4_center_to_front_frac >= 0 && side_tier4_center_to_front_frac <= 1,
+    "side_tier4_center_to_front_frac must be in [0, 1]");
+  assert(side_tier2_center_to_front_frac <= side_tier3_center_to_front_frac &&
+      side_tier3_center_to_front_frac <= side_tier4_center_to_front_frac,
+    "tier front-reach fractions must be non-decreasing (tier2 <= tier3 <= tier4)");
+  assert(side_left_tier0_z >= 0 && side_left_tier1_z > side_left_tier0_z &&
+      side_left_tier2_z > side_left_tier1_z && side_left_tier3_z > side_left_tier2_z &&
+      _top_tier_z_top() > side_left_tier3_z,
+    "left side tier heights must ascend and stay below top tier cap");
+  assert(abs(side_right_tier0_z - side_left_tier0_z) < 0.001 &&
+      abs(side_right_tier1_z - side_left_tier1_z) < 0.001 &&
+      abs(side_right_tier2_z - side_left_tier2_z) < 0.001 &&
+      abs(side_right_tier3_z - side_left_tier3_z) < 0.001,
+    "left/right tier Z breakpoints must match for mirrored side geometry");
+  assert(abs(side_left_tier0_z) < 0.001 && abs(side_right_tier0_z) < 0.001,
+    "tier bases must be at floor z=0");
   assert(_wing_plenum_top_z() > floor, "wing plenum top must be above floor");
   assert(_wing_plenum_top_z() > floor + wall,
     "wing plenum too short to keep a top wall");
@@ -193,6 +247,52 @@ module old_rca_building_outer_mass() {
     // Tall tower section.
     translate([_tower_x0(), _tower_y0(), 0])
       cube([tower_x, tower_y, tower_z], center = false);
+
+    if (side_setback_enable == 1 && side_setback_step > 0) {
+      // Tiered extrusions on the wide tower faces:
+      // uniform extension by side_setback_step on all four tiers.
+      // Tier depth along Y is measured from the back wall toward the front:
+      // top=0%, tier2=25%, tier3=50%, tier4=75% from center to front.
+      top_tier_y0 = _tier_y0(0.0);
+      top_tier_y_span = _tier_y_span(0.0);
+      tier2_y0 = _tier_y0(side_tier2_center_to_front_frac);
+      tier2_y_span = _tier_y_span(side_tier2_center_to_front_frac);
+      tier3_y0 = _tier_y0(side_tier3_center_to_front_frac);
+      tier3_y_span = _tier_y_span(side_tier3_center_to_front_frac);
+      tier4_y0 = _tier_y0(side_tier4_center_to_front_frac);
+      tier4_y_span = _tier_y_span(side_tier4_center_to_front_frac);
+      z_top = _top_tier_z_top();
+
+      // Left wide face (X-)
+      _side_setback_segment(-1, side_left_tier0_z, z_top, side_setback_step,
+        top_tier_y0, top_tier_y_span);
+      _side_setback_segment(-1, side_left_tier0_z, side_left_tier3_z, side_setback_step,
+        tier2_y0, tier2_y_span);
+      _side_setback_segment(-1, side_left_tier0_z, side_left_tier2_z, side_setback_step,
+        tier3_y0, tier3_y_span);
+      _side_setback_segment(-1, side_left_tier0_z, side_left_tier1_z, side_setback_step,
+        tier4_y0, tier4_y_span);
+
+      // Right wide face (X+) mirrored to left side Z breaks.
+      _side_setback_segment(1, side_left_tier0_z, z_top, side_setback_step,
+        top_tier_y0, top_tier_y_span);
+      _side_setback_segment(1, side_left_tier0_z, side_left_tier3_z, side_setback_step,
+        tier2_y0, tier2_y_span);
+      _side_setback_segment(1, side_left_tier0_z, side_left_tier2_z, side_setback_step,
+        tier3_y0, tier3_y_span);
+      _side_setback_segment(1, side_left_tier0_z, side_left_tier1_z, side_setback_step,
+        tier4_y0, tier4_y_span);
+    }
+
+    if (front_setback_enable == 1 && front_setback_step > 0) {
+      // Front-face tiers on the skinny front wall:
+      // same Z bands as side tiers, cumulative protrusion by front_setback_step.
+      z_top = _top_tier_z_top();
+      _front_setback_segment(side_left_tier0_z, z_top, front_setback_step);
+      _front_setback_segment(side_left_tier0_z, side_left_tier3_z, 2 * front_setback_step);
+      _front_setback_segment(side_left_tier0_z, side_left_tier2_z, 3 * front_setback_step);
+      _front_setback_segment(side_left_tier0_z, side_left_tier1_z, 4 * front_setback_step);
+    }
 
     // Low rear-side wing to form a simple L plan.
     translate([_wing_x0(), _wing_y0(), 0])

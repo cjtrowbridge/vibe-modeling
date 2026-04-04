@@ -13,6 +13,19 @@ This folder now includes OpenSCAD geometry revisions:
 - OpenSCAD source: created under `src/` with configs in `configs/rev_0001.json` and `configs/rev_0002.json`
 - Primary goal of this README: preserve requirements traceability and implementation intent
 
+## Model Orientation (Canonical)
+
+- Front of model: the skinny tower side opposite the bump-out.
+- Back of model: the bump-out side, where the fan mount hardware and USB exit are located.
+- Left/Right: side faces when looking at the model from the front.
+- Top: phone insertion opening.
+- Bottom: print bed side / base floor.
+
+For the current `rev_0002` default (`wing_attach_side = 1`), this maps to:
+
+- `+Y` = back (bump-out/fan side)
+- `-Y` = front (skinny side opposite bump-out)
+
 ## Design Intent
 
 Create a stylized tower that functions as a top-loading phone bay:
@@ -211,6 +224,25 @@ Rear mass behind front facade is a simple hollow rectangular volume:
 - Internal structural members sized for reliable bridging where possible.
 - Orientation target: print upright unless overhang review shows better split orientation.
 
+## Facade Setback Plan (Approved)
+
+Priority is side silhouette fidelity via major tiered setbacks only (no windows or fine ornament).
+
+- Keep all functional internals unchanged (phone void, rails, cage, fan plenum, cable slot).
+- Add side-only external tiers as additive masses on the left/right tower faces (the wide side faces).
+- Use a single tier protrusion variable (`side_setback_step`, currently `7.0 mm`) and apply the same protrusion distance to all four tiers, with mirrored left/right break heights.
+- Add front-face tiers on the skinny front wall using the same four tier heights, with cumulative protrusion by `front_setback_step` (`3/6/9/12 mm` in `rev_0002`).
+- Top tier top is held below tower top by `side_top_tier_top_gap` (`10.0 mm` in `rev_0002`).
+- Tier depth-by-reach rule (from back wall toward front):
+  - top tier reaches center (`0%` of center-to-front span),
+  - second tier reaches `25%` from center to front,
+  - third tier reaches `50%` from center to front,
+  - fourth tier reaches `75%` from center to front.
+- Tier height normalization rule: with the current top and bottom tier-top heights held fixed, the two middle tier-top heights are evenly spaced between them.
+- Tier base rule: all side tiers start at the model floor (`z=0`) with no floating tier bands.
+- Preserve printability by building setbacks from the base upward (no floating decorative ledges).
+- Keep the design intentionally coarse and structural, matching the simplified Neuromancer-style intent.
+
 ## Open Questions For Next Geometry Revision
 
 1. Final phone orientation relative to facade (screen toward front vs back).
@@ -256,6 +288,12 @@ Implemented in `rev_0002` `part_id = 0`:
 - `rev_0002` uses `2.0 mm` walls/floor and a configurable `bump_margin` (currently `2.0 mm`),
 - `rev_0002` enforces a printer-fit overall height cap of `215.0 mm` (for a `220 mm` Z build area with ~`5 mm` margin),
 - `rev_0002` intentionally allows partial phone protrusion above the tower top; full phone-height enclosure is no longer required,
+- `rev_0002` side facade now uses four tiers per side on wide faces with one shared `7.0 mm` protrusion value applied equally to every tier,
+- left/right side tier geometry is mirrored, with matching Z breakpoints on both wide faces,
+- `rev_0002` now also includes a front-face 4-tier set (same tier heights), with cumulative protrusions of `3/6/9/12 mm` from the front wall,
+- `rev_0002` top tier ends `10.0 mm` below the tower top (`side_top_tier_top_gap = 10.0`),
+- `rev_0002` tier depth progression is back-to-front by center-relative reach: top=`0%`, tier2=`25%`, tier3=`50%`, tier4=`75%` of center-to-front span,
+- all `rev_0002` side tiers now start at floor level (`z=0`) so tier bottoms are grounded to the base,
 - bump-out X/Z envelope is compacted so there is no extra space above the fan, below the USB slot, or beside the fan beyond `bump_margin`,
 - bump-out keeps a `2.0 mm` top wall (not open-top), while the fan face and USB slot remain the intended openings,
 - fan-end mounting plate now uses a central circular intake (`fan_intake_d = 32.0 mm`) so the four `32 mm`-spacing mounting holes, including the bottom pair from the fan reference pattern, remain fully material-backed,
