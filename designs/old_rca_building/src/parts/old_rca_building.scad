@@ -70,6 +70,8 @@ function _cage_window_span_y() = _cage_window_y1() - _cage_window_y0();
 function _cage_bump_strip_y0() = wing_attach_side > 0 ? _cage_window_y1() : _void_y0();
 function _cage_bump_strip_y1() = wing_attach_side > 0 ? _void_y1() : _cage_window_y0();
 function _cage_bump_strip_span_y() = _cage_bump_strip_y1() - _cage_bump_strip_y0();
+function _overall_height() = max(tower_z, wing_z);
+function _void_enclosed_height() = tower_z - support_z;
 
 module _assert_dims() {
   assert(wall > 0, "wall must be > 0");
@@ -78,6 +80,9 @@ module _assert_dims() {
     "debug_open_bottom must be 0 or 1");
   assert(tower_x > 0 && tower_y > 0 && tower_z > 0, "tower dims must be > 0");
   assert(base_z > 0 && base_z < tower_z, "base_z must be > 0 and < tower_z");
+  assert(overall_height_max > 0, "overall_height_max must be > 0");
+  assert(_overall_height() <= overall_height_max,
+    "overall model height exceeds overall_height_max");
   assert(tower_inner_roof_bevel >= 0, "tower_inner_roof_bevel must be >= 0");
   assert(wing_vault_radius >= 0, "wing_vault_radius must be >= 0");
   assert(_roof_run_x_left() > 0 && _roof_run_x_right() > 0 &&
@@ -107,6 +112,8 @@ module _assert_dims() {
   assert(support_z < tower_z, "support_z must be < tower_z");
   assert(tower_top_lip_h > 0 && tower_top_lip_h < tower_z - support_z,
     "tower_top_lip_h must be > 0 and less than void height");
+  assert(_void_enclosed_height() > 0,
+    "void enclosed height above support must be > 0");
 
   // Requested floorplan constraint: minimum width should not drop below fan width.
   assert(tower_x >= fan_frame, "tower_x must be >= fan_frame");
@@ -117,8 +124,6 @@ module _assert_dims() {
     "void_x too small for phone thickness + face gaps");
   assert(void_y >= phone_w_max + 2 * side_gap_min,
     "void_y too small for phone width + side gaps");
-  assert(tower_z - support_z >= phone_h_max + top_clearance_min,
-    "void height above support too small");
 
   assert(void_x + 2 * wall <= tower_x, "void_x + walls must fit tower_x");
   assert(void_y + 2 * wall <= tower_y, "void_y + walls must fit tower_y");

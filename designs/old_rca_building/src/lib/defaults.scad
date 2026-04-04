@@ -25,6 +25,7 @@ phone_t_max = 8.9;
 side_gap_min = 3.5;
 face_gap_min = 3.0;
 top_clearance_min = 8.0;
+overall_height_max = 215.0; // keep whole model <= 220 mm build limit with ~5 mm margin
 
 // Fan interface (40 mm reference)
 fan_frame = 40.0;
@@ -40,7 +41,7 @@ rear_cable_slot_h = 7.0;
 // Tower + base-wing massing (simple L shape in plan)
 tower_x = 44.5; // must remain >= fan_frame
 tower_y = 96.0;
-tower_z = 286.0;
+tower_z = 215.0;
 
 base_z = 88.0; // tower lower plenum height
 tower_inner_roof_bevel = 0.0; // 0 = auto full-depth 45 deg inverse bevel from opening to walls
@@ -60,7 +61,7 @@ void_y = 88.0;
 void_center_x = 0.0;
 void_center_y = 0.0;
 tower_top_lip_h = wall; // non-zero tower-top thickness while keeping top insertion opening
-support_z = 72.0; // must stay >= 70
+support_z = 70.0; // keep >= 70 and maximize enclosed phone depth under height cap
 
 // Rails (2 on front wall + 2 on back wall + 1 on each wide-side wall)
 rail_inset_from_x_ends = 2.2;

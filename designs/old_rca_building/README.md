@@ -24,6 +24,7 @@ Create a stylized tower that functions as a top-loading phone bay:
 - A center opening under the phone lets the charging cable bend and route out.
 - Rear stub volume is a hollow plenum with an open-back 40 mm fan mount.
 - Below fan mount, a small cable opening routes USB out of the model and can be sealed with hot glue to reduce air leakage.
+- Overall model height is capped for printer fit (`<= 220 mm` build area with ~`5 mm` margin), so phones are expected to protrude above the top opening.
 
 ## Initial Target Devices
 
@@ -123,6 +124,7 @@ Using the table above:
 - Max phone height: `163.6 mm`
 - Max phone width: `78.1 mm`
 - Max phone thickness: `8.9 mm`
+- Overall model height cap (`overall_height_max`): `215.0 mm`
 
 Draft internal sizing targets for revision `rev_0002` implementation:
 
@@ -132,8 +134,8 @@ Draft internal sizing targets for revision `rev_0002` implementation:
 - Top insertion aperture is sized by rail clearances:
   - `top_open_x = void_x - 2*rail_side_protrusion_x = 14.0 mm`
   - `top_open_y = void_y - 2*rail_protrusion_y = 84.0 mm`
-- Usable supported phone height above cage (`void_z_above_support`): `172.0 mm` minimum
-- Support elevation above model floor (`support_z`): `72.0 mm` minimum (must stay `>= 70.0 mm`)
+- Usable supported phone height above cage (`void_z_above_support`): `145.0 mm` (phones extend above top by design)
+- Support elevation above model floor (`support_z`): `70.0 mm` minimum (must stay `>= 70.0 mm`)
 
 These values are intended to:
 
@@ -252,6 +254,8 @@ Implemented in `rev_0002` `part_id = 0`:
 - `rev_0002` targets a 2:1 tower-long-side to exposed bump-out-length ratio,
 - `wing_attach_side` parameter controls which Y side gets the bump-out (`+1` or `-1`),
 - `rev_0002` uses `2.0 mm` walls/floor and a configurable `bump_margin` (currently `2.0 mm`),
+- `rev_0002` enforces a printer-fit overall height cap of `215.0 mm` (for a `220 mm` Z build area with ~`5 mm` margin),
+- `rev_0002` intentionally allows partial phone protrusion above the tower top; full phone-height enclosure is no longer required,
 - bump-out X/Z envelope is compacted so there is no extra space above the fan, below the USB slot, or beside the fan beyond `bump_margin`,
 - bump-out keeps a `2.0 mm` top wall (not open-top), while the fan face and USB slot remain the intended openings,
 - fan-end mounting plate now uses a central circular intake (`fan_intake_d = 32.0 mm`) so the four `32 mm`-spacing mounting holes, including the bottom pair from the fan reference pattern, remain fully material-backed,
