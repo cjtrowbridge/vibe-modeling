@@ -1,0 +1,83 @@
+// old_rca_building defaults (all dimensions in mm).
+// Revision target: maximum-simplification L-shape prototype.
+//
+// Coordinate convention:
+// - X: left/right
+// - Y: front/back
+// - Z: vertical
+
+// Part selector
+// 0 = final model
+// 1 = outer mass only
+// 2 = negative cutters (debug)
+// 3 = internal supports only
+part_id = 0;
+
+// Printer/process assumptions
+wall = 2.0;
+floor = 2.0;
+debug_open_bottom = 0; // 1 = temporary debug mode to remove bottom surfaces (open from below)
+
+// Device envelope constraints
+phone_h_max = 163.6;
+phone_w_max = 78.1;
+phone_t_max = 8.9;
+side_gap_min = 3.5;
+face_gap_min = 3.0;
+top_clearance_min = 8.0;
+
+// Fan interface (40 mm reference)
+fan_frame = 40.0;
+fan_hole_spacing = 32.0;
+fan_hole_d = 3.6;
+fan_square_opening = 40.5; // frame-clearance reference size used for compact bump-out envelope sizing
+fan_intake_d = 32.0; // central airflow opening in the mounting plate (keeps corner screw-hole land)
+
+// Cable slot below fan (sealable with hot glue)
+rear_cable_slot_w = 12.0;
+rear_cable_slot_h = 7.0;
+
+// Tower + base-wing massing (simple L shape in plan)
+tower_x = 44.5; // must remain >= fan_frame
+tower_y = 96.0;
+tower_z = 286.0;
+
+base_z = 88.0; // tower lower plenum height
+tower_inner_roof_bevel = 0.0; // 0 = auto full-depth 45 deg inverse bevel from opening to walls
+wing_vault_radius = 0.0; // 0 = use half wing opening width (vault diameter ~= wing opening width)
+bump_margin = 2.0; // desired minimum envelope margin around fan/USB features
+wing_x = fan_square_opening + 2 * bump_margin; // no extra side space beside fan opening
+wing_y = 53.6; // gives exposed bump-out length of 48.0 with 5.6 overlap (tower:bump-out = 2:1)
+wing_z = fan_square_opening + rear_cable_slot_h + 3 * bump_margin; // no extra above fan or below USB slot
+wing_overlap_y = 5.6; // overlap in Y between tower and wing
+wing_attach_side = 1; // +1 = +Y side, -1 = -Y side
+
+// Phone void rotated 90 deg around Z from prior draft:
+// - narrow axis in X (phone thickness + face gaps)
+// - wide axis in Y (phone width + side gaps)
+void_x = 18.0;
+void_y = 88.0;
+void_center_x = 0.0;
+void_center_y = 0.0;
+tower_top_lip_h = wall; // non-zero tower-top thickness while keeping top insertion opening
+support_z = 72.0; // must stay >= 70
+
+// Rails (2 on front wall + 2 on back wall + 1 on each wide-side wall)
+rail_inset_from_x_ends = 2.2;
+rail_width_x = 2.8;
+rail_protrusion_y = 2.0;
+rail_side_protrusion_x = 2.0;
+rail_side_span_y = 18.0;
+rail_phone_margin_min = 2.0;
+
+// Bottom cage with center cable bend window
+cage_bar_h = 4.0;
+cable_window_x = 12.0;
+cable_window_y = 40.0;
+
+// Fan/cable placement derived from compact bump-out envelope rules.
+fan_center_x = 0.0;
+fan_center_z = rear_cable_slot_h + 1.5 * bump_margin + fan_square_opening / 2;
+
+rear_cable_slot_center_x = fan_center_x;
+rear_cable_slot_center_z = bump_margin + rear_cable_slot_h / 2;

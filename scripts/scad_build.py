@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build OpenSCAD artifacts (STL + PNG) from a JSON config."""
+"""Build OpenSCAD artifacts (STL + multi-view PNG set) from a JSON config."""
 
 import argparse
 import json
@@ -8,7 +8,42 @@ import shlex
 import shutil
 import subprocess
 from pathlib import Path
-from typing import List, NoReturn, Optional
+from typing import Dict, List, NamedTuple, NoReturn, Optional, Tuple
+
+
+class PngViewPreset(NamedTuple):
+    suffix: str
+    projection: str
+    rotation: Tuple[float, float, float]
+    target: Tuple[float, float, float] = (0.0, 0.0, 0.0)
+    distance: float = 1000.0
+    autocenter: bool = True
+    viewall: bool = True
+
+
+PNG_VIEW_PRESETS: List[PngViewPreset] = [
+    PngViewPreset("iso_front_right", "p", (55, 0, 25)),
+    PngViewPreset("iso_front_left", "p", (55, 0, -25)),
+    PngViewPreset("iso_back_right", "p", (55, 0, 155)),
+    PngViewPreset("iso_back_left", "p", (55, 0, -155)),
+    PngViewPreset("iso_bottom_front_right", "p", (125, 0, 25)),
+    PngViewPreset("iso_bottom_front_left", "p", (125, 0, -25)),
+    PngViewPreset("iso_bottom_back_right", "p", (125, 0, 155)),
+    PngViewPreset("iso_bottom_back_left", "p", (125, 0, -155)),
+    # Debug-friendly below views focused on tower interior.
+    PngViewPreset("inspect_inside_bottom_iso", "p", (160, 0, 20), (0, 0, -80), 380.0, False, False),
+    PngViewPreset("inspect_inside_bottom_ortho", "o", (180, 0, 0), (0, 0, -90), 400.0, False, False),
+    PngViewPreset("ortho_front", "o", (90, 0, 0)),
+    PngViewPreset("ortho_right", "o", (90, 0, 90)),
+    PngViewPreset("ortho_back", "o", (90, 0, 180)),
+    PngViewPreset("ortho_left", "o", (90, 0, 270)),
+    PngViewPreset("ortho_top", "o", (0, 0, 0)),
+    PngViewPreset("ortho_bottom", "o", (180, 0, 0)),
+]
+
+# Keep a legacy single-preview filename for compatibility while also
+# generating the explicit named view files above.
+LEGACY_PREVIEW_SUFFIX = "iso_front_right"
 
 
 def info(message: str) -> None:
@@ -121,8 +156,20 @@ def resolve_part_name(config: dict, explicit_part_name: Optional[str]) -> str:
     fail("No --part-name provided and config is missing a non-empty 'part' field.")
 
 
+def build_camera_arg(
+    rotation: Tuple[float, float, float],
+    target: Tuple[float, float, float] = (0.0, 0.0, 0.0),
+    distance: float = 1000.0,
+) -> str:
+    tx, ty, tz = target
+    rx, ry, rz = rotation
+    return f"{tx},{ty},{tz},{rx},{ry},{rz},{distance}"
+
+
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Build OpenSCAD STL and PNG artifacts from a JSON config.")
+    parser = argparse.ArgumentParser(
+        description="Build OpenSCAD STL and multi-view PNG artifacts from a JSON config."
+    )
     parser.add_argument("--design", default="example_box", help="Design folder under designs/<design>.")
     parser.add_argument("--config", required=True, help="Path to JSON config file.")
     parser.add_argument("--part-name", help="Output base filename (defaults to config['part']).")
@@ -149,40 +196,80 @@ def main() -> int:
 
     out_dir.mkdir(parents=True, exist_ok=True)
     out_stl = out_dir / f"{part_name}.stl"
-    out_png = out_dir / f"{part_name}.png"
+    legacy_png = out_dir / f"{part_name}.png"
+    named_png_paths: Dict[str, Path] = {
+        preset.suffix: out_dir / f"{part_name}_{preset.suffix}.png"
+        for preset in PNG_VIEW_PRESETS
+    }
+    required_png_paths: List[Path] = [legacy_png, *named_png_paths.values()]
 
     info(f"Config: {config_path}")
     info(f"Design: {args.design}")
     info(f"PartName: {part_name}")
     info(f"OutDir: {out_dir}")
+    info(f"PNGViews: {len(PNG_VIEW_PRESETS)} named + 1 legacy preview")
 
     stl_cmd = ["openscad", "-o", str(out_stl), str(main_scad), *defines]
-    png_cmd = [
-        "openscad",
-        "-o",
-        str(out_png),
-        str(main_scad),
-        "--imgsize=1200,900",
-        "--viewall",
-        *defines,
-    ]
+    png_jobs: List[Tuple[str, Path, List[str]]] = []
+    for preset in PNG_VIEW_PRESETS:
+        suffix = preset.suffix
+        projection = preset.projection
+        camera = build_camera_arg(preset.rotation, preset.target, preset.distance)
+        out_png = legacy_png if suffix == LEGACY_PREVIEW_SUFFIX else named_png_paths[suffix]
+        cmd = [
+            "openscad",
+            "-o",
+            str(out_png),
+            str(main_scad),
+            "--imgsize=1200,900",
+        ]
+        if preset.autocenter:
+            cmd.append("--autocenter")
+        if preset.viewall:
+            cmd.append("--viewall")
+        cmd.extend([
+            f"--projection={projection}",
+            f"--camera={camera}",
+            *defines,
+        ])
+        png_jobs.append((suffix, out_png, cmd))
 
     if args.dry_run:
         info("DryRun enabled; not invoking OpenSCAD.")
         info(f"Would run: {format_cmd(stl_cmd)}")
-        info(f"Would run: {format_cmd(png_cmd)}")
+        for suffix, _, cmd in png_jobs:
+            info(f"Would run ({suffix}): {format_cmd(cmd)}")
+        if LEGACY_PREVIEW_SUFFIX in named_png_paths:
+            info(
+                f"Would copy legacy preview to named view: "
+                f"{legacy_png} -> {named_png_paths[LEGACY_PREVIEW_SUFFIX]}"
+            )
         return 0
 
     openscad_exe = resolve_openscad_exe(args.openscad_path)
     stl_cmd[0] = openscad_exe
-    png_cmd[0] = openscad_exe
     info(f"OpenSCAD: {openscad_exe}")
 
     info(f"Exporting STL -> {out_stl}")
     subprocess.run(stl_cmd, check=True)
 
-    info(f"Rendering PNG -> {out_png}")
-    subprocess.run(png_cmd, check=True)
+    for suffix, out_png, cmd in png_jobs:
+        cmd[0] = openscad_exe
+        info(f"Rendering PNG [{suffix}] -> {out_png}")
+        subprocess.run(cmd, check=True)
+
+    if LEGACY_PREVIEW_SUFFIX in named_png_paths:
+        src = legacy_png
+        dst = named_png_paths[LEGACY_PREVIEW_SUFFIX]
+        shutil.copyfile(src, dst)
+        info(f"Copied legacy preview -> named view: {dst}")
+
+    missing_pngs = [path for path in required_png_paths if not path.exists()]
+    if missing_pngs:
+        fail(
+            "Missing expected PNG outputs:\n  "
+            + "\n  ".join(str(path) for path in missing_pngs)
+        )
 
     info("Done.")
     return 0

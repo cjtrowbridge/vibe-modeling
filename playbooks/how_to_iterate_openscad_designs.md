@@ -4,7 +4,7 @@
 
 ## Objective
 
-Provide a repeatable local workflow to iterate OpenSCAD prototypes, generate preview images and STL exports, and snapshot numbered design revisions with parameter sets.
+Provide a repeatable local workflow to iterate OpenSCAD prototypes, generate multi-view preview images (including below-angle isometric presets) and STL exports, and snapshot numbered design revisions with parameter sets.
 
 ## Prerequisites
 
@@ -25,7 +25,7 @@ Provide a repeatable local workflow to iterate OpenSCAD prototypes, generate pre
      - `revisions/example_box/rev_0002/`
      - `revisions/example_box/rev_0002/params.json`
      - `designs/example_box/configs/rev_0002.json`
-     - (if OpenSCAD is available) STL + PNG artifacts in the revision folder
+     - (if OpenSCAD is available) STL + multi-view PNG artifacts in the revision folder
 
 2. **Implement the requested design changes**
    - Edit `.scad` files under `designs/<design>/src/` and/or the selected config JSON.
@@ -47,10 +47,11 @@ Provide a repeatable local workflow to iterate OpenSCAD prototypes, generate pre
 - Scratch outputs go in `output/<design>/` (ignored by git).
 - Revision outputs go in `revisions/<design>/rev_000N/` (ignored by git).
 - Only commit source (`.scad`) and config (`configs/*.json`) unless explicitly keeping generated examples.
+- `scad_build.py` always renders the full PNG preset set (all named isometric + orthographic views, including below/inspection views) and fails the run if any expected PNG is missing.
 
 ## Verification
 
-- Run a scratch build (or `--dry-run`) and confirm the script resolves paths and prints both OpenSCAD commands.
+- Run a scratch build (or `--dry-run`) and confirm the script resolves paths and prints STL + multi-view PNG OpenSCAD commands.
 - Create a revision snapshot and confirm the next numbered config + revision folder are created.
 
 ## Lifecycle Compliance

@@ -39,7 +39,7 @@ Add a new OpenSCAD design under `designs/<design>/` with its own source tree and
 5. **Verify**
    - Dry-run build:
      - `python scripts/scad_build.py --design <design> --config designs/<design>/configs/rev_0001.json --dry-run`
-   - Confirm `main.scad` resolves and both command lines are printed.
+   - Confirm `main.scad` resolves and STL + multi-view PNG commands are printed.
 
 6. **Finalize**
    - Follow `playbooks/how_to_commit_and_push_changes.md`
