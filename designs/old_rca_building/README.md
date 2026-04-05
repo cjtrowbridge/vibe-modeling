@@ -304,7 +304,7 @@ Implemented in `rev_0002` `part_id = 0`:
 - tower air-chamber roof now uses a full-depth `45 degree` inverse bevel from the phone-void opening out to the inner tower walls (no flat internal ceiling), implemented with `tower_inner_roof_bevel = 0.0` auto mode,
 - bump-out air-chamber roof now uses a circular barrel-vault underside (cathedral/pipe-like) to support the roof without blocking the fan intake path, implemented with `wing_vault_radius` and default auto-mode (`0`) using half of the wing inner opening width (about `20.25 mm` radius / `40.5 mm` diameter in `rev_0002`),
 - tower-to-wing plenum link now stops at the vault springline so the half-pipe reaches the inner wall without leaving a flat unsupported ledge at that transition,
-- temporary debug mode `debug_open_bottom = 1` opens the tower/wing cavities from below (bottom surfaces removed for inspection),
+- optional debug mode `debug_open_bottom = 1` opens the tower/wing cavities from below for inspection; production/slicing config keeps `debug_open_bottom = 0`,
 - rails in `rev_0002` include front/back pairs plus two wide-side rails, with bottoms flush to the void floor,
 - `rev_0002` enforces a minimum `2.0 mm` clearance from phones to rails on both width and thickness axes,
 - `rev_0002` adds a single bump-out-side `45 degree` catch-platform buttress under the phone support ring, extending inward as far as feasible from the bump-side inner wall while clamping its lower edge to the wall-end height (it does not span the entire platform),

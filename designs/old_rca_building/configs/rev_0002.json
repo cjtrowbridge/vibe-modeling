@@ -3,7 +3,7 @@
   "part_id": 0,
   "wall": 2.0,
   "floor": 2.0,
-  "debug_open_bottom": 1,
+  "debug_open_bottom": 0,
   "phone_h_max": 163.6,
   "phone_w_max": 78.1,
   "phone_t_max": 8.9,
