@@ -37,7 +37,7 @@ Create a stylized tower that functions as a top-loading phone bay:
 - A center opening under the phone lets the charging cable bend and route out.
 - Rear stub volume is a hollow plenum with an open-back 40 mm fan mount.
 - Below fan mount, a small cable opening routes USB out of the model and can be sealed with hot glue to reduce air leakage.
-- Overall model height is capped for printer fit (`<= 220 mm` build area with ~`5 mm` margin), so phones are expected to protrude above the top opening.
+- Split-print workflow caps each printed piece for printer fit (`<= 220 mm` build area with ~`5 mm` margin), while allowing the assembled tower to fully enclose the tallest target phone.
 
 ## Initial Target Devices
 
@@ -143,7 +143,7 @@ Draft internal sizing targets for revision `rev_0002` implementation:
 
 - Void inner thickness axis (`void_x`): `18.0 mm`
 - Void inner width axis (`void_y`): `88.0 mm`
-- Tower top lip thickness (`tower_top_lip_h`): `2.0 mm` (non-zero top thickness)
+- Tower phone-void top behavior: full-height through-cut (no partial lip overhang)
 - Top insertion aperture is sized by rail clearances:
   - `top_open_x = void_x - 2*rail_side_protrusion_x = 14.0 mm`
   - `top_open_y = void_y - 2*rail_protrusion_y = 84.0 mm`
@@ -261,6 +261,9 @@ Created in this revision:
 - `src/parts/old_rca_building.scad`
 - `configs/rev_0001.json`
 - `configs/rev_0002.json`
+- `configs/rev_0002_split_lower.json`
+- `configs/rev_0002_split_upper.json`
+- `configs/rev_0002_wing_roof_insert.json`
 
 `part_id` map:
 
@@ -268,6 +271,9 @@ Created in this revision:
 - `1`: outer architectural mass only
 - `2`: negative cutters (debug)
 - `3`: internal supports only (rails + cage)
+- `4`: lower split section (below `split_z`)
+- `5`: upper split section (at/above `split_z`)
+- `6`: removable wing-roof insert (print separately)
 
 Implemented in `rev_0001` `part_id = 0`:
 
@@ -287,8 +293,9 @@ Implemented in `rev_0002` `part_id = 0`:
 - `rev_0002` targets a 2:1 tower-long-side to exposed bump-out-length ratio,
 - `wing_attach_side` parameter controls which Y side gets the bump-out (`+1` or `-1`),
 - `rev_0002` uses `2.0 mm` walls/floor and a configurable `bump_margin` (currently `2.0 mm`),
-- `rev_0002` enforces a printer-fit overall height cap of `215.0 mm` (for a `220 mm` Z build area with ~`5 mm` margin),
-- `rev_0002` intentionally allows partial phone protrusion above the tower top; full phone-height enclosure is no longer required,
+- `rev_0002` enforces a split-piece height cap of `215.0 mm` (for a `220 mm` Z build area with ~`5 mm` margin),
+- with split printing, `rev_0002` tower height is increased to fully enclose the tallest target phone inside the void,
+- `rev_0002` void enclosed height is `tower_z - support_z = 242.0 - 70.0 = 172.0 mm`, which fits `phone_h_max = 163.6 mm` with `8.0 mm` top clearance,
 - `rev_0002` side facade now uses four tiers per side on wide faces with one shared `7.0 mm` protrusion value applied equally to every tier,
 - left/right side tier geometry is mirrored, with matching Z breakpoints on both wide faces,
 - `rev_0002` now also includes a front-face 4-tier set (same tier heights), with cumulative protrusions of `3/6/9/12 mm` from the front wall,
@@ -297,19 +304,26 @@ Implemented in `rev_0002` `part_id = 0`:
 - `rev_0002` tier depth progression is back-to-front by center-relative reach: top=`0%`, tier2=`25%`, tier3=`50%`, tier4=`75%` of center-to-front span,
 - all `rev_0002` side tiers now start at floor level (`z=0`) so tier bottoms are grounded to the base,
 - bump-out X/Z envelope is compacted so there is no extra space above the fan, below the USB slot, or beside the fan beyond `bump_margin`,
-- bump-out keeps a `2.0 mm` top wall (not open-top), while the fan face and USB slot remain the intended openings,
-- fan-end mounting plate now uses a central circular intake (`fan_intake_d = 32.0 mm`) so the four `32 mm`-spacing mounting holes, including the bottom pair from the fan reference pattern, remain fully material-backed,
+- bump-out wing cavity is now open at the top in the main body (roof moved to separate insert part),
+- fan-end mounting plate now uses a central circular intake (`fan_intake_d = 38.0 mm`) on the same center point so the four `32 mm`-spacing mounting holes remain aligned to the fan pattern,
 - USB cable slot at fan face is `12.0 mm` wide by `7.0 mm` tall in `rev_0002`,
-- tower top now has non-zero thickness via `tower_top_lip_h = 2.0 mm` with a centered insertion aperture,
+- tower phone void now extends vertically through the tower top (no partial top lip), eliminating the prior support-requiring overhang at that boundary,
 - tower air-chamber roof now uses a full-depth `45 degree` inverse bevel from the phone-void opening out to the inner tower walls (no flat internal ceiling), implemented with `tower_inner_roof_bevel = 0.0` auto mode,
-- bump-out air-chamber roof now uses a circular barrel-vault underside (cathedral/pipe-like) to support the roof without blocking the fan intake path, implemented with `wing_vault_radius` and default auto-mode (`0`) using half of the wing inner opening width (about `20.25 mm` radius / `40.5 mm` diameter in `rev_0002`),
-- tower-to-wing plenum link now stops at the vault springline so the half-pipe reaches the inner wall without leaving a flat unsupported ledge at that transition,
+- bump-out roof no longer uses an integrated half-pipe vault; the separate insert provides a flat roof panel when installed,
+- tower-to-wing plenum link now matches the full open-top wing cavity height,
+- removable wing-roof insert (`part_id = 6`) adds a separate roof panel with three press-fit lips (both X edges + tower-side Y edge), leaving the fan-side edge lip-free so it does not interfere with fan mounting hardware,
+- insert lips are inset from the panel perimeter (`roof_insert_lip_inset`) so the tabs can enter the opening cleanly,
+- wing-roof insert is exported in print orientation with panel face down and lips up; flip for installation into the open wing cavity,
 - optional debug mode `debug_open_bottom = 1` opens the tower/wing cavities from below for inspection; production/slicing config keeps `debug_open_bottom = 0`,
+- horizontal split export is supported via `split_z` (default `support_z - cage_bar_h`) so the upper section starts with the phone-holder base floor,
+- split exports apply a tiny internal epsilon on both sides of the split with strict Z ownership (no overlap: `lower < split_z`, `upper > split_z`) to avoid coplanar/phantom sliver artifacts,
+- dedicated split configs are provided: `rev_0002_split_lower.json` (`part_id = 4`) and `rev_0002_split_upper.json` (`part_id = 5`),
 - rails in `rev_0002` include front/back pairs plus two wide-side rails, with bottoms flush to the void floor,
 - `rev_0002` enforces a minimum `2.0 mm` clearance from phones to rails on both width and thickness axes,
-- `rev_0002` adds a single bump-out-side `45 degree` catch-platform buttress under the phone support ring, extending inward as far as feasible from the bump-side inner wall while clamping its lower edge to the wall-end height (it does not span the entire platform),
-- the phone-base cable window in `rev_0002` is asymmetric on the bump-out side: its bump-side end is extended to the 45 degree buttress top endpoint so there is no intermediate ledge between the opening edge and bevel start,
-- the remaining unsupported underside of the phone catch platform in `rev_0002` is now extended down to the floor (excluding the bump-side strip, which remains on the dedicated 45 degree buttress),
+- `rev_0002` no longer includes the previous bump-out-side 45 degree wedge/buttress under the phone support ring,
+- upper split part now includes phone-base end ties to the front/back inner tower walls so both platform ends are mechanically connected without changing lower split geometry,
+- the phone-base cable window in `rev_0002` is nominally centered; the bump-side strip is kept open to preserve a more direct intake path near the fan feed,
+- the remaining unsupported underside of the phone catch platform in `rev_0002` is extended down to the floor, while the bump-side strip is intentionally left open as a direct airflow path from the fan plenum,
 - open base interior/plenum path from end-face fan intake to tower void region,
 - top-open exhaust through the tower.
 
@@ -332,6 +346,19 @@ For the simplified L-shape draft:
 ```bash
 python scripts/scad_build.py --design old_rca_building --config designs/old_rca_building/configs/rev_0002.json --dry-run
 python scripts/scad_build.py --design old_rca_building --config designs/old_rca_building/configs/rev_0002.json
+```
+
+For horizontal split exports:
+
+```bash
+python scripts/scad_build.py --design old_rca_building --config designs/old_rca_building/configs/rev_0002_split_lower.json
+python scripts/scad_build.py --design old_rca_building --config designs/old_rca_building/configs/rev_0002_split_upper.json
+```
+
+For the removable wing-roof insert:
+
+```bash
+python scripts/scad_build.py --design old_rca_building --config designs/old_rca_building/configs/rev_0002_wing_roof_insert.json
 ```
 
 Additional below-view outputs from the build pipeline:

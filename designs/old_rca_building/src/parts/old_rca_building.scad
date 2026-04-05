@@ -48,28 +48,20 @@ function _roof_run_y_back() = _tower_inner_iy1() - _void_y1();
 function _roof_full_drop() = max(max(_roof_run_x_left(), _roof_run_x_right()),
   max(_roof_run_y_front(), _roof_run_y_back()));
 function _roof_bevel_drop() = tower_inner_roof_bevel > 0 ? tower_inner_roof_bevel : _roof_full_drop();
-function _cage_bump_bevel_top_z() = support_z - cage_bar_h;
-function _cage_bump_bevel_inner_y() = void_center_y + wing_attach_side * cable_window_y / 2;
-function _cage_bump_bevel_outer_y() = wing_attach_side > 0 ? _tower_inner_iy1() : _tower_inner_iy0();
-function _cage_bump_bevel_span_y() = abs(_cage_bump_bevel_outer_y() - _cage_bump_bevel_inner_y());
-function _cage_bump_bevel_wall_end_z() = _wing_plenum_top_z() - wall + 0.01;
-function _cage_bump_bevel_max_run() = max(0, _cage_bump_bevel_top_z() - _cage_bump_bevel_wall_end_z());
-function _cage_bump_bevel_reach_y() = min(_cage_bump_bevel_span_y(), _cage_bump_bevel_max_run());
-function _cage_bump_bevel_top_inner_reached_y() =
-  _cage_bump_bevel_outer_y() - wing_attach_side * _cage_bump_bevel_reach_y();
-function _cage_bump_bevel_bottom_z() = _cage_bump_bevel_top_z() - _cage_bump_bevel_reach_y();
 function _cage_window_nominal_y0() = void_center_y - cable_window_y / 2;
 function _cage_window_nominal_y1() = void_center_y + cable_window_y / 2;
-function _cage_window_y0() = wing_attach_side > 0
-  ? _cage_window_nominal_y0()
-  : _cage_bump_bevel_top_inner_reached_y();
-function _cage_window_y1() = wing_attach_side > 0
-  ? _cage_bump_bevel_top_inner_reached_y()
-  : _cage_window_nominal_y1();
+function _cage_window_y0() = _cage_window_nominal_y0();
+function _cage_window_y1() = _cage_window_nominal_y1();
 function _cage_window_span_y() = _cage_window_y1() - _cage_window_y0();
-function _cage_bump_strip_y0() = wing_attach_side > 0 ? _cage_window_y1() : _void_y0();
-function _cage_bump_strip_y1() = wing_attach_side > 0 ? _void_y1() : _cage_window_y0();
+function _cage_bump_strip_y0() = wing_attach_side > 0 ? _cage_window_nominal_y1() : _void_y0();
+function _cage_bump_strip_y1() = wing_attach_side > 0 ? _void_y1() : _cage_window_nominal_y0();
 function _cage_bump_strip_span_y() = _cage_bump_strip_y1() - _cage_bump_strip_y0();
+function _wing_insert_panel_x() = _wing_inner_x() - 2 * roof_insert_clearance;
+function _wing_insert_panel_y() = _wing_inner_y() - 2 * roof_insert_clearance;
+function _wing_insert_lip_span_x() = _wing_insert_panel_x() - 2 * roof_insert_lip_inset;
+function _wing_insert_lip_span_y() = _wing_insert_panel_y() - 2 * roof_insert_lip_inset;
+function _split_lower_piece_h() = split_z;
+function _split_upper_piece_h() = _overall_height() - split_z;
 function _overall_height() = max(tower_z, wing_z);
 function _void_enclosed_height() = tower_z - support_z;
 function _tower_x1() = -_tower_x0();
@@ -83,6 +75,23 @@ function _top_tier_z_top() = tower_z - side_top_tier_top_gap;
 function _front_setback_y0(ext) = wing_attach_side > 0 ? (_tower_front_y() - ext) : _tower_front_y();
 function _front_center_x0() = _tower_x0() + tower_x * front_center_x_start_frac;
 function _front_center_span_x() = tower_x * (front_center_x_end_frac - front_center_x_start_frac);
+function _side_ext_max() = side_setback_enable == 1 ? side_setback_step : 0;
+function _front_primary_ext_max() = front_setback_enable == 1 ? 4 * front_setback_step : 0;
+function _front_center_ext_max() = front_center_setback_enable == 1
+  ? (4 * front_center_setback_step + front_center_extra_protrusion)
+  : 0;
+function _front_ext_max() = max(_front_primary_ext_max(), _front_center_ext_max());
+function _front_extreme_y() = _tower_front_y() + (wing_attach_side > 0 ? -_front_ext_max() : _front_ext_max());
+function _model_min_x() = min(_wing_x0(), _tower_x0() - _side_ext_max());
+function _model_max_x() = max(_wing_x1(), _tower_x1() + _side_ext_max());
+function _model_min_y() = min(min(_tower_y0(), _wing_y0()), min(_wing_y1(), _front_extreme_y()));
+function _model_max_y() = max(max(_tower_y1(), _wing_y0()), max(_wing_y1(), _front_extreme_y()));
+function _split_clip_margin() = 2.0;
+function _split_clip_x0() = _model_min_x() - _split_clip_margin();
+function _split_clip_y0() = _model_min_y() - _split_clip_margin();
+function _split_clip_x_span() = (_model_max_x() - _model_min_x()) + 2 * _split_clip_margin();
+function _split_clip_y_span() = (_model_max_y() - _model_min_y()) + 2 * _split_clip_margin();
+function _split_eps() = 0.02;
 
 module _side_setback_segment(side, z0, z1, ext, y0 = _tower_y0(), y_span = tower_y) {
   if (z1 > z0 && ext > 0 && y_span > 0) {
@@ -107,8 +116,8 @@ module _assert_dims() {
   assert(tower_x > 0 && tower_y > 0 && tower_z > 0, "tower dims must be > 0");
   assert(base_z > 0 && base_z < tower_z, "base_z must be > 0 and < tower_z");
   assert(overall_height_max > 0, "overall_height_max must be > 0");
-  assert(_overall_height() <= overall_height_max,
-    "overall model height exceeds overall_height_max");
+  assert(max(_split_lower_piece_h(), _split_upper_piece_h()) <= overall_height_max,
+    "split-piece height exceeds overall_height_max");
   assert(tower_inner_roof_bevel >= 0, "tower_inner_roof_bevel must be >= 0");
   assert(wing_vault_radius >= 0, "wing_vault_radius must be >= 0");
   assert(_roof_run_x_left() > 0 && _roof_run_x_right() > 0 &&
@@ -126,6 +135,24 @@ module _assert_dims() {
     "wing vault rise must be positive");
   assert(_wing_vault_spring_z() > floor,
     "wing vault springline reaches below floor; reduce radius or raise wing_z");
+  assert(roof_insert_clearance >= 0,
+    "roof_insert_clearance must be >= 0");
+  assert(_wing_insert_panel_x() > 2 * roof_insert_lip_t,
+    "roof insert panel X span too small for lip thickness/clearance");
+  assert(_wing_insert_panel_y() > 2 * roof_insert_lip_t,
+    "roof insert panel Y span too small for lip thickness/clearance");
+  assert(roof_insert_plate_h > 0,
+    "roof_insert_plate_h must be > 0");
+  assert(roof_insert_lip_t > 0,
+    "roof_insert_lip_t must be > 0");
+  assert(roof_insert_lip_h > 0,
+    "roof_insert_lip_h must be > 0");
+  assert(roof_insert_lip_inset >= 0,
+    "roof_insert_lip_inset must be >= 0");
+  assert(_wing_insert_lip_span_x() > 2 * roof_insert_lip_t,
+    "roof insert lip inset too large for X span");
+  assert(_wing_insert_lip_span_y() > 2 * roof_insert_lip_t,
+    "roof insert lip inset too large for Y span");
   assert(wing_x > 0 && wing_y > 0 && wing_z > 0, "wing dims must be > 0");
   assert(bump_margin >= 0, "bump_margin must be >= 0");
   assert(wing_overlap_y >= 0 && wing_overlap_y < tower_y, "wing_overlap_y out of range");
@@ -181,10 +208,18 @@ module _assert_dims() {
     "wing plenum too short to keep a top wall");
   assert(support_z >= 70, "support_z must be >= 70");
   assert(support_z < tower_z, "support_z must be < tower_z");
-  assert(tower_top_lip_h > 0 && tower_top_lip_h < tower_z - support_z,
-    "tower_top_lip_h must be > 0 and less than void height");
+  assert(split_z > 0 && split_z < _overall_height(),
+    "split_z must be > 0 and within model height");
+  assert(_split_eps() >= 0 && split_z - _split_eps() > 0,
+    "split epsilon must keep lower split plane above z=0");
+  assert(split_z + _split_eps() < _overall_height(),
+    "split epsilon must keep upper split plane below overall height");
+  assert(tower_top_lip_h >= 0 && tower_top_lip_h < tower_z - support_z,
+    "tower_top_lip_h must be >= 0 and less than void height");
   assert(_void_enclosed_height() > 0,
     "void enclosed height above support must be > 0");
+  assert(_void_enclosed_height() >= phone_h_max + top_clearance_min,
+    "void enclosed height must fit tallest phone + top_clearance_min");
 
   // Requested floorplan constraint: minimum width should not drop below fan width.
   assert(tower_x >= fan_frame, "tower_x must be >= fan_frame");
@@ -235,11 +270,6 @@ module _assert_dims() {
     "effective cage cable-window Y extents must stay within void bounds");
   assert(_cage_bump_strip_span_y() > 0,
     "effective bump-side strip Y span must be > 0");
-  assert(_cage_bump_bevel_wall_end_z() < _cage_bump_bevel_top_z(),
-    "bump-side wall end must be below platform underside for 45 deg buttress");
-  assert(_cage_bump_bevel_bottom_z() > floor,
-    "bump-side 45 deg cage bevel reaches below floor; reduce span or raise support_z");
-
   assert(fan_hole_spacing > 0 && fan_hole_d > 0, "fan hole values must be > 0");
   assert(fan_square_opening > 0 && fan_square_opening <= fan_frame + 2,
     "fan_square_opening must be positive and near fan frame size");
@@ -341,15 +371,10 @@ module old_rca_building_outer_mass() {
 }
 
 module _phone_void_cut() {
-  lower_void_h = tower_z - support_z - tower_top_lip_h + 0.01;
-
-  // Main internal void up to underside of tower top lip.
+  // Full-height phone void through-cut to eliminate partial top-lip overhang.
+  through_void_h = tower_z - support_z + 0.52;
   translate([_void_x0(), _void_y0(), support_z])
-    cube([void_x, void_y, lower_void_h], center = false);
-
-  // Top insertion opening through the lip; sized to preserve phone + margin.
-  translate([_top_open_x0(), _top_open_y0(), tower_z - tower_top_lip_h - 0.01])
-    cube([_top_open_x(), _top_open_y(), tower_top_lip_h + 0.52], center = false);
+    cube([void_x, void_y, through_void_h], center = false);
 }
 
 module _tower_base_cavity_cut() {
@@ -382,37 +407,17 @@ module _tower_inner_roof_bevel_cuts() {
 module _wing_cavity_cut() {
   // Open interior of the L-base wing (fan plenum).
   cavity_z0 = debug_open_bottom ? -0.01 : floor;
-  cavity_h = _wing_vault_spring_z() - cavity_z0 + 0.01;
+  // Through-cut to top: roof is provided by separate insert piece.
+  cavity_h = wing_z - cavity_z0 + 0.02;
   translate([_wing_x0() + wall, _wing_y0() + wall, cavity_z0])
     cube([wing_x - 2 * wall, wing_y - 2 * wall, cavity_h], center = false);
 }
 
-module _wing_inner_roof_vault_cut() {
-  // Circular barrel-vault underside for bump-out roof.
-  // This supports the roof without blocking the fan airflow path.
-  r = _wing_vault_radius();
-  zc = _wing_vault_center_z();
-  y0 = _wing_inner_iy0() - 0.01;
-  h = _wing_inner_y() + 0.02;
-  z0 = _wing_vault_spring_z();
-  z_h = _wing_vault_rise() + 0.03;
-
-  intersection() {
-    translate([_wing_inner_center_x(), y0, zc])
-      rotate([-90, 0, 0])
-        cylinder(r = r, h = h, center = false, $fn = 96);
-
-    translate([_wing_inner_ix0(), y0, z0])
-      cube([_wing_inner_x(), h, z_h], center = false);
-  }
-}
-
 module _wing_to_tower_plenum_link_cut() {
   // Ensure base wing cavity is explicitly connected to tower lower cavity.
-  // Keep the rectangular link only up to the vault springline so the
-  // half-pipe profile reaches the inner wall without a flat unsupported ledge.
+  // Match the open-top wing cavity height.
   link_z0 = debug_open_bottom ? -0.01 : floor;
-  link_h = _wing_vault_spring_z() - link_z0 + 0.01;
+  link_h = wing_z - link_z0 + 0.02;
   link_y0 = wing_attach_side > 0
     ? (tower_y / 2 - wall - 0.01)
     : (-tower_y / 2 - 0.01);
@@ -460,7 +465,6 @@ module old_rca_building_negative_cuts() {
   _tower_base_cavity_cut();
   _tower_inner_roof_bevel_cuts();
   _wing_cavity_cut();
-  _wing_inner_roof_vault_cut();
   _wing_to_tower_plenum_link_cut();
   _fan_interface_cuts();
 }
@@ -498,7 +502,7 @@ module _rails() {
 
 module _bottom_cage() {
   // Perimeter support ring with center opening for cable bend.
-  // The bump-side end of the opening is extended to the bevel top endpoint.
+  // Uses a nominal centered cable window; no wedge-derived endpoint geometry.
   support_z0 = support_z - cage_bar_h;
   difference() {
     translate([_void_x0(), _void_y0(), support_z0])
@@ -515,7 +519,7 @@ module _bottom_cage() {
 
 module _bottom_cage_floor_extensions() {
   // Extend the remaining unsupported catch-platform underside down to the floor.
-  // The bump-side strip is excluded because it is already handled by the 45 deg buttress.
+  // Keep the bump-side strip open for intake airflow from the fan plenum.
   support_z0 = support_z - cage_bar_h;
   z0 = floor;
   h = support_z0 - z0 + 0.01;
@@ -533,37 +537,9 @@ module _bottom_cage_floor_extensions() {
     ])
       cube([cable_window_x, _cage_window_span_y(), h + 0.02], center = false);
 
-    // Remove bump-side strip volume; this side is supported by the dedicated 45 deg buttress.
+    // Remove bump-side strip volume to preserve a more direct airflow path.
     translate([_void_x0(), _cage_bump_strip_y0(), z0 - 0.01])
       cube([void_x, _cage_bump_strip_span_y(), h + 0.02], center = false);
-  }
-}
-
-module _bottom_cage_bump_side_bevel() {
-  // Add a single 45 deg buttress under the catch platform on the bump-out side.
-  // This reaches inward as far as possible from the bump-side tower inner wall
-  // without extending below the lower end of that wall.
-  eps = 0.02;
-  x0 = _void_x0();
-  x_span = void_x;
-  z_top = _cage_bump_bevel_top_z();
-  y_outer = _cage_bump_bevel_outer_y();
-  y_inner = _cage_bump_bevel_top_inner_reached_y();
-  y_span = _cage_bump_bevel_reach_y();
-  y_min = min(y_inner, y_outer);
-  y_line = wing_attach_side > 0 ? (y_outer - eps) : y_outer;
-  z_bot = _cage_bump_bevel_bottom_z();
-
-  if (y_span > eps) {
-    hull() {
-      // Contact face under the bump-side platform strip.
-      translate([x0, y_min, z_top - eps])
-        cube([x_span, y_span, eps], center = false);
-
-      // Lower outer edge at 45 deg relative to the top strip.
-      translate([x0, y_line, z_bot - eps])
-        cube([x_span, eps, eps], center = false);
-    }
   }
 }
 
@@ -571,7 +547,6 @@ module old_rca_building_internal_supports() {
   _rails();
   _bottom_cage();
   _bottom_cage_floor_extensions();
-  _bottom_cage_bump_side_bevel();
 }
 
 module old_rca_building_model() {
@@ -583,4 +558,94 @@ module old_rca_building_model() {
     }
     old_rca_building_internal_supports();
   }
+}
+
+module old_rca_building_split_lower() {
+  _assert_dims();
+  intersection() {
+    old_rca_building_model();
+    // Keep geometry below the split plane with a tight XY clip box
+    // so OpenSCAD view framing remains usable.
+    // Keep the lower export strictly below split_z to avoid coplanar artifacts.
+    // Use XY margin only; do not add positive Z overlap across the split.
+    translate([_split_clip_x0(), _split_clip_y0(), -_split_clip_margin()])
+      cube([
+        _split_clip_x_span(),
+        _split_clip_y_span(),
+        (split_z - _split_eps()) + _split_clip_margin()
+      ], center = false);
+  }
+}
+
+module old_rca_building_split_upper() {
+  _assert_dims();
+  union() {
+    intersection() {
+      old_rca_building_model();
+      // Keep geometry at and above the split plane with a tight XY clip box
+      // so OpenSCAD view framing remains usable.
+      // Keep the upper export strictly above split_z to avoid coplanar artifacts
+      // and thin residual slivers at the phone-floor split.
+      // Use XY margin only; do not pull the clip below split_z.
+      translate([_split_clip_x0(), _split_clip_y0(), split_z + _split_eps()])
+        cube([
+          _split_clip_x_span(),
+          _split_clip_y_span(),
+          _overall_height() - (split_z + _split_eps()) + _split_clip_margin()
+        ], center = false);
+    }
+
+    // Upper-part-only ties: connect the phone-base ring ends to front/back
+    // inner tower walls without changing the lower split artifact.
+    tie_z0 = max(support_z - cage_bar_h, split_z + _split_eps());
+    tie_h = support_z - tie_z0;
+    if (tie_h > 0) {
+      front_tie_y = _void_y0() - _tower_inner_iy0();
+      back_tie_y = _tower_inner_iy1() - _void_y1();
+
+      if (front_tie_y > 0) {
+        translate([_void_x0(), _tower_inner_iy0(), tie_z0])
+          cube([void_x, front_tie_y, tie_h], center = false);
+      }
+      if (back_tie_y > 0) {
+        translate([_void_x0(), _void_y1(), tie_z0])
+          cube([void_x, back_tie_y, tie_h], center = false);
+      }
+    }
+  }
+}
+
+module old_rca_building_wing_roof_insert() {
+  _assert_dims();
+
+  px = _wing_insert_panel_x();
+  py = _wing_insert_panel_y();
+  ph = roof_insert_plate_h;
+  lt = roof_insert_lip_t;
+  lh = roof_insert_lip_h;
+  li = roof_insert_lip_inset;
+  lip_x_span = px - 2 * li;
+  lip_y_span = py - 2 * li;
+
+  // Print orientation: flat panel on bed, lips upward.
+  // In assembly, flip and press-fit into the wing opening.
+  translate([-px / 2, -py / 2, 0])
+    union() {
+      cube([px, py, ph], center = false);
+
+      // X-side lips.
+      translate([li, li, ph])
+        cube([lt, lip_y_span, lh], center = false);
+      translate([px - li - lt, li, ph])
+        cube([lt, lip_y_span, lh], center = false);
+
+      // One non-fan-edge lip only, so fan hardware side stays clear.
+      if (wing_attach_side > 0) {
+        translate([li, li, ph])
+          cube([lip_x_span, lt, lh], center = false);
+      } else {
+        translate([li, py - li - lt, ph])
+          cube([lip_x_span, lt, lh], center = false);
+      }
+    }
 }

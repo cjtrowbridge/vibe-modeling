@@ -15,6 +15,12 @@ if (_part_id == 0) {
   old_rca_building_negative_cuts();
 } else if (_part_id == 3) {
   old_rca_building_internal_supports();
+} else if (_part_id == 4) {
+  old_rca_building_split_lower();
+} else if (_part_id == 5) {
+  old_rca_building_split_upper();
+} else if (_part_id == 6) {
+  old_rca_building_wing_roof_insert();
 } else {
   assert(false, str("Unknown part_id: ", _part_id));
 }
