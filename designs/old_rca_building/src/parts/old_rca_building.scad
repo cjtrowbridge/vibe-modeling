@@ -120,6 +120,39 @@ function _split_clip_y0() = _model_min_y() - _split_clip_margin();
 function _split_clip_x_span() = (_model_max_x() - _model_min_x()) + 2 * _split_clip_margin();
 function _split_clip_y_span() = (_model_max_y() - _model_min_y()) + 2 * _split_clip_margin();
 function _split_eps() = 0.02;
+function _harness_core_z0() = split_z + _split_eps();
+function _harness_core_z1() = _harness_core_z0() + harness_core_h;
+function _harness_profile_z() = _harness_core_z0() + harness_core_h / 2;
+function _harness_lip_reach() = harness_lip_grip_h + harness_lip_margin_z;
+function _harness_lip_z0() = _harness_core_z0() - _harness_lip_reach();
+function _harness_lip_h() = harness_core_h + 2 * _harness_lip_reach();
+function _harness_clip_pad() = harness_lip_clearance + harness_lip_wall + 2.0;
+function _harness_front_side_x0() = _model_min_x() - _harness_clip_pad();
+function _harness_front_side_x_span() = (_model_max_x() - _model_min_x()) + 2 * _harness_clip_pad();
+function _harness_front_side_y0() = wing_attach_side > 0
+  ? (_model_min_y() - _harness_clip_pad())
+  : (_tower_back_y() + harness_backoff_y);
+function _harness_front_side_y1() = wing_attach_side > 0
+  ? (_tower_back_y() - harness_backoff_y)
+  : (_model_max_y() + _harness_clip_pad());
+function _harness_front_side_y_span() = _harness_front_side_y1() - _harness_front_side_y0();
+function _harness_front_inner_lip_left_x0() = _tower_inner_ix0() + harness_inner_front_lip_inset_x;
+function _harness_front_inner_lip_left_x1() = _void_x0() - harness_inner_front_lip_inset_x;
+function _harness_front_inner_lip_right_x0() = _void_x1() + harness_inner_front_lip_inset_x;
+function _harness_front_inner_lip_right_x1() = _tower_inner_ix1() - harness_inner_front_lip_inset_x;
+function _harness_front_inner_lip_left_x_span() =
+  _harness_front_inner_lip_left_x1() - _harness_front_inner_lip_left_x0();
+function _harness_front_inner_lip_right_x_span() =
+  _harness_front_inner_lip_right_x1() - _harness_front_inner_lip_right_x0();
+function _harness_front_inner_lip_depth_y() = harness_inner_front_lip_clearance + harness_inner_front_lip_t;
+function _harness_front_inner_lip_y0() = wing_attach_side > 0
+  ? (_tower_inner_iy0() - _split_eps())
+  : (_tower_inner_iy1() - _harness_front_inner_lip_depth_y());
+function _harness_front_inner_lip_y1() = wing_attach_side > 0
+  ? (_tower_inner_iy0() + _harness_front_inner_lip_depth_y())
+  : (_tower_inner_iy1() + _split_eps());
+function _harness_front_inner_lip_y_span() = _harness_front_inner_lip_y1() - _harness_front_inner_lip_y0();
+function _harness_front_lip_opposed_margin() = wall + harness_lip_clearance;
 
 module _side_setback_segment(side, z0, z1, ext, y0 = _tower_y0(), y_span = tower_y) {
   if (z1 > z0 && ext > 0 && y_span > 0) {
@@ -257,6 +290,36 @@ module _assert_dims() {
     "split epsilon must keep lower split plane above z=0");
   assert(split_z + _split_eps() < _overall_height(),
     "split epsilon must keep upper split plane below overall height");
+  assert(harness_core_h > 0,
+    "harness_core_h must be > 0");
+  assert(_harness_core_z1() < _overall_height(),
+    "harness core slice exceeds upper-piece height");
+  assert(harness_lip_grip_h > 0,
+    "harness_lip_grip_h must be > 0");
+  assert(harness_lip_margin_z >= 0,
+    "harness_lip_margin_z must be >= 0");
+  assert(harness_lip_clearance >= 0,
+    "harness_lip_clearance must be >= 0");
+  assert(harness_lip_wall > 0,
+    "harness_lip_wall must be > 0");
+  assert(harness_backoff_y >= 0,
+    "harness_backoff_y must be >= 0");
+  assert(harness_inner_front_lip_clearance >= 0,
+    "harness_inner_front_lip_clearance must be >= 0");
+  assert(harness_inner_front_lip_t > 0,
+    "harness_inner_front_lip_t must be > 0");
+  assert(harness_inner_front_lip_inset_x >= 0,
+    "harness_inner_front_lip_inset_x must be >= 0");
+  assert(harness_front_lip_opposed_margin_min >= 0,
+    "harness_front_lip_opposed_margin_min must be >= 0");
+  assert(_harness_lip_reach() > 0 && _harness_lip_h() > harness_core_h,
+    "harness lip reach must produce positive up/down retention");
+  assert(_harness_front_side_y_span() > 0,
+    "harness front/side lip mask must have positive Y span");
+  assert(_harness_front_inner_lip_left_x_span() > 0 && _harness_front_inner_lip_right_x_span() > 0,
+    "harness inner-front lip X spans must stay positive");
+  assert(_harness_front_lip_opposed_margin() >= harness_front_lip_opposed_margin_min,
+    "front inside/outside harness lips violate minimum opposed margin");
   assert(tower_top_lip_h >= 0 && tower_top_lip_h < tower_z - support_z,
     "tower_top_lip_h must be >= 0 and less than void height");
   assert(_void_enclosed_height() > 0,
@@ -600,6 +663,88 @@ module old_rca_building_model() {
       old_rca_building_negative_cuts();
     }
     old_rca_building_internal_supports();
+  }
+}
+
+module _tower_outer_profile_at_split_2d() {
+  // Sample the tower exterior profile at the harness interface Z.
+  projection(cut = false)
+    intersection() {
+      old_rca_building_outer_mass();
+      translate([_split_clip_x0(), _split_clip_y0(), _harness_profile_z()])
+        cube([_split_clip_x_span(), _split_clip_y_span(), 0.02], center = false);
+    }
+}
+
+module _harness_front_side_clip_2d() {
+  // Keep front+side lip coverage only; back edge remains open.
+  translate([_harness_front_side_x0(), _harness_front_side_y0()])
+    square([_harness_front_side_x_span(), _harness_front_side_y_span()], center = false);
+}
+
+module _harness_lip_profile_2d() {
+  intersection() {
+    difference() {
+      offset(delta = harness_lip_clearance + harness_lip_wall)
+        _tower_outer_profile_at_split_2d();
+      offset(delta = harness_lip_clearance)
+        _tower_outer_profile_at_split_2d();
+    }
+    _harness_front_side_clip_2d();
+  }
+}
+
+module _harness_front_side_bridge_profile_2d() {
+  // Bridge the clearance gap so the external lip is connected to the harness core.
+  intersection() {
+    difference() {
+      offset(delta = harness_lip_clearance)
+        _tower_outer_profile_at_split_2d();
+      _tower_outer_profile_at_split_2d();
+    }
+    _harness_front_side_clip_2d();
+  }
+}
+
+module _harness_internal_front_lips() {
+  z0 = _harness_lip_z0();
+  h = _harness_lip_h();
+  y0 = _harness_front_inner_lip_y0();
+  y_span = _harness_front_inner_lip_y_span();
+
+  if (_harness_front_inner_lip_left_x_span() > 0) {
+    translate([_harness_front_inner_lip_left_x0(), y0, z0])
+      cube([_harness_front_inner_lip_left_x_span(), y_span, h], center = false);
+  }
+  if (_harness_front_inner_lip_right_x_span() > 0) {
+    translate([_harness_front_inner_lip_right_x0(), y0, z0])
+      cube([_harness_front_inner_lip_right_x_span(), y_span, h], center = false);
+  }
+}
+
+module old_rca_building_glow_harness() {
+  _assert_dims();
+
+  union() {
+    // Core layer: bottom slice of split upper piece so internals/airflow stay unobstructed.
+    intersection() {
+      old_rca_building_split_upper();
+      translate([_split_clip_x0(), _split_clip_y0(), _harness_core_z0()])
+        cube([_split_clip_x_span(), _split_clip_y_span(), harness_core_h], center = false);
+    }
+
+    // Connect core to external lips across the configured clearance zone.
+    translate([0, 0, _harness_core_z0()])
+      linear_extrude(height = harness_core_h, center = false, convexity = 10)
+        _harness_front_side_bridge_profile_2d();
+
+    // External lip extends up/down around front+side tower perimeter only.
+    translate([0, 0, _harness_lip_z0()])
+      linear_extrude(height = _harness_lip_h(), center = false, convexity = 10)
+        _harness_lip_profile_2d();
+
+    // Internal anti-slide lips on the front inner walls.
+    _harness_internal_front_lips();
   }
 }
 

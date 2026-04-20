@@ -39,7 +39,7 @@ If the agent follows the included playbooks, it should also document what it cha
   - `src/lib/defaults.scad`: design defaults
   - `src/parts/*.scad`: geometry modules
   - `configs/rev_000N.json`: committed parameter sets
-  - Included examples: `example_box`, `helical`, `yagi`, `yagi_card`, `dtv_yagi`, `winegard_gm6000_logic_backplane`, `gigachad_xavier_void`, `cottage_pi6_plus`
+  - Included examples: `example_box`, `helical`, `yagi`, `yagi_card`, `dtv_yagi`, `winegard_gm6000_logic_backplane`, `gigachad_xavier_void`, `cottage_pi6_plus`, `old_rca_display_baseplate`
 - `output/`
   - scratch outputs (generated; ignored by default; a few example artifacts are committed)
 - `revisions/`
@@ -160,4 +160,6 @@ See `playbooks/how_to_iterate_openscad_designs.md` for the full workflow.
 - `designs/old_rca_building/`
   - Simplified 30 Rockefeller Plaza inspired phone-cooling tower enclosure with first functional OpenSCAD draft (`rev_0001`)
   - Includes a top-load phone void, side rails, elevated bottom cable-bend cage, and rear 40mm fan plenum
+- `designs/old_rca_display_baseplate/`
+  - 4-tower row display baseplate sized for Kallax use (`325 x 210 mm`), with recessed locator outlines and split-left/split-right printable variants
 - Matching sample artifacts for these examples are included under `output/` so users can inspect pipeline results without building first

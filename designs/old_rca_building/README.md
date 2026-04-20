@@ -10,7 +10,13 @@ This folder now includes OpenSCAD geometry revisions:
 ## Status
 
 - Phase: simplified L-shape airflow prototype implemented (`rev_0002`)
-- OpenSCAD source: created under `src/` with configs in `configs/rev_0001.json` and `configs/rev_0002.json`
+- OpenSCAD source: maintained under `src/` with active configs:
+  - `configs/rev_0001.json`
+  - `configs/rev_0002.json`
+  - `configs/rev_0002_split_lower.json`
+  - `configs/rev_0002_split_upper.json`
+  - `configs/rev_0002_wing_roof_insert.json`
+  - `configs/rev_0002_glow_harness.json`
 - Primary goal of this README: preserve requirements traceability and implementation intent
 
 ## Model Orientation (Canonical)
@@ -264,6 +270,7 @@ Created in this revision:
 - `configs/rev_0002_split_lower.json`
 - `configs/rev_0002_split_upper.json`
 - `configs/rev_0002_wing_roof_insert.json`
+- `configs/rev_0002_glow_harness.json`
 
 `part_id` map:
 
@@ -274,6 +281,7 @@ Created in this revision:
 - `4`: lower split section (below `split_z`)
 - `5`: upper split section (at/above `split_z`)
 - `6`: removable wing-roof insert (print separately)
+- `7`: glow harness spacer/lip (split interface accessory)
 
 Implemented in `rev_0001` `part_id = 0`:
 
@@ -320,6 +328,13 @@ Implemented in `rev_0002` `part_id = 0`:
 - horizontal split export is supported via `split_z` (default `support_z - cage_bar_h`) so the upper section starts with the phone-holder base floor,
 - split exports apply a tiny internal epsilon on both sides of the split with strict Z ownership (no overlap: `lower < split_z`, `upper > split_z`) to avoid coplanar/phantom sliver artifacts,
 - dedicated split configs are provided: `rev_0002_split_lower.json` (`part_id = 4`) and `rev_0002_split_upper.json` (`part_id = 5`),
+- glow harness (`part_id = 7`) is derived from the bottom `2.0 mm` slice of the split-upper geometry so the split-interface internals and airflow void topology are preserved,
+- the harness adds an external retention lip around the **front and side** tower perimeter only (back edge intentionally open), so it does not interact with the bump-out roof insert/cap workflow,
+- the harness now also adds two **internal front-wall anti-slide lips** (left/right inside channels) that are attached to the front inner wall and project inward, so the harness cannot walk forward in assembly,
+- the harness core now includes a front/side bridge band across `harness_lip_clearance` so the external lip ring is physically connected to the spacer body (instead of remaining a detached shell),
+- harness lip retention is configured as `2.0 mm` nominal grip both up and down, plus an additional `1.0 mm` margin in both vertical directions (`harness_lip_margin_z = 1.0`) to improve assembly tolerance,
+- front inside/outside lip spacing now enforces a minimum opposed margin of `1.0 mm` via `harness_front_lip_opposed_margin_min`; in the current setup the opposed margin is `wall + harness_lip_clearance = 2.0 + 0.4 = 2.4 mm`,
+- current harness-fit targets are `harness_core_h = 2.0 mm`, `harness_lip_grip_h = 2.0 mm`, `harness_lip_margin_z = 1.0 mm`, `harness_lip_clearance = 0.4 mm`, `harness_lip_wall = 1.2 mm`, `harness_backoff_y = 0.2 mm`, `harness_inner_front_lip_clearance = 0.6 mm`, `harness_inner_front_lip_t = 1.2 mm`, `harness_inner_front_lip_inset_x = 1.0 mm`,
 - rails in `rev_0002` include front/back pairs plus two wide-side rails, with bottoms flush to the void floor,
 - `rev_0002` enforces a minimum `2.0 mm` clearance from phones to rails on both width and thickness axes,
 - `rev_0002` no longer includes the previous bump-out-side 45 degree wedge/buttress under the phone support ring,
@@ -361,6 +376,12 @@ For the removable wing-roof insert:
 
 ```bash
 python scripts/scad_build.py --design old_rca_building --config designs/old_rca_building/configs/rev_0002_wing_roof_insert.json
+```
+
+For the split-interface glow harness:
+
+```bash
+python scripts/scad_build.py --design old_rca_building --config designs/old_rca_building/configs/rev_0002_glow_harness.json
 ```
 
 Additional below-view outputs from the build pipeline:

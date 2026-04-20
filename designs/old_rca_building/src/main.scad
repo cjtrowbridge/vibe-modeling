@@ -21,6 +21,8 @@ if (_part_id == 0) {
   old_rca_building_split_upper();
 } else if (_part_id == 6) {
   old_rca_building_wing_roof_insert();
+} else if (_part_id == 7) {
+  old_rca_building_glow_harness();
 } else {
   assert(false, str("Unknown part_id: ", _part_id));
 }

@@ -14,6 +14,7 @@
 // 4 = lower split section (below split_z)
 // 5 = upper split section (at/above split_z)
 // 6 = removable wing-roof insert (print separately)
+// 7 = glow harness spacer/lip between split lower+upper
 part_id = 0;
 
 // Printer/process assumptions
@@ -103,6 +104,18 @@ cage_bar_h = 4.0;
 cable_window_x = 12.0;
 cable_window_y = 40.0;
 split_z = support_z - cage_bar_h; // horizontal split plane: upper section starts at phone-holder base floor
+
+// Split-interface glow harness (external spacer/lip artifact).
+harness_core_h = 2.0; // core spacer thickness (slice from bottom of split upper)
+harness_lip_grip_h = 2.0; // nominal lip reach above and below the core
+harness_lip_margin_z = 1.0; // extra requested fit margin in both vertical directions
+harness_lip_clearance = 0.4; // radial clearance from tower exterior to harness inner lip wall
+harness_lip_wall = 1.2; // lip wall thickness
+harness_backoff_y = 0.2; // remove back-edge lip to keep front/sides-only retention
+harness_inner_front_lip_clearance = 0.6; // inboard lead depth from front inner wall before stop shoulder
+harness_inner_front_lip_t = 1.2; // front inner-wall lip thickness along Y
+harness_inner_front_lip_inset_x = 1.0; // inset inner front lips from side walls and void edges
+harness_front_lip_opposed_margin_min = 1.0; // minimum margin between opposing outside/inside front lips
 
 // Removable wing-roof insert (for support-free wing cavity printing)
 roof_insert_clearance = 0.30; // fit clearance to top-access aperture

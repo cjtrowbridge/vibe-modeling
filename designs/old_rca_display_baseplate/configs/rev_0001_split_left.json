@@ -1,0 +1,19 @@
+{
+  "part": "old_rca_display_baseplate_rev_0001_split_left",
+  "part_id": 1,
+
+  "baseplate_w": 325.0,
+  "baseplate_d": 210.0,
+  "baseplate_h": 4.0,
+  "baseplate_corner_r": 2.5,
+
+  "tower_count": 4,
+  "tower_row_side_margin": 8.0,
+  "tower_row_back_margin": 2.0,
+
+  "recess_depth": 2.0,
+  "recess_clearance": 0.5,
+
+  "split_x": 0.0,
+  "split_eps": 0.02
+}
