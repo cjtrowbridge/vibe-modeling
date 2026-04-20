@@ -65,7 +65,10 @@
   "roof_insert_plate_h": 2.0,
   "roof_insert_lip_t": 1.2,
   "roof_insert_lip_h": 4.0,
-  "roof_insert_lip_inset": 0.8,
+  "roof_insert_lip_inset": 0.15,
+  "roof_insert_cap_overhang_x": 2.0,
+  "roof_insert_cap_overhang_fan_y": 2.0,
+  "roof_insert_tower_backoff": 0.3,
   "fan_frame": 40.0,
   "fan_hole_spacing": 32.0,
   "fan_hole_d": 3.6,
@@ -78,3 +81,4 @@
   "rear_cable_slot_center_x": 0.0,
   "rear_cable_slot_center_z": 5.5
 }
+

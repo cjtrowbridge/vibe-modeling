@@ -105,11 +105,14 @@ cable_window_y = 40.0;
 split_z = support_z - cage_bar_h; // horizontal split plane: upper section starts at phone-holder base floor
 
 // Removable wing-roof insert (for support-free wing cavity printing)
-roof_insert_clearance = 0.30; // fit clearance to inner wing opening
+roof_insert_clearance = 0.30; // fit clearance to top-access aperture
 roof_insert_plate_h = wall; // roof panel thickness
 roof_insert_lip_t = 1.2; // lip thickness on non-fan edges
 roof_insert_lip_h = 4.0; // lip depth into cavity
-roof_insert_lip_inset = 0.8; // inset tabs from panel perimeter so they can enter opening
+roof_insert_lip_inset = 0.15; // inset tabs from aperture walls for balanced retention/entry
+roof_insert_cap_overhang_x = 2.0; // extend cap to outside X wall edges
+roof_insert_cap_overhang_fan_y = 2.0; // extend cap to fan-side outside wall edge
+roof_insert_tower_backoff = 0.3; // retract cap edge from tower-side aperture boundary
 
 // Fan/cable placement derived from compact bump-out envelope rules.
 fan_center_x = 0.0;

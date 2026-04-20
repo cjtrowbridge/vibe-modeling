@@ -60,12 +60,32 @@ function _cage_bump_strip_span_y() = _cage_bump_strip_y1() - _cage_bump_strip_y0
 // - cap plate seats on the wing top rim without overhanging the tower-side edge,
 // - inset lips/tabs below the plate retain inside the inner opening,
 // - fan-side short edge stays lip-free.
-function _wing_insert_cap_x() = wing_x;
-function _wing_insert_cap_y0() = wing_attach_side > 0 ? -_wing_inner_y() / 2 : -wing_y / 2;
-function _wing_insert_cap_y1() = wing_attach_side > 0 ? wing_y / 2 : _wing_inner_y() / 2;
-function _wing_insert_cap_y() = _wing_insert_cap_y1() - _wing_insert_cap_y0();
+function _wing_insert_aperture_y0() = wing_attach_side > 0
+  ? max(_wing_inner_iy0(), _tower_y1())
+  : _wing_inner_iy0();
+function _wing_insert_aperture_y1() = wing_attach_side > 0
+  ? _wing_inner_iy1()
+  : min(_wing_inner_iy1(), _tower_y0());
+function _wing_insert_aperture_local_y0() = _wing_insert_aperture_y0() - _wing_inner_center_y();
+function _wing_insert_aperture_local_y1() = _wing_insert_aperture_y1() - _wing_inner_center_y();
 function _wing_insert_plug_x() = _wing_inner_x() - 2 * roof_insert_clearance;
-function _wing_insert_plug_y() = _wing_inner_y() - 2 * roof_insert_clearance;
+function _wing_insert_plug_y0() = _wing_insert_aperture_local_y0() + roof_insert_clearance;
+function _wing_insert_plug_y1() = _wing_insert_aperture_local_y1() - roof_insert_clearance;
+function _wing_insert_plug_y() = _wing_insert_plug_y1() - _wing_insert_plug_y0();
+function _wing_insert_tower_lip_outer_y() = wing_attach_side > 0
+  ? (_wing_insert_plug_y0() + roof_insert_lip_inset)
+  : (_wing_insert_plug_y1() - roof_insert_lip_inset);
+function _wing_insert_cap_tower_edge_y() = wing_attach_side > 0
+  ? (_wing_insert_aperture_local_y0() + roof_insert_tower_backoff)
+  : (_wing_insert_aperture_local_y1() - roof_insert_tower_backoff);
+function _wing_insert_cap_x() = _wing_inner_x() + 2 * roof_insert_cap_overhang_x;
+function _wing_insert_cap_y0() = wing_attach_side > 0
+  ? _wing_insert_cap_tower_edge_y()
+  : (_wing_insert_aperture_local_y0() - roof_insert_cap_overhang_fan_y);
+function _wing_insert_cap_y1() = wing_attach_side > 0
+  ? (_wing_insert_aperture_local_y1() + roof_insert_cap_overhang_fan_y)
+  : _wing_insert_cap_tower_edge_y();
+function _wing_insert_cap_y() = _wing_insert_cap_y1() - _wing_insert_cap_y0();
 function _wing_insert_lip_span_x() = _wing_insert_plug_x() - 2 * roof_insert_lip_inset;
 function _wing_insert_lip_span_y() = _wing_insert_plug_y() - 2 * roof_insert_lip_inset;
 function _split_lower_piece_h() = split_z;
@@ -145,6 +165,12 @@ module _assert_dims() {
     "wing vault springline reaches below floor; reduce radius or raise wing_z");
   assert(roof_insert_clearance >= 0,
     "roof_insert_clearance must be >= 0");
+  assert(roof_insert_cap_overhang_x >= 0,
+    "roof_insert_cap_overhang_x must be >= 0");
+  assert(roof_insert_cap_overhang_fan_y >= 0,
+    "roof_insert_cap_overhang_fan_y must be >= 0");
+  assert(roof_insert_tower_backoff >= 0,
+    "roof_insert_tower_backoff must be >= 0");
   assert(_wing_insert_cap_x() > 0 && _wing_insert_cap_y() > 0,
     "roof insert cap XY spans must be > 0");
   assert(_wing_insert_plug_x() > 2 * roof_insert_lip_t,
@@ -163,6 +189,13 @@ module _assert_dims() {
     "roof insert lip inset too large for X span");
   assert(_wing_insert_lip_span_y() > 2 * roof_insert_lip_t,
     "roof insert lip inset too large for Y span");
+  if (wing_attach_side > 0) {
+    assert(_wing_insert_cap_y0() >= _wing_insert_aperture_local_y0(),
+      "tower-side cap edge overhangs past top aperture boundary (Y- direction)");
+  } else {
+    assert(_wing_insert_cap_y1() <= _wing_insert_aperture_local_y1(),
+      "tower-side cap edge overhangs past top aperture boundary (Y+ direction)");
+  }
   assert(wing_x > 0 && wing_y > 0 && wing_z > 0, "wing dims must be > 0");
   assert(bump_margin >= 0, "bump_margin must be >= 0");
   assert(wing_overlap_y >= 0 && wing_overlap_y < tower_y, "wing_overlap_y out of range");
@@ -633,6 +666,8 @@ module old_rca_building_wing_roof_insert() {
   cap_y0 = _wing_insert_cap_y0();
   plug_x = _wing_insert_plug_x();
   plug_y = _wing_insert_plug_y();
+  plug_y0 = _wing_insert_plug_y0();
+  plug_y1 = _wing_insert_plug_y1();
   ph = roof_insert_plate_h;
   lt = roof_insert_lip_t;
   lh = roof_insert_lip_h;
@@ -640,7 +675,6 @@ module old_rca_building_wing_roof_insert() {
   lip_x_span = _wing_insert_lip_span_x();
   lip_y_span = _wing_insert_lip_span_y();
   plug_x0 = -plug_x / 2;
-  plug_y0 = -plug_y / 2;
 
   // Print orientation: flat panel on bed, lips upward.
   // In assembly, flip and press-fit into the wing opening.
@@ -663,7 +697,7 @@ module old_rca_building_wing_roof_insert() {
         cube([lip_x_span, lt, lh], center = false);
     } else {
       // Fan is -Y, so place short-edge lip at +Y (tower side).
-      translate([plug_x0 + li, plug_y0 + plug_y - li - lt, ph])
+      translate([plug_x0 + li, plug_y1 - li - lt, ph])
         cube([lip_x_span, lt, lh], center = false);
     }
   }
