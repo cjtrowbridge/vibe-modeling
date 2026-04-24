@@ -164,4 +164,6 @@ See `playbooks/how_to_iterate_openscad_designs.md` for the full workflow.
   - 4-tower row display baseplate sized for Kallax use (`325 x 210 mm`), with recessed locator outlines and split-left/split-right printable variants
 - `designs/opi_zero_2w_carrier/`
   - Parametric Orange Pi Zero 2W mounting plate with a `2 mm` base, 4 mounting-hole-aligned studs, M3 through-holes, and underside head recesses for flush screw seating
+- `designs/lovelace/`
+  - Concept-first workspace for a modular mechanical computer using composable 3D-printed logic cubes, synchronized motor-chain expansion, and magnetic cube-to-cube attachment
 - Matching sample artifacts for these examples are included under `output/` so users can inspect pipeline results without building first
