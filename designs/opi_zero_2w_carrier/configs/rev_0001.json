@@ -1,0 +1,24 @@
+{
+  "part": "opi_zero_2w_carrier_rev_0001",
+  "part_id": 0,
+
+  "board_x": 65.0,
+  "board_y": 30.0,
+  "board_thickness": 1.2,
+  "board_corner_r": 2.0,
+  
+  "base_margin_x": 6.0,
+  "base_margin_y": 6.0,
+  "base_corner_r": 0.0,
+  "base_thickness": 2.0,
+
+  "mount_hole_inset_x": 3.5,
+  "mount_hole_inset_y": 3.5,
+
+  "stud_d": 8.0,
+  "stud_h": 3.2,
+  "m3_clearance_d": 3.2,
+
+  "head_recess_d": 6.4,
+  "head_recess_h": 2.6
+}
