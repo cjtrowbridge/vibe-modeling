@@ -20,8 +20,8 @@ First-draft visual mockup and design brief for a cyberdeck OpenSCAD model.
 
 ## Revision 0001 Mockup Notes
 
-- Overall visual envelope is currently `425 mm x 300 mm x 42 mm`.
-- Chassis width is allowed to exceed the unfolded keyboard width so the screen can sit beside the acrylic eye module.
+- Overall visual envelope is currently `480 mm x 300 mm x 42 mm`.
+- Chassis width is allowed to exceed the unfolded keyboard width so the screen, eye module, and top control row can sit naturally without crowding.
 - Chassis depth is tightened around the current screen/dome, top control row, and raised keyboard layout.
 - Top layout places the acrylic eye module in the upper-left area.
 - Top layout places the full-size unfolded keyboard footprint in the lower-right area.

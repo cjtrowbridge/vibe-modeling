@@ -16,7 +16,7 @@
 part_id = 0;
 
 // Case envelope
-deck_x = 425.0;
+deck_x = 480.0;
 deck_y = 300.0;
 deck_h = 42.0;
 deck_corner_r = 12.0;
@@ -29,7 +29,7 @@ display_rail_x = 250.0;
 display_rail_y = 89.0;
 display_show_rack_rails = true;
 display_bezel_margin = 6.0;
-display_center_x = 50.0;
+display_center_x = 70.0;
 display_center_y = 48.0;
 display_raise_h = 4.0;
 display_bolt_d = 5.0;
@@ -41,14 +41,14 @@ keyboard_unfolded_x = 342.9;
 keyboard_unfolded_y = 114.3;
 keyboard_folded_x = 180.0;
 keyboard_folded_y = 115.0;
-keyboard_center_x = 25.0;
+keyboard_center_x = 50.0;
 keyboard_center_y = -60.0;
 keyboard_h = 8.0;
 keyboard_fold_sections = 3;
 
 // Acrylic eye module
 eye_dome_d = 101.6;
-eye_center_x = -145.0;
+eye_center_x = -175.0;
 eye_center_y = 61.0;
 eye_base_ring_h = 5.0;
 eye_base_ring_w = 7.0;
