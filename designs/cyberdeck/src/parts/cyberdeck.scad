@@ -41,6 +41,17 @@ function exhaust_total_x() =
   + (opi_exhaust_slot_count - 1) * opi_exhaust_slot_gap;
 function cell_pitch() = cell18650_d + 2.5;
 function chamber_total_z() = chamber_bottom + chamber_internal_clearance_z;
+function chamber_assembly_left_x() = -chamber_piece_x;
+function chamber_assembly_right_x() = chamber_piece_x;
+function chamber_display_wedge_right_x() = chamber_assembly_right_x();
+function chamber_display_wedge_left_x() =
+  chamber_display_wedge_right_x() - chamber_display_wedge_x;
+function chamber_left_flat_area_x() =
+  chamber_display_wedge_left_x() - chamber_assembly_left_x();
+function chamber_dome_roof_left_x() = chamber_assembly_left_x();
+function chamber_dome_roof_right_x() = chamber_display_wedge_left_x();
+function chamber_dome_roof_front_y() = chamber_profile_screen_foot_y();
+function chamber_dome_roof_back_y() = chamber_piece_y / 2;
 function chamber_profile_peak_z() = chamber_total_z() + chamber_profile_peak_rise;
 function chamber_profile_peak_y() =
   chamber_piece_y / 2 - chamber_profile_rear_slope_run;
@@ -132,6 +143,22 @@ module _assert_dims() {
     "display cutout height must be > 0 and margin must be >= 0");
   assert(chamber_display_mount_face_len >= chamber_display_cutout_h + 2 * chamber_display_mount_margin,
     "display mount face length must include the cutout and top/bottom margins");
+  assert(chamber_display_mount_width > 0 && chamber_display_mount_side_margin >= 0,
+    "display mount width must be > 0 and side margin must be >= 0");
+  assert(chamber_display_wedge_x >= chamber_display_mount_width + 2 * chamber_display_mount_side_margin,
+    "display wedge width must include the display width and side margins");
+  assert(chamber_display_wedge_x <= 2 * chamber_piece_x,
+    "display wedge width exceeds the assembled chamber width");
+  assert(chamber_dome_outer_d > 0 && chamber_dome_mount_margin >= 0,
+    "dome outer diameter must be > 0 and dome margin must be >= 0");
+  assert(chamber_dome_area_x >= chamber_dome_outer_d + 2 * chamber_dome_mount_margin,
+    "dome area width must include the dome diameter and side margins");
+  assert(chamber_left_flat_area_x() >= chamber_dome_area_x,
+    "left flat dome area is too narrow for the acrylic dome");
+  assert(chamber_display_wedge_left_x() > chamber_assembly_left_x(),
+    "display wedge leaves no flat left-side dome area");
+  assert(chamber_display_wedge_left_x() < 0,
+    "display wedge left structural web should land inside the left chamber");
   assert(chamber_piece_x > 2 * chamber_wall && chamber_piece_y > 2 * chamber_wall,
     "chamber walls are too thick for the selected footprint");
   assert(chamber_internal_clearance_z >= 50,
@@ -212,13 +239,89 @@ module _rounded_box(w, d, h, r) {
     _rounded_rect_2d(w, d, r);
 }
 
-module _chamber_shell(center_x) {
-  difference() {
-    _chamber_profile_prism(
+module _chamber_shell(side, center_x, assembly_position) {
+  global_body_xa = side < 0 ? chamber_assembly_left_x() : 0;
+  global_body_xb = side < 0 ? 0 : chamber_assembly_right_x();
+  model_x_offset = assembly_position ? 0 : -side * chamber_piece_x / 2;
+  wedge_xa = max(chamber_display_wedge_left_x(), global_body_xa) + model_x_offset;
+  wedge_xb = min(chamber_display_wedge_right_x(), global_body_xb) + model_x_offset;
+  roof_xa = max(chamber_dome_roof_left_x(), global_body_xa) + model_x_offset;
+  roof_xb = min(chamber_dome_roof_right_x(), global_body_xb) + model_x_offset;
+
+  union() {
+    _chamber_flat_tray(
       center_x - chamber_piece_x / 2,
       center_x + chamber_piece_x / 2,
       -chamber_piece_y / 2,
-      chamber_piece_y / 2,
+      chamber_piece_y / 2
+    );
+
+    if (wedge_xb > wedge_xa) {
+      _chamber_profile_shell(
+        wedge_xa,
+        wedge_xb,
+        -chamber_piece_y / 2,
+        chamber_piece_y / 2
+      );
+    }
+
+    if (roof_xb > roof_xa) {
+      _chamber_flat_roof(
+        roof_xa,
+        roof_xb,
+        chamber_dome_roof_front_y(),
+        chamber_dome_roof_back_y()
+      );
+    }
+  }
+}
+
+module _chamber_flat_tray(xa, xb, y_front, y_back) {
+  difference() {
+    _chamber_flat_prism(xa, xb, y_front, y_back, 0, 0);
+    _chamber_flat_prism(
+      xa + chamber_wall,
+      xb - chamber_wall,
+      y_front + chamber_wall,
+      y_back - chamber_wall,
+      chamber_bottom,
+      0.6
+    );
+  }
+}
+
+module _chamber_flat_prism(xa, xb, y_front, y_back, z_bottom, top_extra) {
+  multmatrix([
+    [0, 0, 1, xa],
+    [1, 0, 0, 0],
+    [0, 1, 0, 0],
+    [0, 0, 0, 1]
+  ])
+    linear_extrude(height = xb - xa, center = false, convexity = 4)
+      polygon(points = [
+        [y_front, z_bottom],
+        [y_back, z_bottom],
+        [y_back, chamber_total_z() + top_extra],
+        [y_front, chamber_total_z() + top_extra]
+      ]);
+}
+
+module _chamber_flat_roof(xa, xb, y_front, y_back) {
+  translate([
+    (xa + xb) / 2,
+    (y_front + y_back) / 2,
+    chamber_total_z() - chamber_wall / 2
+  ])
+    cube([xb - xa + 0.05, y_back - y_front, chamber_wall], center = true);
+}
+
+module _chamber_profile_shell(xa, xb, y_front, y_back) {
+  difference() {
+    _chamber_profile_prism(
+      xa,
+      xb,
+      y_front,
+      y_back,
       0,
       0,
       0,
@@ -227,10 +330,10 @@ module _chamber_shell(center_x) {
     );
 
     _chamber_profile_prism(
-      center_x - chamber_piece_x / 2 + chamber_wall,
-      center_x + chamber_piece_x / 2 - chamber_wall,
-      -chamber_piece_y / 2 + chamber_wall,
-      chamber_piece_y / 2 - chamber_wall,
+      xa + chamber_wall,
+      xb - chamber_wall,
+      y_front + chamber_wall,
+      y_back - chamber_wall,
       chamber_bottom,
       0.6,
       -chamber_angled_wall_vertical_offset(),
@@ -348,7 +451,7 @@ module _chamber_body(side, assembly_position, label_text) {
   color(side < 0 ? [0.10, 0.105, 0.11, 0.88] : [0.12, 0.115, 0.10, 0.88])
     difference() {
       union() {
-        _chamber_shell(center_x);
+        _chamber_shell(side, center_x, assembly_position);
         _chamber_joint_reinforcement(side, joint_face_x);
       }
       for (i = [0 : chamber_joint_passthrough_count - 1]) {

@@ -26,10 +26,14 @@ First-draft visual mockup and design brief for a cyberdeck OpenSCAD model.
 
 - Printer build-volume constraint is assumed to be `220 mm x 220 mm x 220 mm`.
 - The cyberdeck lower structure is split into two printable chambers that meet at the centerline.
-- Each chamber body footprint is currently `214 mm x 210 mm`, so each individual print fits inside the build volume.
+- Each chamber body footprint is currently `192.5 mm x 210 mm`, so each individual print fits inside the build volume.
 - Flat chamber height is currently `52 mm`; side-profile peak height is currently about `119.2 mm`.
 - Raised back-wall top height is currently about `93.8 mm`.
-- Combined assembled footprint is currently about `428 mm x 210 mm x 119.2 mm`.
+- Combined assembled footprint is currently about `385 mm x 210 mm x 119.2 mm`.
+- The raised display wedge is right-aligned and currently `260 mm` wide.
+- The left edge of the raised display wedge lands at assembled `x = -67.5 mm`.
+- The left flat dome planning area is currently `125 mm` wide.
+- The left dome area has a flat `2 mm` top roof extending from the display wedge edge to the left outer edge, only over the front/back span of the display wedge geometry.
 - The flat keyboard bay is intentionally open from above for continued layout, mounting, and service-access design.
 - Internal vertical clearance is set to `50 mm` for component volume planning.
 - Chamber walls and bottom floor are currently `2 mm` thick.
@@ -48,6 +52,10 @@ First-draft visual mockup and design brief for a cyberdeck OpenSCAD model.
 - The planned screen opening is `85 mm` tall on the angled face, leaving `5 mm` above and `5 mm` below for mounting margin.
 - The display is expected to inset about `25.4 mm` into the angled face.
 - The display body is expected to need about `210 mm` internal width, with mounting flanges extending another `20 mm` on each side.
+- The raised display wedge width is based on the `250 mm` display/flange width plus `5 mm` side margin on each side.
+- The flat roof area to the left of the display wedge is reserved for the acrylic dome module.
+- The acrylic dome planning area is based on a `115 mm` dome outer diameter plus `5 mm` margin on each side.
+- The inner left edge of the display wedge is modeled as a full-depth structural web that extends down to the bottom of the build.
 - This first variant models the side-profile shell and angled rear/screen surfaces; it does not yet add the actual screen recess or dome mounting ring.
 - The left and right chambers have matching circular side passthroughs on the mating faces.
 - Current design uses two `38 mm` passthroughs, split front/back from the centerline.
