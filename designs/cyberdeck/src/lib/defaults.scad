@@ -1,0 +1,126 @@
+// Cyberdeck first-draft visual mockup defaults (all dimensions in mm).
+//
+// Coordinate convention:
+// - x: left/right across the cyberdeck, positive to the right
+// - y: front/back across the cyberdeck, positive toward the top/back edge
+// - z: vertical from the bottom of the case
+//
+// This revision is a visual layout mockup. Board/module dimensions that are
+// not yet measured are named as proxy values and should not be treated as
+// final mechanical constraints.
+
+// Part selector
+// 0 = full visual mockup
+// 1 = top layout mockup
+// 2 = internal hardware proxy layout
+part_id = 0;
+
+// Case envelope
+deck_x = 425.0;
+deck_y = 300.0;
+deck_h = 42.0;
+deck_corner_r = 12.0;
+top_panel_thickness = 3.0;
+
+// Secondary display and rack rails
+display_active_x = 208.0;
+display_active_y = 85.0;
+display_rail_x = 250.0;
+display_rail_y = 89.0;
+display_show_rack_rails = true;
+display_bezel_margin = 6.0;
+display_center_x = 50.0;
+display_center_y = 48.0;
+display_raise_h = 4.0;
+display_bolt_d = 5.0;
+display_bolt_inset_x = 8.0;
+display_bolt_spacing_y = 65.0;
+
+// Samsers foldable keyboard
+keyboard_unfolded_x = 342.9;
+keyboard_unfolded_y = 114.3;
+keyboard_folded_x = 180.0;
+keyboard_folded_y = 115.0;
+keyboard_center_x = 25.0;
+keyboard_center_y = -60.0;
+keyboard_h = 8.0;
+keyboard_fold_sections = 3;
+
+// Acrylic eye module
+eye_dome_d = 101.6;
+eye_center_x = -145.0;
+eye_center_y = 61.0;
+eye_base_ring_h = 5.0;
+eye_base_ring_w = 7.0;
+eye_camera_x = 32.0;
+eye_camera_y = 32.0;
+eye_camera_z = 18.0;
+eye_laser_d = 5.0;
+eye_laser_len = 34.0;
+
+// Meshtastic e-ink visibility window
+eink_window_x = 54.0;
+eink_window_y = 32.0;
+eink_center_x = 105.0;
+eink_center_y = 116.0;
+eink_window_h = 2.0;
+
+// Independent hardware power toggles
+toggle_count = 4;
+toggle_bank_center_x = -22.0;
+toggle_bank_center_y = 116.0;
+toggle_columns = 4;
+toggle_spacing_x = 28.0;
+toggle_spacing_y = 27.0;
+toggle_plate_x = 22.0;
+toggle_plate_y = 18.0;
+toggle_plate_h = 2.0;
+toggle_lever_d = 4.0;
+toggle_lever_h = 14.0;
+
+// Front/top Orange Pi exhaust path
+opi_exhaust_x = 100.0;
+opi_exhaust_y = 18.0;
+opi_exhaust_center_x = -24.0;
+opi_exhaust_center_y = -deck_y / 2 + 8.0;
+opi_exhaust_slot_count = 8;
+opi_exhaust_slot_w = 7.0;
+opi_exhaust_slot_gap = 5.0;
+opi_exhaust_slot_y = 13.0;
+
+// Internal proxy hardware volumes
+opi_proxy_x = 100.0;
+opi_proxy_y = 70.0;
+opi_proxy_z = 18.0;
+opi_proxy_center_x = opi_exhaust_center_x;
+opi_proxy_center_y = -108.0;
+
+rpi_stack_proxy_x = 95.0;
+rpi_stack_proxy_y = 68.0;
+rpi_stack_proxy_z = 28.0;
+rpi_stack_center_x = -70.0;
+rpi_stack_center_y = 8.0;
+
+hackrf_proxy_x = 125.0;
+hackrf_proxy_y = 45.0;
+hackrf_proxy_z = 14.0;
+hackrf_center_x = 98.0;
+hackrf_center_y = -28.0;
+
+meshtastic_proxy_x = 58.0;
+meshtastic_proxy_y = 36.0;
+meshtastic_proxy_z = 10.0;
+meshtastic_center_x = eink_center_x;
+meshtastic_center_y = eink_center_y;
+
+gps_proxy_x = 28.0;
+gps_proxy_y = 28.0;
+gps_proxy_z = 7.0;
+gps_center_x = -150.0;
+gps_center_y = 8.0;
+
+cell18650_d = 18.6;
+cell18650_len = 65.0;
+cell18650_count = 4;
+cell_bank_center_x = 120.0;
+cell_bank_center_y = 112.0;

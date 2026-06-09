@@ -39,7 +39,7 @@ If the agent follows the included playbooks, it should also document what it cha
   - `src/lib/defaults.scad`: design defaults
   - `src/parts/*.scad`: geometry modules
   - `configs/rev_000N.json`: committed parameter sets
-  - Included examples: `example_box`, `helical`, `yagi`, `yagi_card`, `dtv_yagi`, `winegard_gm6000_logic_backplane`, `gigachad_xavier_void`, `cottage_pi6_plus`, `old_rca_display_baseplate`, `opi_zero_2w_carrier`
+  - Included designs: `example_box`, `helical`, `yagi`, `yagi_card`, `dtv_yagi`, `winegard_gm6000_logic_backplane`, `gigachad_xavier_void`, `cottage_pi6_plus`, `old_rca_display_baseplate`, `opi_zero_2w_carrier`, `cyberdeck`
 - `output/`
   - scratch outputs (generated; ignored by default; a few example artifacts are committed)
 - `revisions/`
@@ -166,4 +166,6 @@ See `playbooks/how_to_iterate_openscad_designs.md` for the full workflow.
   - Parametric Orange Pi Zero 2W mounting plate with a `2 mm` base, 4 mounting-hole-aligned studs, M3 through-holes, and underside head recesses for flush screw seating
 - `designs/lovelace/`
   - Concept-first workspace for a modular mechanical computer using composable 3D-printed logic cubes, synchronized motor-chain expansion, and magnetic cube-to-cube attachment
-- Matching sample artifacts for these examples are included under `output/` so users can inspect pipeline results without building first
+- `designs/cyberdeck/`
+  - First-draft visual mockup workspace for a cassette-futurist cyberdeck with asymmetric eye module, wide touchscreen, folding keyboard, hardware toggles, and internal proxy volumes
+- Sample artifacts for selected examples are included under `output/` so users can inspect pipeline results without building first
