@@ -46,12 +46,20 @@ function chamber_assembly_right_x() = chamber_piece_x;
 function chamber_display_wedge_right_x() = chamber_assembly_right_x();
 function chamber_display_wedge_left_x() =
   chamber_display_wedge_right_x() - chamber_display_wedge_x;
+function chamber_display_wedge_center_x() =
+  (chamber_display_wedge_left_x() + chamber_display_wedge_right_x()) / 2;
 function chamber_left_flat_area_x() =
   chamber_display_wedge_left_x() - chamber_assembly_left_x();
 function chamber_dome_roof_left_x() = chamber_assembly_left_x();
 function chamber_dome_roof_right_x() = chamber_display_wedge_left_x();
-function chamber_dome_roof_front_y() = chamber_profile_screen_foot_y();
 function chamber_dome_roof_back_y() = chamber_piece_y / 2;
+function chamber_dome_roof_front_y() = chamber_dome_roof_back_y() - chamber_dome_area_y;
+function chamber_dome_roof_center_x() =
+  (chamber_dome_roof_left_x() + chamber_dome_roof_right_x()) / 2;
+function chamber_dome_roof_center_y() =
+  (chamber_dome_roof_front_y() + chamber_dome_roof_back_y()) / 2;
+function chamber_dome_mount_screw_xy_offset() =
+  chamber_dome_mount_screw_radius / sqrt(2);
 function chamber_profile_peak_z() = chamber_total_z() + chamber_profile_peak_rise;
 function chamber_profile_peak_y() =
   chamber_piece_y / 2 - chamber_profile_rear_slope_run;
@@ -62,6 +70,50 @@ function chamber_profile_screen_face_len() =
     chamber_profile_peak_rise * chamber_profile_peak_rise
     + chamber_profile_screen_slope_run * chamber_profile_screen_slope_run
   );
+function chamber_profile_screen_face_angle() =
+  atan(chamber_profile_peak_rise / chamber_profile_screen_slope_run);
+function chamber_display_void_center_y() =
+  (chamber_profile_screen_foot_y() + chamber_profile_peak_y()) / 2;
+function chamber_display_void_center_z() =
+  (chamber_total_z() + chamber_profile_peak_z()) / 2;
+function chamber_display_void_cut_overlap() = chamber_wall + 0.6;
+function chamber_display_mount_screw_y(face_offset) =
+  chamber_display_void_center_y()
+  + face_offset * chamber_profile_screen_slope_run / chamber_profile_screen_face_len();
+function chamber_display_mount_screw_z(face_offset) =
+  chamber_display_void_center_z()
+  + face_offset * chamber_profile_peak_rise / chamber_profile_screen_face_len();
+function chamber_display_mount_rear_screw_y() =
+  chamber_display_mount_screw_y(chamber_display_mount_screw_face_spacing / 2);
+function chamber_profile_rear_slope_len() =
+  sqrt(
+    chamber_profile_rear_slope_run * chamber_profile_rear_slope_run
+    + chamber_profile_rear_slope_drop * chamber_profile_rear_slope_drop
+  );
+function chamber_display_seam_rail_start_t() =
+  chamber_display_seam_rail_bend_inset / chamber_profile_rear_slope_len();
+function chamber_display_seam_rail_end_t() =
+  1 - chamber_display_seam_rail_start_t();
+function chamber_display_seam_rail_y(t) =
+  chamber_profile_peak_y() + t * chamber_profile_rear_slope_run;
+function chamber_display_seam_rail_z(t) =
+  chamber_profile_peak_z() - t * chamber_profile_rear_slope_drop;
+function chamber_display_seam_rail_outward_offset() =
+  max(chamber_display_seam_rail_d / 2 - chamber_display_seam_rail_embed, 0);
+function chamber_display_seam_rail_outward_y() =
+  chamber_display_seam_rail_outward_offset()
+  * chamber_profile_rear_slope_drop / chamber_profile_rear_slope_len();
+function chamber_display_seam_rail_outward_z() =
+  chamber_display_seam_rail_outward_offset()
+  * chamber_profile_rear_slope_run / chamber_profile_rear_slope_len();
+function chamber_display_seam_rail_screw_y(i) =
+  chamber_display_seam_rail_y(
+    i == 0 ? chamber_display_seam_rail_start_t() : chamber_display_seam_rail_end_t()
+  ) + chamber_display_seam_rail_outward_y();
+function chamber_display_seam_rail_screw_z(i) =
+  chamber_display_seam_rail_z(
+    i == 0 ? chamber_display_seam_rail_start_t() : chamber_display_seam_rail_end_t()
+  ) + chamber_display_seam_rail_outward_z();
 function chamber_profile_back_wall_z() =
   chamber_profile_peak_z() - chamber_profile_rear_slope_drop;
 function chamber_profile_back_wall_rise() =
@@ -70,9 +122,9 @@ function chamber_angled_wall_vertical_offset() = chamber_wall * sqrt(2);
 function chamber_joint_ring_outer_d() =
   chamber_joint_passthrough_d + 2 * chamber_joint_ring_wall;
 function chamber_passthrough_y(i) =
-  chamber_joint_center_y
-  + (i - (chamber_joint_passthrough_count - 1) / 2)
-  * chamber_joint_passthrough_spacing_y;
+  i == 0
+    ? chamber_joint_passthrough_front_y
+    : chamber_joint_passthrough_rear_y;
 function chamber_bolt_low_z() = chamber_bottom + chamber_joint_bolt_edge_inset_z;
 function chamber_bolt_high_z() = chamber_total_z() - chamber_joint_bolt_edge_inset_z;
 function chamber_bolt_outer_y() =
@@ -149,12 +201,43 @@ module _assert_dims() {
     "display wedge width must include the display width and side margins");
   assert(chamber_display_wedge_x <= 2 * chamber_piece_x,
     "display wedge width exceeds the assembled chamber width");
+  assert(chamber_display_void_x > 0 && chamber_display_void_h > 0,
+    "display void dimensions must be > 0");
+  assert(chamber_display_void_x < chamber_display_wedge_x,
+    "display void width must fit inside the display wedge");
+  assert(chamber_display_void_h < chamber_profile_screen_face_len(),
+    "display void height must fit inside the angled display face");
+  assert(chamber_display_void_depth >= 25.4,
+    "display void depth must be at least 25.4 mm");
+  assert(chamber_display_mount_screw_x_offset > chamber_display_void_x / 2
+    && chamber_display_mount_screw_x_offset < chamber_display_mount_width / 2,
+    "display mount screws must land in the display side flanges");
+  assert(chamber_display_mount_screw_face_spacing > 0
+    && chamber_display_mount_screw_face_spacing < chamber_profile_screen_face_len(),
+    "display mount screw spacing must fit on the angled display face");
+  assert(chamber_display_mount_screw_clearance_d > 0,
+    "display mount screw clearance must be > 0");
   assert(chamber_dome_outer_d > 0 && chamber_dome_mount_margin >= 0,
     "dome outer diameter must be > 0 and dome margin must be >= 0");
   assert(chamber_dome_area_x >= chamber_dome_outer_d + 2 * chamber_dome_mount_margin,
     "dome area width must include the dome diameter and side margins");
+  assert(chamber_dome_area_y >= chamber_dome_outer_d + 2 * chamber_dome_mount_margin,
+    "dome area depth must include the dome diameter and side margins");
+  assert(chamber_dome_roof_hole_d > 0
+    && chamber_dome_roof_hole_d < min(chamber_dome_area_x, chamber_dome_area_y),
+    "dome roof hole must fit inside the dome roof area");
+  assert(chamber_dome_mount_screw_clearance_d >= 3.0,
+    "dome mount holes should clear M3 hardware");
+  assert(chamber_dome_mount_screw_radius - chamber_dome_mount_screw_clearance_d / 2
+    > chamber_dome_roof_hole_d / 2,
+    "dome mount screws intersect the dome roof hole");
+  assert(chamber_dome_mount_screw_xy_offset() + chamber_dome_mount_screw_clearance_d / 2
+    <= min(chamber_dome_area_x, chamber_dome_area_y) / 2,
+    "dome mount screws exceed the dome roof area");
   assert(chamber_left_flat_area_x() >= chamber_dome_area_x,
     "left flat dome area is too narrow for the acrylic dome");
+  assert(chamber_dome_roof_front_y() >= -chamber_piece_y / 2,
+    "dome roof area exceeds the chamber depth");
   assert(chamber_display_wedge_left_x() > chamber_assembly_left_x(),
     "display wedge leaves no flat left-side dome area");
   assert(chamber_display_wedge_left_x() < 0,
@@ -187,12 +270,29 @@ module _assert_dims() {
     "side profile screen slope must meet the flat deck inside the chamber depth");
   assert(chamber_profile_screen_foot_y() < chamber_profile_peak_y(),
     "side profile screen foot must be forward of the peak");
+  assert(chamber_display_seam_rail_w > 0
+    && chamber_display_seam_rail_d > chamber_display_seam_rail_screw_clearance_d,
+    "display seam rail dimensions must clear the screw holes");
+  assert(chamber_display_seam_rail_embed > 0
+    && chamber_display_seam_rail_embed < chamber_wall,
+    "display seam rail embed must stay below wall thickness so it does not protrude inside");
+  assert(chamber_display_seam_rail_screw_clearance_d >= 3.0,
+    "display seam rail screw holes should clear M3 hardware");
+  assert(chamber_display_seam_rail_bend_inset >= chamber_display_seam_rail_d / 2 + chamber_wall,
+    "display seam rail screw holes need edge clearance for screw heads and nuts");
+  assert(chamber_display_seam_rail_bend_inset > chamber_display_seam_rail_screw_clearance_d
+    && 2 * chamber_display_seam_rail_bend_inset < chamber_profile_rear_slope_len(),
+    "display seam rail screw holes must stay between the rear-slope bends");
   assert(chamber_joint_passthrough_count == 2,
     "this chamber mockup expects two front/back passthroughs");
   assert(chamber_joint_passthrough_d > 0,
     "chamber passthrough diameter must be > 0");
   assert(chamber_joint_passthrough_spacing_y > 0,
     "chamber passthrough spacing must be > 0");
+  assert(chamber_joint_passthrough_front_y < chamber_joint_passthrough_rear_y,
+    "front passthrough must be forward of rear passthrough");
+  assert(abs(chamber_joint_passthrough_rear_y - chamber_display_mount_rear_screw_y()) < 5,
+    "rear passthrough should stay near the rear display screw row");
   assert(chamber_joint_center_z - chamber_joint_passthrough_d / 2 > chamber_bottom,
     "chamber passthrough intersects the chamber floor");
   assert(chamber_joint_center_z + chamber_joint_passthrough_d / 2 < chamber_total_z(),
@@ -245,6 +345,10 @@ module _chamber_shell(side, center_x, assembly_position) {
   model_x_offset = assembly_position ? 0 : -side * chamber_piece_x / 2;
   wedge_xa = max(chamber_display_wedge_left_x(), global_body_xa) + model_x_offset;
   wedge_xb = min(chamber_display_wedge_right_x(), global_body_xb) + model_x_offset;
+  wedge_global_xa = max(chamber_display_wedge_left_x(), global_body_xa);
+  wedge_global_xb = min(chamber_display_wedge_right_x(), global_body_xb);
+  keep_wedge_left_wall = abs(wedge_global_xa - chamber_display_wedge_left_x()) < 0.01;
+  keep_wedge_right_wall = abs(wedge_global_xb - chamber_display_wedge_right_x()) < 0.01;
   roof_xa = max(chamber_dome_roof_left_x(), global_body_xa) + model_x_offset;
   roof_xb = min(chamber_dome_roof_right_x(), global_body_xb) + model_x_offset;
 
@@ -261,7 +365,9 @@ module _chamber_shell(side, center_x, assembly_position) {
         wedge_xa,
         wedge_xb,
         -chamber_piece_y / 2,
-        chamber_piece_y / 2
+        chamber_piece_y / 2,
+        keep_wedge_left_wall,
+        keep_wedge_right_wall
       );
     }
 
@@ -315,7 +421,14 @@ module _chamber_flat_roof(xa, xb, y_front, y_back) {
     cube([xb - xa + 0.05, y_back - y_front, chamber_wall], center = true);
 }
 
-module _chamber_profile_shell(xa, xb, y_front, y_back) {
+module _chamber_profile_shell(
+  xa,
+  xb,
+  y_front,
+  y_back,
+  keep_left_wall = true,
+  keep_right_wall = true
+) {
   difference() {
     _chamber_profile_prism(
       xa,
@@ -330,8 +443,8 @@ module _chamber_profile_shell(xa, xb, y_front, y_back) {
     );
 
     _chamber_profile_prism(
-      xa + chamber_wall,
-      xb - chamber_wall,
+      keep_left_wall ? xa + chamber_wall : xa - 0.6,
+      keep_right_wall ? xb - chamber_wall : xb + 0.6,
       y_front + chamber_wall,
       y_back - chamber_wall,
       chamber_bottom,
@@ -393,6 +506,127 @@ module _chamber_passthrough_cut(joint_face_x, i) {
       );
 }
 
+module _chamber_dome_roof_cut(center_x, center_y) {
+  translate([center_x, center_y, chamber_total_z() - chamber_wall / 2])
+    cylinder(
+      d = chamber_dome_roof_hole_d,
+      h = chamber_wall + 1.2,
+      center = true,
+      $fn = 128
+    );
+}
+
+module _chamber_dome_mount_screw_cut(center_x, center_y, sx, sy) {
+  translate([
+    center_x + sx * chamber_dome_mount_screw_xy_offset(),
+    center_y + sy * chamber_dome_mount_screw_xy_offset(),
+    chamber_total_z() - chamber_wall / 2
+  ])
+    cylinder(
+      d = chamber_dome_mount_screw_clearance_d,
+      h = chamber_wall + 1.2,
+      center = true,
+      $fn = 32
+    );
+}
+
+module _chamber_dome_mount_screw_cuts(center_x, center_y) {
+  for (sx = [-1, 1]) {
+    for (sy = [-1, 1]) {
+      _chamber_dome_mount_screw_cut(center_x, center_y, sx, sy);
+    }
+  }
+}
+
+module _chamber_display_void_cut(center_x) {
+  translate([
+    center_x,
+    chamber_display_void_center_y(),
+    chamber_display_void_center_z()
+  ])
+    rotate([chamber_profile_screen_face_angle() - 90, 0, 0])
+      translate([
+        0,
+        (chamber_display_void_depth - chamber_display_void_cut_overlap()) / 2,
+        0
+      ])
+        cube([
+          chamber_display_void_x,
+          chamber_display_void_depth + chamber_display_void_cut_overlap(),
+          chamber_display_void_h
+        ], center = true);
+}
+
+module _chamber_display_split_rail(side, seam_x) {
+  rail_center_x = seam_x + side * chamber_display_seam_rail_w / 2;
+
+  hull() {
+    for (i = [0, 1]) {
+      translate([
+        rail_center_x,
+        chamber_display_seam_rail_screw_y(i),
+        chamber_display_seam_rail_screw_z(i)
+      ])
+        rotate([0, 90, 0])
+          cylinder(
+            d = chamber_display_seam_rail_d,
+            h = chamber_display_seam_rail_w,
+            center = true,
+            $fn = 36
+          );
+    }
+  }
+}
+
+module _chamber_display_split_rail_screw_cut(seam_x, i) {
+  translate([
+    seam_x,
+    chamber_display_seam_rail_screw_y(i),
+    chamber_display_seam_rail_screw_z(i)
+  ])
+    rotate([0, 90, 0])
+      cylinder(
+        d = chamber_display_seam_rail_screw_clearance_d,
+        h = 2 * chamber_display_seam_rail_w + 2 * chamber_wall,
+        center = true,
+        $fn = 32
+      );
+}
+
+module _chamber_display_split_rail_screw_cuts(seam_x) {
+  for (i = [0, 1]) {
+    _chamber_display_split_rail_screw_cut(seam_x, i);
+  }
+}
+
+module _chamber_display_mount_screw_cut(center_x, face_offset) {
+  translate([
+    center_x,
+    chamber_display_void_center_y(),
+    chamber_display_void_center_z()
+  ])
+    rotate([chamber_profile_screen_face_angle() - 90, 0, 0])
+      translate([0, chamber_display_void_cut_overlap() / 2, face_offset])
+        rotate([90, 0, 0])
+          cylinder(
+            d = chamber_display_mount_screw_clearance_d,
+            h = chamber_display_void_cut_overlap() * 2,
+            center = true,
+            $fn = 36
+          );
+}
+
+module _chamber_display_mount_screw_cuts(center_x) {
+  for (sx = [-1, 1]) {
+    for (sz = [-1, 1]) {
+      _chamber_display_mount_screw_cut(
+        center_x + sx * chamber_display_mount_screw_x_offset,
+        sz * chamber_display_mount_screw_face_spacing / 2
+      );
+    }
+  }
+}
+
 module _chamber_bolt_cut(joint_face_x, i) {
   translate([joint_face_x, chamber_bolt_y(i), chamber_bolt_z(i)])
     rotate([0, 90, 0])
@@ -447,15 +681,31 @@ module _chamber_floor_label(center_x, label_text) {
 module _chamber_body(side, assembly_position, label_text) {
   center_x = assembly_position ? side * chamber_piece_x / 2 : 0;
   joint_face_x = assembly_position ? 0 : -side * chamber_piece_x / 2;
+  model_x_offset = assembly_position ? 0 : -side * chamber_piece_x / 2;
+  wedge_web_x = chamber_display_wedge_left_x() + model_x_offset;
+  dome_roof_cut_x = chamber_dome_roof_center_x() + model_x_offset;
+  display_void_cut_x = chamber_display_wedge_center_x() + model_x_offset;
+  display_split_rail_x = model_x_offset;
 
   color(side < 0 ? [0.10, 0.105, 0.11, 0.88] : [0.12, 0.115, 0.10, 0.88])
     difference() {
       union() {
         _chamber_shell(side, center_x, assembly_position);
         _chamber_joint_reinforcement(side, joint_face_x);
+        _chamber_display_split_rail(side, display_split_rail_x);
       }
       for (i = [0 : chamber_joint_passthrough_count - 1]) {
         _chamber_passthrough_cut(joint_face_x, i);
+      }
+      _chamber_display_void_cut(display_void_cut_x);
+      _chamber_display_mount_screw_cuts(display_void_cut_x);
+      _chamber_display_split_rail_screw_cuts(display_split_rail_x);
+      if (side < 0) {
+        for (i = [0 : chamber_joint_passthrough_count - 1]) {
+          _chamber_passthrough_cut(wedge_web_x, i);
+        }
+        _chamber_dome_roof_cut(dome_roof_cut_x, chamber_dome_roof_center_y());
+        _chamber_dome_mount_screw_cuts(dome_roof_cut_x, chamber_dome_roof_center_y());
       }
       for (i = [0 : chamber_joint_bolt_count - 1]) {
         _chamber_bolt_cut(joint_face_x, i);

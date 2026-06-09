@@ -33,7 +33,11 @@ First-draft visual mockup and design brief for a cyberdeck OpenSCAD model.
 - The raised display wedge is right-aligned and currently `260 mm` wide.
 - The left edge of the raised display wedge lands at assembled `x = -67.5 mm`.
 - The left flat dome planning area is currently `125 mm` wide.
-- The left dome area has a flat `2 mm` top roof extending from the display wedge edge to the left outer edge, only over the front/back span of the display wedge geometry.
+- The left dome area has a flat `2 mm` top roof extending from the display wedge edge to the left outer edge.
+- The left dome roof is currently a `125 mm x 125 mm` planning area for the acrylic dome footprint.
+- The dome roof has a centered `96 mm` circular cutout.
+- The acrylic dome mount uses four M3 clearance holes on a `56 mm` radius bolt circle.
+- The dome M3 holes are placed in the top-left, top-right, bottom-left, and bottom-right quadrant positions around the dome cutout.
 - The flat keyboard bay is intentionally open from above for continued layout, mounting, and service-access design.
 - Internal vertical clearance is set to `50 mm` for component volume planning.
 - Chamber walls and bottom floor are currently `2 mm` thick.
@@ -49,17 +53,30 @@ First-draft visual mockup and design brief for a cyberdeck OpenSCAD model.
 - The short rear clearance slope uses a `25.4 mm` run and `25.4 mm` drop, matching the approximate `1 inch` screen-depth clearance target.
 - The forward screen slope uses about a `67.2 mm` run from the ridge back down to the flat keyboard deck.
 - The forward screen slope is now sized as a `95 mm` long mounting face at `45 degrees`.
-- The planned screen opening is `85 mm` tall on the angled face, leaving `5 mm` above and `5 mm` below for mounting margin.
-- The display is expected to inset about `25.4 mm` into the angled face.
+- The screen void is `210 mm` wide and `87 mm` tall, centered on the angled display face.
+- The `87 mm` screen void leaves about `4 mm` of face-height margin above and below within the current `95 mm` mounting face.
+- The display void cuts `25.4 mm` inward from the angled face for the screen body depth.
+- The `2U` screw rows are based on the rack-hole outer pair spacing: `3.0 in` / `76.2 mm` center-to-center.
+- The `2U` screw rows are centered on the angled display face, so each row is `38.1 mm` from the display face centerline.
+- The screw columns sit in the side flanges at `115 mm` left/right from the display centerline: centered between the `210 mm` screen void and the `250 mm` full display/flange width.
+- Display mount screw clearance is currently modeled as `5.5 mm` placeholder holes for rack-style hardware.
 - The display body is expected to need about `210 mm` internal width, with mounting flanges extending another `20 mm` on each side.
 - The raised display wedge width is based on the `250 mm` display/flange width plus `5 mm` side margin on each side.
 - The flat roof area to the left of the display wedge is reserved for the acrylic dome module.
 - The acrylic dome planning area is based on a `115 mm` dome outer diameter plus `5 mm` margin on each side.
 - The inner left edge of the display wedge is modeled as a full-depth structural web that extends down to the bottom of the build.
+- The display wedge web uses the same two circular passthrough openings as the center chamber joint.
+- The raised display wedge is open across the center seam so there is no full-height wall in the middle of the display area.
+- The center seam keeps the lower base-wall joint structure, passthroughs, bosses, and M3 bolt pattern.
+- The display wedge uses an external split-line joining rail at the left/right chamber seam.
+- Each printed half gets one half of the rail at its mating edge, with M3 clearance holes running through the rail across the split.
+- The split-line rail is proud of the rear clearance slope, embedded `1 mm` into the `2 mm` wall for print attachment without protruding into the interior, and remains outside the screen void area.
+- The split-line rail uses `16 mm` fastener pads, with M3 hole centers inset `10 mm` from the rear-slope bends so screw heads and nuts have edge clearance.
 - This first variant models the side-profile shell and angled rear/screen surfaces; it does not yet add the actual screen recess or dome mounting ring.
 - The left and right chambers have matching circular side passthroughs on the mating faces.
 - Current design uses two `38 mm` passthroughs, split front/back from the centerline.
-- Passthrough centers are currently `52.5 mm` forward and `52.5 mm` back from the middle of the mating face.
+- Passthrough centers are currently `52.5 mm` forward and `73 mm` back from the middle of the mating face.
+- The rear passthrough is aligned near the rear `2U` screw row to put more material continuity around the display cutout.
 - The mating faces use a six-bolt M3 pattern.
 - Four bolts sit near the mating-face corners.
 - Two bolts sit on the vertical centerline, one low and one high.
