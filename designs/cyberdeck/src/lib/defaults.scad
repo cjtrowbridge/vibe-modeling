@@ -13,7 +13,10 @@
 // 0 = full visual mockup
 // 1 = top layout mockup
 // 2 = internal hardware proxy layout
-part_id = 0;
+// 3 = two-piece open chamber structure
+// 4 = left open chamber printable body
+// 5 = right open chamber printable body
+part_id = 3;
 
 // Case envelope
 deck_x = 480.0;
@@ -21,6 +24,35 @@ deck_y = 300.0;
 deck_h = 42.0;
 deck_corner_r = 12.0;
 top_panel_thickness = 3.0;
+
+// Two-piece printable chamber structure
+print_volume_x = 220.0;
+print_volume_y = 220.0;
+print_volume_z = 220.0;
+chamber_piece_x = 214.0;
+chamber_piece_y = 210.0;
+chamber_internal_clearance_z = 50.0;
+chamber_wall = 2.0;
+chamber_bottom = 2.0;
+chamber_display_cutout_h = 85.0;
+chamber_display_mount_margin = 5.0;
+chamber_display_mount_face_len = chamber_display_cutout_h + 2 * chamber_display_mount_margin;
+chamber_profile_peak_rise = chamber_display_mount_face_len / sqrt(2);
+chamber_profile_rear_slope_run = 25.4;
+chamber_profile_rear_slope_drop = 25.4;
+chamber_profile_screen_slope_run = chamber_display_mount_face_len / sqrt(2);
+chamber_joint_passthrough_count = 2;
+chamber_joint_passthrough_d = 38.0;
+chamber_joint_passthrough_spacing_y = chamber_piece_y / 2;
+chamber_joint_center_y = 0.0;
+chamber_joint_center_z = chamber_bottom + chamber_internal_clearance_z / 2;
+chamber_joint_bolt_count = 6;
+chamber_joint_bolt_edge_inset_y = 15.0;
+chamber_joint_bolt_edge_inset_z = 10.0;
+chamber_joint_bolt_clearance_d = 3.4;
+chamber_joint_bolt_boss_d = 10.0;
+chamber_joint_boss_depth = 8.0;
+chamber_joint_ring_wall = 5.0;
 
 // Secondary display and rack rails
 display_active_x = 208.0;

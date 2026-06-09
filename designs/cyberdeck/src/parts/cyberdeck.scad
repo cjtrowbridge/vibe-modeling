@@ -40,6 +40,38 @@ function exhaust_total_x() =
   opi_exhaust_slot_count * opi_exhaust_slot_w
   + (opi_exhaust_slot_count - 1) * opi_exhaust_slot_gap;
 function cell_pitch() = cell18650_d + 2.5;
+function chamber_total_z() = chamber_bottom + chamber_internal_clearance_z;
+function chamber_profile_peak_z() = chamber_total_z() + chamber_profile_peak_rise;
+function chamber_profile_peak_y() =
+  chamber_piece_y / 2 - chamber_profile_rear_slope_run;
+function chamber_profile_screen_foot_y() =
+  chamber_profile_peak_y() - chamber_profile_screen_slope_run;
+function chamber_profile_screen_face_len() =
+  sqrt(
+    chamber_profile_peak_rise * chamber_profile_peak_rise
+    + chamber_profile_screen_slope_run * chamber_profile_screen_slope_run
+  );
+function chamber_profile_back_wall_z() =
+  chamber_profile_peak_z() - chamber_profile_rear_slope_drop;
+function chamber_profile_back_wall_rise() =
+  chamber_profile_back_wall_z() - chamber_total_z();
+function chamber_angled_wall_vertical_offset() = chamber_wall * sqrt(2);
+function chamber_joint_ring_outer_d() =
+  chamber_joint_passthrough_d + 2 * chamber_joint_ring_wall;
+function chamber_passthrough_y(i) =
+  chamber_joint_center_y
+  + (i - (chamber_joint_passthrough_count - 1) / 2)
+  * chamber_joint_passthrough_spacing_y;
+function chamber_bolt_low_z() = chamber_bottom + chamber_joint_bolt_edge_inset_z;
+function chamber_bolt_high_z() = chamber_total_z() - chamber_joint_bolt_edge_inset_z;
+function chamber_bolt_outer_y() =
+  chamber_piece_y / 2 - chamber_joint_bolt_edge_inset_y;
+function chamber_bolt_y(i) =
+  i < 2 ? -chamber_bolt_outer_y()
+    : i < 4 ? chamber_bolt_outer_y()
+    : 0;
+function chamber_bolt_z(i) =
+  (i == 0 || i == 2 || i == 4) ? chamber_bolt_low_z() : chamber_bolt_high_z();
 
 module _assert_dims() {
   assert(deck_x > 0 && deck_y > 0 && deck_h > 0,
@@ -85,6 +117,79 @@ module _assert_dims() {
     "keyboard footprint exceeds chassis width");
   assert(opi_exhaust_slot_count > 0,
     "opi_exhaust_slot_count must be > 0");
+
+  assert(print_volume_x > 0 && print_volume_y > 0 && print_volume_z > 0,
+    "print volume dimensions must be > 0");
+  assert(chamber_piece_x <= print_volume_x,
+    "each chamber must fit the print volume in X");
+  assert(chamber_piece_y <= print_volume_y,
+    "each chamber must fit the print volume in Y");
+  assert(chamber_total_z() <= print_volume_z,
+    "each chamber must fit the print volume in Z");
+  assert(chamber_wall > 0 && chamber_bottom > 0,
+    "chamber wall and bottom thickness must be > 0");
+  assert(chamber_display_cutout_h > 0 && chamber_display_mount_margin >= 0,
+    "display cutout height must be > 0 and margin must be >= 0");
+  assert(chamber_display_mount_face_len >= chamber_display_cutout_h + 2 * chamber_display_mount_margin,
+    "display mount face length must include the cutout and top/bottom margins");
+  assert(chamber_piece_x > 2 * chamber_wall && chamber_piece_y > 2 * chamber_wall,
+    "chamber walls are too thick for the selected footprint");
+  assert(chamber_internal_clearance_z >= 50,
+    "chamber internal clearance must be at least 50 mm");
+  assert(chamber_profile_peak_rise > 0,
+    "chamber profile peak rise must be > 0");
+  assert(chamber_profile_rear_slope_run > 0,
+    "chamber rear slope run must be > 0");
+  assert(chamber_profile_rear_slope_drop > 0,
+    "chamber rear slope drop must be > 0");
+  assert(chamber_profile_screen_slope_run > 0,
+    "chamber screen slope run must be > 0");
+  assert(abs(chamber_profile_peak_rise - chamber_profile_screen_slope_run) < 0.02,
+    "screen face must remain 45 degrees");
+  assert(chamber_profile_screen_face_len() >= chamber_display_mount_face_len,
+    "screen face length is too short for the display mounting face");
+  assert(chamber_profile_peak_z() <= print_volume_z,
+    "side profile peak exceeds print volume Z");
+  assert(chamber_profile_back_wall_z() > chamber_total_z(),
+    "hybrid back wall must remain raised above the flat keyboard deck");
+  assert(chamber_profile_back_wall_z() < chamber_profile_peak_z(),
+    "hybrid back wall must sit below the side-profile peak");
+  assert(chamber_profile_peak_y() < chamber_piece_y / 2,
+    "side profile peak must sit forward of the rear edge");
+  assert(chamber_profile_screen_foot_y() > -chamber_piece_y / 2,
+    "side profile screen slope must meet the flat deck inside the chamber depth");
+  assert(chamber_profile_screen_foot_y() < chamber_profile_peak_y(),
+    "side profile screen foot must be forward of the peak");
+  assert(chamber_joint_passthrough_count == 2,
+    "this chamber mockup expects two front/back passthroughs");
+  assert(chamber_joint_passthrough_d > 0,
+    "chamber passthrough diameter must be > 0");
+  assert(chamber_joint_passthrough_spacing_y > 0,
+    "chamber passthrough spacing must be > 0");
+  assert(chamber_joint_center_z - chamber_joint_passthrough_d / 2 > chamber_bottom,
+    "chamber passthrough intersects the chamber floor");
+  assert(chamber_joint_center_z + chamber_joint_passthrough_d / 2 < chamber_total_z(),
+    "chamber passthrough exceeds the open chamber height");
+  for (i = [0 : chamber_joint_passthrough_count - 1]) {
+    assert(abs(chamber_passthrough_y(i)) + chamber_joint_ring_outer_d() / 2 <= chamber_piece_y / 2,
+      "chamber passthrough reinforcement exceeds chamber depth");
+  }
+  assert(chamber_joint_center_z - chamber_joint_ring_outer_d() / 2 >= chamber_bottom,
+    "chamber passthrough reinforcement intersects the chamber floor");
+  assert(chamber_joint_center_z + chamber_joint_ring_outer_d() / 2 <= chamber_total_z(),
+    "chamber passthrough reinforcement exceeds the open chamber height");
+  assert(chamber_joint_bolt_count == 6,
+    "this chamber mockup expects six M3 bolts on the mating face");
+  assert(chamber_joint_bolt_clearance_d >= 3.0,
+    "M3 bolt clearance should be at least 3.0 mm");
+  for (i = [0 : chamber_joint_bolt_count - 1]) {
+    assert(abs(chamber_bolt_y(i)) + chamber_joint_bolt_boss_d / 2 <= chamber_piece_y / 2,
+      "chamber bolt boss exceeds chamber depth");
+    assert(chamber_bolt_z(i) - chamber_joint_bolt_boss_d / 2 >= chamber_bottom,
+      "chamber bolt boss intersects the chamber floor");
+    assert(chamber_bolt_z(i) + chamber_joint_bolt_boss_d / 2 <= chamber_total_z(),
+      "chamber bolt boss exceeds the open chamber height");
+  }
 }
 
 module _rounded_rect_2d(w, d, r) {
@@ -105,6 +210,156 @@ module _rounded_rect_2d(w, d, r) {
 module _rounded_box(w, d, h, r) {
   linear_extrude(height = h, center = false, convexity = 8)
     _rounded_rect_2d(w, d, r);
+}
+
+module _chamber_shell(center_x) {
+  difference() {
+    _chamber_profile_prism(
+      center_x - chamber_piece_x / 2,
+      center_x + chamber_piece_x / 2,
+      -chamber_piece_y / 2,
+      chamber_piece_y / 2,
+      0,
+      0,
+      0,
+      0,
+      0
+    );
+
+    _chamber_profile_prism(
+      center_x - chamber_piece_x / 2 + chamber_wall,
+      center_x + chamber_piece_x / 2 - chamber_wall,
+      -chamber_piece_y / 2 + chamber_wall,
+      chamber_piece_y / 2 - chamber_wall,
+      chamber_bottom,
+      0.6,
+      -chamber_angled_wall_vertical_offset(),
+      -chamber_angled_wall_vertical_offset(),
+      -chamber_angled_wall_vertical_offset()
+    );
+  }
+}
+
+module _chamber_profile_prism(
+  xa,
+  xb,
+  y_front,
+  y_back,
+  z_bottom,
+  front_top_extra,
+  back_slope_extra,
+  screen_slope_extra,
+  ridge_extra
+) {
+  z_flat = chamber_total_z();
+  y_screen = chamber_profile_screen_foot_y();
+  y_peak = chamber_profile_peak_y();
+  z_peak = chamber_profile_peak_z();
+  z_back = chamber_profile_back_wall_z();
+
+  multmatrix([
+    [0, 0, 1, xa],
+    [1, 0, 0, 0],
+    [0, 1, 0, 0],
+    [0, 0, 0, 1]
+  ])
+    linear_extrude(height = xb - xa, center = false, convexity = 4)
+      polygon(points = concat(
+        [
+          [y_front, z_bottom],
+          [y_back, z_bottom],
+          [y_back, z_back + back_slope_extra],
+          [y_peak, z_peak + ridge_extra],
+          [y_screen, z_flat + screen_slope_extra]
+        ],
+        front_top_extra == screen_slope_extra
+          ? []
+          : [[y_screen, z_flat + front_top_extra]],
+        [[y_front, z_flat + front_top_extra]]
+      ));
+}
+
+module _chamber_passthrough_cut(joint_face_x, i) {
+  translate([joint_face_x, chamber_passthrough_y(i), chamber_joint_center_z])
+    rotate([0, 90, 0])
+      cylinder(
+        d = chamber_joint_passthrough_d,
+        h = chamber_joint_boss_depth * 2 + chamber_wall * 4,
+        center = true,
+        $fn = 72
+      );
+}
+
+module _chamber_bolt_cut(joint_face_x, i) {
+  translate([joint_face_x, chamber_bolt_y(i), chamber_bolt_z(i)])
+    rotate([0, 90, 0])
+      cylinder(
+        d = chamber_joint_bolt_clearance_d,
+        h = chamber_joint_boss_depth * 2 + chamber_wall * 4,
+        center = true,
+        $fn = 28
+      );
+}
+
+module _chamber_joint_reinforcement(side, joint_face_x) {
+  boss_center_x = joint_face_x + side * chamber_joint_boss_depth / 2;
+
+  for (i = [0 : chamber_joint_passthrough_count - 1]) {
+    translate([boss_center_x, chamber_passthrough_y(i), chamber_joint_center_z])
+      rotate([0, 90, 0])
+        difference() {
+          cylinder(
+            d = chamber_joint_ring_outer_d(),
+            h = chamber_joint_boss_depth,
+            center = true,
+            $fn = 72
+          );
+          cylinder(
+            d = chamber_joint_passthrough_d,
+            h = chamber_joint_boss_depth + 0.4,
+            center = true,
+            $fn = 72
+          );
+        }
+  }
+
+  for (i = [0 : chamber_joint_bolt_count - 1]) {
+    translate([boss_center_x, chamber_bolt_y(i), chamber_bolt_z(i)])
+      rotate([0, 90, 0])
+        cylinder(
+          d = chamber_joint_bolt_boss_d,
+          h = chamber_joint_boss_depth,
+          center = true,
+          $fn = 36
+        );
+  }
+}
+
+module _chamber_floor_label(center_x, label_text) {
+  color([0.70, 0.70, 0.60, 1.0])
+    translate([center_x, 0, chamber_bottom + 0.2])
+      _label(label_text, 8, 0.35);
+}
+
+module _chamber_body(side, assembly_position, label_text) {
+  center_x = assembly_position ? side * chamber_piece_x / 2 : 0;
+  joint_face_x = assembly_position ? 0 : -side * chamber_piece_x / 2;
+
+  color(side < 0 ? [0.10, 0.105, 0.11, 0.88] : [0.12, 0.115, 0.10, 0.88])
+    difference() {
+      union() {
+        _chamber_shell(center_x);
+        _chamber_joint_reinforcement(side, joint_face_x);
+      }
+      for (i = [0 : chamber_joint_passthrough_count - 1]) {
+        _chamber_passthrough_cut(joint_face_x, i);
+      }
+      for (i = [0 : chamber_joint_bolt_count - 1]) {
+        _chamber_bolt_cut(joint_face_x, i);
+      }
+    }
+
+  _chamber_floor_label(center_x, label_text);
 }
 
 module _label(text_value, size = 7, h = 0.35) {
@@ -396,6 +651,22 @@ module cyberdeck_internal_layout_mockup() {
     _rounded_box(deck_x, deck_y, deck_h, deck_corner_r);
   _front_exhaust();
   _internal_hardware_layout();
+}
+
+module cyberdeck_two_chamber_structure() {
+  _assert_dims();
+  cyberdeck_left_chamber_body(true);
+  cyberdeck_right_chamber_body(true);
+}
+
+module cyberdeck_left_chamber_body(assembly_position = false) {
+  _assert_dims();
+  _chamber_body(-1, assembly_position, "LEFT CHAMBER");
+}
+
+module cyberdeck_right_chamber_body(assembly_position = false) {
+  _assert_dims();
+  _chamber_body(1, assembly_position, "RIGHT CHAMBER");
 }
 
 module cyberdeck_visual_mockup() {

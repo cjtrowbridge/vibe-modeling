@@ -8,6 +8,7 @@ First-draft visual mockup and design brief for a cyberdeck OpenSCAD model.
 - Provides a `main.scad` scripted export entrypoint.
 - Provides a minimal `rev_0001.json` config with numeric `part_id`.
 - Provides a first-draft visual mockup for layout review.
+- Adds a two-piece open chamber structure for print-bed-constrained enclosure planning.
 - Uses known dimensions from the design brief where available.
 - Uses clearly named proxy dimensions for hardware that still needs exact mechanical measurement.
 - Does not yet define printable enclosure details, final mounting geometry, wiring channels, or manufacturable clearances.
@@ -17,6 +18,47 @@ First-draft visual mockup and design brief for a cyberdeck OpenSCAD model.
 - `part_id = 0`: full visual mockup
 - `part_id = 1`: top layout mockup
 - `part_id = 2`: internal hardware proxy layout
+- `part_id = 3`: two-piece open chamber structure
+- `part_id = 4`: left open chamber printable body
+- `part_id = 5`: right open chamber printable body
+
+## Revision 0002 Printable Chamber Study
+
+- Printer build-volume constraint is assumed to be `220 mm x 220 mm x 220 mm`.
+- The cyberdeck lower structure is split into two printable chambers that meet at the centerline.
+- Each chamber body footprint is currently `214 mm x 210 mm`, so each individual print fits inside the build volume.
+- Flat chamber height is currently `52 mm`; side-profile peak height is currently about `119.2 mm`.
+- Raised back-wall top height is currently about `93.8 mm`.
+- Combined assembled footprint is currently about `428 mm x 210 mm x 119.2 mm`.
+- The flat keyboard bay is intentionally open from above for continued layout, mounting, and service-access design.
+- Internal vertical clearance is set to `50 mm` for component volume planning.
+- Chamber walls and bottom floor are currently `2 mm` thick.
+- The short rear clearance slope and forward screen slope are shelled with a `2 mm` normal offset.
+- The flat keyboard deck area remains open; it does not have a top roof panel.
+- The four left/right side walls now use a hybrid raised-back side profile instead of the earlier peaked tent profile.
+- The front area remains at the flat keyboard-deck height.
+- The front flat keyboard bay is now about `117.4 mm` deep in the current side-profile study.
+- The screen slope starts farther back to clear the approximately `115 mm` keyboard depth.
+- The rear edge is now a raised vertical back wall, not a low flat-height edge.
+- The short rear slope runs from the side-profile ridge down to the raised back-wall top.
+- Current side-profile ridge rises about `67.2 mm` above the flat chamber top.
+- The short rear clearance slope uses a `25.4 mm` run and `25.4 mm` drop, matching the approximate `1 inch` screen-depth clearance target.
+- The forward screen slope uses about a `67.2 mm` run from the ridge back down to the flat keyboard deck.
+- The forward screen slope is now sized as a `95 mm` long mounting face at `45 degrees`.
+- The planned screen opening is `85 mm` tall on the angled face, leaving `5 mm` above and `5 mm` below for mounting margin.
+- The display is expected to inset about `25.4 mm` into the angled face.
+- The display body is expected to need about `210 mm` internal width, with mounting flanges extending another `20 mm` on each side.
+- This first variant models the side-profile shell and angled rear/screen surfaces; it does not yet add the actual screen recess or dome mounting ring.
+- The left and right chambers have matching circular side passthroughs on the mating faces.
+- Current design uses two `38 mm` passthroughs, split front/back from the centerline.
+- Passthrough centers are currently `52.5 mm` forward and `52.5 mm` back from the middle of the mating face.
+- The mating faces use a six-bolt M3 pattern.
+- Four bolts sit near the mating-face corners.
+- Two bolts sit on the vertical centerline, one low and one high.
+- Bolt holes are modeled as `3.4 mm` M3 clearance holes.
+- Local reinforcement bosses and circular rings are modeled around the passthrough/bolt pattern to make the joint read as structural rather than only cosmetic.
+- This revision is still an enclosure architecture study, not a final printable mechanical design.
+- Next steps are to add top mounting interfaces for the keyboard/screen, internal standoffs, cooling ducts, cable paths, and service clearances.
 
 ## Revision 0001 Mockup Notes
 
