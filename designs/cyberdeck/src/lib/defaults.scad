@@ -58,24 +58,30 @@ chamber_profile_rear_slope_run = 25.4;
 chamber_profile_rear_slope_drop = 25.4;
 chamber_profile_screen_slope_run = chamber_display_mount_face_len / sqrt(2);
 chamber_display_seam_rail_w = 8.0;
-chamber_display_seam_rail_d = 16.0;
+chamber_display_seam_rail_d = 15.0;
 chamber_display_seam_rail_embed = 1.0;
 chamber_display_seam_rail_bend_inset = 10.0;
 chamber_display_seam_rail_screw_clearance_d = 3.4;
+chamber_keyboard_lid_inset = 2.0;
+chamber_keyboard_lid_rail_w = 6.0;
+chamber_keyboard_lid_rail_h = 2.0;
+chamber_keyboard_lid_back_edge_y =
+  chamber_piece_y / 2 - chamber_profile_rear_slope_run - chamber_profile_screen_slope_run;
+chamber_keyboard_lid_left_back_edge_y = chamber_piece_y / 2 - chamber_dome_area_y;
 chamber_joint_passthrough_count = 2;
-chamber_joint_passthrough_d = 38.0;
+chamber_joint_passthrough_d = 30.0;
 chamber_joint_passthrough_spacing_y = chamber_piece_y / 2;
 chamber_joint_passthrough_front_y = -chamber_joint_passthrough_spacing_y / 2;
 chamber_joint_passthrough_rear_y = 73.0;
 chamber_joint_center_y = 0.0;
-chamber_joint_center_z = chamber_bottom + chamber_internal_clearance_z / 2;
+chamber_joint_center_z = 22.0;
 chamber_joint_bolt_count = 6;
 chamber_joint_bolt_edge_inset_y = 15.0;
 chamber_joint_bolt_edge_inset_z = 10.0;
 chamber_joint_bolt_clearance_d = 3.4;
 chamber_joint_bolt_boss_d = 10.0;
 chamber_joint_boss_depth = 8.0;
-chamber_joint_ring_wall = 5.0;
+chamber_joint_ring_wall = 4.0;
 
 // Secondary display and rack rails
 display_active_x = 208.0;

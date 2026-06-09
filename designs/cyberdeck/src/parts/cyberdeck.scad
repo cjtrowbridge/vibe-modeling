@@ -106,6 +106,22 @@ function chamber_display_seam_rail_outward_y() =
 function chamber_display_seam_rail_outward_z() =
   chamber_display_seam_rail_outward_offset()
   * chamber_profile_rear_slope_run / chamber_profile_rear_slope_len();
+function chamber_display_seam_rail_inner_y(t) =
+  chamber_display_seam_rail_y(t)
+  - chamber_display_seam_rail_embed
+  * chamber_profile_rear_slope_drop / chamber_profile_rear_slope_len();
+function chamber_display_seam_rail_inner_z(t) =
+  chamber_display_seam_rail_z(t)
+  - chamber_display_seam_rail_embed
+  * chamber_profile_rear_slope_run / chamber_profile_rear_slope_len();
+function chamber_display_seam_rail_outer_y(t) =
+  chamber_display_seam_rail_y(t)
+  + (chamber_display_seam_rail_d - chamber_display_seam_rail_embed)
+  * chamber_profile_rear_slope_drop / chamber_profile_rear_slope_len();
+function chamber_display_seam_rail_outer_z(t) =
+  chamber_display_seam_rail_z(t)
+  + (chamber_display_seam_rail_d - chamber_display_seam_rail_embed)
+  * chamber_profile_rear_slope_run / chamber_profile_rear_slope_len();
 function chamber_display_seam_rail_screw_y(i) =
   chamber_display_seam_rail_y(
     i == 0 ? chamber_display_seam_rail_start_t() : chamber_display_seam_rail_end_t()
@@ -114,6 +130,12 @@ function chamber_display_seam_rail_screw_z(i) =
   chamber_display_seam_rail_z(
     i == 0 ? chamber_display_seam_rail_start_t() : chamber_display_seam_rail_end_t()
   ) + chamber_display_seam_rail_outward_z();
+function chamber_keyboard_lid_rail_top_z() =
+  chamber_total_z() - chamber_keyboard_lid_inset;
+function chamber_keyboard_lid_rail_center_z() =
+  chamber_keyboard_lid_rail_top_z() - chamber_keyboard_lid_rail_h / 2;
+function chamber_keyboard_lid_front_edge_y() =
+  -chamber_piece_y / 2 + chamber_wall;
 function chamber_profile_back_wall_z() =
   chamber_profile_peak_z() - chamber_profile_rear_slope_drop;
 function chamber_profile_back_wall_rise() =
@@ -283,6 +305,25 @@ module _assert_dims() {
   assert(chamber_display_seam_rail_bend_inset > chamber_display_seam_rail_screw_clearance_d
     && 2 * chamber_display_seam_rail_bend_inset < chamber_profile_rear_slope_len(),
     "display seam rail screw holes must stay between the rear-slope bends");
+  assert(chamber_display_seam_rail_outer_y(1) - (-chamber_piece_y / 2) <= print_volume_y,
+    "display seam rail must fit inside print volume Y");
+  assert(chamber_keyboard_lid_inset > 0
+    && chamber_keyboard_lid_rail_top_z() < chamber_total_z(),
+    "keyboard lid rail must sit below the flat deck top");
+  assert(chamber_keyboard_lid_rail_w > 0 && chamber_keyboard_lid_rail_h > 0,
+    "keyboard lid rail dimensions must be > 0");
+  assert(chamber_keyboard_lid_rail_center_z() - chamber_keyboard_lid_rail_h / 2 > chamber_bottom,
+    "keyboard lid rail must stay above the chamber floor");
+  assert(chamber_keyboard_lid_back_edge_y > chamber_keyboard_lid_front_edge_y()
+    + 2 * chamber_keyboard_lid_rail_w,
+    "keyboard lid rail back edge must leave a usable front opening");
+  assert(chamber_keyboard_lid_back_edge_y <= chamber_profile_screen_foot_y() + 0.1,
+    "keyboard lid rail back edge must not extend into the screen slope");
+  assert(chamber_keyboard_lid_left_back_edge_y > chamber_keyboard_lid_front_edge_y()
+    + 2 * chamber_keyboard_lid_rail_w,
+    "left keyboard lid rail back edge must leave a usable opening");
+  assert(chamber_keyboard_lid_left_back_edge_y <= chamber_dome_roof_front_y() + 0.1,
+    "left keyboard lid rail back edge must stay in front of the dome roof");
   assert(chamber_joint_passthrough_count == 2,
     "this chamber mockup expects two front/back passthroughs");
   assert(chamber_joint_passthrough_d > 0,
@@ -305,6 +346,9 @@ module _assert_dims() {
     "chamber passthrough reinforcement intersects the chamber floor");
   assert(chamber_joint_center_z + chamber_joint_ring_outer_d() / 2 <= chamber_total_z(),
     "chamber passthrough reinforcement exceeds the open chamber height");
+  assert(chamber_joint_center_z + chamber_joint_ring_outer_d() / 2
+    < chamber_keyboard_lid_rail_center_z() - chamber_keyboard_lid_rail_h / 2,
+    "chamber passthrough reinforcement must clear the keyboard lid rail");
   assert(chamber_joint_bolt_count == 6,
     "this chamber mockup expects six M3 bolts on the mating face");
   assert(chamber_joint_bolt_clearance_d >= 3.0,
@@ -351,6 +395,10 @@ module _chamber_shell(side, center_x, assembly_position) {
   keep_wedge_right_wall = abs(wedge_global_xb - chamber_display_wedge_right_x()) < 0.01;
   roof_xa = max(chamber_dome_roof_left_x(), global_body_xa) + model_x_offset;
   roof_xb = min(chamber_dome_roof_right_x(), global_body_xb) + model_x_offset;
+  left_keyboard_rail_xa = global_body_xa + model_x_offset;
+  left_keyboard_rail_xb = min(chamber_dome_roof_right_x(), global_body_xb) + model_x_offset;
+  keyboard_rail_xa = max(chamber_dome_roof_right_x(), global_body_xa) + model_x_offset;
+  keyboard_rail_xb = global_body_xb + model_x_offset;
 
   union() {
     _chamber_flat_tray(
@@ -359,6 +407,22 @@ module _chamber_shell(side, center_x, assembly_position) {
       -chamber_piece_y / 2,
       chamber_piece_y / 2
     );
+
+    if (keyboard_rail_xb > keyboard_rail_xa) {
+      _chamber_keyboard_lid_support_rail(
+        keyboard_rail_xa,
+        keyboard_rail_xb,
+        chamber_keyboard_lid_back_edge_y
+      );
+    }
+
+    if (left_keyboard_rail_xb > left_keyboard_rail_xa) {
+      _chamber_keyboard_lid_support_rail(
+        left_keyboard_rail_xa,
+        left_keyboard_rail_xb,
+        chamber_keyboard_lid_left_back_edge_y
+      );
+    }
 
     if (wedge_xb > wedge_xa) {
       _chamber_profile_shell(
@@ -419,6 +483,34 @@ module _chamber_flat_roof(xa, xb, y_front, y_back) {
     chamber_total_z() - chamber_wall / 2
   ])
     cube([xb - xa + 0.05, y_back - y_front, chamber_wall], center = true);
+}
+
+module _chamber_keyboard_lid_support_rail(xa, xb, y_back) {
+  attach_overlap = 0.4;
+  outer_xa = xa + chamber_wall - attach_overlap;
+  outer_xb = xb - chamber_wall + attach_overlap;
+  y_front = chamber_keyboard_lid_front_edge_y();
+  outer_y_front = y_front - attach_overlap;
+  outer_y_back = y_back;
+  rail_x = outer_xb - outer_xa;
+  rail_y = outer_y_back - outer_y_front;
+
+  if (rail_x > 2 * chamber_keyboard_lid_rail_w
+      && rail_y > 2 * chamber_keyboard_lid_rail_w) {
+    translate([
+      (outer_xa + outer_xb) / 2,
+      (outer_y_front + outer_y_back) / 2,
+      chamber_keyboard_lid_rail_center_z() - chamber_keyboard_lid_rail_h / 2
+    ])
+      linear_extrude(height = chamber_keyboard_lid_rail_h, center = false, convexity = 4)
+        difference() {
+          square([rail_x, rail_y], center = true);
+          square([
+            rail_x - 2 * chamber_keyboard_lid_rail_w,
+            rail_y - 2 * chamber_keyboard_lid_rail_w
+          ], center = true);
+        }
+  }
 }
 
 module _chamber_profile_shell(
@@ -558,24 +650,34 @@ module _chamber_display_void_cut(center_x) {
 }
 
 module _chamber_display_split_rail(side, seam_x) {
-  rail_center_x = seam_x + side * chamber_display_seam_rail_w / 2;
+  rail_xa = min(seam_x, seam_x + side * chamber_display_seam_rail_w);
+  rail_xb = max(seam_x, seam_x + side * chamber_display_seam_rail_w);
 
-  hull() {
-    for (i = [0, 1]) {
-      translate([
-        rail_center_x,
-        chamber_display_seam_rail_screw_y(i),
-        chamber_display_seam_rail_screw_z(i)
-      ])
-        rotate([0, 90, 0])
-          cylinder(
-            d = chamber_display_seam_rail_d,
-            h = chamber_display_seam_rail_w,
-            center = true,
-            $fn = 36
-          );
-    }
-  }
+  multmatrix([
+    [0, 0, 1, rail_xa],
+    [1, 0, 0, 0],
+    [0, 1, 0, 0],
+    [0, 0, 0, 1]
+  ])
+    linear_extrude(height = rail_xb - rail_xa, center = false, convexity = 4)
+      polygon(points = [
+        [
+          chamber_display_seam_rail_inner_y(0),
+          chamber_display_seam_rail_inner_z(0)
+        ],
+        [
+          chamber_display_seam_rail_inner_y(1),
+          chamber_display_seam_rail_inner_z(1)
+        ],
+        [
+          chamber_display_seam_rail_outer_y(1),
+          chamber_display_seam_rail_outer_z(1)
+        ],
+        [
+          chamber_display_seam_rail_outer_y(0),
+          chamber_display_seam_rail_outer_z(0)
+        ]
+      ]);
 }
 
 module _chamber_display_split_rail_screw_cut(seam_x, i) {

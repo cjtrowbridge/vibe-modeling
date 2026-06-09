@@ -39,6 +39,11 @@ First-draft visual mockup and design brief for a cyberdeck OpenSCAD model.
 - The acrylic dome mount uses four M3 clearance holes on a `56 mm` radius bolt circle.
 - The dome M3 holes are placed in the top-left, top-right, bottom-left, and bottom-right quadrant positions around the dome cutout.
 - The flat keyboard bay is intentionally open from above for continued layout, mounting, and service-access design.
+- The flat keyboard bay now includes an internal support rail for a future inset lid.
+- The future keyboard-area lid is planned to sit `2 mm` below the flat deck top and rest on a `6 mm` wide, `2 mm` tall rail around the opening.
+- The current rear edge of that lid rail is aligned to the start of the `45 degree` screen slope at assembled `y = 12.424 mm`.
+- The keyboard-area lid rail is constrained to the display/keyboard bay to the right of the dome roof so it does not intersect the dome cutout.
+- A separate left-front lid rail frame is modeled in front of the dome roof, ending at assembled `y = -20 mm`.
 - Internal vertical clearance is set to `50 mm` for component volume planning.
 - Chamber walls and bottom floor are currently `2 mm` thick.
 - The short rear clearance slope and forward screen slope are shelled with a `2 mm` normal offset.
@@ -71,10 +76,12 @@ First-draft visual mockup and design brief for a cyberdeck OpenSCAD model.
 - The display wedge uses an external split-line joining rail at the left/right chamber seam.
 - Each printed half gets one half of the rail at its mating edge, with M3 clearance holes running through the rail across the split.
 - The split-line rail is proud of the rear clearance slope, embedded `1 mm` into the `2 mm` wall for print attachment without protruding into the interior, and remains outside the screen void area.
-- The split-line rail uses `16 mm` fastener pads, with M3 hole centers inset `10 mm` from the rear-slope bends so screw heads and nuts have edge clearance.
+- The split-line rail is modeled as a flat-ended `15 mm` tab that reaches the rear-slope bend lines instead of curving inward before the wall.
+- M3 hole centers remain inset `10 mm` from the rear-slope bends so screw heads and nuts have edge clearance.
 - This first variant models the side-profile shell and angled rear/screen surfaces; it does not yet add the actual screen recess or dome mounting ring.
 - The left and right chambers have matching circular side passthroughs on the mating faces.
-- Current design uses two `38 mm` passthroughs, split front/back from the centerline.
+- Current design uses two `30 mm` passthroughs, split front/back from the centerline.
+- The passthrough centerline is lowered to `z = 22 mm`, with a `4 mm` ring wall, so the passthrough reinforcement clears the inset lid rails.
 - Passthrough centers are currently `52.5 mm` forward and `73 mm` back from the middle of the mating face.
 - The rear passthrough is aligned near the rear `2U` screw row to put more material continuity around the display cutout.
 - The mating faces use a six-bolt M3 pattern.
