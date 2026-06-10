@@ -72,8 +72,9 @@ First-draft visual mockup and design brief for a cyberdeck OpenSCAD model.
 - The side-wall handle screw rows are centered vertically on the flat chamber side at assembled `z = 13 mm` and `z = 39 mm`.
 - The dome bucket insert is a separate printable pot for the pan/tilt eye and laser mechanism.
 - The insert body is sized to slide into the `96 mm` dome roof hole with `1 mm` radial clearance, giving a `94 mm` outer cylinder.
-- The bucket, raised internal floor, and top lip all use `3 mm` wall thickness.
-- The bucket lip matches the acrylic dome outer diameter at `115 mm` and reuses the existing four-hole dome M3 bolt pattern.
+- The bucket, raised internal floor, top lip, and screw-hole edge margin all use `3 mm` wall thickness/margin.
+- The bucket lip covers the `115 mm` acrylic dome outline and extends to the existing four-hole M3 dome bolt pattern with `3 mm` of material outside the screw holes.
+- The bucket sidewall continues through the top lip, keeping the lip's internal opening continuous with the bucket's internal diameter.
 - The bucket sides reach to the chamber base, while the internal floor is lifted `3 mm` above the chamber base.
 - The bucket includes front and side passthrough windows for servo/camera/laser wiring to reach nearby internal passthroughs.
 - Internal vertical clearance is set to `50 mm` for component volume planning.

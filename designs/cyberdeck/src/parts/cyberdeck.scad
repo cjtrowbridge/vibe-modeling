@@ -226,9 +226,16 @@ function chamber_dome_bucket_outer_d() =
 function chamber_dome_bucket_inner_d() =
   chamber_dome_bucket_outer_d() - 2 * chamber_dome_bucket_wall;
 function chamber_dome_bucket_lip_outer_d() =
-  chamber_dome_outer_d;
+  max(
+    chamber_dome_outer_d,
+    2 * (
+      chamber_dome_mount_screw_radius
+      + chamber_dome_mount_screw_clearance_d / 2
+      + chamber_dome_bucket_lip_screw_edge_margin
+    )
+  );
 function chamber_dome_bucket_lip_inner_d() =
-  chamber_dome_bucket_outer_d();
+  chamber_dome_bucket_inner_d();
 function chamber_dome_bucket_total_h() =
   chamber_total_z() + chamber_dome_bucket_lip_h;
 function chamber_dome_bucket_floor_z() =
@@ -653,8 +660,12 @@ module _assert_dims() {
   assert(chamber_dome_bucket_outer_d() > 2 * chamber_dome_bucket_wall
     && chamber_dome_bucket_outer_d() < chamber_dome_roof_hole_d,
     "dome bucket must slide into the dome roof hole with margin");
-  assert(chamber_dome_bucket_lip_outer_d() == chamber_dome_outer_d,
-    "dome bucket lip must match the 115 mm acrylic dome outer diameter");
+  assert(chamber_dome_bucket_lip_outer_d() >= chamber_dome_outer_d
+    && chamber_dome_bucket_lip_outer_d() / 2
+      >= chamber_dome_mount_screw_radius
+        + chamber_dome_mount_screw_clearance_d / 2
+        + chamber_dome_bucket_lip_screw_edge_margin,
+    "dome bucket lip must cover the acrylic dome and keep margin outside the M3 holes");
   assert(chamber_dome_bucket_lip_h == chamber_dome_bucket_wall,
     "dome bucket lip must be 3 mm thick");
   assert(chamber_dome_bucket_floor_lift >= chamber_dome_bucket_wall
@@ -1609,14 +1620,14 @@ module _dome_bucket_body() {
       difference() {
         cylinder(
           d = chamber_dome_bucket_outer_d(),
-          h = chamber_total_z(),
+          h = chamber_dome_bucket_total_h(),
           center = false,
           $fn = 128
         );
         translate([0, 0, -0.6])
           cylinder(
             d = chamber_dome_bucket_inner_d(),
-            h = chamber_total_z() + 1.2,
+            h = chamber_dome_bucket_total_h() + 1.2,
             center = false,
             $fn = 128
           );
@@ -1640,7 +1651,7 @@ module _dome_bucket_body() {
           );
           translate([0, 0, -0.6])
             cylinder(
-              d = chamber_dome_bucket_lip_inner_d() - 2 * join_overlap,
+              d = chamber_dome_bucket_lip_inner_d(),
               h = chamber_dome_bucket_lip_h + join_overlap + 1.2,
               center = false,
               $fn = 128

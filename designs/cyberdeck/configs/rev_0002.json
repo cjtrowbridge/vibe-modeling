@@ -86,6 +86,7 @@
   "chamber_dome_bucket_wall": 3.0,
   "chamber_dome_bucket_slide_clearance": 1.0,
   "chamber_dome_bucket_lip_h": 3.0,
+  "chamber_dome_bucket_lip_screw_edge_margin": 3.0,
   "chamber_dome_bucket_floor_lift": 3.0,
   "chamber_dome_bucket_passage_w": 24.0,
   "chamber_dome_bucket_passage_h": 16.0,
