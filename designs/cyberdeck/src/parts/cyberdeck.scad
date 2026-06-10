@@ -221,6 +221,23 @@ function chamber_lid_set_w() =
   );
 function chamber_lid_set_d() =
   chamber_main_lid_d() + chamber_lid_layout_gap + max(chamber_left_lid_d(), chamber_main_lid_d());
+function chamber_dome_bucket_outer_d() =
+  chamber_dome_roof_hole_d - 2 * chamber_dome_bucket_slide_clearance;
+function chamber_dome_bucket_inner_d() =
+  chamber_dome_bucket_outer_d() - 2 * chamber_dome_bucket_wall;
+function chamber_dome_bucket_lip_outer_d() =
+  chamber_dome_outer_d;
+function chamber_dome_bucket_lip_inner_d() =
+  chamber_dome_bucket_outer_d();
+function chamber_dome_bucket_total_h() =
+  chamber_total_z() + chamber_dome_bucket_lip_h;
+function chamber_dome_bucket_floor_z() =
+  chamber_dome_bucket_floor_lift;
+function chamber_dome_bucket_passage_center_z() =
+  chamber_dome_bucket_floor_lift
+  + chamber_dome_bucket_wall
+  + chamber_dome_bucket_passage_h / 2
+  + 4;
 function chamber_profile_back_wall_z() =
   chamber_profile_peak_z() - chamber_profile_rear_slope_drop;
 function chamber_profile_back_wall_rise() =
@@ -504,8 +521,8 @@ module _assert_dims() {
   }
   assert(chamber_lid_clearance > 0,
     "chamber lid clearance must be > 0");
-  assert(chamber_lid_thickness > 0 && chamber_lid_thickness <= chamber_keyboard_lid_inset,
-    "chamber lids must fit within the keyboard lid inset depth");
+  assert(chamber_lid_thickness > 0,
+    "chamber lid thickness must be > 0");
   assert(chamber_lid_corner_r >= 0,
     "chamber lid corner radius must be >= 0");
   assert(chamber_lid_pull_slot_w > chamber_lid_pull_slot_d
@@ -513,9 +530,24 @@ module _assert_dims() {
     "chamber lid pull slot dimensions are invalid");
   assert(chamber_lid_pull_slot_front_offset > chamber_lid_pull_slot_d,
     "chamber lid pull slot must sit inside the lid front edge");
+  assert(chamber_lid_mount_inset > chamber_lid_mount_screw_head_d / 2
+    && chamber_lid_mount_pad_size > chamber_lid_mount_screw_head_d + 2,
+    "lid corner mounting pads must clear recessed screw heads");
+  assert(chamber_lid_mount_screw_clearance_d >= 3.0,
+    "lid screw clearance holes should clear M3 hardware");
+  assert(chamber_lid_mount_screw_head_d > chamber_lid_mount_screw_clearance_d
+    && chamber_lid_mount_screw_head_depth > 0
+    && chamber_lid_mount_screw_head_depth < chamber_lid_thickness,
+    "lid screw counterbores must fit inside the lid thickness");
   assert(chamber_left_lid_w() > 2 * chamber_lid_corner_r
     && chamber_left_lid_d() > 2 * chamber_lid_corner_r,
     "left-front lid dimensions are invalid");
+  assert(chamber_left_lid_w() > 2 * chamber_lid_mount_inset
+    && chamber_left_lid_d() > 2 * chamber_lid_mount_inset
+    && chamber_center_lid_w() > 2 * chamber_lid_mount_inset
+    && chamber_main_lid_d() > 2 * chamber_lid_mount_inset
+    && chamber_right_lid_w() > 2 * chamber_lid_mount_inset,
+    "lid corner screw holes must fit inside each lid");
   assert(chamber_center_lid_w() > max(2 * chamber_lid_corner_r, chamber_lid_pull_slot_w)
     && chamber_main_lid_d() > 2 * chamber_lid_corner_r,
     "center-left lid dimensions are invalid");
@@ -529,6 +561,31 @@ module _assert_dims() {
     && chamber_right_lid_w() <= print_volume_x
     && chamber_lid_thickness <= print_volume_z,
     "each individual lid must fit the print volume");
+  assert(chamber_dome_bucket_wall == 3,
+    "dome bucket walls and lip are intentionally fixed at 3 mm for this study");
+  assert(chamber_dome_bucket_outer_d() > 2 * chamber_dome_bucket_wall
+    && chamber_dome_bucket_outer_d() < chamber_dome_roof_hole_d,
+    "dome bucket must slide into the dome roof hole with margin");
+  assert(chamber_dome_bucket_lip_outer_d() == chamber_dome_outer_d,
+    "dome bucket lip must match the 115 mm acrylic dome outer diameter");
+  assert(chamber_dome_bucket_lip_h == chamber_dome_bucket_wall,
+    "dome bucket lip must be 3 mm thick");
+  assert(chamber_dome_bucket_floor_lift >= chamber_dome_bucket_wall
+    && chamber_dome_bucket_floor_lift + chamber_dome_bucket_wall < chamber_total_z(),
+    "dome bucket floor must sit above the chamber base");
+  assert(chamber_dome_bucket_passage_w > 0
+    && chamber_dome_bucket_passage_h > 0
+    && chamber_dome_bucket_passage_h < chamber_total_z() - chamber_dome_bucket_wall,
+    "dome bucket passthrough openings are invalid");
+  assert(chamber_dome_bucket_passage_center_z() - chamber_dome_bucket_passage_h / 2
+      > chamber_dome_bucket_floor_lift + chamber_dome_bucket_wall
+    && chamber_dome_bucket_passage_center_z() + chamber_dome_bucket_passage_h / 2
+      < chamber_total_z() - chamber_dome_bucket_wall,
+    "dome bucket passthrough openings must clear the raised floor and top lip");
+  assert(chamber_dome_mount_screw_radius < chamber_dome_bucket_lip_outer_d() / 2
+    && chamber_dome_mount_screw_radius - chamber_dome_mount_screw_clearance_d / 2
+      > chamber_dome_bucket_lip_inner_d() / 2,
+    "dome bucket lip screw centers must match the existing dome bolt pattern");
   assert(chamber_joint_passthrough_count == 2,
     "this chamber mockup expects two front/back passthroughs");
   assert(chamber_joint_passthrough_d > 0,
@@ -710,22 +767,66 @@ module _chamber_keyboard_lid_support_rail(xa, xb, y_back) {
   outer_y_back = y_back;
   rail_x = outer_xb - outer_xa;
   rail_y = outer_y_back - outer_y_front;
+  pad_z = chamber_keyboard_lid_rail_center_z() - chamber_keyboard_lid_rail_h / 2;
 
   if (rail_x > 2 * chamber_keyboard_lid_rail_w
       && rail_y > 2 * chamber_keyboard_lid_rail_w) {
-    translate([
-      (outer_xa + outer_xb) / 2,
-      (outer_y_front + outer_y_back) / 2,
-      chamber_keyboard_lid_rail_center_z() - chamber_keyboard_lid_rail_h / 2
-    ])
-      linear_extrude(height = chamber_keyboard_lid_rail_h, center = false, convexity = 4)
-        difference() {
-          square([rail_x, rail_y], center = true);
-          square([
-            rail_x - 2 * chamber_keyboard_lid_rail_w,
-            rail_y - 2 * chamber_keyboard_lid_rail_w
-          ], center = true);
+    difference() {
+      union() {
+        translate([
+          (outer_xa + outer_xb) / 2,
+          (outer_y_front + outer_y_back) / 2,
+          pad_z
+        ])
+          linear_extrude(height = chamber_keyboard_lid_rail_h, center = false, convexity = 4)
+            difference() {
+              square([rail_x, rail_y], center = true);
+              square([
+                rail_x - 2 * chamber_keyboard_lid_rail_w,
+                rail_y - 2 * chamber_keyboard_lid_rail_w
+              ], center = true);
+            }
+
+        for (sx = [-1, 1]) {
+          for (sy = [-1, 1]) {
+            translate([
+              sx < 0
+                ? xa + chamber_wall + chamber_lid_clearance + chamber_lid_mount_inset
+                : xb - chamber_wall - chamber_lid_clearance - chamber_lid_mount_inset,
+              sy < 0
+                ? y_front + chamber_lid_clearance + chamber_lid_mount_inset
+                : y_back - chamber_lid_clearance - chamber_lid_mount_inset,
+              chamber_keyboard_lid_rail_center_z()
+            ])
+              cube([
+                chamber_lid_mount_pad_size,
+                chamber_lid_mount_pad_size,
+                chamber_keyboard_lid_rail_h
+              ], center = true);
+          }
         }
+      }
+
+      for (sx = [-1, 1]) {
+        for (sy = [-1, 1]) {
+          translate([
+            sx < 0
+              ? xa + chamber_wall + chamber_lid_clearance + chamber_lid_mount_inset
+              : xb - chamber_wall - chamber_lid_clearance - chamber_lid_mount_inset,
+            sy < 0
+              ? y_front + chamber_lid_clearance + chamber_lid_mount_inset
+              : y_back - chamber_lid_clearance - chamber_lid_mount_inset,
+            chamber_keyboard_lid_rail_center_z()
+          ])
+            cylinder(
+              d = chamber_lid_mount_screw_clearance_d,
+              h = chamber_keyboard_lid_rail_h + 1.2,
+              center = true,
+              $fn = 32
+            );
+        }
+      }
+    }
   }
 }
 
@@ -1144,6 +1245,28 @@ module _lid_pull_slot(slot_w, slot_d, cut_h) {
   }
 }
 
+module _lid_corner_mount_cut(x, y, cut_h) {
+  translate([x, y, cut_h / 2])
+    cylinder(
+      d = chamber_lid_mount_screw_clearance_d,
+      h = cut_h,
+      center = true,
+      $fn = 32
+    );
+
+  translate([
+    x,
+    y,
+    chamber_lid_thickness - chamber_lid_mount_screw_head_depth / 2 + 0.15
+  ])
+    cylinder(
+      d = chamber_lid_mount_screw_head_d,
+      h = chamber_lid_mount_screw_head_depth + 0.35,
+      center = true,
+      $fn = 40
+    );
+}
+
 module _chamber_lid_panel(w, d, label_text) {
   label_size = min(8, max(4, w / 10));
   cut_h = chamber_lid_thickness + 0.8;
@@ -1163,6 +1286,16 @@ module _chamber_lid_panel(w, d, label_text) {
     ])
       _lid_pull_slot(chamber_lid_pull_slot_w, chamber_lid_pull_slot_d, cut_h);
 
+    for (sx = [-1, 1]) {
+      for (sy = [-1, 1]) {
+        _lid_corner_mount_cut(
+          sx * (w / 2 - chamber_lid_mount_inset),
+          sy * (d / 2 - chamber_lid_mount_inset),
+          cut_h
+        );
+      }
+    }
+
     translate([0, d / 2 - 14, chamber_lid_thickness - 0.35])
       linear_extrude(height = 0.8, center = false, convexity = 2)
         text(
@@ -1179,7 +1312,7 @@ module _chamber_lid_installed(xa, xb, yf, yb, label_text) {
   translate([
     (xa + xb) / 2,
     (yf + yb) / 2,
-    chamber_total_z() - chamber_lid_thickness
+    chamber_keyboard_lid_rail_top_z()
   ])
     _chamber_lid_panel(xb - xa, yb - yf, label_text);
 }
@@ -1200,6 +1333,104 @@ module _chamber_lid_set_layout() {
 
   translate([center_x, lower_y, 0])
     _chamber_lid_panel(chamber_center_lid_w(), chamber_main_lid_d(), "CENTER");
+}
+
+module _dome_bucket_lip_screw_cut(sx, sy) {
+  translate([
+    sx * chamber_dome_mount_screw_xy_offset(),
+    sy * chamber_dome_mount_screw_xy_offset(),
+    chamber_total_z() + chamber_dome_bucket_lip_h / 2
+  ])
+    cylinder(
+      d = chamber_dome_mount_screw_clearance_d,
+      h = chamber_dome_bucket_lip_h + 1.2,
+      center = true,
+      $fn = 32
+    );
+}
+
+module _dome_bucket_front_passage_cut() {
+  translate([
+    0,
+    -chamber_dome_bucket_outer_d() / 2,
+    chamber_dome_bucket_passage_center_z()
+  ])
+    cube([
+      chamber_dome_bucket_passage_w,
+      4 * chamber_dome_bucket_wall,
+      chamber_dome_bucket_passage_h
+    ], center = true);
+}
+
+module _dome_bucket_side_passage_cut() {
+  rotate([0, 0, chamber_dome_bucket_side_passage_angle])
+    translate([
+      chamber_dome_bucket_outer_d() / 2,
+      0,
+      chamber_dome_bucket_passage_center_z()
+    ])
+      cube([
+        4 * chamber_dome_bucket_wall,
+        chamber_dome_bucket_passage_w,
+        chamber_dome_bucket_passage_h
+      ], center = true);
+}
+
+module _dome_bucket_body() {
+  join_overlap = 0.6;
+
+  difference() {
+    union() {
+      difference() {
+        cylinder(
+          d = chamber_dome_bucket_outer_d(),
+          h = chamber_total_z(),
+          center = false,
+          $fn = 128
+        );
+        translate([0, 0, -0.6])
+          cylinder(
+            d = chamber_dome_bucket_inner_d(),
+            h = chamber_total_z() + 1.2,
+            center = false,
+            $fn = 128
+          );
+      }
+
+      translate([0, 0, chamber_dome_bucket_floor_z()])
+        cylinder(
+          d = chamber_dome_bucket_outer_d(),
+          h = chamber_dome_bucket_wall,
+          center = false,
+          $fn = 128
+        );
+
+      translate([0, 0, chamber_total_z() - join_overlap])
+        difference() {
+          cylinder(
+            d = chamber_dome_bucket_lip_outer_d(),
+            h = chamber_dome_bucket_lip_h + join_overlap,
+            center = false,
+            $fn = 128
+          );
+          translate([0, 0, -0.6])
+            cylinder(
+              d = chamber_dome_bucket_lip_inner_d() - 2 * join_overlap,
+              h = chamber_dome_bucket_lip_h + join_overlap + 1.2,
+              center = false,
+              $fn = 128
+            );
+        }
+    }
+
+    _dome_bucket_front_passage_cut();
+    _dome_bucket_side_passage_cut();
+    for (sx = [-1, 1]) {
+      for (sy = [-1, 1]) {
+        _dome_bucket_lip_screw_cut(sx, sy);
+      }
+    }
+  }
 }
 
 module _label(text_value, size = 7, h = 0.35) {
@@ -1624,6 +1855,11 @@ module cyberdeck_right_front_lid() {
 module cyberdeck_left_side_handle() {
   _assert_dims();
   _left_side_handle_body();
+}
+
+module cyberdeck_dome_bucket_insert() {
+  _assert_dims();
+  _dome_bucket_body();
 }
 
 module cyberdeck_visual_mockup() {

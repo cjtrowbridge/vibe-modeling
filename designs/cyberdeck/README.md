@@ -26,6 +26,7 @@ First-draft visual mockup and design brief for a cyberdeck OpenSCAD model.
 - `part_id = 8`: center-left inset lid
 - `part_id = 9`: right-front inset lid
 - `part_id = 10`: left-side carrying handle
+- `part_id = 11`: dome bucket insert
 
 ## Revision 0002 Printable Chamber Study
 
@@ -56,7 +57,10 @@ First-draft visual mockup and design brief for a cyberdeck OpenSCAD model.
 - All three front lid rail frames now stop at assembled `y = -20 mm`, matching the front edge of the dome roof and front control band.
 - The keyboard-area lid rail is constrained to the display/keyboard bay to the right of the dome roof so it does not intersect the dome cutout.
 - The center and right front lids are shortened to match the left-front lid depth, leaving the new solid control band behind them.
-- The three inset lids are modeled as separate `2 mm` thick panels with `0.6 mm` edge clearance, `3 mm` corner radii, engraved orientation labels, and obround pull slots.
+- The three inset lids are modeled as separate `5 mm` thick panels with `0.6 mm` edge clearance, `3 mm` corner radii, engraved orientation labels, and obround pull slots.
+- Each lid opening has small corner pads pulled into the opening for M3 corner fasteners.
+- Each lid has four M3 clearance holes inset `8 mm` from the lid edges, with `7 mm` diameter counterbores so the screw heads sit below the top face.
+- The thicker lids rest on the inset rail and may sit slightly proud of the surrounding deck surface.
 - The three-lid preview layout shows all lids together; export the individual lid part IDs for printable files.
 - The first carrying-handle study is a separate printable part intended for the left side of the deck.
 - The carrying handle uses a `100 mm` cylindrical grip span, a `40 mm` outer reach from the chassis side, and a `14 mm` tube diameter.
@@ -65,6 +69,12 @@ First-draft visual mockup and design brief for a cyberdeck OpenSCAD model.
 - Matching M3 clearance holes are cut into the left outside wall of the left chamber and the right outside wall of the right chamber.
 - The mirrored side-wall handle hole patterns are centered front/back on each chamber side, with plate centers at assembled `y = -50 mm` and `y = 50 mm`.
 - The side-wall handle screw rows are centered vertically on the flat chamber side at assembled `z = 13 mm` and `z = 39 mm`.
+- The dome bucket insert is a separate printable pot for the pan/tilt eye and laser mechanism.
+- The insert body is sized to slide into the `96 mm` dome roof hole with `1 mm` radial clearance, giving a `94 mm` outer cylinder.
+- The bucket, raised internal floor, and top lip all use `3 mm` wall thickness.
+- The bucket lip matches the acrylic dome outer diameter at `115 mm` and reuses the existing four-hole dome M3 bolt pattern.
+- The bucket sides reach to the chamber base, while the internal floor is lifted `3 mm` above the chamber base.
+- The bucket includes front and side passthrough windows for servo/camera/laser wiring to reach nearby internal passthroughs.
 - Internal vertical clearance is set to `50 mm` for component volume planning.
 - Chamber walls and bottom floor are currently `2 mm` thick.
 - The short rear clearance slope and forward screen slope are shelled with a `2 mm` normal offset.
