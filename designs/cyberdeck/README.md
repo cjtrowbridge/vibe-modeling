@@ -97,8 +97,9 @@ First-draft visual mockup and design brief for a cyberdeck OpenSCAD model.
 - The display wedge uses an external split-line joining rail at the left/right chamber seam.
 - Each printed half gets one half of the rail at its mating edge, with M3 clearance holes running through the rail across the split.
 - The split-line rail is proud of the rear clearance slope, embedded `1 mm` into the `2 mm` wall for print attachment without protruding into the interior, and remains outside the screen void area.
-- The split-line rail is modeled as a flat-ended `15 mm` tab that reaches the rear-slope bend lines instead of curving inward before the wall.
-- M3 hole centers remain inset `10 mm` from the rear-slope bends so screw heads and nuts have edge clearance.
+- The split-line rail is modeled as a continuous flat-ended `15 mm` tab that follows the rear slope and extends down the rear back wall to the bottom of the chamber.
+- The two upper M3 hole centers remain inset `10 mm` from the rear-slope bends so screw heads and nuts have edge clearance.
+- The rear-wall extension adds two lower M3 through-holes at `z = 15 mm` and `z = 53 mm` so the extended connector block can clamp the two printed halves together down the back.
 - This first variant models the side-profile shell and angled rear/screen surfaces; it does not yet add the actual screen recess or dome mounting ring.
 - The left and right chambers have matching circular side passthroughs on the mating faces.
 - Current design uses two `30 mm` passthroughs, split front/back from the centerline.

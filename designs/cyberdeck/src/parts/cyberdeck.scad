@@ -157,14 +157,32 @@ function chamber_display_seam_rail_outer_z(t) =
   chamber_display_seam_rail_z(t)
   + (chamber_display_seam_rail_d - chamber_display_seam_rail_embed)
   * chamber_profile_rear_slope_run / chamber_profile_rear_slope_len();
+function chamber_display_seam_rail_vertical_inner_y() =
+  chamber_display_seam_rail_inner_y(1);
+function chamber_display_seam_rail_vertical_outer_y() =
+  chamber_display_seam_rail_outer_y(1);
+function chamber_display_seam_rail_vertical_center_y() =
+  (
+    chamber_display_seam_rail_vertical_inner_y()
+    + chamber_display_seam_rail_vertical_outer_y()
+  ) / 2;
+function chamber_display_seam_rail_vertical_screw_z(i) =
+  chamber_display_seam_rail_vertical_screw_bottom_inset
+  + i * chamber_display_seam_rail_vertical_screw_spacing;
+function chamber_display_seam_rail_screw_count() =
+  2 + chamber_display_seam_rail_vertical_screw_count;
 function chamber_display_seam_rail_screw_y(i) =
-  chamber_display_seam_rail_y(
-    i == 0 ? chamber_display_seam_rail_start_t() : chamber_display_seam_rail_end_t()
-  ) + chamber_display_seam_rail_outward_y();
+  i < 2
+    ? chamber_display_seam_rail_y(
+        i == 0 ? chamber_display_seam_rail_start_t() : chamber_display_seam_rail_end_t()
+      ) + chamber_display_seam_rail_outward_y()
+    : chamber_display_seam_rail_vertical_center_y();
 function chamber_display_seam_rail_screw_z(i) =
-  chamber_display_seam_rail_z(
-    i == 0 ? chamber_display_seam_rail_start_t() : chamber_display_seam_rail_end_t()
-  ) + chamber_display_seam_rail_outward_z();
+  i < 2
+    ? chamber_display_seam_rail_z(
+        i == 0 ? chamber_display_seam_rail_start_t() : chamber_display_seam_rail_end_t()
+      ) + chamber_display_seam_rail_outward_z()
+    : chamber_display_seam_rail_vertical_screw_z(i - 2);
 function chamber_keyboard_lid_rail_top_z() =
   chamber_total_z() - chamber_keyboard_lid_inset;
 function chamber_keyboard_lid_rail_center_z() =
@@ -374,6 +392,29 @@ module _assert_dims() {
     "display seam rail screw holes must stay between the rear-slope bends");
   assert(chamber_display_seam_rail_outer_y(1) - (-chamber_piece_y / 2) <= print_volume_y,
     "display seam rail must fit inside print volume Y");
+  assert(chamber_display_seam_rail_vertical_screw_count >= 0
+    && chamber_display_seam_rail_vertical_screw_count
+      == floor(chamber_display_seam_rail_vertical_screw_count),
+    "display seam rail vertical screw count must be a non-negative integer");
+  assert(
+    chamber_display_seam_rail_vertical_outer_y()
+      - chamber_display_seam_rail_vertical_inner_y()
+      > chamber_display_seam_rail_screw_clearance_d + 2 * chamber_wall,
+    "display seam rail vertical extension must clear the screw holes");
+  if (chamber_display_seam_rail_vertical_screw_count > 0) {
+    assert(chamber_display_seam_rail_vertical_screw_bottom_inset
+      > chamber_display_seam_rail_screw_clearance_d / 2 + chamber_wall,
+      "display seam rail lower screw needs bottom edge clearance");
+    let (
+      top_screw_z =
+        chamber_display_seam_rail_vertical_screw_z(
+          chamber_display_seam_rail_vertical_screw_count - 1
+        )
+    )
+      assert(top_screw_z + chamber_display_seam_rail_screw_clearance_d / 2
+        < chamber_display_seam_rail_inner_z(1),
+        "display seam rail vertical screws must fit below the angled cap");
+  }
   assert(chamber_keyboard_lid_inset > 0
     && chamber_keyboard_lid_rail_top_z() < chamber_total_z(),
     "keyboard lid rail must sit below the flat deck top");
@@ -894,6 +935,14 @@ module _chamber_display_split_rail(side, seam_x) {
           chamber_display_seam_rail_inner_z(1)
         ],
         [
+          chamber_display_seam_rail_vertical_inner_y(),
+          0
+        ],
+        [
+          chamber_display_seam_rail_vertical_outer_y(),
+          0
+        ],
+        [
           chamber_display_seam_rail_outer_y(1),
           chamber_display_seam_rail_outer_z(1)
         ],
@@ -920,7 +969,7 @@ module _chamber_display_split_rail_screw_cut(seam_x, i) {
 }
 
 module _chamber_display_split_rail_screw_cuts(seam_x) {
-  for (i = [0, 1]) {
+  for (i = [0 : chamber_display_seam_rail_screw_count() - 1]) {
     _chamber_display_split_rail_screw_cut(seam_x, i);
   }
 }
