@@ -76,6 +76,10 @@ function chamber_display_void_center_y() =
   (chamber_profile_screen_foot_y() + chamber_profile_peak_y()) / 2;
 function chamber_display_void_center_z() =
   (chamber_total_z() + chamber_profile_peak_z()) / 2;
+function chamber_control_band_front_y() =
+  chamber_dome_roof_front_y();
+function chamber_control_band_back_y() =
+  chamber_profile_screen_foot_y();
 function chamber_display_void_cut_overlap() = chamber_wall + 0.6;
 function chamber_display_mount_screw_y(face_offset) =
   chamber_display_void_center_y()
@@ -351,11 +355,15 @@ module _assert_dims() {
     "keyboard lid rail back edge must leave a usable front opening");
   assert(chamber_keyboard_lid_back_edge_y <= chamber_profile_screen_foot_y() + 0.1,
     "keyboard lid rail back edge must not extend into the screen slope");
+  assert(abs(chamber_keyboard_lid_back_edge_y - chamber_keyboard_lid_left_back_edge_y) < 0.1,
+    "all front lid rails must share the same rear edge");
   assert(chamber_keyboard_lid_left_back_edge_y > chamber_keyboard_lid_front_edge_y()
     + 2 * chamber_keyboard_lid_rail_w,
     "left keyboard lid rail back edge must leave a usable opening");
   assert(chamber_keyboard_lid_left_back_edge_y <= chamber_dome_roof_front_y() + 0.1,
     "left keyboard lid rail back edge must stay in front of the dome roof");
+  assert(chamber_control_band_back_y() > chamber_control_band_front_y() + chamber_wall,
+    "front control band must have usable depth");
   assert(chamber_lid_clearance > 0,
     "chamber lid clearance must be > 0");
   assert(chamber_lid_thickness > 0 && chamber_lid_thickness <= chamber_keyboard_lid_inset,
@@ -454,6 +462,8 @@ module _chamber_shell(side, center_x, assembly_position) {
   keep_wedge_right_wall = abs(wedge_global_xb - chamber_display_wedge_right_x()) < 0.01;
   roof_xa = max(chamber_dome_roof_left_x(), global_body_xa) + model_x_offset;
   roof_xb = min(chamber_dome_roof_right_x(), global_body_xb) + model_x_offset;
+  control_roof_xa = max(chamber_dome_roof_right_x(), global_body_xa) + model_x_offset;
+  control_roof_xb = global_body_xb + model_x_offset;
   left_keyboard_rail_xa = global_body_xa + model_x_offset;
   left_keyboard_rail_xb = min(chamber_dome_roof_right_x(), global_body_xb) + model_x_offset;
   keyboard_rail_xa = max(chamber_dome_roof_right_x(), global_body_xa) + model_x_offset;
@@ -500,6 +510,15 @@ module _chamber_shell(side, center_x, assembly_position) {
         roof_xb,
         chamber_dome_roof_front_y(),
         chamber_dome_roof_back_y()
+      );
+    }
+
+    if (control_roof_xb > control_roof_xa) {
+      _chamber_flat_roof(
+        control_roof_xa,
+        control_roof_xb,
+        chamber_control_band_front_y(),
+        chamber_control_band_back_y()
       );
     }
   }

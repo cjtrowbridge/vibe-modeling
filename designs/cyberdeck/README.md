@@ -39,15 +39,17 @@ First-draft visual mockup and design brief for a cyberdeck OpenSCAD model.
 - The left flat dome planning area is currently `125 mm` wide.
 - The left dome area has a flat `2 mm` top roof extending from the display wedge edge to the left outer edge.
 - The left dome roof is currently a `125 mm x 125 mm` planning area for the acrylic dome footprint.
+- A matching flat `2 mm` top band now extends from the dome roof edge across the front of the display wedge to the right outer edge.
+- This front control band runs from assembled `y = -20 mm` to the start of the `45 degree` screen slope at assembled `y = 12.424 mm`.
 - The dome roof has a centered `96 mm` circular cutout.
 - The acrylic dome mount uses four M3 clearance holes on a `56 mm` radius bolt circle.
 - The dome M3 holes are placed in the top-left, top-right, bottom-left, and bottom-right quadrant positions around the dome cutout.
 - The flat keyboard bay is intentionally open from above for continued layout, mounting, and service-access design.
 - The flat keyboard bay now includes an internal support rail for a future inset lid.
 - The future keyboard-area lid is planned to sit `2 mm` below the flat deck top and rest on a `6 mm` wide, `2 mm` tall rail around the opening.
-- The current rear edge of that lid rail is aligned to the start of the `45 degree` screen slope at assembled `y = 12.424 mm`.
+- All three front lid rail frames now stop at assembled `y = -20 mm`, matching the front edge of the dome roof and front control band.
 - The keyboard-area lid rail is constrained to the display/keyboard bay to the right of the dome roof so it does not intersect the dome cutout.
-- A separate left-front lid rail frame is modeled in front of the dome roof, ending at assembled `y = -20 mm`.
+- The center and right front lids are shortened to match the left-front lid depth, leaving the new solid control band behind them.
 - The three inset lids are modeled as separate `2 mm` thick panels with `0.6 mm` edge clearance, `3 mm` corner radii, engraved orientation labels, and obround pull slots.
 - The three-lid preview layout shows all lids together; export the individual lid part IDs for printable files.
 - Internal vertical clearance is set to `50 mm` for component volume planning.

@@ -46,7 +46,7 @@
   "chamber_keyboard_lid_inset": 2.0,
   "chamber_keyboard_lid_rail_w": 6.0,
   "chamber_keyboard_lid_rail_h": 2.0,
-  "chamber_keyboard_lid_back_edge_y": 12.424,
+  "chamber_keyboard_lid_back_edge_y": -20.0,
   "chamber_keyboard_lid_left_back_edge_y": -20.0,
   "chamber_lid_clearance": 0.6,
   "chamber_lid_thickness": 2.0,

@@ -65,9 +65,8 @@ chamber_display_seam_rail_screw_clearance_d = 3.4;
 chamber_keyboard_lid_inset = 2.0;
 chamber_keyboard_lid_rail_w = 6.0;
 chamber_keyboard_lid_rail_h = 2.0;
-chamber_keyboard_lid_back_edge_y =
-  chamber_piece_y / 2 - chamber_profile_rear_slope_run - chamber_profile_screen_slope_run;
 chamber_keyboard_lid_left_back_edge_y = chamber_piece_y / 2 - chamber_dome_area_y;
+chamber_keyboard_lid_back_edge_y = chamber_keyboard_lid_left_back_edge_y;
 chamber_lid_clearance = 0.6;
 chamber_lid_thickness = 2.0;
 chamber_lid_corner_r = 3.0;
