@@ -21,6 +21,10 @@ First-draft visual mockup and design brief for a cyberdeck OpenSCAD model.
 - `part_id = 3`: two-piece open chamber structure
 - `part_id = 4`: left open chamber printable body
 - `part_id = 5`: right open chamber printable body
+- `part_id = 6`: three inset lid preview layout
+- `part_id = 7`: left-front inset lid
+- `part_id = 8`: center-left inset lid
+- `part_id = 9`: right-front inset lid
 
 ## Revision 0002 Printable Chamber Study
 
@@ -44,6 +48,8 @@ First-draft visual mockup and design brief for a cyberdeck OpenSCAD model.
 - The current rear edge of that lid rail is aligned to the start of the `45 degree` screen slope at assembled `y = 12.424 mm`.
 - The keyboard-area lid rail is constrained to the display/keyboard bay to the right of the dome roof so it does not intersect the dome cutout.
 - A separate left-front lid rail frame is modeled in front of the dome roof, ending at assembled `y = -20 mm`.
+- The three inset lids are modeled as separate `2 mm` thick panels with `0.6 mm` edge clearance, `3 mm` corner radii, engraved orientation labels, and obround pull slots.
+- The three-lid preview layout shows all lids together; export the individual lid part IDs for printable files.
 - Internal vertical clearance is set to `50 mm` for component volume planning.
 - Chamber walls and bottom floor are currently `2 mm` thick.
 - The short rear clearance slope and forward screen slope are shelled with a `2 mm` normal offset.

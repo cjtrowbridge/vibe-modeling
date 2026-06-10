@@ -68,6 +68,13 @@ chamber_keyboard_lid_rail_h = 2.0;
 chamber_keyboard_lid_back_edge_y =
   chamber_piece_y / 2 - chamber_profile_rear_slope_run - chamber_profile_screen_slope_run;
 chamber_keyboard_lid_left_back_edge_y = chamber_piece_y / 2 - chamber_dome_area_y;
+chamber_lid_clearance = 0.6;
+chamber_lid_thickness = 2.0;
+chamber_lid_corner_r = 3.0;
+chamber_lid_pull_slot_w = 28.0;
+chamber_lid_pull_slot_d = 8.0;
+chamber_lid_pull_slot_front_offset = 15.0;
+chamber_lid_layout_gap = 12.0;
 chamber_joint_passthrough_count = 2;
 chamber_joint_passthrough_d = 30.0;
 chamber_joint_passthrough_spacing_y = chamber_piece_y / 2;

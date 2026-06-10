@@ -6,6 +6,10 @@
 // 3 = two-piece open chamber structure
 // 4 = left open chamber printable body
 // 5 = right open chamber printable body
+// 6 = three inset lid preview layout
+// 7 = left-front inset lid
+// 8 = center-left inset lid
+// 9 = right-front inset lid
 
 include <lib/defaults.scad>;
 include <parts/cyberdeck.scad>;
@@ -24,6 +28,14 @@ if (_part_id == 0) {
   cyberdeck_left_chamber_body();
 } else if (_part_id == 5) {
   cyberdeck_right_chamber_body();
+} else if (_part_id == 6) {
+  cyberdeck_three_lid_set();
+} else if (_part_id == 7) {
+  cyberdeck_left_front_lid();
+} else if (_part_id == 8) {
+  cyberdeck_center_left_lid();
+} else if (_part_id == 9) {
+  cyberdeck_right_front_lid();
 } else {
   assert(false, str("Unknown part_id: ", _part_id));
 }
