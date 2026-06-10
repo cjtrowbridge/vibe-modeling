@@ -12,6 +12,7 @@
 // 9 = right-front inset lid
 // 10 = left-side carrying handle
 // 11 = dome bucket insert
+// 12 = right chamber Orange Pi tray
 
 include <lib/defaults.scad>;
 include <parts/cyberdeck.scad>;
@@ -42,6 +43,8 @@ if (_part_id == 0) {
   cyberdeck_left_side_handle();
 } else if (_part_id == 11) {
   cyberdeck_dome_bucket_insert();
+} else if (_part_id == 12) {
+  cyberdeck_right_chamber_tray();
 } else {
   assert(false, str("Unknown part_id: ", _part_id));
 }

@@ -27,6 +27,7 @@ First-draft visual mockup and design brief for a cyberdeck OpenSCAD model.
 - `part_id = 9`: right-front inset lid
 - `part_id = 10`: left-side carrying handle
 - `part_id = 11`: dome bucket insert
+- `part_id = 12`: right chamber Orange Pi tray
 
 ## Revision 0002 Printable Chamber Study
 
@@ -109,7 +110,16 @@ First-draft visual mockup and design brief for a cyberdeck OpenSCAD model.
 - The split-line rail is proud of the rear clearance slope, embedded `1 mm` into the `2 mm` wall for print attachment without protruding into the interior, and remains outside the screen void area.
 - The split-line rail is modeled as a continuous flat-ended `15 mm` tab that follows the rear slope and extends down the rear back wall to the bottom of the chamber.
 - The two upper M3 hole centers remain inset `10 mm` from the rear-slope bends so screw heads and nuts have edge clearance.
-- The rear-wall extension adds two lower M3 through-holes at `z = 15 mm` and `z = 53 mm` so the extended connector block can clamp the two printed halves together down the back.
+- The rear-wall extension keeps two M3 through-holes at `z = 65 mm` and `z = 83 mm` so the raised connector block can clamp the two printed halves together above the tray backplate.
+- The lower vertical part of the rear external join-ridge now starts above the right-tray backplate, leaving at least `1 mm` clearance over the backplate top.
+- The right chamber has a rear slide-out tray opening through the lower back wall.
+- The right tray back opening is `164.5 mm` wide and `44 mm` tall, leaving side material around the opening for M3 backplate fasteners.
+- The right chamber includes low internal floor rails to guide the tray and keep it registered against the chamber bottom.
+- The right tray is a separate `3 mm` thick drawer-style part with a rear backplate, low side walls, Orange Pi mounting pads, and an exhaust opening in the backplate.
+- The tray backplate is slightly larger than the rear opening and uses four M3 corner holes with at least `3 mm` edge margin on both the wall and the backplate.
+- The Orange Pi proxy mount is rotated so the long mount-hole spacing runs front/back toward the rear exhaust backplate.
+- The rear stud pair is the exhaust-side pair, matching the cottage-style tray convention.
+- The Orange Pi proxy footprint starts about `10 mm` from the left edge of the right tray.
 - This first variant models the side-profile shell and angled rear/screen surfaces; it does not yet add the actual screen recess or dome mounting ring.
 - The left and right chambers have matching circular side passthroughs on the mating faces.
 - Current design uses two `30 mm` passthroughs, split front/back from the centerline.
