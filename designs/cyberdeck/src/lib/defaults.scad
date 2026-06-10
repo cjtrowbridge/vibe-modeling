@@ -144,6 +144,19 @@ chamber_tray_opi_mount_screw_head_depth = 2.2;
 chamber_tray_exhaust_w = 80.0;
 chamber_tray_exhaust_h = 18.0;
 chamber_tray_exhaust_center_z = 30.0;
+chamber_tray_rpi_gap_from_opi = 20.0;
+chamber_tray_rpi_board_x = 85.0;
+chamber_tray_rpi_board_y = 56.0;
+chamber_tray_rpi_mount_x_spacing = 58.0;
+chamber_tray_rpi_mount_y_spacing = 49.0;
+chamber_tray_rpi_mount_left_inset = 3.5;
+chamber_tray_rpi_mount_bottom_inset = 3.5;
+chamber_tray_rpi_near_back_offset = 10.0;
+chamber_tray_rpi_mount_pad_d = 8.0;
+chamber_tray_rpi_mount_stud_h = 3.0;
+chamber_tray_rpi_mount_screw_clearance_d = 2.75;
+chamber_tray_rpi_mount_screw_head_d = 5.8;
+chamber_tray_rpi_mount_screw_head_depth = 2.0;
 chamber_joint_passthrough_count = 2;
 chamber_joint_passthrough_d = 30.0;
 chamber_joint_passthrough_spacing_y = chamber_piece_y / 2;
@@ -157,7 +170,6 @@ chamber_joint_bolt_edge_inset_z = 10.0;
 chamber_joint_bolt_clearance_d = 3.4;
 chamber_joint_bolt_boss_d = 10.0;
 chamber_joint_boss_depth = 8.0;
-chamber_joint_ring_wall = 4.0;
 
 // Secondary display and rack rails
 display_active_x = 208.0;

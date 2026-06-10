@@ -104,7 +104,7 @@ First-draft visual mockup and design brief for a cyberdeck OpenSCAD model.
 - The inner left edge of the display wedge is modeled as a full-depth structural web that extends down to the bottom of the build.
 - The display wedge web uses the same two circular passthrough openings as the center chamber joint.
 - The raised display wedge is open across the center seam so there is no full-height wall in the middle of the display area.
-- The center seam keeps the lower base-wall joint structure, passthroughs, bosses, and M3 bolt pattern.
+- The center seam keeps the lower base-wall joint structure, flush passthroughs, bolt bosses, and M3 bolt pattern.
 - The display wedge uses an external split-line joining rail at the left/right chamber seam.
 - Each printed half gets one half of the rail at its mating edge, with M3 clearance holes running through the rail across the split.
 - The split-line rail is proud of the rear clearance slope, embedded `1 mm` into the `2 mm` wall for print attachment without protruding into the interior, and remains outside the screen void area.
@@ -116,21 +116,26 @@ First-draft visual mockup and design brief for a cyberdeck OpenSCAD model.
 - The right tray back opening is `164.5 mm` wide and `44 mm` tall, leaving side material around the opening for M3 backplate fasteners.
 - The right chamber includes low internal floor rails to guide the tray and keep it registered against the chamber bottom.
 - The right tray is a separate `3 mm` thick drawer-style part with a rear backplate, low side walls, Orange Pi mounting pads, and an exhaust opening in the backplate.
+- The tray backplate bottom is flush with the tray floor bottom, so the rear wall does not extend below the sliding tray.
 - The tray backplate is slightly larger than the rear opening and uses four M3 corner holes with at least `3 mm` edge margin on both the wall and the backplate.
 - The Orange Pi proxy mount is rotated so the long mount-hole spacing runs front/back toward the rear exhaust backplate.
 - The rear stud pair is the exhaust-side pair, matching the cottage-style tray convention.
 - The Orange Pi proxy footprint starts about `10 mm` from the left edge of the right tray.
+- The right tray also includes Raspberry Pi 5 M2.5 mounting studs in the marked right-side area.
+- The Raspberry Pi 5 mount uses the provided `85 mm x 56 mm` board envelope and `58 mm x 49 mm` mounting-hole rectangle.
+- The Raspberry Pi 5 footprint is rotated so the port/jack edge faces the front of the deck.
+- The Raspberry Pi 5 footprint starts `20 mm` to the right of the Orange Pi footprint.
 - This first variant models the side-profile shell and angled rear/screen surfaces; it does not yet add the actual screen recess or dome mounting ring.
 - The left and right chambers have matching circular side passthroughs on the mating faces.
 - Current design uses two `30 mm` passthroughs, split front/back from the centerline.
-- The passthrough centerline is lowered to `z = 22 mm`, with a `4 mm` ring wall, so the passthrough reinforcement clears the inset lid rails.
+- The passthrough centerline is lowered to `z = 22 mm` so the flush conduit holes clear the inset lid rails.
 - Passthrough centers are currently `52.5 mm` forward and `73 mm` back from the middle of the mating face.
 - The rear passthrough is aligned near the rear `2U` screw row to put more material continuity around the display cutout.
 - The mating faces use a six-bolt M3 pattern.
 - Four bolts sit near the mating-face corners.
 - Two bolts sit on the vertical centerline, one low and one high.
 - Bolt holes are modeled as `3.4 mm` M3 clearance holes.
-- Local reinforcement bosses and circular rings are modeled around the passthrough/bolt pattern to make the joint read as structural rather than only cosmetic.
+- Local reinforcement bosses remain around the M3 bolt pattern, while the passthrough conduits are plain flush holes through the mating faces.
 - This revision is still an enclosure architecture study, not a final printable mechanical design.
 - Next steps are to add top mounting interfaces for the keyboard/screen, internal standoffs, cooling ducts, cable paths, and service clearances.
 

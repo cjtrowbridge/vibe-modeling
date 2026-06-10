@@ -250,8 +250,12 @@ function chamber_tray_y_back() =
   chamber_piece_y / 2;
 function chamber_tray_backplate_w() =
   chamber_piece_x - 2 * chamber_tray_backplate_side_clearance;
+function chamber_tray_backplate_bottom_z() =
+  chamber_tray_back_opening_z0;
+function chamber_tray_backplate_body_h() =
+  chamber_tray_backplate_h - chamber_tray_backplate_bottom_z();
 function chamber_tray_backplate_center_z() =
-  chamber_tray_backplate_h / 2;
+  chamber_tray_backplate_bottom_z() + chamber_tray_backplate_body_h() / 2;
 function chamber_tray_back_opening_center_z() =
   chamber_tray_back_opening_z0 + chamber_tray_back_opening_h / 2;
 function chamber_tray_back_opening_top_z() =
@@ -275,6 +279,37 @@ function chamber_tray_opi_center_y_pos() =
   - chamber_tray_wall
   - chamber_tray_opi_near_exhaust_offset
   - chamber_tray_opi_mount_y_spacing / 2;
+function chamber_tray_opi_right_x() =
+  chamber_tray_opi_center_x() + chamber_tray_opi_board_w() / 2;
+function chamber_tray_rpi_board_w() =
+  chamber_tray_rpi_board_y;
+function chamber_tray_rpi_board_d() =
+  chamber_tray_rpi_board_x;
+function chamber_tray_rpi_left_x() =
+  chamber_tray_opi_right_x() + chamber_tray_rpi_gap_from_opi;
+function chamber_tray_rpi_right_x() =
+  chamber_tray_rpi_left_x() + chamber_tray_rpi_board_w();
+function chamber_tray_rpi_center_x() =
+  (chamber_tray_rpi_left_x() + chamber_tray_rpi_right_x()) / 2;
+function chamber_tray_rpi_back_y() =
+  chamber_tray_y_back() - chamber_tray_wall - chamber_tray_rpi_near_back_offset;
+function chamber_tray_rpi_front_y() =
+  chamber_tray_rpi_back_y() - chamber_tray_rpi_board_d();
+function chamber_tray_rpi_center_y() =
+  (chamber_tray_rpi_front_y() + chamber_tray_rpi_back_y()) / 2;
+function chamber_tray_rpi_hole_orig_x(i) =
+  i == 0
+    ? chamber_tray_rpi_mount_left_inset
+    : chamber_tray_rpi_mount_left_inset + chamber_tray_rpi_mount_x_spacing;
+function chamber_tray_rpi_hole_orig_y(i) =
+  i == 0
+    ? chamber_tray_rpi_mount_bottom_inset
+    : chamber_tray_rpi_mount_bottom_inset + chamber_tray_rpi_mount_y_spacing;
+function chamber_tray_rpi_mount_x(iy) =
+  chamber_tray_rpi_left_x() + chamber_tray_rpi_hole_orig_y(iy);
+function chamber_tray_rpi_mount_y(ix) =
+  chamber_tray_rpi_front_y()
+  + (chamber_tray_rpi_board_x - chamber_tray_rpi_hole_orig_x(ix));
 function chamber_tray_rail_center_x(side) =
   side
   * (
@@ -291,8 +326,6 @@ function chamber_profile_back_wall_z() =
 function chamber_profile_back_wall_rise() =
   chamber_profile_back_wall_z() - chamber_total_z();
 function chamber_angled_wall_vertical_offset() = chamber_wall * sqrt(2);
-function chamber_joint_ring_outer_d() =
-  chamber_joint_passthrough_d + 2 * chamber_joint_ring_wall;
 function chamber_passthrough_y(i) =
   i == 0
     ? chamber_joint_passthrough_front_y
@@ -667,7 +700,8 @@ module _assert_dims() {
         - chamber_tray_backplate_screw_edge_margin,
     "tray backplate screw holes must keep 3 mm margin from opening and outer edge");
   assert(chamber_tray_backplate_screw_low_z()
-      > chamber_tray_backplate_screw_clearance_d / 2
+      > chamber_tray_backplate_bottom_z()
+        + chamber_tray_backplate_screw_clearance_d / 2
         + chamber_tray_backplate_screw_edge_margin
     && chamber_tray_backplate_screw_high_z()
       < chamber_tray_backplate_h
@@ -690,10 +724,33 @@ module _assert_dims() {
     "rear Orange Pi stud pair must sit near the tray exhaust wall");
   assert(chamber_tray_opi_mount_y_spacing > chamber_tray_opi_mount_x_spacing,
     "Orange Pi tray mount long spacing should run front-to-back toward the exhaust");
+  assert(abs(chamber_tray_rpi_left_x()
+      - chamber_tray_opi_right_x()
+      - chamber_tray_rpi_gap_from_opi) < 0.01,
+    "Raspberry Pi tray mount must keep the requested gap from the Orange Pi");
+  assert(chamber_tray_rpi_right_x() + chamber_tray_rpi_mount_pad_d / 2
+      <= chamber_tray_w() / 2,
+    "Raspberry Pi tray mount exceeds the right side of the tray");
+  assert(chamber_tray_rpi_front_y() >= chamber_tray_y_front()
+    && chamber_tray_rpi_back_y() <= chamber_tray_y_back() - chamber_tray_wall,
+    "Raspberry Pi tray footprint exceeds tray depth");
+  assert(chamber_tray_rpi_mount_x_spacing > 0
+    && chamber_tray_rpi_mount_y_spacing > 0
+    && chamber_tray_rpi_mount_left_inset
+      + chamber_tray_rpi_mount_x_spacing < chamber_tray_rpi_board_x
+    && chamber_tray_rpi_mount_bottom_inset
+      + chamber_tray_rpi_mount_y_spacing < chamber_tray_rpi_board_y,
+    "Raspberry Pi mounting diagram dimensions are invalid");
+  assert(chamber_tray_rpi_mount_screw_clearance_d >= 2.75,
+    "Raspberry Pi tray mount holes should clear M2.5 hardware");
+  assert(chamber_tray_rpi_mount_screw_head_d > chamber_tray_rpi_mount_screw_clearance_d
+    && chamber_tray_rpi_mount_screw_head_depth > 0
+    && chamber_tray_rpi_mount_screw_head_depth <= chamber_tray_wall,
+    "Raspberry Pi tray mount underside recess dimensions are invalid");
   assert(chamber_tray_rail_inner_x_abs()
       > chamber_piece_x / 2 - chamber_joint_boss_depth
       - chamber_joint_boss_depth,
-    "right chamber tray rails must clear center-joint passthrough bosses");
+    "right chamber tray rails must clear center-joint bolt bosses");
   assert(chamber_joint_passthrough_count == 2,
     "this chamber mockup expects two front/back passthroughs");
   assert(chamber_joint_passthrough_d > 0,
@@ -709,16 +766,16 @@ module _assert_dims() {
   assert(chamber_joint_center_z + chamber_joint_passthrough_d / 2 < chamber_total_z(),
     "chamber passthrough exceeds the open chamber height");
   for (i = [0 : chamber_joint_passthrough_count - 1]) {
-    assert(abs(chamber_passthrough_y(i)) + chamber_joint_ring_outer_d() / 2 <= chamber_piece_y / 2,
-      "chamber passthrough reinforcement exceeds chamber depth");
+    assert(abs(chamber_passthrough_y(i)) + chamber_joint_passthrough_d / 2 <= chamber_piece_y / 2,
+      "chamber passthrough exceeds chamber depth");
   }
-  assert(chamber_joint_center_z - chamber_joint_ring_outer_d() / 2 >= chamber_bottom,
-    "chamber passthrough reinforcement intersects the chamber floor");
-  assert(chamber_joint_center_z + chamber_joint_ring_outer_d() / 2 <= chamber_total_z(),
-    "chamber passthrough reinforcement exceeds the open chamber height");
-  assert(chamber_joint_center_z + chamber_joint_ring_outer_d() / 2
+  assert(chamber_joint_center_z - chamber_joint_passthrough_d / 2 >= chamber_bottom,
+    "chamber passthrough intersects the chamber floor");
+  assert(chamber_joint_center_z + chamber_joint_passthrough_d / 2 <= chamber_total_z(),
+    "chamber passthrough exceeds the open chamber height");
+  assert(chamber_joint_center_z + chamber_joint_passthrough_d / 2
     < chamber_keyboard_lid_rail_center_z() - chamber_keyboard_lid_rail_h / 2,
-    "chamber passthrough reinforcement must clear the keyboard lid rail");
+    "chamber passthrough must clear the keyboard lid rail");
   assert(chamber_joint_bolt_count == 6,
     "this chamber mockup expects six M3 bolts on the mating face");
   assert(chamber_joint_bolt_clearance_d >= 3.0,
@@ -1319,25 +1376,6 @@ module _chamber_handle_mount_screw_cuts(side_face_x) {
 module _chamber_joint_reinforcement(side, joint_face_x) {
   boss_center_x = joint_face_x + side * chamber_joint_boss_depth / 2;
 
-  for (i = [0 : chamber_joint_passthrough_count - 1]) {
-    translate([boss_center_x, chamber_passthrough_y(i), chamber_joint_center_z])
-      rotate([0, 90, 0])
-        difference() {
-          cylinder(
-            d = chamber_joint_ring_outer_d(),
-            h = chamber_joint_boss_depth,
-            center = true,
-            $fn = 72
-          );
-          cylinder(
-            d = chamber_joint_passthrough_d,
-            h = chamber_joint_boss_depth + 0.4,
-            center = true,
-            $fn = 72
-          );
-        }
-  }
-
   for (i = [0 : chamber_joint_bolt_count - 1]) {
     translate([boss_center_x, chamber_bolt_y(i), chamber_bolt_z(i)])
       rotate([0, 90, 0])
@@ -1657,6 +1695,24 @@ module _right_chamber_tray_opi_mount_cut(x, y, cut_h) {
     );
 }
 
+module _right_chamber_tray_rpi_mount_cut(x, y, cut_h) {
+  translate([x, y, chamber_tray_back_opening_z0 - 0.2])
+    cylinder(
+      d = chamber_tray_rpi_mount_screw_clearance_d,
+      h = cut_h,
+      center = false,
+      $fn = 32
+    );
+
+  translate([x, y, chamber_tray_back_opening_z0 - 0.2])
+    cylinder(
+      d = chamber_tray_rpi_mount_screw_head_d,
+      h = chamber_tray_rpi_mount_screw_head_depth + 0.2,
+      center = false,
+      $fn = 36
+    );
+}
+
 module _right_chamber_tray_exhaust_cut() {
   translate([
     chamber_tray_opi_center_x(),
@@ -1705,12 +1761,12 @@ module _right_chamber_tray_body() {
       translate([
         -chamber_tray_backplate_w() / 2,
         chamber_tray_y_back(),
-        0
+        chamber_tray_backplate_bottom_z()
       ])
         cube([
           chamber_tray_backplate_w(),
           chamber_tray_backplate_t,
-          chamber_tray_backplate_h
+          chamber_tray_backplate_body_h()
         ], center = false);
 
       for (sx = [-1, 1]) {
@@ -1727,6 +1783,22 @@ module _right_chamber_tray_body() {
               h = chamber_tray_opi_mount_stud_h + 0.2,
               center = false,
               $fn = 56
+            );
+        }
+      }
+
+      for (ix = [0, 1]) {
+        for (iy = [0, 1]) {
+          translate([
+            chamber_tray_rpi_mount_x(iy),
+            chamber_tray_rpi_mount_y(ix),
+            stud_z
+          ])
+            cylinder(
+              d = chamber_tray_rpi_mount_pad_d,
+              h = chamber_tray_rpi_mount_stud_h + 0.2,
+              center = false,
+              $fn = 48
             );
         }
       }
@@ -1749,6 +1821,18 @@ module _right_chamber_tray_body() {
             + sy * chamber_tray_opi_mount_y_spacing / 2,
           chamber_tray_wall
             + chamber_tray_opi_mount_stud_h
+            + 1.0
+        );
+      }
+    }
+
+    for (ix = [0, 1]) {
+      for (iy = [0, 1]) {
+        _right_chamber_tray_rpi_mount_cut(
+          chamber_tray_rpi_mount_x(iy),
+          chamber_tray_rpi_mount_y(ix),
+          chamber_tray_wall
+            + chamber_tray_rpi_mount_stud_h
             + 1.0
         );
       }
