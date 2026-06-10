@@ -25,6 +25,7 @@ First-draft visual mockup and design brief for a cyberdeck OpenSCAD model.
 - `part_id = 7`: left-front inset lid
 - `part_id = 8`: center-left inset lid
 - `part_id = 9`: right-front inset lid
+- `part_id = 10`: left-side carrying handle
 
 ## Revision 0002 Printable Chamber Study
 
@@ -41,6 +42,11 @@ First-draft visual mockup and design brief for a cyberdeck OpenSCAD model.
 - The left dome roof is currently a `125 mm x 125 mm` planning area for the acrylic dome footprint.
 - A matching flat `2 mm` top band now extends from the dome roof edge across the front of the display wedge to the right outer edge.
 - This front control band runs from assembled `y = -20 mm` to the start of the `45 degree` screen slope at assembled `y = 12.424 mm`.
+- The front control band includes two `23 mm` circular cutouts for screw-in heavy-duty USB-C panel jacks.
+- The USB-C jack cutouts are centered front/back in the control band at about assembled `y = -3.8 mm`.
+- The USB-C jack cutout centers align left/right with the `210 mm` screen void edges at assembled `x = -42.5 mm` and `x = 167.5 mm`.
+- The shared OpenSCAD label font is currently `Orbitron:style=Bold`.
+- The USB-C jack labels are wrapped as two-line engravings on the inner side of the holes: `Power` / `Cell` beside the left jack and `Neural` / `Jack` beside the right jack.
 - The dome roof has a centered `96 mm` circular cutout.
 - The acrylic dome mount uses four M3 clearance holes on a `56 mm` radius bolt circle.
 - The dome M3 holes are placed in the top-left, top-right, bottom-left, and bottom-right quadrant positions around the dome cutout.
@@ -52,6 +58,13 @@ First-draft visual mockup and design brief for a cyberdeck OpenSCAD model.
 - The center and right front lids are shortened to match the left-front lid depth, leaving the new solid control band behind them.
 - The three inset lids are modeled as separate `2 mm` thick panels with `0.6 mm` edge clearance, `3 mm` corner radii, engraved orientation labels, and obround pull slots.
 - The three-lid preview layout shows all lids together; export the individual lid part IDs for printable files.
+- The first carrying-handle study is a separate printable part intended for the left side of the deck.
+- The carrying handle uses a `100 mm` cylindrical grip span, a `40 mm` outer reach from the chassis side, and a `14 mm` tube diameter.
+- The handle terminates in two `40 mm x 40 mm x 3 mm` square mounting plates with four M3 clearance holes per plate.
+- The tube-to-plate joints use tapered collars to spread load into the mounting plates.
+- Matching M3 clearance holes are cut into the left outside wall of the left chamber and the right outside wall of the right chamber.
+- The mirrored side-wall handle hole patterns are centered front/back on each chamber side, with plate centers at assembled `y = -50 mm` and `y = 50 mm`.
+- The side-wall handle screw rows are centered vertically on the flat chamber side at assembled `z = 13 mm` and `z = 39 mm`.
 - Internal vertical clearance is set to `50 mm` for component volume planning.
 - Chamber walls and bottom floor are currently `2 mm` thick.
 - The short rear clearance slope and forward screen slope are shelled with a `2 mm` normal offset.

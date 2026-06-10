@@ -80,6 +80,37 @@ function chamber_control_band_front_y() =
   chamber_dome_roof_front_y();
 function chamber_control_band_back_y() =
   chamber_profile_screen_foot_y();
+function chamber_control_usb_c_center_y() =
+  (chamber_control_band_front_y() + chamber_control_band_back_y()) / 2;
+function chamber_control_usb_c_left_x() =
+  chamber_display_wedge_center_x() - chamber_display_void_x / 2;
+function chamber_control_usb_c_right_x() =
+  chamber_display_wedge_center_x() + chamber_display_void_x / 2;
+function chamber_control_usb_c_left_label_x() =
+  chamber_control_usb_c_left_x()
+  + chamber_control_usb_c_jack_d / 2
+  + chamber_control_usb_c_label_gap;
+function chamber_control_usb_c_right_label_x() =
+  chamber_control_usb_c_right_x()
+  - chamber_control_usb_c_jack_d / 2
+  - chamber_control_usb_c_label_gap;
+function handle_half_length() = handle_length / 2;
+function handle_plate_center_z() = handle_mount_plate_size / 2;
+function handle_plate_outer_x() = -handle_mount_plate_thickness;
+function handle_plate_inner_x() = 0;
+function handle_grip_center_x() = -(handle_standoff - handle_bar_d / 2);
+function handle_bevel_inner_x() =
+  handle_plate_outer_x() + handle_mount_overlap;
+function handle_bevel_outer_x() =
+  handle_plate_outer_x() - handle_mount_bevel_len;
+function handle_chamber_mount_center_z() =
+  chamber_total_z() / 2;
+function handle_mount_plate_center_y(i) =
+  i == 0 ? -handle_half_length() : handle_half_length();
+function handle_mount_screw_y(i, sy) =
+  handle_mount_plate_center_y(i) + sy * handle_mount_screw_spacing / 2;
+function handle_chamber_mount_screw_z(sz) =
+  handle_chamber_mount_center_z() + sz * handle_mount_screw_spacing / 2;
 function chamber_display_void_cut_overlap() = chamber_wall + 0.6;
 function chamber_display_mount_screw_y(face_offset) =
   chamber_display_void_center_y()
@@ -364,6 +395,72 @@ module _assert_dims() {
     "left keyboard lid rail back edge must stay in front of the dome roof");
   assert(chamber_control_band_back_y() > chamber_control_band_front_y() + chamber_wall,
     "front control band must have usable depth");
+  assert(chamber_control_usb_c_jack_d > 0,
+    "USB-C jack cutout diameter must be > 0");
+  assert(chamber_control_usb_c_center_y() - chamber_control_usb_c_jack_d / 2
+      >= chamber_control_band_front_y() + chamber_wall
+    && chamber_control_usb_c_center_y() + chamber_control_usb_c_jack_d / 2
+      <= chamber_control_band_back_y() - chamber_wall,
+    "USB-C jack cutouts need front/back material in the control band");
+  assert(chamber_control_usb_c_left_x() - chamber_control_usb_c_jack_d / 2
+      >= chamber_dome_roof_right_x() + chamber_wall
+    && chamber_control_usb_c_right_x() + chamber_control_usb_c_jack_d / 2
+      <= chamber_assembly_right_x() - chamber_wall,
+    "USB-C jack cutouts need left/right material in the control band");
+  assert(chamber_control_usb_c_label_gap >= 0
+    && chamber_control_usb_c_label_size > 0
+    && chamber_control_usb_c_label_line_gap > chamber_control_usb_c_label_size
+    && chamber_control_usb_c_label_engrave_h > 0,
+    "USB-C jack label dimensions must be valid");
+  assert(chamber_control_usb_c_center_y() - chamber_control_usb_c_label_line_gap / 2
+      - chamber_control_usb_c_label_size / 2 >= chamber_control_band_front_y()
+    && chamber_control_usb_c_center_y() + chamber_control_usb_c_label_line_gap / 2
+      + chamber_control_usb_c_label_size / 2 <= chamber_control_band_back_y(),
+    "USB-C jack wrapped labels must fit inside the control band");
+  assert(chamber_control_usb_c_left_label_x() > chamber_control_usb_c_left_x()
+      + chamber_control_usb_c_jack_d / 2
+    && chamber_control_usb_c_right_label_x() < chamber_control_usb_c_right_x()
+      - chamber_control_usb_c_jack_d / 2,
+    "USB-C jack labels must sit between the jack holes");
+  assert(handle_length > 0 && handle_standoff > 0 && handle_bar_d > 0,
+    "handle length, standoff, and bar diameter must be > 0");
+  assert(handle_mount_plate_size > 0 && handle_mount_plate_thickness > 0,
+    "handle mounting plate dimensions must be > 0");
+  assert(handle_mount_screw_clearance_d >= 3.0,
+    "handle mounting screw holes should clear M3 hardware");
+  assert(handle_mount_screw_spacing > handle_mount_screw_clearance_d
+    && handle_mount_screw_spacing + handle_mount_screw_clearance_d
+      < handle_mount_plate_size,
+    "handle screw pattern must fit inside each mounting plate");
+  assert(handle_mount_bevel_d >= handle_bar_d
+    && handle_mount_bevel_d < handle_mount_plate_size,
+    "handle bevel collar must fit on the mounting plate");
+  assert(handle_mount_bevel_len > 0
+    && handle_standoff - handle_bar_d / 2
+      > handle_mount_plate_thickness + handle_mount_bevel_len,
+    "handle standoff must leave room for the beveled collars");
+  assert(handle_length + handle_mount_plate_size <= print_volume_y,
+    "handle length and mounting plates must fit print volume Y");
+  assert(handle_standoff <= print_volume_x,
+    "handle standoff must fit print volume X");
+  assert(handle_mount_plate_size <= print_volume_z,
+    "handle mounting plate height must fit print volume Z");
+  assert(handle_mount_plate_size <= chamber_piece_y,
+    "handle mounting plates must fit centered on the chamber side depth");
+  for (i = [0 : 1]) {
+    for (sy = [-1, 1]) {
+      assert(abs(handle_mount_screw_y(i, sy)) + handle_mount_screw_clearance_d / 2
+        <= chamber_piece_y / 2 - chamber_wall,
+        "handle side-wall screw holes exceed chamber depth");
+    }
+  }
+  for (sz = [-1, 1]) {
+    assert(handle_chamber_mount_screw_z(sz) - handle_mount_screw_clearance_d / 2
+        >= chamber_bottom
+      && handle_chamber_mount_screw_z(sz) + handle_mount_screw_clearance_d / 2
+        <= chamber_total_z() - chamber_wall,
+      "handle side-wall screw holes exceed the flat chamber side height");
+  }
   assert(chamber_lid_clearance > 0,
     "chamber lid clearance must be > 0");
   assert(chamber_lid_thickness > 0 && chamber_lid_thickness <= chamber_keyboard_lid_inset,
@@ -708,6 +805,55 @@ module _chamber_dome_mount_screw_cuts(center_x, center_y) {
   }
 }
 
+module _chamber_control_usb_c_jack_cut(center_x) {
+  translate([
+    center_x,
+    chamber_control_usb_c_center_y(),
+    chamber_total_z() - chamber_wall / 2
+  ])
+    cylinder(
+      d = chamber_control_usb_c_jack_d,
+      h = chamber_wall + 1.2,
+      center = true,
+      $fn = 72
+    );
+}
+
+module _chamber_control_usb_c_label_line_cut(x, y, label_text, halign_value) {
+  translate([
+    x,
+    y,
+    chamber_total_z() - chamber_control_usb_c_label_engrave_h
+  ])
+    linear_extrude(
+      height = chamber_control_usb_c_label_engrave_h + 0.25,
+      center = false,
+      convexity = 2
+    )
+      text(
+        label_text,
+        size = chamber_control_usb_c_label_size,
+        font = chamber_label_font,
+        halign = halign_value,
+        valign = "center"
+      );
+}
+
+module _chamber_control_usb_c_label_cut(x, line_1, line_2, halign_value) {
+  _chamber_control_usb_c_label_line_cut(
+    x,
+    chamber_control_usb_c_center_y() + chamber_control_usb_c_label_line_gap / 2,
+    line_1,
+    halign_value
+  );
+  _chamber_control_usb_c_label_line_cut(
+    x,
+    chamber_control_usb_c_center_y() - chamber_control_usb_c_label_line_gap / 2,
+    line_2,
+    halign_value
+  );
+}
+
 module _chamber_display_void_cut(center_x) {
   translate([
     center_x,
@@ -818,6 +964,31 @@ module _chamber_bolt_cut(joint_face_x, i) {
       );
 }
 
+module _chamber_handle_mount_screw_cut(side_face_x, i, sy, sz) {
+  translate([
+    side_face_x,
+    handle_mount_screw_y(i, sy),
+    handle_chamber_mount_screw_z(sz)
+  ])
+    rotate([0, 90, 0])
+      cylinder(
+        d = handle_mount_screw_clearance_d,
+        h = chamber_wall * 4 + 1.2,
+        center = true,
+        $fn = 32
+      );
+}
+
+module _chamber_handle_mount_screw_cuts(side_face_x) {
+  for (i = [0 : 1]) {
+    for (sy = [-1, 1]) {
+      for (sz = [-1, 1]) {
+        _chamber_handle_mount_screw_cut(side_face_x, i, sy, sz);
+      }
+    }
+  }
+}
+
 module _chamber_joint_reinforcement(side, joint_face_x) {
   boss_center_x = joint_face_x + side * chamber_joint_boss_depth / 2;
 
@@ -860,8 +1031,12 @@ module _chamber_floor_label(center_x, label_text) {
 
 module _chamber_body(side, assembly_position, label_text) {
   center_x = assembly_position ? side * chamber_piece_x / 2 : 0;
+  global_body_xa = side < 0 ? chamber_assembly_left_x() : 0;
+  global_body_xb = side < 0 ? 0 : chamber_assembly_right_x();
   joint_face_x = assembly_position ? 0 : -side * chamber_piece_x / 2;
   model_x_offset = assembly_position ? 0 : -side * chamber_piece_x / 2;
+  outer_side_face_x =
+    (side < 0 ? global_body_xa : global_body_xb) + model_x_offset;
   wedge_web_x = chamber_display_wedge_left_x() + model_x_offset;
   dome_roof_cut_x = chamber_dome_roof_center_x() + model_x_offset;
   display_void_cut_x = chamber_display_wedge_center_x() + model_x_offset;
@@ -880,6 +1055,21 @@ module _chamber_body(side, assembly_position, label_text) {
       _chamber_display_void_cut(display_void_cut_x);
       _chamber_display_mount_screw_cuts(display_void_cut_x);
       _chamber_display_split_rail_screw_cuts(display_split_rail_x);
+      for (x = [chamber_control_usb_c_left_x(), chamber_control_usb_c_right_x()]) {
+        _chamber_control_usb_c_jack_cut(x + model_x_offset);
+      }
+      _chamber_control_usb_c_label_cut(
+        chamber_control_usb_c_left_label_x() + model_x_offset,
+        chamber_control_usb_c_left_label_line_1,
+        chamber_control_usb_c_left_label_line_2,
+        "left"
+      );
+      _chamber_control_usb_c_label_cut(
+        chamber_control_usb_c_right_label_x() + model_x_offset,
+        chamber_control_usb_c_right_label_line_1,
+        chamber_control_usb_c_right_label_line_2,
+        "right"
+      );
       if (side < 0) {
         for (i = [0 : chamber_joint_passthrough_count - 1]) {
           _chamber_passthrough_cut(wedge_web_x, i);
@@ -887,6 +1077,7 @@ module _chamber_body(side, assembly_position, label_text) {
         _chamber_dome_roof_cut(dome_roof_cut_x, chamber_dome_roof_center_y());
         _chamber_dome_mount_screw_cuts(dome_roof_cut_x, chamber_dome_roof_center_y());
       }
+      _chamber_handle_mount_screw_cuts(outer_side_face_x);
       for (i = [0 : chamber_joint_bolt_count - 1]) {
         _chamber_bolt_cut(joint_face_x, i);
       }
@@ -925,7 +1116,13 @@ module _chamber_lid_panel(w, d, label_text) {
 
     translate([0, d / 2 - 14, chamber_lid_thickness - 0.35])
       linear_extrude(height = 0.8, center = false, convexity = 2)
-        text(label_text, size = label_size, halign = "center", valign = "center");
+        text(
+          label_text,
+          size = label_size,
+          font = chamber_label_font,
+          halign = "center",
+          valign = "center"
+        );
   }
 }
 
@@ -958,7 +1155,99 @@ module _chamber_lid_set_layout() {
 
 module _label(text_value, size = 7, h = 0.35) {
   linear_extrude(height = h, center = false, convexity = 2)
-    text(text_value, size = size, halign = "center", valign = "center");
+    text(
+      text_value,
+      size = size,
+      font = chamber_label_font,
+      halign = "center",
+      valign = "center"
+    );
+}
+
+module _handle_cylinder_x(xa, xb, y, z, d) {
+  translate([(xa + xb) / 2, y, z])
+    rotate([0, 90, 0])
+      cylinder(d = d, h = xb - xa, center = true, $fn = 48);
+}
+
+module _handle_cylinder_y(x, ya, yb, z, d) {
+  translate([x, (ya + yb) / 2, z])
+    rotate([90, 0, 0])
+      cylinder(d = d, h = yb - ya, center = true, $fn = 48);
+}
+
+module _handle_mount_plate(center_y) {
+  difference() {
+    translate([
+      -handle_mount_plate_thickness / 2,
+      center_y,
+      handle_plate_center_z()
+    ])
+      cube([
+        handle_mount_plate_thickness,
+        handle_mount_plate_size,
+        handle_mount_plate_size
+      ], center = true);
+
+    for (sy = [-1, 1]) {
+      for (sz = [-1, 1]) {
+        translate([
+          -handle_mount_plate_thickness / 2,
+          center_y + sy * handle_mount_screw_spacing / 2,
+          handle_plate_center_z() + sz * handle_mount_screw_spacing / 2
+        ])
+          rotate([0, 90, 0])
+            cylinder(
+              d = handle_mount_screw_clearance_d,
+              h = handle_mount_plate_thickness + 1.2,
+              center = true,
+              $fn = 32
+            );
+      }
+    }
+  }
+}
+
+module _handle_mount_bevel(center_y) {
+  translate([handle_bevel_outer_x(), center_y, handle_plate_center_z()])
+    rotate([0, 90, 0])
+      cylinder(
+        d1 = handle_bar_d,
+        d2 = handle_mount_bevel_d,
+        h = handle_mount_bevel_len + handle_mount_overlap,
+        center = false,
+        $fn = 64
+      );
+}
+
+module _left_side_handle_body() {
+  color([0.055, 0.055, 0.052, 1.0])
+    for (center_y = [-handle_half_length(), handle_half_length()]) {
+      _handle_mount_plate(center_y);
+    }
+
+  color([0.12, 0.12, 0.11, 1.0]) {
+    _handle_cylinder_y(
+      handle_grip_center_x(),
+      -handle_half_length(),
+      handle_half_length(),
+      handle_plate_center_z(),
+      handle_bar_d
+    );
+
+    for (center_y = [-handle_half_length(), handle_half_length()]) {
+      _handle_cylinder_x(
+        handle_grip_center_x(),
+        handle_bevel_inner_x(),
+        center_y,
+        handle_plate_center_z(),
+        handle_bar_d
+      );
+      translate([handle_grip_center_x(), center_y, handle_plate_center_z()])
+        sphere(d = handle_bar_d, $fn = 48);
+      _handle_mount_bevel(center_y);
+    }
+  }
 }
 
 module _case_body() {
@@ -1281,6 +1570,11 @@ module cyberdeck_center_left_lid() {
 module cyberdeck_right_front_lid() {
   _assert_dims();
   _chamber_lid_panel(chamber_right_lid_w(), chamber_main_lid_d(), "RIGHT");
+}
+
+module cyberdeck_left_side_handle() {
+  _assert_dims();
+  _left_side_handle_body();
 }
 
 module cyberdeck_visual_mockup() {

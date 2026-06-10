@@ -10,6 +10,7 @@
 // 7 = left-front inset lid
 // 8 = center-left inset lid
 // 9 = right-front inset lid
+// 10 = left-side carrying handle
 
 include <lib/defaults.scad>;
 include <parts/cyberdeck.scad>;
@@ -36,6 +37,8 @@ if (_part_id == 0) {
   cyberdeck_center_left_lid();
 } else if (_part_id == 9) {
   cyberdeck_right_front_lid();
+} else if (_part_id == 10) {
+  cyberdeck_left_side_handle();
 } else {
   assert(false, str("Unknown part_id: ", _part_id));
 }
