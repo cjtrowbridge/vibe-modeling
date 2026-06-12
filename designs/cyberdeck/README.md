@@ -21,13 +21,14 @@ First-draft visual mockup and design brief for a cyberdeck OpenSCAD model.
 - `part_id = 3`: two-piece open chamber structure
 - `part_id = 4`: left open chamber printable body
 - `part_id = 5`: right open chamber printable body
-- `part_id = 6`: three inset lid preview layout
+- `part_id = 6`: four removable panel preview layout
 - `part_id = 7`: left-front inset lid
 - `part_id = 8`: center-left inset lid
 - `part_id = 9`: right-front inset lid
 - `part_id = 10`: left-side carrying handle
 - `part_id = 11`: dome bucket insert
 - `part_id = 12`: right chamber Orange Pi tray
+- `part_id = 13`: removable right-side I/O panel
 
 ## Revision 0002 Printable Chamber Study
 
@@ -43,10 +44,22 @@ First-draft visual mockup and design brief for a cyberdeck OpenSCAD model.
 - The left dome area has a flat `2 mm` top roof extending from the display wedge edge to the left outer edge.
 - The left dome roof is currently a `125 mm x 125 mm` planning area for the acrylic dome footprint.
 - A matching flat `2 mm` top band now extends from the dome roof edge across the front of the display wedge to the right outer edge.
-- This front control band runs from assembled `y = -20 mm` to the start of the `45 degree` screen slope at assembled `y = 12.424 mm`.
+- The fixed left-side control band runs from assembled `y = -20 mm` to the start of the `45 degree` screen slope at assembled `y = 12.424 mm`.
+- On the right chamber, the control roof extends forward to about assembled `y = -43.8 mm` to form the separator web and support the removable I/O-panel opening.
 - The front control band includes two `23 mm` circular cutouts for screw-in heavy-duty USB-C panel jacks.
-- The USB-C jack cutouts are centered front/back in the control band at about assembled `y = -3.8 mm`.
+- The fixed left `Power Cell` USB-C cutout remains at about assembled `y = -3.8 mm`; the removable right `Neural Jack` cutout is centered on its panel at about assembled `y = -18.2 mm`.
 - The USB-C jack cutout centers align left/right with the `210 mm` screen void edges at assembled `x = -42.5 mm` and `x = 167.5 mm`.
+- The right-side portion of the control band becomes a separate removable I/O panel so connector and control layouts can change without reprinting the right chamber.
+- The removable I/O panel is `44 mm` deep and uses the same `5 mm` panel thickness, `0.6 mm` edge clearance, recessed M3 corner fasteners, and inset support-rail approach as the front lids.
+- The I/O-panel opening leaves an `8 mm` fixed chassis border before the screen slope and a `3 mm` solid separator web between the I/O-panel opening and the shortened right-front lid opening.
+- The shortened right-front lid remains full width, keeps its existing front and side boundaries, and is approximately `58 mm` deep.
+- The resulting finished gap between the right-front lid and I/O panel is approximately `4.2 mm`, including the two `0.6 mm` panel clearances around the `3 mm` chassis web.
+- Arcade-button planning assumes a `28 mm` mounting hole, `34 mm` external button body, and at least `5 mm` of panel material around a mounting hole.
+- The removable I/O panel includes one `28 mm` arcade-button mounting hole on its left side for push-to-talk control.
+- The push-to-talk hole is centered front/back on the `44 mm` panel, retaining `8 mm` of panel material around the mounting hole and `5 mm` around the installed `34 mm` button cap at the front and rear edges.
+- A two-line Orbitron engraving reading `Push` / `To Talk` sits to the right of the button with `5 mm` of clearance from the cap footprint.
+- The existing right-side `Neural` / `Jack` USB-C opening and engraving move onto the removable I/O panel. The left-side `Power` / `Cell` connector remains on the left chamber roof.
+- The right-side USB-C opening is centered front/back on the removable panel so the `23 mm` cutout remains fully enclosed by panel material; its left/right screen-edge alignment is retained.
 - The shared OpenSCAD label font is currently `Orbitron:style=Bold`.
 - The USB-C jack labels are wrapped as two-line engravings on the inner side of the holes: `Power` / `Cell` beside the left jack and `Neural` / `Jack` beside the right jack.
 - The dome roof has a centered `96 mm` circular cutout.
@@ -55,14 +68,14 @@ First-draft visual mockup and design brief for a cyberdeck OpenSCAD model.
 - The flat keyboard bay is intentionally open from above for continued layout, mounting, and service-access design.
 - The flat keyboard bay now includes an internal support rail for a future inset lid.
 - The future keyboard-area lid is planned to sit `2 mm` below the flat deck top and rest on a `6 mm` wide, `2 mm` tall rail around the opening.
-- All three front lid rail frames now stop at assembled `y = -20 mm`, matching the front edge of the dome roof and front control band.
+- The left and center front lid rail frames stop at assembled `y = -20 mm`, matching the front edge of the dome roof and control band.
 - The keyboard-area lid rail is constrained to the display/keyboard bay to the right of the dome roof so it does not intersect the dome cutout.
-- The center and right front lids are shortened to match the left-front lid depth, leaving the new solid control band behind them.
-- The three inset lids are modeled as separate `5 mm` thick panels with `0.6 mm` edge clearance, `3 mm` corner radii, engraved orientation labels, and obround pull slots.
+- The center lid remains aligned with the left-front lid depth, while the right-front lid is shortened further to make room for the removable I/O panel and separator web.
+- The three front lids are modeled as separate `5 mm` thick panels with `0.6 mm` edge clearance, `3 mm` corner radii, engraved orientation labels, and obround pull slots.
 - Each lid opening has small corner pads pulled into the opening for M3 corner fasteners.
 - Each lid has four M3 clearance holes inset `8 mm` from the lid edges, with `7 mm` diameter counterbores so the screw heads sit below the top face.
 - The thicker lids rest on the inset rail and may sit slightly proud of the surrounding deck surface.
-- The three-lid preview layout shows all lids together; export the individual lid part IDs for printable files.
+- The removable-panel preview layout shows the three front lids and right-side I/O panel together; export the individual part IDs for printable files.
 - The first carrying-handle study is a separate printable part intended for the left side of the deck.
 - The carrying handle uses a `100 mm` cylindrical grip span, a `40 mm` outer reach from the chassis side, and a `14 mm` tube diameter.
 - The handle terminates in two `40 mm x 40 mm x 3 mm` square mounting plates with four M3 clearance holes per plate.

@@ -16,13 +16,14 @@
 // 3 = two-piece open chamber structure
 // 4 = left open chamber printable body
 // 5 = right open chamber printable body
-// 6 = three inset lid preview layout
+// 6 = four removable panel preview layout
 // 7 = left-front inset lid
 // 8 = center-left inset lid
 // 9 = right-front inset lid
 // 10 = left-side carrying handle
 // 11 = dome bucket insert
 // 12 = right chamber Orange Pi tray
+// 13 = removable right-side I/O panel
 part_id = 3;
 
 // Case envelope
@@ -82,6 +83,18 @@ chamber_control_usb_c_left_label_line_1 = "Power";
 chamber_control_usb_c_left_label_line_2 = "Cell";
 chamber_control_usb_c_right_label_line_1 = "Neural";
 chamber_control_usb_c_right_label_line_2 = "Jack";
+chamber_io_panel_d = 44.0;
+chamber_io_panel_screen_border = 8.0;
+chamber_io_panel_separator_d = 3.0;
+chamber_arcade_button_mount_d = 28.0;
+chamber_arcade_button_outer_d = 34.0;
+chamber_arcade_button_mount_margin = 5.0;
+chamber_io_panel_ptt_x = -60.0;
+chamber_io_panel_ptt_label_gap = 5.0;
+chamber_io_panel_ptt_label_size = 4.2;
+chamber_io_panel_ptt_label_line_gap = 5.6;
+chamber_io_panel_ptt_label_line_1 = "Push";
+chamber_io_panel_ptt_label_line_2 = "To Talk";
 handle_length = 100.0;
 handle_standoff = 40.0;
 handle_bar_d = 14.0;

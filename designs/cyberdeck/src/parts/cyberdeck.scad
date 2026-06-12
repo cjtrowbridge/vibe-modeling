@@ -195,6 +195,18 @@ function chamber_lid_right_back_y() =
   chamber_keyboard_lid_back_edge_y - chamber_lid_clearance;
 function chamber_lid_left_back_y() =
   chamber_keyboard_lid_left_back_edge_y - chamber_lid_clearance;
+function chamber_io_panel_opening_back_y() =
+  chamber_control_band_back_y() - chamber_io_panel_screen_border;
+function chamber_io_panel_back_y() =
+  chamber_io_panel_opening_back_y() - chamber_lid_clearance;
+function chamber_io_panel_front_y() =
+  chamber_io_panel_back_y() - chamber_io_panel_d;
+function chamber_io_panel_opening_front_y() =
+  chamber_io_panel_front_y() - chamber_lid_clearance;
+function chamber_right_lid_rail_back_y() =
+  chamber_io_panel_opening_front_y() - chamber_io_panel_separator_d;
+function chamber_right_lid_back_y() =
+  chamber_right_lid_rail_back_y() - chamber_lid_clearance;
 function chamber_left_lid_xa() =
   chamber_assembly_left_x() + chamber_wall + chamber_lid_clearance;
 function chamber_left_lid_xb() =
@@ -214,13 +226,37 @@ function chamber_center_lid_w() = chamber_lid_w(chamber_center_lid_xa(), chamber
 function chamber_right_lid_w() = chamber_lid_w(chamber_right_lid_xa(), chamber_right_lid_xb());
 function chamber_left_lid_d() = chamber_lid_d(chamber_lid_front_y(), chamber_lid_left_back_y());
 function chamber_main_lid_d() = chamber_lid_d(chamber_lid_front_y(), chamber_lid_right_back_y());
+function chamber_right_lid_d() = chamber_lid_d(chamber_lid_front_y(), chamber_right_lid_back_y());
+function chamber_io_panel_xa() = chamber_right_lid_xa();
+function chamber_io_panel_xb() = chamber_right_lid_xb();
+function chamber_io_panel_opening_xa() =
+  chamber_io_panel_xa() - chamber_lid_clearance;
+function chamber_io_panel_opening_xb() =
+  chamber_io_panel_xb() + chamber_lid_clearance;
+function chamber_io_panel_w() = chamber_lid_w(chamber_io_panel_xa(), chamber_io_panel_xb());
+function chamber_io_panel_center_x() =
+  (chamber_io_panel_xa() + chamber_io_panel_xb()) / 2;
+function chamber_io_panel_center_y() =
+  (chamber_io_panel_front_y() + chamber_io_panel_back_y()) / 2;
+function chamber_io_panel_usb_c_x() =
+  chamber_control_usb_c_right_x() - chamber_io_panel_center_x();
+function chamber_io_panel_usb_c_y() = 0;
+function chamber_io_panel_usb_c_label_x() =
+  chamber_control_usb_c_right_label_x() - chamber_io_panel_center_x();
+function chamber_io_panel_ptt_y() = 0;
+function chamber_io_panel_ptt_label_x() =
+  chamber_io_panel_ptt_x
+    + chamber_arcade_button_outer_d / 2
+    + chamber_io_panel_ptt_label_gap;
 function chamber_lid_set_w() =
   max(
-    chamber_right_lid_w(),
+    chamber_right_lid_w() + chamber_lid_layout_gap + chamber_io_panel_w(),
     chamber_left_lid_w() + chamber_lid_layout_gap + chamber_center_lid_w()
   );
 function chamber_lid_set_d() =
-  chamber_main_lid_d() + chamber_lid_layout_gap + max(chamber_left_lid_d(), chamber_main_lid_d());
+  max(chamber_right_lid_d(), chamber_io_panel_d)
+  + chamber_lid_layout_gap
+  + max(chamber_left_lid_d(), chamber_main_lid_d());
 function chamber_dome_bucket_outer_d() =
   chamber_dome_roof_hole_d - 2 * chamber_dome_bucket_slide_clearance;
 function chamber_dome_bucket_inner_d() =
@@ -545,6 +581,45 @@ module _assert_dims() {
     "left keyboard lid rail back edge must leave a usable opening");
   assert(chamber_keyboard_lid_left_back_edge_y <= chamber_dome_roof_front_y() + 0.1,
     "left keyboard lid rail back edge must stay in front of the dome roof");
+  assert(chamber_io_panel_d >= chamber_arcade_button_mount_d
+      + 2 * chamber_arcade_button_mount_margin,
+    "I/O panel depth must reserve the requested margin around the arcade-button hole");
+  assert(chamber_arcade_button_outer_d >= chamber_arcade_button_mount_d,
+    "arcade-button external diameter must not be smaller than its mounting hole");
+  assert(abs(chamber_io_panel_ptt_x)
+      + chamber_arcade_button_mount_d / 2
+      + chamber_arcade_button_mount_margin
+      <= chamber_io_panel_w() / 2,
+    "push-to-talk mounting hole must retain its requested side margin");
+  assert(abs(chamber_io_panel_ptt_y())
+      + chamber_arcade_button_mount_d / 2
+      + chamber_arcade_button_mount_margin
+      <= chamber_io_panel_d / 2,
+    "push-to-talk mounting hole must retain its requested front/back margin");
+  assert(abs(chamber_io_panel_ptt_y())
+      + chamber_arcade_button_outer_d / 2
+      + chamber_arcade_button_mount_margin
+      <= chamber_io_panel_d / 2,
+    "push-to-talk button cap must retain its requested front/back margin");
+  assert(chamber_io_panel_ptt_label_gap >= 0
+      && chamber_io_panel_ptt_label_size > 0
+      && chamber_io_panel_ptt_label_line_gap > chamber_io_panel_ptt_label_size,
+    "push-to-talk label dimensions must be valid");
+  assert(chamber_io_panel_ptt_label_x()
+      >= chamber_io_panel_ptt_x + chamber_arcade_button_outer_d / 2,
+    "push-to-talk label must remain clear of the button cap");
+  assert(chamber_io_panel_ptt_label_x()
+      < chamber_io_panel_usb_c_label_x() - chamber_control_usb_c_label_size,
+    "push-to-talk label must remain left of the USB-C label");
+  assert(chamber_io_panel_opening_back_y()
+      <= chamber_control_band_back_y() - chamber_io_panel_screen_border + 0.01,
+    "I/O panel opening must preserve the screen-side chassis border");
+  assert(chamber_io_panel_opening_front_y()
+      > chamber_keyboard_lid_front_edge_y() + 2 * chamber_keyboard_lid_rail_w,
+    "I/O panel opening must leave usable depth for the shortened right lid");
+  assert(chamber_io_panel_opening_front_y() - chamber_right_lid_rail_back_y()
+      >= chamber_io_panel_separator_d - 0.01,
+    "right lid and I/O panel openings must retain the separator web");
   assert(chamber_control_band_back_y() > chamber_control_band_front_y() + chamber_wall,
     "front control band must have usable depth");
   assert(chamber_control_usb_c_jack_d > 0,
@@ -640,19 +715,33 @@ module _assert_dims() {
     && chamber_left_lid_d() > 2 * chamber_lid_mount_inset
     && chamber_center_lid_w() > 2 * chamber_lid_mount_inset
     && chamber_main_lid_d() > 2 * chamber_lid_mount_inset
-    && chamber_right_lid_w() > 2 * chamber_lid_mount_inset,
+    && chamber_right_lid_w() > 2 * chamber_lid_mount_inset
+    && chamber_right_lid_d() > 2 * chamber_lid_mount_inset
+    && chamber_io_panel_w() > 2 * chamber_lid_mount_inset
+    && chamber_io_panel_d > 2 * chamber_lid_mount_inset,
     "lid corner screw holes must fit inside each lid");
   assert(chamber_center_lid_w() > max(2 * chamber_lid_corner_r, chamber_lid_pull_slot_w)
     && chamber_main_lid_d() > 2 * chamber_lid_corner_r,
     "center-left lid dimensions are invalid");
   assert(chamber_right_lid_w() > chamber_lid_pull_slot_w
-    && chamber_main_lid_d() > 2 * chamber_lid_corner_r,
+    && chamber_right_lid_d() > 2 * chamber_lid_corner_r,
     "right-front lid dimensions are invalid");
+  assert(chamber_io_panel_w() > 2 * chamber_lid_corner_r
+    && chamber_io_panel_d > 2 * chamber_lid_corner_r,
+    "right-side I/O panel dimensions are invalid");
+  assert(abs(chamber_io_panel_usb_c_x()) + chamber_control_usb_c_jack_d / 2
+      < chamber_io_panel_w() / 2
+    && abs(chamber_io_panel_usb_c_y()) + chamber_control_usb_c_jack_d / 2
+      < chamber_io_panel_d / 2,
+    "right-side USB-C cutout must remain enclosed by the I/O panel");
   assert(chamber_left_lid_w() <= print_volume_x
     && chamber_left_lid_d() <= print_volume_y
     && chamber_center_lid_w() <= print_volume_x
     && chamber_main_lid_d() <= print_volume_y
     && chamber_right_lid_w() <= print_volume_x
+    && chamber_right_lid_d() <= print_volume_y
+    && chamber_io_panel_w() <= print_volume_x
+    && chamber_io_panel_d <= print_volume_y
     && chamber_lid_thickness <= print_volume_z,
     "each individual lid must fit the print volume");
   assert(chamber_dome_bucket_wall == 3,
@@ -859,7 +948,10 @@ module _chamber_shell(side, center_x, assembly_position) {
       _chamber_keyboard_lid_support_rail(
         keyboard_rail_xa,
         keyboard_rail_xb,
-        chamber_keyboard_lid_back_edge_y
+        chamber_keyboard_lid_front_edge_y(),
+        side > 0
+          ? chamber_right_lid_rail_back_y()
+          : chamber_keyboard_lid_back_edge_y
       );
     }
 
@@ -867,7 +959,17 @@ module _chamber_shell(side, center_x, assembly_position) {
       _chamber_keyboard_lid_support_rail(
         left_keyboard_rail_xa,
         left_keyboard_rail_xb,
+        chamber_keyboard_lid_front_edge_y(),
         chamber_keyboard_lid_left_back_edge_y
+      );
+    }
+
+    if (side > 0) {
+      _chamber_keyboard_lid_support_rail(
+        global_body_xa + model_x_offset,
+        global_body_xb + model_x_offset,
+        chamber_io_panel_opening_front_y(),
+        chamber_io_panel_opening_back_y()
       );
     }
 
@@ -892,12 +994,20 @@ module _chamber_shell(side, center_x, assembly_position) {
     }
 
     if (control_roof_xb > control_roof_xa) {
-      _chamber_flat_roof(
-        control_roof_xa,
-        control_roof_xb,
-        chamber_control_band_front_y(),
-        chamber_control_band_back_y()
-      );
+      if (side > 0) {
+        _right_chamber_control_roof_with_io_opening(
+          control_roof_xa,
+          control_roof_xb,
+          model_x_offset
+        );
+      } else {
+        _chamber_flat_roof(
+          control_roof_xa,
+          control_roof_xb,
+          chamber_control_band_front_y(),
+          chamber_control_band_back_y()
+        );
+      }
     }
   }
 }
@@ -939,6 +1049,31 @@ module _chamber_flat_roof(xa, xb, y_front, y_back) {
     chamber_total_z() - chamber_wall / 2
   ])
     cube([xb - xa + 0.05, y_back - y_front, chamber_wall], center = true);
+}
+
+module _right_chamber_control_roof_with_io_opening(xa, xb, model_x_offset) {
+  opening_xa = chamber_io_panel_opening_xa() + model_x_offset;
+  opening_xb = chamber_io_panel_opening_xb() + model_x_offset;
+
+  difference() {
+    _chamber_flat_roof(
+      xa,
+      xb,
+      chamber_right_lid_rail_back_y(),
+      chamber_control_band_back_y()
+    );
+
+    translate([
+      (opening_xa + opening_xb) / 2,
+      (chamber_io_panel_opening_front_y() + chamber_io_panel_opening_back_y()) / 2,
+      chamber_total_z() - chamber_wall / 2
+    ])
+      cube([
+        opening_xb - opening_xa,
+        chamber_io_panel_opening_back_y() - chamber_io_panel_opening_front_y(),
+        chamber_wall + 1.2
+      ], center = true);
+  }
 }
 
 module _right_chamber_tray_guide_rails(xa, xb) {
@@ -1003,11 +1138,10 @@ module _right_chamber_tray_backplate_screw_cuts(xa, xb) {
   }
 }
 
-module _chamber_keyboard_lid_support_rail(xa, xb, y_back) {
+module _chamber_keyboard_lid_support_rail(xa, xb, y_front, y_back) {
   attach_overlap = 0.4;
   outer_xa = xa + chamber_wall - attach_overlap;
   outer_xb = xb - chamber_wall + attach_overlap;
-  y_front = chamber_keyboard_lid_front_edge_y();
   outer_y_front = y_front - attach_overlap;
   outer_y_back = y_back;
   rail_x = outer_xb - outer_xa;
@@ -1241,6 +1375,96 @@ module _chamber_control_usb_c_label_cut(x, line_1, line_2, halign_value) {
   );
 }
 
+module _io_panel_usb_c_jack_cut() {
+  translate([
+    chamber_io_panel_usb_c_x(),
+    chamber_io_panel_usb_c_y(),
+    chamber_lid_thickness / 2
+  ])
+    cylinder(
+      d = chamber_control_usb_c_jack_d,
+      h = chamber_lid_thickness + 1.2,
+      center = true,
+      $fn = 72
+    );
+}
+
+module _io_panel_usb_c_label_line_cut(y, label_text) {
+  translate([
+    chamber_io_panel_usb_c_label_x(),
+    y,
+    chamber_lid_thickness - chamber_control_usb_c_label_engrave_h
+  ])
+    linear_extrude(
+      height = chamber_control_usb_c_label_engrave_h + 0.25,
+      center = false,
+      convexity = 2
+    )
+      text(
+        label_text,
+        size = chamber_control_usb_c_label_size,
+        font = chamber_label_font,
+        halign = "right",
+        valign = "center"
+      );
+}
+
+module _io_panel_usb_c_label_cut() {
+  _io_panel_usb_c_label_line_cut(
+    chamber_io_panel_usb_c_y() + chamber_control_usb_c_label_line_gap / 2,
+    chamber_control_usb_c_right_label_line_1
+  );
+  _io_panel_usb_c_label_line_cut(
+    chamber_io_panel_usb_c_y() - chamber_control_usb_c_label_line_gap / 2,
+    chamber_control_usb_c_right_label_line_2
+  );
+}
+
+module _io_panel_ptt_button_cut() {
+  translate([
+    chamber_io_panel_ptt_x,
+    chamber_io_panel_ptt_y(),
+    chamber_lid_thickness / 2
+  ])
+    cylinder(
+      d = chamber_arcade_button_mount_d,
+      h = chamber_lid_thickness + 1.2,
+      center = true,
+      $fn = 72
+    );
+}
+
+module _io_panel_ptt_label_line_cut(y, label_text) {
+  translate([
+    chamber_io_panel_ptt_label_x(),
+    y,
+    chamber_lid_thickness - chamber_control_usb_c_label_engrave_h
+  ])
+    linear_extrude(
+      height = chamber_control_usb_c_label_engrave_h + 0.25,
+      center = false,
+      convexity = 2
+    )
+      text(
+        label_text,
+        size = chamber_io_panel_ptt_label_size,
+        font = chamber_label_font,
+        halign = "left",
+        valign = "center"
+      );
+}
+
+module _io_panel_ptt_label_cut() {
+  _io_panel_ptt_label_line_cut(
+    chamber_io_panel_ptt_y() + chamber_io_panel_ptt_label_line_gap / 2,
+    chamber_io_panel_ptt_label_line_1
+  );
+  _io_panel_ptt_label_line_cut(
+    chamber_io_panel_ptt_y() - chamber_io_panel_ptt_label_line_gap / 2,
+    chamber_io_panel_ptt_label_line_2
+  );
+}
+
 module _chamber_display_void_cut(center_x) {
   translate([
     center_x,
@@ -1441,22 +1665,16 @@ module _chamber_body(side, assembly_position, label_text) {
           global_body_xb + model_x_offset
         );
       }
-      for (x = [chamber_control_usb_c_left_x(), chamber_control_usb_c_right_x()]) {
-        _chamber_control_usb_c_jack_cut(x + model_x_offset);
-      }
-      _chamber_control_usb_c_label_cut(
-        chamber_control_usb_c_left_label_x() + model_x_offset,
-        chamber_control_usb_c_left_label_line_1,
-        chamber_control_usb_c_left_label_line_2,
-        "left"
-      );
-      _chamber_control_usb_c_label_cut(
-        chamber_control_usb_c_right_label_x() + model_x_offset,
-        chamber_control_usb_c_right_label_line_1,
-        chamber_control_usb_c_right_label_line_2,
-        "right"
-      );
       if (side < 0) {
+        _chamber_control_usb_c_jack_cut(
+          chamber_control_usb_c_left_x() + model_x_offset
+        );
+        _chamber_control_usb_c_label_cut(
+          chamber_control_usb_c_left_label_x() + model_x_offset,
+          chamber_control_usb_c_left_label_line_1,
+          chamber_control_usb_c_left_label_line_2,
+          "left"
+        );
         for (i = [0 : chamber_joint_passthrough_count - 1]) {
           _chamber_passthrough_cut(wedge_web_x, i);
         }
@@ -1544,6 +1762,36 @@ module _chamber_lid_panel(w, d, label_text) {
   }
 }
 
+module _chamber_io_panel() {
+  w = chamber_io_panel_w();
+  d = chamber_io_panel_d;
+  cut_h = chamber_lid_thickness + 0.8;
+
+  difference() {
+    _rounded_box(
+      w,
+      d,
+      chamber_lid_thickness,
+      min(chamber_lid_corner_r, min(w, d) / 4)
+    );
+
+    for (sx = [-1, 1]) {
+      for (sy = [-1, 1]) {
+        _lid_corner_mount_cut(
+          sx * (w / 2 - chamber_lid_mount_inset),
+          sy * (d / 2 - chamber_lid_mount_inset),
+          cut_h
+        );
+      }
+    }
+
+    _io_panel_ptt_button_cut();
+    _io_panel_ptt_label_cut();
+    _io_panel_usb_c_jack_cut();
+    _io_panel_usb_c_label_cut();
+  }
+}
+
 module _chamber_lid_installed(xa, xb, yf, yb, label_text) {
   translate([
     (xa + xb) / 2,
@@ -1554,15 +1802,22 @@ module _chamber_lid_installed(xa, xb, yf, yb, label_text) {
 }
 
 module _chamber_lid_set_layout() {
+  upper_row_w = chamber_right_lid_w() + chamber_lid_layout_gap + chamber_io_panel_w();
+  upper_row_d = max(chamber_right_lid_d(), chamber_io_panel_d);
   lower_row_w = chamber_left_lid_w() + chamber_lid_layout_gap + chamber_center_lid_w();
   lower_row_d = max(chamber_left_lid_d(), chamber_main_lid_d());
-  upper_y = lower_row_d / 2 + chamber_lid_layout_gap / 2;
-  lower_y = -chamber_main_lid_d() / 2 - chamber_lid_layout_gap / 2;
+  upper_y = chamber_lid_layout_gap / 2 + upper_row_d / 2;
+  lower_y = -chamber_lid_layout_gap / 2 - lower_row_d / 2;
+  right_x = -upper_row_w / 2 + chamber_right_lid_w() / 2;
+  io_x = upper_row_w / 2 - chamber_io_panel_w() / 2;
   left_x = -lower_row_w / 2 + chamber_left_lid_w() / 2;
   center_x = lower_row_w / 2 - chamber_center_lid_w() / 2;
 
-  translate([0, upper_y, 0])
-    _chamber_lid_panel(chamber_right_lid_w(), chamber_main_lid_d(), "RIGHT");
+  translate([right_x, upper_y, 0])
+    _chamber_lid_panel(chamber_right_lid_w(), chamber_right_lid_d(), "RIGHT");
+
+  translate([io_x, upper_y, 0])
+    _chamber_io_panel();
 
   translate([left_x, lower_y, 0])
     _chamber_lid_panel(chamber_left_lid_w(), chamber_left_lid_d(), "LEFT");
@@ -2250,7 +2505,7 @@ module cyberdeck_right_chamber_body(assembly_position = false) {
   _chamber_body(1, assembly_position, "RIGHT CHAMBER");
 }
 
-module cyberdeck_three_lid_set() {
+module cyberdeck_removable_panel_set() {
   _assert_dims();
   _chamber_lid_set_layout();
 }
@@ -2267,7 +2522,7 @@ module cyberdeck_center_left_lid() {
 
 module cyberdeck_right_front_lid() {
   _assert_dims();
-  _chamber_lid_panel(chamber_right_lid_w(), chamber_main_lid_d(), "RIGHT");
+  _chamber_lid_panel(chamber_right_lid_w(), chamber_right_lid_d(), "RIGHT");
 }
 
 module cyberdeck_left_side_handle() {
@@ -2283,6 +2538,11 @@ module cyberdeck_dome_bucket_insert() {
 module cyberdeck_right_chamber_tray() {
   _assert_dims();
   _right_chamber_tray_body();
+}
+
+module cyberdeck_right_io_panel() {
+  _assert_dims();
+  _chamber_io_panel();
 }
 
 module cyberdeck_visual_mockup() {
