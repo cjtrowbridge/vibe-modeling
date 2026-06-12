@@ -125,64 +125,42 @@ function chamber_profile_rear_slope_len() =
     chamber_profile_rear_slope_run * chamber_profile_rear_slope_run
     + chamber_profile_rear_slope_drop * chamber_profile_rear_slope_drop
   );
-function chamber_display_seam_rail_start_t() =
-  chamber_display_seam_rail_bend_inset / chamber_profile_rear_slope_len();
-function chamber_display_seam_rail_end_t() =
-  1 - chamber_display_seam_rail_start_t();
-function chamber_display_seam_rail_y(t) =
-  chamber_profile_peak_y() + t * chamber_profile_rear_slope_run;
-function chamber_display_seam_rail_z(t) =
-  chamber_profile_peak_z() - t * chamber_profile_rear_slope_drop;
+function chamber_display_seam_rail_slope_y() =
+  chamber_profile_rear_slope_run / chamber_profile_rear_slope_len();
+function chamber_display_seam_rail_slope_z() =
+  -chamber_profile_rear_slope_drop / chamber_profile_rear_slope_len();
+function chamber_display_seam_rail_normal_y() =
+  chamber_profile_rear_slope_drop / chamber_profile_rear_slope_len();
+function chamber_display_seam_rail_normal_z() =
+  chamber_profile_rear_slope_run / chamber_profile_rear_slope_len();
+function chamber_display_seam_rail_center_y() =
+  chamber_profile_peak_y()
+  + chamber_display_seam_rail_top_inset
+    * chamber_display_seam_rail_slope_y();
+function chamber_display_seam_rail_center_z() =
+  chamber_profile_peak_z()
+  + chamber_display_seam_rail_top_inset
+    * chamber_display_seam_rail_slope_z();
 function chamber_display_seam_rail_outward_offset() =
   max(chamber_display_seam_rail_d / 2 - chamber_display_seam_rail_embed, 0);
 function chamber_display_seam_rail_outward_y() =
   chamber_display_seam_rail_outward_offset()
-  * chamber_profile_rear_slope_drop / chamber_profile_rear_slope_len();
+  * chamber_display_seam_rail_normal_y();
 function chamber_display_seam_rail_outward_z() =
   chamber_display_seam_rail_outward_offset()
-  * chamber_profile_rear_slope_run / chamber_profile_rear_slope_len();
-function chamber_display_seam_rail_inner_y(t) =
-  chamber_display_seam_rail_y(t)
-  - chamber_display_seam_rail_embed
-  * chamber_profile_rear_slope_drop / chamber_profile_rear_slope_len();
-function chamber_display_seam_rail_inner_z(t) =
-  chamber_display_seam_rail_z(t)
-  - chamber_display_seam_rail_embed
-  * chamber_profile_rear_slope_run / chamber_profile_rear_slope_len();
-function chamber_display_seam_rail_outer_y(t) =
-  chamber_display_seam_rail_y(t)
-  + (chamber_display_seam_rail_d - chamber_display_seam_rail_embed)
-  * chamber_profile_rear_slope_drop / chamber_profile_rear_slope_len();
-function chamber_display_seam_rail_outer_z(t) =
-  chamber_display_seam_rail_z(t)
-  + (chamber_display_seam_rail_d - chamber_display_seam_rail_embed)
-  * chamber_profile_rear_slope_run / chamber_profile_rear_slope_len();
-function chamber_display_seam_rail_vertical_inner_y() =
-  chamber_display_seam_rail_inner_y(1);
-function chamber_display_seam_rail_vertical_outer_y() =
-  chamber_display_seam_rail_outer_y(1);
-function chamber_display_seam_rail_vertical_center_y() =
-  (
-    chamber_display_seam_rail_vertical_inner_y()
-    + chamber_display_seam_rail_vertical_outer_y()
-  ) / 2;
-function chamber_display_seam_rail_vertical_screw_z(i) =
-  chamber_display_seam_rail_vertical_screw_bottom_inset
-  + i * chamber_display_seam_rail_vertical_screw_spacing;
-function chamber_display_seam_rail_screw_count() =
-  2 + chamber_display_seam_rail_vertical_screw_count;
-function chamber_display_seam_rail_screw_y(i) =
-  i < 2
-    ? chamber_display_seam_rail_y(
-        i == 0 ? chamber_display_seam_rail_start_t() : chamber_display_seam_rail_end_t()
-      ) + chamber_display_seam_rail_outward_y()
-    : chamber_display_seam_rail_vertical_center_y();
-function chamber_display_seam_rail_screw_z(i) =
-  i < 2
-    ? chamber_display_seam_rail_z(
-        i == 0 ? chamber_display_seam_rail_start_t() : chamber_display_seam_rail_end_t()
-      ) + chamber_display_seam_rail_outward_z()
-    : chamber_display_seam_rail_vertical_screw_z(i - 2);
+  * chamber_display_seam_rail_normal_z();
+function chamber_display_seam_rail_point_y(along, outward) =
+  chamber_display_seam_rail_center_y()
+  + along * chamber_display_seam_rail_slope_y()
+  + outward * chamber_display_seam_rail_normal_y();
+function chamber_display_seam_rail_point_z(along, outward) =
+  chamber_display_seam_rail_center_z()
+  + along * chamber_display_seam_rail_slope_z()
+  + outward * chamber_display_seam_rail_normal_z();
+function chamber_display_seam_rail_screw_y() =
+  chamber_display_seam_rail_center_y() + chamber_display_seam_rail_outward_y();
+function chamber_display_seam_rail_screw_z() =
+  chamber_display_seam_rail_center_z() + chamber_display_seam_rail_outward_z();
 function chamber_keyboard_lid_rail_top_z() =
   chamber_total_z() - chamber_keyboard_lid_inset;
 function chamber_keyboard_lid_rail_center_z() =
@@ -383,8 +361,6 @@ function chamber_tray_rail_center_x(side) =
   );
 function chamber_tray_rail_inner_x_abs() =
   chamber_tray_w() / 2 + chamber_tray_slide_clearance;
-function chamber_display_seam_rail_vertical_bottom_z() =
-  chamber_tray_backplate_h + 1;
 function chamber_profile_back_wall_z() =
   chamber_profile_peak_z() - chamber_profile_rear_slope_drop;
 function chamber_profile_back_wall_rise() =
@@ -541,48 +517,28 @@ module _assert_dims() {
     "side profile screen foot must be forward of the peak");
   assert(chamber_display_seam_rail_w > 0
     && chamber_display_seam_rail_d > chamber_display_seam_rail_screw_clearance_d,
-    "display seam rail dimensions must clear the screw holes");
+    "display seam connector dimensions must clear the screw hole");
   assert(chamber_display_seam_rail_embed > 0
     && chamber_display_seam_rail_embed < chamber_wall,
-    "display seam rail embed must stay below wall thickness so it does not protrude inside");
+    "display seam connector embed must stay below wall thickness");
   assert(chamber_display_seam_rail_screw_clearance_d >= 3.0,
-    "display seam rail screw holes should clear M3 hardware");
-  assert(chamber_display_seam_rail_bend_inset >= chamber_display_seam_rail_d / 2 + chamber_wall,
-    "display seam rail screw holes need edge clearance for screw heads and nuts");
-  assert(chamber_display_seam_rail_bend_inset > chamber_display_seam_rail_screw_clearance_d
-    && 2 * chamber_display_seam_rail_bend_inset < chamber_profile_rear_slope_len(),
-    "display seam rail screw holes must stay between the rear-slope bends");
-  assert(chamber_display_seam_rail_outer_y(1) - (-chamber_piece_y / 2) <= print_volume_y,
-    "display seam rail must fit inside print volume Y");
-  assert(chamber_display_seam_rail_vertical_bottom_z() > chamber_tray_backplate_h,
-    "rear seam ridge must start above the tray backplate");
-  assert(chamber_display_seam_rail_vertical_screw_count >= 0
-    && chamber_display_seam_rail_vertical_screw_count
-      == floor(chamber_display_seam_rail_vertical_screw_count),
-    "display seam rail vertical screw count must be a non-negative integer");
-  assert(
-    chamber_display_seam_rail_vertical_outer_y()
-      - chamber_display_seam_rail_vertical_inner_y()
+    "display seam connector screw hole should clear M3 hardware");
+  assert(chamber_display_seam_rail_len
       > chamber_display_seam_rail_screw_clearance_d + 2 * chamber_wall,
-    "display seam rail vertical extension must clear the screw holes");
-  if (chamber_display_seam_rail_vertical_screw_count > 0) {
-    assert(chamber_display_seam_rail_vertical_screw_bottom_inset
-      > chamber_display_seam_rail_screw_clearance_d / 2 + chamber_wall,
-      "display seam rail lower screw needs bottom edge clearance");
-    let (
-      top_screw_z =
-        chamber_display_seam_rail_vertical_screw_z(
-          chamber_display_seam_rail_vertical_screw_count - 1
-        )
-    )
-      assert(top_screw_z + chamber_display_seam_rail_screw_clearance_d / 2
-        < chamber_display_seam_rail_inner_z(1),
-        "display seam rail vertical screws must fit below the angled cap");
-    assert(chamber_display_seam_rail_vertical_screw_bottom_inset
-      > chamber_display_seam_rail_vertical_bottom_z()
-        + chamber_display_seam_rail_screw_clearance_d / 2,
-      "display seam rail vertical screws must sit above the tray backplate");
-  }
+    "display seam connector needs screw edge clearance along the slope");
+  assert(chamber_display_seam_rail_top_inset
+      >= chamber_display_seam_rail_len / 2,
+    "display seam connector must remain below the rear-slope peak");
+  assert(chamber_display_seam_rail_top_inset
+      + chamber_display_seam_rail_len / 2
+      < chamber_profile_rear_slope_len(),
+    "display seam connector must remain on the rear slope");
+  assert(
+    chamber_display_seam_rail_point_y(
+      chamber_display_seam_rail_len / 2,
+      chamber_display_seam_rail_d - chamber_display_seam_rail_embed
+    ) - (-chamber_piece_y / 2) < print_volume_y - 1,
+    "display seam connector needs at least 1 mm of print-volume Y margin");
   assert(chamber_keyboard_lid_inset > 0
     && chamber_keyboard_lid_rail_top_z() < chamber_total_z(),
     "keyboard lid rail must sit below the flat deck top");
@@ -1603,37 +1559,53 @@ module _chamber_display_split_rail(side, seam_x) {
     linear_extrude(height = rail_xb - rail_xa, center = false, convexity = 4)
       polygon(points = [
         [
-          chamber_display_seam_rail_inner_y(0),
-          chamber_display_seam_rail_inner_z(0)
+          chamber_display_seam_rail_point_y(
+            -chamber_display_seam_rail_len / 2,
+            -chamber_display_seam_rail_embed
+          ),
+          chamber_display_seam_rail_point_z(
+            -chamber_display_seam_rail_len / 2,
+            -chamber_display_seam_rail_embed
+          )
         ],
         [
-          chamber_display_seam_rail_inner_y(1),
-          chamber_display_seam_rail_inner_z(1)
+          chamber_display_seam_rail_point_y(
+            chamber_display_seam_rail_len / 2,
+            -chamber_display_seam_rail_embed
+          ),
+          chamber_display_seam_rail_point_z(
+            chamber_display_seam_rail_len / 2,
+            -chamber_display_seam_rail_embed
+          )
         ],
         [
-          chamber_display_seam_rail_vertical_inner_y(),
-          chamber_display_seam_rail_vertical_bottom_z()
+          chamber_display_seam_rail_point_y(
+            chamber_display_seam_rail_len / 2,
+            chamber_display_seam_rail_d - chamber_display_seam_rail_embed
+          ),
+          chamber_display_seam_rail_point_z(
+            chamber_display_seam_rail_len / 2,
+            chamber_display_seam_rail_d - chamber_display_seam_rail_embed
+          )
         ],
         [
-          chamber_display_seam_rail_vertical_outer_y(),
-          chamber_display_seam_rail_vertical_bottom_z()
-        ],
-        [
-          chamber_display_seam_rail_outer_y(1),
-          chamber_display_seam_rail_outer_z(1)
-        ],
-        [
-          chamber_display_seam_rail_outer_y(0),
-          chamber_display_seam_rail_outer_z(0)
+          chamber_display_seam_rail_point_y(
+            -chamber_display_seam_rail_len / 2,
+            chamber_display_seam_rail_d - chamber_display_seam_rail_embed
+          ),
+          chamber_display_seam_rail_point_z(
+            -chamber_display_seam_rail_len / 2,
+            chamber_display_seam_rail_d - chamber_display_seam_rail_embed
+          )
         ]
       ]);
 }
 
-module _chamber_display_split_rail_screw_cut(seam_x, i) {
+module _chamber_display_split_rail_screw_cut(seam_x) {
   translate([
     seam_x,
-    chamber_display_seam_rail_screw_y(i),
-    chamber_display_seam_rail_screw_z(i)
+    chamber_display_seam_rail_screw_y(),
+    chamber_display_seam_rail_screw_z()
   ])
     rotate([0, 90, 0])
       cylinder(
@@ -1645,9 +1617,7 @@ module _chamber_display_split_rail_screw_cut(seam_x, i) {
 }
 
 module _chamber_display_split_rail_screw_cuts(seam_x) {
-  for (i = [0 : chamber_display_seam_rail_screw_count() - 1]) {
-    _chamber_display_split_rail_screw_cut(seam_x, i);
-  }
+  _chamber_display_split_rail_screw_cut(seam_x);
 }
 
 module _chamber_display_mount_screw_cut(center_x, face_offset) {

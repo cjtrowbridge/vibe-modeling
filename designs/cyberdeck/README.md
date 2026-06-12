@@ -125,13 +125,13 @@ First-draft visual mockup and design brief for a cyberdeck OpenSCAD model.
 - The display wedge web uses the same two circular passthrough openings as the center chamber joint.
 - The raised display wedge is open across the center seam so there is no full-height wall in the middle of the display area.
 - The center seam keeps the lower base-wall joint structure, flush passthroughs, bolt bosses, and M3 bolt pattern.
-- The display wedge uses an external split-line joining rail at the left/right chamber seam.
+- The display wedge uses one compact external seam connector near the top of the rear slope.
 - Each printed half gets one half of the rail at its mating edge, with M3 clearance holes running through the rail across the split.
 - The split-line rail is proud of the rear clearance slope, embedded `1 mm` into the `2 mm` wall for print attachment without protruding into the interior, and remains outside the screen void area.
 - The split-line rail is modeled as a continuous flat-ended `15 mm` tab that follows the rear slope and extends down the rear back wall to the bottom of the chamber.
 - The two upper M3 hole centers remain inset `10 mm` from the rear-slope bends so screw heads and nuts have edge clearance.
-- The rear-wall extension keeps two M3 through-holes at `z = 65 mm` and `z = 83 mm` so the raised connector block can clamp the two printed halves together above the tray backplate.
-- The lower vertical part of the rear external join-ridge now starts above the right-tray backplate, leaving at least `1 mm` clearance over the backplate top.
+- The earlier full rear-slope rail and vertical join-ridge are removed so the individual chamber prints remain inside the `220 mm` build area.
+- The remaining top connector is `12 mm` long along the rear slope, `9 mm` deep, and `6 mm` wide on each chamber half, with one M3 through-hole clamping the two printed halves together.
 - The right chamber has a rear slide-out tray opening through the lower back wall.
 - The right tray back opening is `164.5 mm` wide and `44 mm` tall, leaving side material around the opening for M3 backplate fasteners.
 - The right chamber includes low internal floor rails to guide the tray and keep it registered against the chamber bottom.
