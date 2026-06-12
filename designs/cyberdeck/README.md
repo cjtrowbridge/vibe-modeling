@@ -132,6 +132,14 @@ First-draft visual mockup and design brief for a cyberdeck OpenSCAD model.
 - The two upper M3 hole centers remain inset `10 mm` from the rear-slope bends so screw heads and nuts have edge clearance.
 - The earlier full rear-slope rail and vertical join-ridge are removed so the individual chamber prints remain inside the `220 mm` build area.
 - The remaining top connector is `12 mm` long along the rear slope, `9 mm` deep, and `6 mm` wide on each chamber half, with one M3 through-hole clamping the two printed halves together.
+- Two 40 mm exhaust-fan interfaces are cut into the raised vertical rear wall behind the display, one at each end of the display wedge.
+- The fan interfaces reuse the `cottage_pi6_plus` mounting pattern: a `28 mm` central airflow opening and four `4.2 mm` mounting holes on a `32 mm x 32 mm` square pattern.
+- Each fan sits on a dedicated hollow rear tower that fills the triangular space above the short rear slope with `2 mm` side, top, and rear walls.
+- The original rear-slope wall is removed completely between each tower's `2 mm` side walls, opening the cap directly into the main chassis volume without leaving an internal strip across the fan opening.
+- The resulting rear mounting face is continuous from the flat deck height to the display peak, so the fan body and fastener heads do not cross the rear-slope seam.
+- Each tower is `46 mm` wide, providing `3 mm` of flat face around the `40 mm` fan body and enough support for a modeled `6 mm` M3 screw-head envelope.
+- Each fan frame is top-aligned with the tower, with its upper edge `3 mm` below the cap top.
+- The left and right towers remain entirely on their respective printed chamber halves and exhaust rearward from the internal volume above and behind the screen.
 - The right chamber has a rear slide-out tray opening through the lower back wall.
 - The right tray back opening is `164.5 mm` wide and `44 mm` tall, leaving side material around the opening for M3 backplate fasteners.
 - The right chamber includes low internal floor rails to guide the tray and keep it registered against the chamber bottom.
