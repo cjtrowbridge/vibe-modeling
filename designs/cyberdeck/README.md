@@ -45,14 +45,14 @@ First-draft visual mockup and design brief for a cyberdeck OpenSCAD model.
 - The left dome roof is currently a `125 mm x 125 mm` planning area for the acrylic dome footprint.
 - A matching flat `2 mm` top band now extends from the dome roof edge across the front of the display wedge to the right outer edge.
 - The fixed left-side control band runs from assembled `y = -20 mm` to the start of the `45 degree` screen slope at assembled `y = 12.424 mm`.
-- On the right chamber, the control roof extends forward to about assembled `y = -43.8 mm` to form the separator web and support the removable I/O-panel opening.
+- On the right chamber, the control roof extends forward to about assembled `y = -38.8 mm` to form the separator web and support the removable I/O-panel opening.
 - The front control band includes two `23 mm` circular cutouts for screw-in heavy-duty USB-C panel jacks.
-- The fixed left `Power Cell` USB-C cutout remains at about assembled `y = -3.8 mm`; the removable right `Neural Jack` cutout is centered on its panel at about assembled `y = -18.2 mm`.
+- The fixed left `Power Cell` USB-C cutout remains at about assembled `y = -3.8 mm`; the removable right `Neural Jack` cutout is centered on its panel at about assembled `y = -13.2 mm`.
 - The USB-C jack cutout centers align left/right with the `210 mm` screen void edges at assembled `x = -42.5 mm` and `x = 167.5 mm`.
 - The right-side portion of the control band becomes a separate removable I/O panel so connector and control layouts can change without reprinting the right chamber.
 - The removable I/O panel is `44 mm` deep and uses the same `5 mm` panel thickness, `0.6 mm` edge clearance, recessed M3 corner fasteners, and inset support-rail approach as the front lids.
-- The I/O-panel opening leaves an `8 mm` fixed chassis border before the screen slope and a `3 mm` solid separator web between the I/O-panel opening and the shortened right-front lid opening.
-- The shortened right-front lid remains full width, keeps its existing front and side boundaries, and is approximately `58 mm` deep.
+- The I/O-panel opening leaves a `3 mm` fixed chassis border before the screen slope, matching the `3 mm` solid separator web between the I/O-panel opening and the shortened right-front lid opening.
+- The shortened right-front lid remains full width, keeps its existing front and side boundaries, and is approximately `63 mm` deep.
 - The resulting finished gap between the right-front lid and I/O panel is approximately `4.2 mm`, including the two `0.6 mm` panel clearances around the `3 mm` chassis web.
 - Arcade-button planning assumes a `28 mm` mounting hole, `34 mm` external button body, and at least `5 mm` of panel material around a mounting hole.
 - The removable I/O panel includes one `28 mm` arcade-button mounting hole on its left side for push-to-talk control.

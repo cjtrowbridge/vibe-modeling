@@ -614,6 +614,8 @@ module _assert_dims() {
   assert(chamber_io_panel_opening_back_y()
       <= chamber_control_band_back_y() - chamber_io_panel_screen_border + 0.01,
     "I/O panel opening must preserve the screen-side chassis border");
+  assert(abs(chamber_io_panel_screen_border - chamber_io_panel_separator_d) < 0.01,
+    "I/O panel screen-side border must match the front-lid separator web");
   assert(chamber_io_panel_opening_front_y()
       > chamber_keyboard_lid_front_edge_y() + 2 * chamber_keyboard_lid_rail_w,
     "I/O panel opening must leave usable depth for the shortened right lid");
