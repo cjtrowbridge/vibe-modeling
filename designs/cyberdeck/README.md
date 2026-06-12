@@ -46,7 +46,7 @@ First-draft visual mockup and design brief for a cyberdeck OpenSCAD model.
 - A matching flat `2 mm` top band now extends from the dome roof edge across the front of the display wedge to the right outer edge.
 - The fixed left-side control band runs from assembled `y = -20 mm` to the start of the `45 degree` screen slope at assembled `y = 12.424 mm`.
 - On the right chamber, the control roof extends forward to about assembled `y = -38.8 mm` to form the separator web and support the removable I/O-panel opening.
-- The front control band includes two `23 mm` circular cutouts for screw-in heavy-duty USB-C panel jacks.
+- The front control system includes two `23 mm` circular cutouts for screw-in heavy-duty USB-C panel jacks: the fixed left `Power Cell` connector and the removable-panel `Neural Jack`.
 - The fixed left `Power Cell` USB-C cutout remains at about assembled `y = -3.8 mm`; the removable right `Neural Jack` cutout is centered on its panel at about assembled `y = -13.2 mm`.
 - The USB-C jack cutout centers align left/right with the `210 mm` screen void edges at assembled `x = -42.5 mm` and `x = 167.5 mm`.
 - The right-side portion of the control band becomes a separate removable I/O panel so connector and control layouts can change without reprinting the right chamber.
@@ -57,11 +57,17 @@ First-draft visual mockup and design brief for a cyberdeck OpenSCAD model.
 - Arcade-button planning assumes a `28 mm` mounting hole, `34 mm` external button body, and at least `5 mm` of panel material around a mounting hole.
 - The removable I/O panel includes one `28 mm` arcade-button mounting hole on its left side for push-to-talk control.
 - The push-to-talk hole is centered front/back on the `44 mm` panel, retaining `8 mm` of panel material around the mounting hole and `5 mm` around the installed `34 mm` button cap at the front and rear edges.
-- A two-line Orbitron engraving reading `Push` / `To Talk` sits to the right of the button with `5 mm` of clearance from the cap footprint.
+- The removable I/O panel includes two centered `29 mm` mounting holes for USB-A panel jacks between the push-to-talk button and Neural Jack.
+- The USB-A jacks use a `31.75 mm` (`1.25 inch`) installed flange footprint, with `3 mm` between the two flange edges.
+- The left USB-A jack is labeled `Raspberry`; the right USB-A jack is labeled `Orange`.
+- The removable-panel control order is push-to-talk, Raspberry USB-A, Orange USB-A, then Neural Jack from left to right.
+- The horizontal two-line `Push` / `To Talk` engraving sits outside-left of the push-to-talk hole, and the horizontal two-line `Neural` / `Jack` engraving sits outside-right of its hole.
+- Only the Raspberry and Orange labels are rotated `90 degrees`; each uses smaller type and sits close to its corresponding USB-A flange so the association is visually clear.
 - The existing right-side `Neural` / `Jack` USB-C opening and engraving move onto the removable I/O panel. The left-side `Power` / `Cell` connector remains on the left chamber roof.
-- The right-side USB-C opening is centered front/back on the removable panel so the `23 mm` cutout remains fully enclosed by panel material; its left/right screen-edge alignment is retained.
+- The right-side USB-C opening is centered front/back and positioned so the space from its hole edge to the right panel edge exactly matches the space from the installed `34 mm` push-to-talk cap to the left panel edge.
+- The matching outer columns use the same horizontal two-line label treatment, giving `Push` / `To Talk` and `Neural` / `Jack` a symmetric appearance.
 - The shared OpenSCAD label font is currently `Orbitron:style=Bold`.
-- The USB-C jack labels are wrapped as two-line engravings on the inner side of the holes: `Power` / `Cell` beside the left jack and `Neural` / `Jack` beside the right jack.
+- The fixed `Power` / `Cell` USB-C label remains a horizontal two-line engraving beside the left jack.
 - The dome roof has a centered `96 mm` circular cutout.
 - The acrylic dome mount uses four M3 clearance holes on a `56 mm` radius bolt circle.
 - The dome M3 holes are placed in the top-left, top-right, bottom-left, and bottom-right quadrant positions around the dome cutout.

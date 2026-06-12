@@ -238,16 +238,37 @@ function chamber_io_panel_center_x() =
   (chamber_io_panel_xa() + chamber_io_panel_xb()) / 2;
 function chamber_io_panel_center_y() =
   (chamber_io_panel_front_y() + chamber_io_panel_back_y()) / 2;
+function chamber_io_panel_ptt_outer_label_w() =
+  chamber_io_panel_ptt_x
+  - chamber_arcade_button_outer_d / 2
+  + chamber_io_panel_w() / 2;
 function chamber_io_panel_usb_c_x() =
-  chamber_control_usb_c_right_x() - chamber_io_panel_center_x();
+  chamber_io_panel_w() / 2
+  - chamber_io_panel_ptt_outer_label_w()
+  - chamber_control_usb_c_jack_d / 2;
 function chamber_io_panel_usb_c_y() = 0;
 function chamber_io_panel_usb_c_label_x() =
-  chamber_control_usb_c_right_label_x() - chamber_io_panel_center_x();
+  (
+    chamber_io_panel_usb_c_x() + chamber_control_usb_c_jack_d / 2
+    + chamber_io_panel_w() / 2
+  ) / 2;
 function chamber_io_panel_ptt_y() = 0;
 function chamber_io_panel_ptt_label_x() =
-  chamber_io_panel_ptt_x
-    + chamber_arcade_button_outer_d / 2
-    + chamber_io_panel_ptt_label_gap;
+  (
+    -chamber_io_panel_w() / 2
+    + chamber_io_panel_ptt_x - chamber_arcade_button_outer_d / 2
+  ) / 2;
+function chamber_io_panel_usb_a_y() = 0;
+function chamber_io_panel_usb_a_left_label_x() =
+  chamber_io_panel_usb_a_left_x
+  - chamber_io_panel_usb_a_outer_d / 2
+  - chamber_io_panel_usb_a_label_gap
+  - chamber_io_panel_usb_a_label_size / 2;
+function chamber_io_panel_usb_a_right_label_x() =
+  chamber_io_panel_usb_a_right_x
+  + chamber_io_panel_usb_a_outer_d / 2
+  + chamber_io_panel_usb_a_label_gap
+  + chamber_io_panel_usb_a_label_size / 2;
 function chamber_lid_set_w() =
   max(
     chamber_right_lid_w() + chamber_lid_layout_gap + chamber_io_panel_w(),
@@ -601,16 +622,66 @@ module _assert_dims() {
       + chamber_arcade_button_mount_margin
       <= chamber_io_panel_d / 2,
     "push-to-talk button cap must retain its requested front/back margin");
-  assert(chamber_io_panel_ptt_label_gap >= 0
-      && chamber_io_panel_ptt_label_size > 0
-      && chamber_io_panel_ptt_label_line_gap > chamber_io_panel_ptt_label_size,
-    "push-to-talk label dimensions must be valid");
+  assert(chamber_io_panel_usb_a_mount_d > 0
+      && chamber_io_panel_usb_a_outer_d >= chamber_io_panel_usb_a_mount_d,
+    "USB-A flange diameter must enclose its mounting hole");
+  assert(chamber_io_panel_usb_a_flange_gap >= 2,
+    "USB-A flange footprints need at least 2 mm between them");
+  assert(chamber_io_panel_usb_a_right_x - chamber_io_panel_usb_a_left_x
+      >= chamber_io_panel_usb_a_outer_d + chamber_io_panel_usb_a_flange_gap,
+    "USB-A flange footprints must retain their requested separation");
+  for (x = [
+    chamber_io_panel_usb_a_left_x,
+    chamber_io_panel_usb_a_right_x
+  ]) {
+    assert(abs(x) + chamber_io_panel_usb_a_outer_d / 2
+        <= chamber_io_panel_w() / 2,
+      "USB-A flange footprint must fit within the I/O panel width");
+    assert(abs(chamber_io_panel_usb_a_y())
+        + chamber_io_panel_usb_a_outer_d / 2
+        <= chamber_io_panel_d / 2,
+      "USB-A flange footprint must fit within the I/O panel depth");
+  }
+  assert(chamber_io_panel_usb_a_left_x - chamber_io_panel_usb_a_outer_d / 2
+      > chamber_io_panel_ptt_x + chamber_arcade_button_outer_d / 2,
+    "Raspberry USB-A flange must remain clear of the push-to-talk cap");
+  assert(chamber_io_panel_usb_a_right_x + chamber_io_panel_usb_a_outer_d / 2
+      < chamber_io_panel_usb_c_x() - chamber_control_usb_c_jack_d / 2,
+    "Orange USB-A flange must remain clear of the Neural Jack opening");
+  assert(chamber_io_panel_w() / 2
+      - (chamber_io_panel_usb_c_x() + chamber_control_usb_c_jack_d / 2)
+      >= 2 * chamber_io_panel_outer_label_size + 4,
+    "Neural Jack label column needs margin from both the hole and panel edge");
+  assert(abs(
+      chamber_io_panel_ptt_outer_label_w()
+      - (
+        chamber_io_panel_w() / 2
+        - chamber_io_panel_usb_c_x()
+        - chamber_control_usb_c_jack_d / 2
+      )
+    ) < 0.01,
+    "PTT and Neural Jack outer label columns must be symmetric");
+  assert(chamber_io_panel_outer_label_size > 0
+      && chamber_io_panel_outer_label_line_gap > chamber_io_panel_outer_label_size
+      && chamber_io_panel_usb_a_label_size > 0
+      && chamber_io_panel_usb_a_label_gap >= 0,
+    "I/O-panel label dimensions must be valid");
   assert(chamber_io_panel_ptt_label_x()
-      >= chamber_io_panel_ptt_x + chamber_arcade_button_outer_d / 2,
-    "push-to-talk label must remain clear of the button cap");
-  assert(chamber_io_panel_ptt_label_x()
-      < chamber_io_panel_usb_c_label_x() - chamber_control_usb_c_label_size,
-    "push-to-talk label must remain left of the USB-C label");
+      < chamber_io_panel_ptt_x - chamber_arcade_button_outer_d / 2,
+    "push-to-talk label must remain outside the button cap");
+  assert(chamber_io_panel_usb_c_label_x()
+      > chamber_io_panel_usb_c_x() + chamber_control_usb_c_jack_d / 2,
+    "Neural Jack label must remain outside the jack opening");
+  assert(chamber_io_panel_usb_a_left_label_x()
+      > chamber_io_panel_ptt_x + chamber_arcade_button_outer_d / 2
+    && chamber_io_panel_usb_a_left_label_x()
+      < chamber_io_panel_usb_a_left_x - chamber_io_panel_usb_a_outer_d / 2,
+    "Raspberry label must remain between its flange and the push-to-talk cap");
+  assert(chamber_io_panel_usb_a_right_label_x()
+      > chamber_io_panel_usb_a_right_x + chamber_io_panel_usb_a_outer_d / 2
+    && chamber_io_panel_usb_a_right_label_x()
+      < chamber_io_panel_usb_c_x() - chamber_control_usb_c_jack_d / 2,
+    "Orange label must remain between its flange and the Neural Jack opening");
   assert(chamber_io_panel_opening_back_y()
       <= chamber_control_band_back_y() - chamber_io_panel_screen_border + 0.01,
     "I/O panel opening must preserve the screen-side chassis border");
@@ -1391,9 +1462,30 @@ module _io_panel_usb_c_jack_cut() {
     );
 }
 
-module _io_panel_usb_c_label_line_cut(y, label_text) {
+module _io_panel_vertical_label_line_cut(x, y, label_text, label_size) {
   translate([
-    chamber_io_panel_usb_c_label_x(),
+    x,
+    y,
+    chamber_lid_thickness - chamber_control_usb_c_label_engrave_h
+  ])
+    linear_extrude(
+      height = chamber_control_usb_c_label_engrave_h + 0.25,
+      center = false,
+      convexity = 2
+    )
+      rotate([0, 0, 90])
+        text(
+          label_text,
+          size = label_size,
+          font = chamber_label_font,
+          halign = "center",
+          valign = "center"
+        );
+}
+
+module _io_panel_horizontal_label_line_cut(x, y, label_text) {
+  translate([
+    x,
     y,
     chamber_lid_thickness - chamber_control_usb_c_label_engrave_h
   ])
@@ -1404,21 +1496,23 @@ module _io_panel_usb_c_label_line_cut(y, label_text) {
     )
       text(
         label_text,
-        size = chamber_control_usb_c_label_size,
+        size = chamber_io_panel_outer_label_size,
         font = chamber_label_font,
-        halign = "right",
+        halign = "center",
         valign = "center"
       );
 }
 
-module _io_panel_usb_c_label_cut() {
-  _io_panel_usb_c_label_line_cut(
-    chamber_io_panel_usb_c_y() + chamber_control_usb_c_label_line_gap / 2,
-    chamber_control_usb_c_right_label_line_1
+module _io_panel_horizontal_two_line_label_cut(x, y, line_1, line_2) {
+  _io_panel_horizontal_label_line_cut(
+    x,
+    y + chamber_io_panel_outer_label_line_gap / 2,
+    line_1
   );
-  _io_panel_usb_c_label_line_cut(
-    chamber_io_panel_usb_c_y() - chamber_control_usb_c_label_line_gap / 2,
-    chamber_control_usb_c_right_label_line_2
+  _io_panel_horizontal_label_line_cut(
+    x,
+    y - chamber_io_panel_outer_label_line_gap / 2,
+    line_2
   );
 }
 
@@ -1436,34 +1530,44 @@ module _io_panel_ptt_button_cut() {
     );
 }
 
-module _io_panel_ptt_label_line_cut(y, label_text) {
+module _io_panel_usb_a_jack_cut(x) {
   translate([
-    chamber_io_panel_ptt_label_x(),
-    y,
-    chamber_lid_thickness - chamber_control_usb_c_label_engrave_h
+    x,
+    chamber_io_panel_usb_a_y(),
+    chamber_lid_thickness / 2
   ])
-    linear_extrude(
-      height = chamber_control_usb_c_label_engrave_h + 0.25,
-      center = false,
-      convexity = 2
-    )
-      text(
-        label_text,
-        size = chamber_io_panel_ptt_label_size,
-        font = chamber_label_font,
-        halign = "left",
-        valign = "center"
-      );
+    cylinder(
+      d = chamber_io_panel_usb_a_mount_d,
+      h = chamber_lid_thickness + 1.2,
+      center = true,
+      $fn = 72
+    );
 }
 
-module _io_panel_ptt_label_cut() {
-  _io_panel_ptt_label_line_cut(
-    chamber_io_panel_ptt_y() + chamber_io_panel_ptt_label_line_gap / 2,
-    chamber_io_panel_ptt_label_line_1
-  );
-  _io_panel_ptt_label_line_cut(
-    chamber_io_panel_ptt_y() - chamber_io_panel_ptt_label_line_gap / 2,
+module _io_panel_control_labels_cut() {
+  _io_panel_horizontal_two_line_label_cut(
+    chamber_io_panel_ptt_label_x(),
+    chamber_io_panel_ptt_y(),
+    chamber_io_panel_ptt_label_line_1,
     chamber_io_panel_ptt_label_line_2
+  );
+  _io_panel_vertical_label_line_cut(
+    chamber_io_panel_usb_a_left_label_x(),
+    chamber_io_panel_usb_a_y(),
+    chamber_io_panel_usb_a_left_label,
+    chamber_io_panel_usb_a_label_size
+  );
+  _io_panel_vertical_label_line_cut(
+    chamber_io_panel_usb_a_right_label_x(),
+    chamber_io_panel_usb_a_y(),
+    chamber_io_panel_usb_a_right_label,
+    chamber_io_panel_usb_a_label_size
+  );
+  _io_panel_horizontal_two_line_label_cut(
+    chamber_io_panel_usb_c_label_x(),
+    chamber_io_panel_usb_c_y(),
+    chamber_control_usb_c_right_label_line_1,
+    chamber_control_usb_c_right_label_line_2
   );
 }
 
@@ -1788,9 +1892,10 @@ module _chamber_io_panel() {
     }
 
     _io_panel_ptt_button_cut();
-    _io_panel_ptt_label_cut();
+    _io_panel_usb_a_jack_cut(chamber_io_panel_usb_a_left_x);
+    _io_panel_usb_a_jack_cut(chamber_io_panel_usb_a_right_x);
     _io_panel_usb_c_jack_cut();
-    _io_panel_usb_c_label_cut();
+    _io_panel_control_labels_cut();
   }
 }
 
