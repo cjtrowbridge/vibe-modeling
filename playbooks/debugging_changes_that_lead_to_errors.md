@@ -47,6 +47,8 @@ Pick the best match:
 - State / environment issue
 - Integration mismatch
 - Test expectation mismatch
+- Structural connectivity / insufficient overlap
+- Structural thinning / insufficient internal edge width
 
 ### 4) Generate Multiple Hypotheses (Before Fixing)
 
@@ -95,6 +97,21 @@ Before implementing:
 
 1. Update docs/playbooks where future-you will see them first.
 2. Add a short "known failure mode" note if this is likely to recur.
+3. For CAD connectivity failures, follow `playbooks/how_to_design_and_verify_structural_openscad_joins.md` and add named overlap assertions at the construction boundary.
+
+### Known CAD Failure Mode: Near But Not Joined
+
+OpenSCAD can render and export geometry that appears visually connected while an intended structural interface has only:
+
+- a shared edge
+- a coplanar face
+- tangent contact
+- a tiny epsilon-sized intersection
+- an overlap removed by a later `difference()`
+
+These are structural failures even when the STL is manifold or a slicer accepts it. Diagnose them by inspecting side sections at multiple positions along the seam, checking the named overlap dimensions, and auditing unexpected disconnected positive-volume shells. The minimum structural overlap must be at least the design's minimum wall thickness.
+
+Also inspect every internal rim, rail, flange, web, bridge, fastener margin, and strip of material around or between voids. A join may be connected but still fail because a subtraction or angled intersection leaves a local material width below `minimum_wall_thickness`.
 
 ### 11) Git Hygiene
 

@@ -32,6 +32,12 @@ Provide a repeatable workflow to summarize staged changes, propose a commit mess
 
 5. **Summarize Changes**
    - Provide a concise summary and a single commit message suggestion (imperative mood)
+   - Include a mandatory structural review block:
+     - exact source revision/config reviewed, or `not applicable`
+     - structural joins: `passed`, `failed`, `unverified`, or `not applicable`
+     - minimum internal edge/material width: `passed`, `failed`, `unverified`, or `not applicable`
+     - verification evidence or the reason verification remains incomplete
+   - Never omit the block. For tasks that do not change CAD geometry, report both checks as `not applicable`.
 
 6. **Request Approval**
    - Ask for approval before committing

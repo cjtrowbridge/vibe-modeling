@@ -9,6 +9,11 @@
 // not yet measured are named as proxy values and should not be treated as
 // final mechanical constraints.
 
+// Repository structural minimums.
+minimum_wall_thickness = 3.0;
+minimum_structural_overlap = minimum_wall_thickness;
+minimum_internal_edge_width = minimum_wall_thickness;
+
 // Part selector
 // 0 = full visual mockup
 // 1 = top layout mockup
@@ -39,8 +44,8 @@ print_volume_y = 220.0;
 print_volume_z = 220.0;
 chamber_piece_y = 210.0;
 chamber_internal_clearance_z = 50.0;
-chamber_wall = 2.0;
-chamber_bottom = 2.0;
+chamber_wall = 3.0;
+chamber_bottom = 3.0;
 chamber_display_cutout_h = 85.0;
 chamber_display_mount_margin = 5.0;
 chamber_display_mount_face_len = chamber_display_cutout_h + 2 * chamber_display_mount_margin;
@@ -62,21 +67,18 @@ chamber_dome_mount_screw_radius = 56.0;
 chamber_dome_mount_screw_clearance_d = 3.4;
 chamber_piece_x = (chamber_display_wedge_x + chamber_dome_area_x) / 2;
 chamber_profile_peak_rise = chamber_display_mount_face_len / sqrt(2);
-chamber_profile_rear_slope_run = 25.4;
-chamber_profile_rear_slope_drop = 25.4;
+chamber_rear_housing_depth = 25.4;
 chamber_profile_screen_slope_run = chamber_display_mount_face_len / sqrt(2);
-chamber_display_seam_rail_w = 6.0;
-chamber_display_seam_rail_d = 9.0;
-chamber_display_seam_rail_embed = 1.0;
-chamber_display_seam_rail_len = 12.0;
-chamber_display_seam_rail_top_inset = 9.0;
-chamber_display_seam_rail_screw_clearance_d = 3.4;
 chamber_rear_fan_frame = 40.0;
 chamber_rear_fan_hole_spacing = 32.0;
 chamber_rear_fan_mount_hole_d = 4.2;
 chamber_rear_fan_center_cutout_d = 28.0;
 chamber_rear_fan_edge_margin = 3.0;
 chamber_rear_fan_screw_head_d = 6.0;
+chamber_rear_fan_spacer_projection = 2.0;
+chamber_rear_fan_spacer_wall_overlap = chamber_wall;
+chamber_rear_fan_spacer_outer_d =
+  chamber_rear_fan_mount_hole_d + 2 * minimum_internal_edge_width + 0.2;
 chamber_label_font = "Orbitron:style=Bold";
 chamber_control_usb_c_jack_d = 23.0;
 chamber_control_usb_c_label_gap = 3.0;
@@ -144,8 +146,6 @@ chamber_dome_bucket_passage_h = 16.0;
 chamber_dome_bucket_side_passage_angle = 0.0;
 chamber_tray_wall = 3.0;
 chamber_tray_slide_clearance = 1.0;
-chamber_tray_rail_w = 3.0;
-chamber_tray_rail_h = 4.0;
 chamber_tray_side_wall_h = 8.0;
 chamber_tray_front_clearance = 5.0;
 chamber_tray_back_opening_side_margin = 14.0;
@@ -159,17 +159,22 @@ chamber_tray_backplate_screw_edge_margin = 3.0;
 chamber_tray_backplate_screw_side_offset = 6.5;
 chamber_tray_backplate_screw_z_offset = 8.0;
 chamber_tray_opi_left_margin = 10.0;
-chamber_tray_opi_near_exhaust_offset = 10.0;
-chamber_tray_opi_mount_x_spacing = 60.0;
-chamber_tray_opi_mount_y_spacing = 90.0;
+chamber_tray_opi_board_x = 115.0;
+chamber_tray_opi_board_y = 100.0;
+chamber_tray_opi_board_thickness = 1.8;
+chamber_tray_opi_mount_x_spacing = 94.0;
+chamber_tray_opi_mount_y_spacing = 98.0;
+chamber_tray_opi_rear_row_wall_inset = 3.0;
 chamber_tray_opi_mount_pad_d = 10.0;
 chamber_tray_opi_mount_stud_h = 3.0;
+chamber_tray_opi_standoff_z = 10.0;
 chamber_tray_opi_mount_screw_clearance_d = 3.0;
 chamber_tray_opi_mount_screw_head_d = 6.0;
 chamber_tray_opi_mount_screw_head_depth = 2.2;
-chamber_tray_exhaust_w = 80.0;
-chamber_tray_exhaust_h = 18.0;
-chamber_tray_exhaust_center_z = 30.0;
+chamber_tray_exhaust_w = 79.0;
+chamber_tray_exhaust_h = 24.0;
+chamber_tray_exhaust_x_offset = 5.0;
+chamber_tray_exhaust_z_from_board_top = 12.0;
 chamber_tray_rpi_gap_from_opi = 20.0;
 chamber_tray_rpi_board_x = 85.0;
 chamber_tray_rpi_board_y = 56.0;
@@ -191,11 +196,9 @@ chamber_joint_passthrough_rear_y = 73.0;
 chamber_joint_center_y = 0.0;
 chamber_joint_center_z = 22.0;
 chamber_joint_bolt_count = 6;
-chamber_joint_bolt_edge_inset_y = 15.0;
+chamber_joint_bolt_edge_inset_y = 14.0;
 chamber_joint_bolt_edge_inset_z = 10.0;
 chamber_joint_bolt_clearance_d = 3.4;
-chamber_joint_bolt_boss_d = 10.0;
-chamber_joint_boss_depth = 8.0;
 
 // Secondary display and rack rails
 display_active_x = 208.0;

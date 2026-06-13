@@ -32,18 +32,20 @@ First-draft visual mockup and design brief for a cyberdeck OpenSCAD model.
 
 ## Revision 0002 Printable Chamber Study
 
+- Structural minimum wall thickness, structural overlap, and internal edge width are each defined as `3 mm`.
 - Printer build-volume constraint is assumed to be `220 mm x 220 mm x 220 mm`.
 - The cyberdeck lower structure is split into two printable chambers that meet at the centerline.
-- Each chamber body footprint is currently `192.5 mm x 210 mm`, so each individual print fits inside the build volume.
-- Flat chamber height is currently `52 mm`; side-profile peak height is currently about `119.2 mm`.
-- Raised back-wall top height is currently about `93.8 mm`.
-- Combined assembled footprint is currently about `385 mm x 210 mm x 119.2 mm`.
+- Each chamber body footprint is currently `192.5 mm x 210 mm`.
+- The rear fan spacers increase the complete per-half print envelope to approximately `192.5 mm x 212 mm`, still inside the build volume.
+- Flat chamber height is currently `53 mm`; side-profile peak height is currently about `120.2 mm`.
+- The unified rear-housing wall reaches the full side-profile peak height of about `120.2 mm`.
+- Combined assembled footprint is currently about `385 mm x 212 mm x 120.2 mm`.
 - The raised display wedge is right-aligned and currently `260 mm` wide.
 - The left edge of the raised display wedge lands at assembled `x = -67.5 mm`.
 - The left flat dome planning area is currently `125 mm` wide.
-- The left dome area has a flat `2 mm` top roof extending from the display wedge edge to the left outer edge.
+- The left dome area has a flat `3 mm` top roof extending from the display wedge edge to the left outer edge.
 - The left dome roof is currently a `125 mm x 125 mm` planning area for the acrylic dome footprint.
-- A matching flat `2 mm` top band now extends from the dome roof edge across the front of the display wedge to the right outer edge.
+- A matching flat `3 mm` top band now extends from the dome roof edge across the front of the display wedge to the right outer edge.
 - The fixed left-side control band runs from assembled `y = -20 mm` to the start of the `45 degree` screen slope at assembled `y = 12.424 mm`.
 - On the right chamber, the control roof extends forward to about assembled `y = -38.8 mm` to form the separator web and support the removable I/O-panel opening.
 - The front control system includes two `23 mm` circular cutouts for screw-in heavy-duty USB-C panel jacks: the fixed left `Power Cell` connector and the removable-panel `Neural Jack`.
@@ -97,17 +99,17 @@ First-draft visual mockup and design brief for a cyberdeck OpenSCAD model.
 - The bucket sides reach to the chamber base, while the internal floor is lifted `3 mm` above the chamber base.
 - The bucket includes front and side passthrough windows for servo/camera/laser wiring to reach nearby internal passthroughs.
 - Internal vertical clearance is set to `50 mm` for component volume planning.
-- Chamber walls and bottom floor are currently `2 mm` thick.
-- The short rear clearance slope and forward screen slope are shelled with a `2 mm` normal offset.
+- Chamber walls and bottom floor are currently `3 mm` thick.
+- The angled screen face, rear-housing roof, rear wall, and outer end walls are generated as one continuous hollow profile.
+- The angled screen face has a `3 mm` normal wall thickness; the rear-housing roof and rear wall are each `3 mm` thick.
 - The flat keyboard deck area remains open; it does not have a top roof panel.
 - The four left/right side walls now use a hybrid raised-back side profile instead of the earlier peaked tent profile.
 - The front area remains at the flat keyboard-deck height.
 - The front flat keyboard bay is now about `117.4 mm` deep in the current side-profile study.
 - The screen slope starts farther back to clear the approximately `115 mm` keyboard depth.
-- The rear edge is now a raised vertical back wall, not a low flat-height edge.
-- The short rear slope runs from the side-profile ridge down to the raised back-wall top.
+- The rear edge is a full-height vertical wall joined directly to a horizontal rear-housing roof.
 - Current side-profile ridge rises about `67.2 mm` above the flat chamber top.
-- The short rear clearance slope uses a `25.4 mm` run and `25.4 mm` drop, matching the approximate `1 inch` screen-depth clearance target.
+- The rear housing is `25.4 mm` deep from the screen-face peak to the rear wall, preserving the approximate `1 inch` screen-depth clearance target.
 - The forward screen slope uses about a `67.2 mm` run from the ridge back down to the flat keyboard deck.
 - The forward screen slope is now sized as a `95 mm` long mounting face at `45 degrees`.
 - The screen void is `210 mm` wide and `87 mm` tall, centered on the angled display face.
@@ -124,36 +126,34 @@ First-draft visual mockup and design brief for a cyberdeck OpenSCAD model.
 - The inner left edge of the display wedge is modeled as a full-depth structural web that extends down to the bottom of the build.
 - The display wedge web uses the same two circular passthrough openings as the center chamber joint.
 - The raised display wedge is open across the center seam so there is no full-height wall in the middle of the display area.
-- The center seam keeps the lower base-wall joint structure, flush passthroughs, bolt bosses, and M3 bolt pattern.
-- The display wedge uses one compact external seam connector near the top of the rear slope.
-- Each printed half gets one half of the rail at its mating edge, with M3 clearance holes running through the rail across the split.
-- The split-line rail is proud of the rear clearance slope, embedded `1 mm` into the `2 mm` wall for print attachment without protruding into the interior, and remains outside the screen void area.
-- The split-line rail is modeled as a continuous flat-ended `15 mm` tab that follows the rear slope and extends down the rear back wall to the bottom of the chamber.
-- The two upper M3 hole centers remain inset `10 mm` from the rear-slope bends so screw heads and nuts have edge clearance.
-- The earlier full rear-slope rail and vertical join-ridge are removed so the individual chamber prints remain inside the `220 mm` build area.
-- The remaining top connector is `12 mm` long along the rear slope, `9 mm` deep, and `6 mm` wide on each chamber half, with one M3 through-hole clamping the two printed halves together.
+- The center seam keeps the lower base-wall joint structure, flush passthroughs, and six-hole M3 pattern.
+- The former cylindrical reinforcement bosses around the center-joint M3 holes are removed; the fasteners now pass directly through the `3 mm` mating walls.
+- The outer M3 rows move `1 mm` toward the front/rear chamber edges so the rear lower hole retains at least `3 mm` of material from the nearby passthrough.
+- The temporary external connector block on the rear-housing roof is removed. A replacement upper joining structure will be designed later.
 - Two 40 mm exhaust-fan interfaces are cut into the raised vertical rear wall behind the display, one at each end of the display wedge.
 - The fan interfaces reuse the `cottage_pi6_plus` mounting pattern: a `28 mm` central airflow opening and four `4.2 mm` mounting holes on a `32 mm x 32 mm` square pattern.
-- Each fan sits on a dedicated hollow rear tower that fills the triangular space above the short rear slope with `2 mm` side, top, and rear walls.
-- The original rear-slope wall is removed completely between each tower's `2 mm` side walls, opening the cap directly into the main chassis volume without leaving an internal strip across the fan opening.
-- The resulting rear mounting face is continuous from the flat deck height to the display peak, so the fan body and fastener heads do not cross the rear-slope seam.
-- Each tower is `46 mm` wide, providing `3 mm` of flat face around the `40 mm` fan body and enough support for a modeled `6 mm` M3 screw-head envelope.
-- Each fan frame is top-aligned with the tower, with its upper edge `3 mm` below the cap top.
-- The left and right towers remain entirely on their respective printed chamber halves and exhaust rearward from the internal volume above and behind the screen.
+- The former pair of fan towers and intervening rear wedge have been replaced by one continuous full-width rear housing.
+- The rear housing is created from one outer side-profile extrusion and one continuous cavity subtraction, so its roof, rear wall, angled screen face, and end walls are connected by construction.
+- The fan openings are direct cuts through the same continuous rear wall and exhaust from the shared internal plenum above and behind the screen.
+- Each fan uses a `46 mm` wide mounting land, providing `3 mm` around the `40 mm` fan body and sufficient flat support for the modeled `6 mm` M3 screw-head envelope.
+- Each fan frame is top-aligned with the housing, with its upper edge `3 mm` below the roof.
+- The left and right fan patterns remain entirely on their respective printed chamber halves.
+- Each fan screw hole has a `10.4 mm` diameter annular spacer that projects `2 mm` behind the rear wall.
+- Each spacer overlaps the complete `3 mm` rear-wall thickness and leaves a nominal `3.1 mm` of radial material around its `4.2 mm` screw hole.
+- The four spacers hold each fan `2 mm` off the rear wall, providing a protected wiring gap and reducing direct wire pressure against the fan housing.
 - The right chamber has a rear slide-out tray opening through the lower back wall.
 - The right tray back opening is `164.5 mm` wide and `44 mm` tall, leaving side material around the opening for M3 backplate fasteners.
-- The right chamber includes low internal floor rails to guide the tray and keep it registered against the chamber bottom.
+- The former low internal floor rails in the right chamber are removed. Any replacement tray-guidance or retention system will be designed later.
 - The right tray is a separate `3 mm` thick drawer-style part with a rear backplate, low side walls, Orange Pi mounting pads, and an exhaust opening in the backplate.
 - The tray backplate bottom is flush with the tray floor bottom, so the rear wall does not extend below the sliding tray.
 - The tray backplate is slightly larger than the rear opening and uses four M3 corner holes with at least `3 mm` edge margin on both the wall and the backplate.
-- The Orange Pi proxy mount is rotated so the long mount-hole spacing runs front/back toward the rear exhaust backplate.
-- The rear stud pair is the exhaust-side pair, matching the cottage-style tray convention.
-- The Orange Pi proxy footprint starts about `10 mm` from the left edge of the right tray.
-- The right tray also includes Raspberry Pi 5 M2.5 mounting studs in the marked right-side area.
+- The Orange Pi mount uses the proven cottage tray orientation: the `94 mm` hole spacing runs across the tray and the `98 mm` spacing runs front/back toward the rear exhaust backplate.
+- The rear stud pair is `3 mm` from the rear tray datum, matching the cottage-style exhaust-side convention.
+- The Orange Pi board envelope starts `10 mm` from the left edge of the right tray.
+- The right tray still contains the earlier Raspberry Pi 5 M2.5 mounting-stud study.
 - The Raspberry Pi 5 mount uses the provided `85 mm x 56 mm` board envelope and `58 mm x 49 mm` mounting-hole rectangle.
 - The Raspberry Pi 5 footprint is rotated so the port/jack edge faces the front of the deck.
-- The Raspberry Pi 5 footprint starts `20 mm` to the right of the Orange Pi footprint.
-- This first variant models the side-profile shell and angled rear/screen surfaces; it does not yet add the actual screen recess or dome mounting ring.
+- The corrected Orange Pi footprint makes the requested side-by-side Raspberry Pi placement exceed the tray width. Tray export remains intentionally blocked until the Raspberry Pi is relocated or removed.
 - The left and right chambers have matching circular side passthroughs on the mating faces.
 - Current design uses two `30 mm` passthroughs, split front/back from the centerline.
 - The passthrough centerline is lowered to `z = 22 mm` so the flush conduit holes clear the inset lid rails.
@@ -163,9 +163,23 @@ First-draft visual mockup and design brief for a cyberdeck OpenSCAD model.
 - Four bolts sit near the mating-face corners.
 - Two bolts sit on the vertical centerline, one low and one high.
 - Bolt holes are modeled as `3.4 mm` M3 clearance holes.
-- Local reinforcement bosses remain around the M3 bolt pattern, while the passthrough conduits are plain flush holes through the mating faces.
+- The M3 bolt pattern and passthrough conduits are plain flush holes through the mating walls, with no internal reinforcement bosses.
 - This revision is still an enclosure architecture study, not a final printable mechanical design.
-- Next steps are to add top mounting interfaces for the keyboard/screen, internal standoffs, cooling ducts, cable paths, and service clearances.
+- Next steps are to repair the remaining legacy structural joins, resolve the tray board layout, and complete internal standoffs, cooling ducts, cable paths, and service clearances.
+
+### Structural Verification Record
+
+- Source revision/config: `designs/cyberdeck/configs/rev_0002.json`
+- Minimum wall thickness: `3 mm`
+- Minimum structural overlap: `3 mm`
+- Minimum internal edge width: `3 mm`
+- Rear housing: locally verified as one continuous positive-volume shell formed from one outer profile and one cavity subtraction.
+- Rear housing joins reviewed: screen-to-roof bend, roof-to-rear-wall bend, roof/rear/screen-to-end-wall joins, and full-wall engagement of the fan spacers.
+- Rear housing internal edges reviewed: fan center-to-fastener ligaments, fan fastener-to-outer-edge margins, spacer annulus thickness, and center-joint bolt-to-passthrough ligaments.
+- Export evidence: exact-config assembly STL rendered `Simple: yes`; per-half component audits found one connected structural shell in each chamber body plus intentionally separate raised floor-label glyphs.
+- Printable-half bounds: approximately `192.55 mm x 212 mm x 120.18 mm` for each chamber, within the `220 mm` build volume.
+- Full-design result: structurally unverified. Existing lid rails, handle joins, tray/backplate features, and other geometry outside this rear-housing change still require repair and section/slicer review under the repository structural-join policy.
+- Fabrication status: not print-ready.
 
 ## Revision 0001 Mockup Notes
 

@@ -131,6 +131,15 @@ The build pipeline always renders this full PNG set on every run (plus `<part>.p
   - Optional dedicated part entry files are fine for manual printing.
 - Put geometry modules in `src/parts/`.
 - Treat `configs/rev_000N.json` as part of the committed design history.
+- Define each design's `minimum_wall_thickness` and `minimum_structural_overlap`.
+- Require `minimum_structural_overlap >= minimum_wall_thickness` for every intended structural join.
+- Build joins with deliberate positive-volume intersection. Shared faces, shared edges, tangent contact, visual proximity, and epsilon-sized intersections are not structural connections.
+- Require every internal edge, rim, rail, flange, web, bridge, and material strip around or between voids to remain at least `minimum_wall_thickness` wide at its narrowest point.
+- Guard structural dimensions with named parameters and `assert()` statements, then inspect section views and disconnected-shell results. A successful render or manifold STL alone is insufficient.
+- Treat designs as structurally unverified until these checks are recorded for the exact revision/config. Build success does not by itself make a model fabrication-ready.
+- Every post-change summary must report the structural-join review and minimum-edge review as `passed`, `failed`, `unverified`, or `not applicable`.
+
+See `playbooks/how_to_design_and_verify_structural_openscad_joins.md` for the mandatory structural geometry contract and verification procedure.
 
 ## Suggested workflow
 

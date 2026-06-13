@@ -62,7 +62,7 @@ function chamber_dome_mount_screw_xy_offset() =
   chamber_dome_mount_screw_radius / sqrt(2);
 function chamber_profile_peak_z() = chamber_total_z() + chamber_profile_peak_rise;
 function chamber_profile_peak_y() =
-  chamber_piece_y / 2 - chamber_profile_rear_slope_run;
+  chamber_piece_y / 2 - chamber_rear_housing_depth;
 function chamber_profile_screen_foot_y() =
   chamber_profile_peak_y() - chamber_profile_screen_slope_run;
 function chamber_profile_screen_face_len() =
@@ -120,47 +120,6 @@ function chamber_display_mount_screw_z(face_offset) =
   + face_offset * chamber_profile_peak_rise / chamber_profile_screen_face_len();
 function chamber_display_mount_rear_screw_y() =
   chamber_display_mount_screw_y(chamber_display_mount_screw_face_spacing / 2);
-function chamber_profile_rear_slope_len() =
-  sqrt(
-    chamber_profile_rear_slope_run * chamber_profile_rear_slope_run
-    + chamber_profile_rear_slope_drop * chamber_profile_rear_slope_drop
-  );
-function chamber_display_seam_rail_slope_y() =
-  chamber_profile_rear_slope_run / chamber_profile_rear_slope_len();
-function chamber_display_seam_rail_slope_z() =
-  -chamber_profile_rear_slope_drop / chamber_profile_rear_slope_len();
-function chamber_display_seam_rail_normal_y() =
-  chamber_profile_rear_slope_drop / chamber_profile_rear_slope_len();
-function chamber_display_seam_rail_normal_z() =
-  chamber_profile_rear_slope_run / chamber_profile_rear_slope_len();
-function chamber_display_seam_rail_center_y() =
-  chamber_profile_peak_y()
-  + chamber_display_seam_rail_top_inset
-    * chamber_display_seam_rail_slope_y();
-function chamber_display_seam_rail_center_z() =
-  chamber_profile_peak_z()
-  + chamber_display_seam_rail_top_inset
-    * chamber_display_seam_rail_slope_z();
-function chamber_display_seam_rail_outward_offset() =
-  max(chamber_display_seam_rail_d / 2 - chamber_display_seam_rail_embed, 0);
-function chamber_display_seam_rail_outward_y() =
-  chamber_display_seam_rail_outward_offset()
-  * chamber_display_seam_rail_normal_y();
-function chamber_display_seam_rail_outward_z() =
-  chamber_display_seam_rail_outward_offset()
-  * chamber_display_seam_rail_normal_z();
-function chamber_display_seam_rail_point_y(along, outward) =
-  chamber_display_seam_rail_center_y()
-  + along * chamber_display_seam_rail_slope_y()
-  + outward * chamber_display_seam_rail_normal_y();
-function chamber_display_seam_rail_point_z(along, outward) =
-  chamber_display_seam_rail_center_z()
-  + along * chamber_display_seam_rail_slope_z()
-  + outward * chamber_display_seam_rail_normal_z();
-function chamber_display_seam_rail_screw_y() =
-  chamber_display_seam_rail_center_y() + chamber_display_seam_rail_outward_y();
-function chamber_display_seam_rail_screw_z() =
-  chamber_display_seam_rail_center_z() + chamber_display_seam_rail_outward_z();
 function chamber_keyboard_lid_rail_top_z() =
   chamber_total_z() - chamber_keyboard_lid_inset;
 function chamber_keyboard_lid_rail_center_z() =
@@ -309,20 +268,31 @@ function chamber_tray_backplate_screw_low_z() =
 function chamber_tray_backplate_screw_high_z() =
   chamber_tray_back_opening_top_z() - chamber_tray_backplate_screw_z_offset;
 function chamber_tray_opi_board_w() =
-  opi_proxy_y;
+  chamber_tray_opi_board_y;
 function chamber_tray_opi_board_d() =
-  opi_proxy_x;
+  chamber_tray_opi_board_x;
 function chamber_tray_opi_center_x() =
   -chamber_tray_w() / 2
   + chamber_tray_opi_left_margin
   + chamber_tray_opi_board_w() / 2;
 function chamber_tray_opi_center_y_pos() =
   chamber_tray_y_back()
-  - chamber_tray_wall
-  - chamber_tray_opi_near_exhaust_offset
+  - chamber_tray_opi_rear_row_wall_inset
   - chamber_tray_opi_mount_y_spacing / 2;
+function chamber_tray_opi_front_row_y() =
+  chamber_tray_opi_center_y_pos() - chamber_tray_opi_mount_y_spacing / 2;
+function chamber_tray_opi_rear_row_y() =
+  chamber_tray_opi_center_y_pos() + chamber_tray_opi_mount_y_spacing / 2;
 function chamber_tray_opi_right_x() =
   chamber_tray_opi_center_x() + chamber_tray_opi_board_w() / 2;
+function chamber_tray_exhaust_center_x() =
+  chamber_tray_opi_center_x() + chamber_tray_exhaust_x_offset;
+function chamber_tray_exhaust_center_z() =
+  chamber_tray_back_opening_z0
+  + chamber_tray_opi_mount_stud_h
+  + chamber_tray_opi_standoff_z
+  + chamber_tray_opi_board_thickness
+  + chamber_tray_exhaust_z_from_board_top;
 function chamber_tray_rpi_board_w() =
   chamber_tray_rpi_board_y;
 function chamber_tray_rpi_board_d() =
@@ -352,19 +322,6 @@ function chamber_tray_rpi_mount_x(iy) =
 function chamber_tray_rpi_mount_y(ix) =
   chamber_tray_rpi_front_y()
   + (chamber_tray_rpi_board_x - chamber_tray_rpi_hole_orig_x(ix));
-function chamber_tray_rail_center_x(side) =
-  side
-  * (
-    chamber_tray_w() / 2
-    + chamber_tray_slide_clearance
-    + chamber_tray_rail_w / 2
-  );
-function chamber_tray_rail_inner_x_abs() =
-  chamber_tray_w() / 2 + chamber_tray_slide_clearance;
-function chamber_profile_back_wall_z() =
-  chamber_profile_peak_z() - chamber_profile_rear_slope_drop;
-function chamber_profile_back_wall_rise() =
-  chamber_profile_back_wall_z() - chamber_total_z();
 function chamber_rear_fan_panel_w() =
   chamber_rear_fan_frame + 2 * chamber_rear_fan_edge_margin;
 function chamber_rear_fan_center_z() =
@@ -379,7 +336,20 @@ function chamber_rear_fan_right_x() =
   - chamber_rear_fan_panel_w() / 2;
 function chamber_rear_fan_center_x(side) =
   side < 0 ? chamber_rear_fan_left_x() : chamber_rear_fan_right_x();
+function chamber_rear_fan_spacer_center_y() =
+  chamber_piece_y / 2
+  + (
+    chamber_rear_fan_spacer_projection
+    - chamber_rear_fan_spacer_wall_overlap
+  ) / 2;
 function chamber_angled_wall_vertical_offset() = chamber_wall * sqrt(2);
+function chamber_housing_inner_screen_corner_y() =
+  chamber_profile_peak_y()
+  + (
+    chamber_angled_wall_vertical_offset() - chamber_wall
+  ) / (
+    chamber_profile_peak_rise / chamber_profile_screen_slope_run
+  );
 function chamber_passthrough_y(i) =
   i == 0
     ? chamber_joint_passthrough_front_y
@@ -394,8 +364,22 @@ function chamber_bolt_y(i) =
     : 0;
 function chamber_bolt_z(i) =
   (i == 0 || i == 2 || i == 4) ? chamber_bolt_low_z() : chamber_bolt_high_z();
+function chamber_bolt_passthrough_ligament(i, j) =
+  sqrt(
+    pow(chamber_bolt_y(i) - chamber_passthrough_y(j), 2)
+    + pow(chamber_bolt_z(i) - chamber_joint_center_z, 2)
+  )
+  - chamber_joint_bolt_clearance_d / 2
+  - chamber_joint_passthrough_d / 2;
 
 module _assert_dims() {
+  assert(minimum_wall_thickness >= 3.0,
+    "cyberdeck minimum wall thickness must be at least 3 mm");
+  assert(minimum_structural_overlap >= minimum_wall_thickness,
+    "minimum structural overlap must be at least the minimum wall thickness");
+  assert(minimum_internal_edge_width >= minimum_wall_thickness,
+    "minimum internal edge width must be at least the minimum wall thickness");
+
   assert(deck_x > 0 && deck_y > 0 && deck_h > 0,
     "deck dimensions must be > 0");
   assert(deck_corner_r >= 0 && deck_corner_r * 2 <= min(deck_x, deck_y),
@@ -444,12 +428,14 @@ module _assert_dims() {
     "print volume dimensions must be > 0");
   assert(chamber_piece_x <= print_volume_x,
     "each chamber must fit the print volume in X");
-  assert(chamber_piece_y <= print_volume_y,
-    "each chamber must fit the print volume in Y");
+  assert(chamber_piece_y + chamber_rear_fan_spacer_projection
+      <= print_volume_y,
+    "each chamber plus rear fan spacers must fit the print volume in Y");
   assert(chamber_total_z() <= print_volume_z,
     "each chamber must fit the print volume in Z");
-  assert(chamber_wall > 0 && chamber_bottom > 0,
-    "chamber wall and bottom thickness must be > 0");
+  assert(chamber_wall >= minimum_wall_thickness
+      && chamber_bottom >= minimum_wall_thickness,
+    "chamber wall and bottom thickness must meet the structural minimum");
   assert(chamber_display_cutout_h > 0 && chamber_display_mount_margin >= 0,
     "display cutout height must be > 0 and margin must be >= 0");
   assert(chamber_display_mount_face_len >= chamber_display_cutout_h + 2 * chamber_display_mount_margin,
@@ -507,52 +493,29 @@ module _assert_dims() {
     "chamber internal clearance must be at least 50 mm");
   assert(chamber_profile_peak_rise > 0,
     "chamber profile peak rise must be > 0");
-  assert(chamber_profile_rear_slope_run > 0,
-    "chamber rear slope run must be > 0");
-  assert(chamber_profile_rear_slope_drop > 0,
-    "chamber rear slope drop must be > 0");
+  assert(chamber_rear_housing_depth > 2 * chamber_wall,
+    "rear housing depth must leave room for its walls and cavity");
+  assert(chamber_housing_inner_screen_corner_y()
+      < chamber_piece_y / 2 - chamber_wall,
+    "rear housing cavity must remain open between the screen and rear wall");
   assert(chamber_profile_screen_slope_run > 0,
     "chamber screen slope run must be > 0");
   assert(abs(chamber_profile_peak_rise - chamber_profile_screen_slope_run) < 0.02,
     "screen face must remain 45 degrees");
+  assert(abs(
+      chamber_angled_wall_vertical_offset() / sqrt(2) - chamber_wall
+    ) < 0.01,
+    "screen face inner offset must preserve the selected normal wall thickness");
   assert(chamber_profile_screen_face_len() >= chamber_display_mount_face_len,
     "screen face length is too short for the display mounting face");
   assert(chamber_profile_peak_z() <= print_volume_z,
     "side profile peak exceeds print volume Z");
-  assert(chamber_profile_back_wall_z() > chamber_total_z(),
-    "hybrid back wall must remain raised above the flat keyboard deck");
-  assert(chamber_profile_back_wall_z() < chamber_profile_peak_z(),
-    "hybrid back wall must sit below the side-profile peak");
   assert(chamber_profile_peak_y() < chamber_piece_y / 2,
     "side profile peak must sit forward of the rear edge");
   assert(chamber_profile_screen_foot_y() > -chamber_piece_y / 2,
     "side profile screen slope must meet the flat deck inside the chamber depth");
   assert(chamber_profile_screen_foot_y() < chamber_profile_peak_y(),
     "side profile screen foot must be forward of the peak");
-  assert(chamber_display_seam_rail_w > 0
-    && chamber_display_seam_rail_d > chamber_display_seam_rail_screw_clearance_d,
-    "display seam connector dimensions must clear the screw hole");
-  assert(chamber_display_seam_rail_embed > 0
-    && chamber_display_seam_rail_embed < chamber_wall,
-    "display seam connector embed must stay below wall thickness");
-  assert(chamber_display_seam_rail_screw_clearance_d >= 3.0,
-    "display seam connector screw hole should clear M3 hardware");
-  assert(chamber_display_seam_rail_len
-      > chamber_display_seam_rail_screw_clearance_d + 2 * chamber_wall,
-    "display seam connector needs screw edge clearance along the slope");
-  assert(chamber_display_seam_rail_top_inset
-      >= chamber_display_seam_rail_len / 2,
-    "display seam connector must remain below the rear-slope peak");
-  assert(chamber_display_seam_rail_top_inset
-      + chamber_display_seam_rail_len / 2
-      < chamber_profile_rear_slope_len(),
-    "display seam connector must remain on the rear slope");
-  assert(
-    chamber_display_seam_rail_point_y(
-      chamber_display_seam_rail_len / 2,
-      chamber_display_seam_rail_d - chamber_display_seam_rail_embed
-    ) - (-chamber_piece_y / 2) < print_volume_y - 1,
-    "display seam connector needs at least 1 mm of print-volume Y margin");
   assert(chamber_rear_fan_frame == 40
       && chamber_rear_fan_hole_spacing == 32
       && chamber_rear_fan_mount_hole_d == 4.2
@@ -565,14 +528,44 @@ module _assert_dims() {
     "rear fan airflow cutout must fit within the fan frame");
   assert(chamber_profile_peak_rise
       >= chamber_rear_fan_frame + 2 * chamber_rear_fan_edge_margin,
-    "raised fan tower is too short for the fan footprint and margins");
+    "rear housing wall is too short for the fan footprint and margins");
   assert(chamber_rear_fan_panel_w()
       >= chamber_rear_fan_frame + 2 * chamber_rear_fan_edge_margin,
-    "rear fan tower is too narrow for the fan footprint and margins");
+    "rear fan mounting land is too narrow for the fan footprint and margins");
   assert(chamber_rear_fan_hole_spacing / 2
       + chamber_rear_fan_screw_head_d / 2
       <= chamber_rear_fan_panel_w() / 2,
-    "rear fan tower does not provide flat support under the screw heads");
+    "rear fan mounting land does not support the screw heads");
+  assert(
+    sqrt(
+      pow(chamber_rear_fan_hole_spacing / 2, 2)
+      + pow(chamber_rear_fan_hole_spacing / 2, 2)
+    )
+      - chamber_rear_fan_center_cutout_d / 2
+      - chamber_rear_fan_mount_hole_d / 2
+      >= minimum_internal_edge_width,
+    "rear fan center and mounting holes need minimum separating material"
+  );
+  assert(chamber_rear_fan_panel_w() / 2
+      - chamber_rear_fan_hole_spacing / 2
+      - chamber_rear_fan_mount_hole_d / 2
+      >= minimum_internal_edge_width,
+    "rear fan mounting holes need minimum outer-edge material");
+  assert(abs(chamber_rear_fan_spacer_projection - 2.0) < 0.01,
+    "rear fan spacers must project 2 mm from the housing");
+  assert(chamber_rear_fan_spacer_wall_overlap
+      >= minimum_structural_overlap
+    && chamber_rear_fan_spacer_wall_overlap <= chamber_wall,
+    "rear fan spacers must overlap the rear wall by the structural minimum");
+  assert(
+    (chamber_rear_fan_spacer_outer_d
+      - chamber_rear_fan_mount_hole_d) / 2
+      >= minimum_internal_edge_width,
+    "rear fan spacers need minimum material around each screw hole"
+  );
+  assert(chamber_rear_fan_spacer_outer_d
+      >= chamber_rear_fan_screw_head_d,
+    "rear fan spacers must support the modeled screw-head envelope");
   assert(abs(
       chamber_rear_fan_center_z() + chamber_rear_fan_frame / 2
       - (chamber_profile_peak_z() - chamber_rear_fan_edge_margin)
@@ -585,10 +578,10 @@ module _assert_dims() {
       >= chamber_display_wedge_left_x()
     && chamber_rear_fan_right_x() + chamber_rear_fan_panel_w() / 2
       <= chamber_display_wedge_right_x(),
-    "rear fan towers must remain inside the display-wedge ends");
+    "rear fan interfaces must remain inside the display-wedge ends");
   assert(chamber_rear_fan_left_x() + chamber_rear_fan_panel_w() / 2 < 0
     && chamber_rear_fan_right_x() - chamber_rear_fan_panel_w() / 2 > 0,
-    "each rear fan tower must remain on its own printed chamber half");
+    "each rear fan interface must remain on its own printed chamber half");
   assert(chamber_rear_fan_center_z()
       - chamber_rear_fan_hole_spacing / 2
       - chamber_rear_fan_mount_hole_d / 2
@@ -892,49 +885,73 @@ module _assert_dims() {
         - chamber_tray_backplate_screw_clearance_d / 2
         - chamber_tray_backplate_screw_edge_margin,
     "tray backplate screw holes must keep 3 mm vertical edge margin");
-  assert(chamber_tray_opi_center_x() - chamber_tray_opi_board_w() / 2
-      >= -chamber_tray_w() / 2 + chamber_tray_opi_left_margin - 0.01,
-    "Orange Pi tray mount left offset is invalid");
+  assert(abs(
+      chamber_tray_opi_center_x() - chamber_tray_opi_board_w() / 2
+      - (-chamber_tray_w() / 2 + chamber_tray_opi_left_margin)
+    ) < 0.01,
+    "Orange Pi board envelope must retain the requested left-edge clearance");
+  assert(abs(
+      chamber_tray_opi_board_w() - chamber_tray_opi_mount_x_spacing
+    ) / 2 >= minimum_internal_edge_width,
+    "Orange Pi cross-board hole inset must meet the minimum edge-width rule");
+  assert(chamber_tray_opi_board_d() > chamber_tray_opi_mount_y_spacing,
+    "Orange Pi front/back hole spacing must fit its board envelope");
   assert(chamber_tray_opi_center_x() + chamber_tray_opi_mount_x_spacing / 2
       + chamber_tray_opi_mount_pad_d / 2
       <= chamber_tray_w() / 2,
     "Orange Pi tray mount holes exceed tray width");
-  assert(chamber_tray_opi_center_y_pos() - chamber_tray_opi_mount_y_spacing / 2
+  assert(chamber_tray_opi_front_row_y()
       - chamber_tray_opi_mount_pad_d / 2
       >= chamber_tray_y_front(),
     "Orange Pi tray mount holes exceed tray depth");
-  assert(chamber_tray_opi_center_y_pos() + chamber_tray_opi_mount_y_spacing / 2
-      <= chamber_tray_y_back() - chamber_tray_wall - chamber_tray_opi_near_exhaust_offset + 0.01,
-    "rear Orange Pi stud pair must sit near the tray exhaust wall");
-  assert(chamber_tray_opi_mount_y_spacing > chamber_tray_opi_mount_x_spacing,
-    "Orange Pi tray mount long spacing should run front-to-back toward the exhaust");
-  assert(abs(chamber_tray_rpi_left_x()
-      - chamber_tray_opi_right_x()
-      - chamber_tray_rpi_gap_from_opi) < 0.01,
-    "Raspberry Pi tray mount must keep the requested gap from the Orange Pi");
-  assert(chamber_tray_rpi_right_x() + chamber_tray_rpi_mount_pad_d / 2
-      <= chamber_tray_w() / 2,
-    "Raspberry Pi tray mount exceeds the right side of the tray");
-  assert(chamber_tray_rpi_front_y() >= chamber_tray_y_front()
-    && chamber_tray_rpi_back_y() <= chamber_tray_y_back() - chamber_tray_wall,
-    "Raspberry Pi tray footprint exceeds tray depth");
-  assert(chamber_tray_rpi_mount_x_spacing > 0
-    && chamber_tray_rpi_mount_y_spacing > 0
-    && chamber_tray_rpi_mount_left_inset
-      + chamber_tray_rpi_mount_x_spacing < chamber_tray_rpi_board_x
-    && chamber_tray_rpi_mount_bottom_inset
-      + chamber_tray_rpi_mount_y_spacing < chamber_tray_rpi_board_y,
-    "Raspberry Pi mounting diagram dimensions are invalid");
-  assert(chamber_tray_rpi_mount_screw_clearance_d >= 2.75,
-    "Raspberry Pi tray mount holes should clear M2.5 hardware");
-  assert(chamber_tray_rpi_mount_screw_head_d > chamber_tray_rpi_mount_screw_clearance_d
-    && chamber_tray_rpi_mount_screw_head_depth > 0
-    && chamber_tray_rpi_mount_screw_head_depth <= chamber_tray_wall,
-    "Raspberry Pi tray mount underside recess dimensions are invalid");
-  assert(chamber_tray_rail_inner_x_abs()
-      > chamber_piece_x / 2 - chamber_joint_boss_depth
-      - chamber_joint_boss_depth,
-    "right chamber tray rails must clear center-joint bolt bosses");
+  assert(abs(
+      chamber_tray_y_back() - chamber_tray_opi_rear_row_y()
+      - chamber_tray_opi_rear_row_wall_inset
+    ) < 0.01,
+    "rear Orange Pi stud row must use the cottage exhaust-wall datum");
+  assert(chamber_tray_opi_mount_x_spacing == 94
+      && chamber_tray_opi_mount_y_spacing == 98,
+    "Orange Pi tray mount must preserve the cottage 94 x 98 mm rotated pattern");
+  assert(chamber_tray_exhaust_w == 79
+      && chamber_tray_exhaust_h == 24,
+    "Orange Pi tray exhaust must preserve the cottage 79 x 24 mm opening");
+  assert(abs(
+      chamber_tray_exhaust_center_x()
+      - chamber_tray_opi_center_x()
+      - chamber_tray_exhaust_x_offset
+    ) < 0.01,
+    "Orange Pi exhaust X position must derive from the corrected mount center");
+  assert(chamber_tray_exhaust_center_z() - chamber_tray_exhaust_h / 2
+      >= chamber_tray_backplate_bottom_z() + minimum_internal_edge_width
+    && chamber_tray_exhaust_center_z() + chamber_tray_exhaust_h / 2
+      <= chamber_tray_backplate_h - minimum_internal_edge_width,
+    "Orange Pi exhaust must retain minimum top and bottom backplate material");
+  if (part_id == 12) {
+    assert(abs(chamber_tray_rpi_left_x()
+        - chamber_tray_opi_right_x()
+        - chamber_tray_rpi_gap_from_opi) < 0.01,
+      "Raspberry Pi tray mount must keep the requested gap from the Orange Pi");
+    assert(chamber_tray_rpi_right_x() + chamber_tray_rpi_mount_pad_d / 2
+        <= chamber_tray_w() / 2,
+      "Raspberry Pi tray mount exceeds the right side of the tray");
+    assert(chamber_tray_rpi_front_y() >= chamber_tray_y_front()
+      && chamber_tray_rpi_back_y() <= chamber_tray_y_back() - chamber_tray_wall,
+      "Raspberry Pi tray footprint exceeds tray depth");
+    assert(chamber_tray_rpi_mount_x_spacing > 0
+      && chamber_tray_rpi_mount_y_spacing > 0
+      && chamber_tray_rpi_mount_left_inset
+        + chamber_tray_rpi_mount_x_spacing < chamber_tray_rpi_board_x
+      && chamber_tray_rpi_mount_bottom_inset
+        + chamber_tray_rpi_mount_y_spacing < chamber_tray_rpi_board_y,
+      "Raspberry Pi mounting diagram dimensions are invalid");
+    assert(chamber_tray_rpi_mount_screw_clearance_d >= 2.75,
+      "Raspberry Pi tray mount holes should clear M2.5 hardware");
+    assert(chamber_tray_rpi_mount_screw_head_d
+        > chamber_tray_rpi_mount_screw_clearance_d
+      && chamber_tray_rpi_mount_screw_head_depth > 0
+      && chamber_tray_rpi_mount_screw_head_depth <= chamber_tray_wall,
+      "Raspberry Pi tray mount underside recess dimensions are invalid");
+  }
   assert(chamber_joint_passthrough_count == 2,
     "this chamber mockup expects two front/back passthroughs");
   assert(chamber_joint_passthrough_d > 0,
@@ -965,12 +982,28 @@ module _assert_dims() {
   assert(chamber_joint_bolt_clearance_d >= 3.0,
     "M3 bolt clearance should be at least 3.0 mm");
   for (i = [0 : chamber_joint_bolt_count - 1]) {
-    assert(abs(chamber_bolt_y(i)) + chamber_joint_bolt_boss_d / 2 <= chamber_piece_y / 2,
-      "chamber bolt boss exceeds chamber depth");
-    assert(chamber_bolt_z(i) - chamber_joint_bolt_boss_d / 2 >= chamber_bottom,
-      "chamber bolt boss intersects the chamber floor");
-    assert(chamber_bolt_z(i) + chamber_joint_bolt_boss_d / 2 <= chamber_total_z(),
-      "chamber bolt boss exceeds the open chamber height");
+    assert(
+      chamber_piece_y / 2
+        - abs(chamber_bolt_y(i))
+        - chamber_joint_bolt_clearance_d / 2
+        >= minimum_internal_edge_width,
+      "chamber bolt hole needs minimum material to the front/rear edge"
+    );
+    assert(chamber_bolt_z(i)
+        - chamber_joint_bolt_clearance_d / 2
+        - chamber_bottom
+        >= minimum_internal_edge_width,
+      "chamber bolt hole needs minimum material above the floor");
+    assert(chamber_total_z()
+        - chamber_bolt_z(i)
+        - chamber_joint_bolt_clearance_d / 2
+        >= minimum_internal_edge_width,
+      "chamber bolt hole needs minimum material below the open top");
+    for (j = [0 : chamber_joint_passthrough_count - 1]) {
+      assert(chamber_bolt_passthrough_ligament(i, j)
+          >= minimum_internal_edge_width,
+        "chamber bolt and passthrough holes need minimum separating material");
+    }
   }
 }
 
@@ -1020,13 +1053,6 @@ module _chamber_shell(side, center_x, assembly_position) {
       -chamber_piece_y / 2,
       chamber_piece_y / 2
     );
-
-    if (side > 0) {
-      _right_chamber_tray_guide_rails(
-        global_body_xa + model_x_offset,
-        global_body_xb + model_x_offset
-      );
-    }
 
     if (keyboard_rail_xb > keyboard_rail_xa) {
       _chamber_keyboard_lid_support_rail(
@@ -1160,25 +1186,6 @@ module _right_chamber_control_roof_with_io_opening(xa, xb, model_x_offset) {
   }
 }
 
-module _right_chamber_tray_guide_rails(xa, xb) {
-  chamber_center_x = (xa + xb) / 2;
-  rail_len = chamber_tray_d() - chamber_tray_backplate_t;
-  rail_center_y = chamber_tray_y_front() + rail_len / 2;
-
-  for (side = [-1, 1]) {
-    translate([
-      chamber_center_x + chamber_tray_rail_center_x(side),
-      rail_center_y,
-      chamber_bottom + chamber_tray_rail_h / 2
-    ])
-      cube([
-        chamber_tray_rail_w,
-        rail_len,
-        chamber_tray_rail_h
-      ], center = true);
-  }
-}
-
 module _right_chamber_tray_rear_opening_cut(xa, xb) {
   chamber_center_x = (xa + xb) / 2;
 
@@ -1302,48 +1309,28 @@ module _chamber_profile_shell(
   keep_right_wall = true
 ) {
   difference() {
-    _chamber_profile_prism(
-      xa,
-      xb,
-      y_front,
-      y_back,
-      0,
-      0,
-      0,
-      0,
-      0
-    );
+    _chamber_profile_outer_prism(xa, xb, y_front, y_back);
 
-    _chamber_profile_prism(
+    _chamber_profile_inner_void(
       keep_left_wall ? xa + chamber_wall : xa - 0.6,
       keep_right_wall ? xb - chamber_wall : xb + 0.6,
       y_front + chamber_wall,
       y_back - chamber_wall,
-      chamber_bottom,
-      0.6,
-      -chamber_angled_wall_vertical_offset(),
-      -chamber_angled_wall_vertical_offset(),
-      -chamber_angled_wall_vertical_offset()
+      chamber_bottom
     );
   }
 }
 
-module _chamber_profile_prism(
+module _chamber_profile_outer_prism(
   xa,
   xb,
   y_front,
-  y_back,
-  z_bottom,
-  front_top_extra,
-  back_slope_extra,
-  screen_slope_extra,
-  ridge_extra
+  y_back
 ) {
   z_flat = chamber_total_z();
   y_screen = chamber_profile_screen_foot_y();
   y_peak = chamber_profile_peak_y();
   z_peak = chamber_profile_peak_z();
-  z_back = chamber_profile_back_wall_z();
 
   multmatrix([
     [0, 0, 1, xa],
@@ -1352,19 +1339,44 @@ module _chamber_profile_prism(
     [0, 0, 0, 1]
   ])
     linear_extrude(height = xb - xa, center = false, convexity = 4)
-      polygon(points = concat(
-        [
-          [y_front, z_bottom],
-          [y_back, z_bottom],
-          [y_back, z_back + back_slope_extra],
-          [y_peak, z_peak + ridge_extra],
-          [y_screen, z_flat + screen_slope_extra]
-        ],
-        front_top_extra == screen_slope_extra
-          ? []
-          : [[y_screen, z_flat + front_top_extra]],
-        [[y_front, z_flat + front_top_extra]]
-      ));
+      polygon(points = [
+        [y_front, 0],
+        [y_back, 0],
+        [y_back, z_peak],
+        [y_peak, z_peak],
+        [y_screen, z_flat],
+        [y_front, z_flat]
+      ]);
+}
+
+module _chamber_profile_inner_void(
+  xa,
+  xb,
+  y_front,
+  y_back,
+  z_bottom
+) {
+  z_flat = chamber_total_z();
+  y_screen = chamber_profile_screen_foot_y();
+  y_screen_roof = chamber_housing_inner_screen_corner_y();
+  z_peak_inner = chamber_profile_peak_z() - chamber_wall;
+
+  multmatrix([
+    [0, 0, 1, xa],
+    [1, 0, 0, 0],
+    [0, 1, 0, 0],
+    [0, 0, 0, 1]
+  ])
+    linear_extrude(height = xb - xa, center = false, convexity = 4)
+      polygon(points = [
+        [y_front, z_bottom],
+        [y_back, z_bottom],
+        [y_back, z_peak_inner],
+        [y_screen_roof, z_peak_inner],
+        [y_screen, z_flat - chamber_angled_wall_vertical_offset()],
+        [y_screen, z_flat + 0.6],
+        [y_front, z_flat + 0.6]
+      ]);
 }
 
 module _chamber_passthrough_cut(joint_face_x, i) {
@@ -1372,7 +1384,7 @@ module _chamber_passthrough_cut(joint_face_x, i) {
     rotate([0, 90, 0])
       cylinder(
         d = chamber_joint_passthrough_d,
-        h = chamber_joint_boss_depth * 2 + chamber_wall * 4,
+        h = chamber_wall * 4 + 1.2,
         center = true,
         $fn = 72
       );
@@ -1601,162 +1613,25 @@ module _chamber_display_void_cut(center_x) {
         ], center = true);
 }
 
-module _chamber_display_split_rail(side, seam_x) {
-  rail_xa = min(seam_x, seam_x + side * chamber_display_seam_rail_w);
-  rail_xb = max(seam_x, seam_x + side * chamber_display_seam_rail_w);
-
-  multmatrix([
-    [0, 0, 1, rail_xa],
-    [1, 0, 0, 0],
-    [0, 1, 0, 0],
-    [0, 0, 0, 1]
-  ])
-    linear_extrude(height = rail_xb - rail_xa, center = false, convexity = 4)
-      polygon(points = [
-        [
-          chamber_display_seam_rail_point_y(
-            -chamber_display_seam_rail_len / 2,
-            -chamber_display_seam_rail_embed
-          ),
-          chamber_display_seam_rail_point_z(
-            -chamber_display_seam_rail_len / 2,
-            -chamber_display_seam_rail_embed
-          )
-        ],
-        [
-          chamber_display_seam_rail_point_y(
-            chamber_display_seam_rail_len / 2,
-            -chamber_display_seam_rail_embed
-          ),
-          chamber_display_seam_rail_point_z(
-            chamber_display_seam_rail_len / 2,
-            -chamber_display_seam_rail_embed
-          )
-        ],
-        [
-          chamber_display_seam_rail_point_y(
-            chamber_display_seam_rail_len / 2,
-            chamber_display_seam_rail_d - chamber_display_seam_rail_embed
-          ),
-          chamber_display_seam_rail_point_z(
-            chamber_display_seam_rail_len / 2,
-            chamber_display_seam_rail_d - chamber_display_seam_rail_embed
-          )
-        ],
-        [
-          chamber_display_seam_rail_point_y(
-            -chamber_display_seam_rail_len / 2,
-            chamber_display_seam_rail_d - chamber_display_seam_rail_embed
-          ),
-          chamber_display_seam_rail_point_z(
-            -chamber_display_seam_rail_len / 2,
-            chamber_display_seam_rail_d - chamber_display_seam_rail_embed
-          )
-        ]
-      ]);
-}
-
-module _chamber_display_split_rail_screw_cut(seam_x) {
-  translate([
-    seam_x,
-    chamber_display_seam_rail_screw_y(),
-    chamber_display_seam_rail_screw_z()
-  ])
-    rotate([0, 90, 0])
-      cylinder(
-        d = chamber_display_seam_rail_screw_clearance_d,
-        h = 2 * chamber_display_seam_rail_w + 2 * chamber_wall,
-        center = true,
-        $fn = 32
-      );
-}
-
-module _chamber_display_split_rail_screw_cuts(seam_x) {
-  _chamber_display_split_rail_screw_cut(seam_x);
-}
-
-module _chamber_rear_fan_tower_side(xa, xb) {
-  multmatrix([
-    [0, 0, 1, xa],
-    [1, 0, 0, 0],
-    [0, 1, 0, 0],
-    [0, 0, 0, 1]
-  ])
-    linear_extrude(height = xb - xa, center = false, convexity = 4)
-      polygon(points = [
-        [chamber_profile_peak_y(), chamber_profile_peak_z()],
-        [chamber_piece_y / 2, chamber_profile_back_wall_z()],
-        [chamber_piece_y / 2, chamber_profile_peak_z()]
-      ]);
-}
-
-module _chamber_rear_fan_tower(center_x) {
-  panel_w = chamber_rear_fan_panel_w();
-  y_peak = chamber_profile_peak_y();
-  y_back = chamber_piece_y / 2;
-  z_back = chamber_profile_back_wall_z();
-  z_peak = chamber_profile_peak_z();
-
-  union() {
-    translate([
-      center_x,
-      y_back - chamber_wall / 2,
-      (z_back + z_peak) / 2
-    ])
-      cube([
-        panel_w,
-        chamber_wall,
-        z_peak - z_back
-      ], center = true);
-
-    translate([
-      center_x,
-      (y_peak + y_back) / 2,
-      z_peak - chamber_wall / 2
-    ])
-      cube([
-        panel_w,
-        y_back - y_peak,
-        chamber_wall
-      ], center = true);
-
-    _chamber_rear_fan_tower_side(
-      center_x - panel_w / 2,
-      center_x - panel_w / 2 + chamber_wall
-    );
-    _chamber_rear_fan_tower_side(
-      center_x + panel_w / 2 - chamber_wall,
-      center_x + panel_w / 2
-    );
+module _chamber_rear_fan_spacers(center_x) {
+  for (sx = [-1, 1]) {
+    for (sz = [-1, 1]) {
+      translate([
+        center_x + sx * chamber_rear_fan_hole_spacing / 2,
+        chamber_rear_fan_spacer_center_y(),
+        chamber_rear_fan_center_z()
+          + sz * chamber_rear_fan_hole_spacing / 2
+      ])
+        rotate([90, 0, 0])
+          cylinder(
+            d = chamber_rear_fan_spacer_outer_d,
+            h = chamber_rear_fan_spacer_wall_overlap
+              + chamber_rear_fan_spacer_projection,
+            center = true,
+            $fn = 48
+          );
+    }
   }
-}
-
-module _chamber_rear_fan_tower_interior_cut(center_x) {
-  panel_inner_w = chamber_rear_fan_panel_w() - 2 * chamber_wall;
-  y_front = chamber_profile_peak_y();
-  y_back = chamber_piece_y / 2 - chamber_wall + 0.2;
-  z_top = chamber_profile_peak_z() - chamber_wall;
-  z_front_slope =
-    chamber_profile_peak_z()
-    - (y_front - chamber_profile_peak_y());
-  z_back_slope =
-    chamber_profile_peak_z()
-    - (y_back - chamber_profile_peak_y());
-  cut_below_slope = 4 * chamber_wall;
-
-  multmatrix([
-    [0, 0, 1, center_x - panel_inner_w / 2],
-    [1, 0, 0, 0],
-    [0, 1, 0, 0],
-    [0, 0, 0, 1]
-  ])
-    linear_extrude(height = panel_inner_w, center = false, convexity = 4)
-      polygon(points = [
-        [y_front, z_front_slope - cut_below_slope],
-        [y_back, z_back_slope - cut_below_slope],
-        [y_back, z_top],
-        [y_front, z_top]
-      ]);
 }
 
 module _chamber_rear_fan_cut(center_x) {
@@ -1777,14 +1652,16 @@ module _chamber_rear_fan_cut(center_x) {
     for (sz = [-1, 1]) {
       translate([
         center_x + sx * chamber_rear_fan_hole_spacing / 2,
-        chamber_piece_y / 2 - chamber_wall / 2,
+        chamber_rear_fan_spacer_center_y(),
         chamber_rear_fan_center_z()
           + sz * chamber_rear_fan_hole_spacing / 2
       ])
         rotate([90, 0, 0])
           cylinder(
             d = chamber_rear_fan_mount_hole_d,
-            h = chamber_wall + 1.2,
+            h = chamber_rear_fan_spacer_wall_overlap
+              + chamber_rear_fan_spacer_projection
+              + 1.2,
             center = true,
             $fn = 36
           );
@@ -1825,7 +1702,7 @@ module _chamber_bolt_cut(joint_face_x, i) {
     rotate([0, 90, 0])
       cylinder(
         d = chamber_joint_bolt_clearance_d,
-        h = chamber_joint_boss_depth * 2 + chamber_wall * 4,
+        h = chamber_wall * 4 + 1.2,
         center = true,
         $fn = 28
       );
@@ -1856,21 +1733,6 @@ module _chamber_handle_mount_screw_cuts(side_face_x) {
   }
 }
 
-module _chamber_joint_reinforcement(side, joint_face_x) {
-  boss_center_x = joint_face_x + side * chamber_joint_boss_depth / 2;
-
-  for (i = [0 : chamber_joint_bolt_count - 1]) {
-    translate([boss_center_x, chamber_bolt_y(i), chamber_bolt_z(i)])
-      rotate([0, 90, 0])
-        cylinder(
-          d = chamber_joint_bolt_boss_d,
-          h = chamber_joint_boss_depth,
-          center = true,
-          $fn = 36
-        );
-  }
-}
-
 module _chamber_floor_label(center_x, label_text) {
   color([0.70, 0.70, 0.60, 1.0])
     translate([center_x, 0, chamber_bottom + 0.2])
@@ -1888,15 +1750,12 @@ module _chamber_body(side, assembly_position, label_text) {
   wedge_web_x = chamber_display_wedge_left_x() + model_x_offset;
   dome_roof_cut_x = chamber_dome_roof_center_x() + model_x_offset;
   display_void_cut_x = chamber_display_wedge_center_x() + model_x_offset;
-  display_split_rail_x = model_x_offset;
 
   color(side < 0 ? [0.10, 0.105, 0.11, 0.88] : [0.12, 0.115, 0.10, 0.88])
     difference() {
       union() {
         _chamber_shell(side, center_x, assembly_position);
-        _chamber_joint_reinforcement(side, joint_face_x);
-        _chamber_display_split_rail(side, display_split_rail_x);
-        _chamber_rear_fan_tower(
+        _chamber_rear_fan_spacers(
           chamber_rear_fan_center_x(side) + model_x_offset
         );
       }
@@ -1905,11 +1764,7 @@ module _chamber_body(side, assembly_position, label_text) {
       }
       _chamber_display_void_cut(display_void_cut_x);
       _chamber_display_mount_screw_cuts(display_void_cut_x);
-      _chamber_display_split_rail_screw_cuts(display_split_rail_x);
       _chamber_rear_fan_cut(
-        chamber_rear_fan_center_x(side) + model_x_offset
-      );
-      _chamber_rear_fan_tower_interior_cut(
         chamber_rear_fan_center_x(side) + model_x_offset
       );
       if (side > 0) {
@@ -2239,9 +2094,9 @@ module _right_chamber_tray_rpi_mount_cut(x, y, cut_h) {
 
 module _right_chamber_tray_exhaust_cut() {
   translate([
-    chamber_tray_opi_center_x(),
+    chamber_tray_exhaust_center_x(),
     chamber_tray_y_back() + chamber_tray_backplate_t / 2,
-    chamber_tray_exhaust_center_z
+    chamber_tray_exhaust_center_z()
   ])
     cube([
       chamber_tray_exhaust_w,
