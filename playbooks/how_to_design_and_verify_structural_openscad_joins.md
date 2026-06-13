@@ -171,9 +171,10 @@ Do not encode structural attachment as unexplained coordinate coincidences or ma
 5. Construct positive-volume overlap across the complete seam.
 6. Apply holes, recesses, and other subtractions.
 7. Recalculate or assert the remaining overlap and throat after subtraction.
-8. Inventory all internal edges and assert their narrowest remaining material width.
-9. Inspect sections through each seam and internal edge at its start, midpoint, end, corner, and any nearby cutout.
-10. Export the final STL and check for unexpected disconnected positive-volume shells.
+8. For each structural member containing multiple holes, recesses, slots, or voids, create a pairwise subtraction-clearance inventory. For every pair whose projected bounds can overlap or approach in that member, assert the shortest remaining ligament after all transforms and Boolean cuts. A cut-to-outer-edge assertion does not replace cut-to-cut assertions.
+9. Inventory all internal edges and assert their narrowest remaining material width.
+10. Inspect sections through each seam and internal edge at its start, midpoint, end, corner, and any nearby cutout.
+11. Export the final STL and check for unexpected disconnected positive-volume shells.
 
 ## Verification Gates
 

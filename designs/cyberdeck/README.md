@@ -28,7 +28,51 @@ First-draft visual mockup and design brief for a cyberdeck OpenSCAD model.
 - `part_id = 10`: left-side carrying handle
 - `part_id = 11`: dome bucket insert
 - `part_id = 12`: right chamber Orange Pi tray
-- `part_id = 13`: removable right-side I/O panel
+- `part_id = 13`: removable full-width rear-roof I/O panel
+
+## Revision 0003 Rear-Roof I/O Study
+
+- The keyboard is now treated as a separate accessory rather than a component that must fit on the deck's flat top.
+- The unified rear housing grows from `25.4 mm` to `51.2 mm` deep so the existing I/O controls can move onto a removable panel above and behind the screen.
+- The `45 degree`, `95 mm` screen face remains unchanged, but its ridge moves forward to assembled `y = 53.8 mm` and its foot moves forward to about `y = -13.376 mm`.
+- All three front openings terminate at the dome-constrained `y = -20 mm` rear edge.
+- All three finished front lids are `80.8 mm` deep.
+- The center and right openings retain approximately `6.624 mm` of solid deck between their rear edges and the screen slope.
+- The touched front-lid support rails are now `7 mm` wide and `3 mm` thick.
+- Those rails overlap the surrounding front, side, and rear structures by the full `3 mm` minimum structural overlap.
+- The removable I/O panel now spans the full `260 mm` display-housing width while retaining the two `3 mm` housing end walls and `0.6 mm` panel clearance on every side.
+- The resulting I/O panel is `252.8 mm x 44 mm x 5 mm`; its roof recess is `254 mm x 45.2 mm`.
+- The rear roof is locally thickened to a continuous `5 mm` structural frame.
+- The top `2 mm` forms the panel recess, leaving a `3 mm` thick support floor.
+- A `6 mm` support ledge surrounds the service opening, with integral `16 mm` corner lands for the four M3 mounting holes.
+- The roof frame overlaps the original `3 mm` housing roof through its full thickness rather than relying on coincident faces.
+- The I/O panel sits `2 mm` into the roof and remains `3 mm` proud of the surrounding surface.
+- The full-width panel is rotated `45 degrees` for its standalone export. Its rounded modeled footprint is approximately `207.4 mm x 207.4 mm`, inside the `220 mm x 220 mm` print bed.
+- The roof I/O panel retains the Raspberry USB-A, Orange USB-A, and Neural Jack openings and labels.
+- The push-to-talk button and its label move to the center of the removable center-front lid.
+- All four control labels use the same `5.48 mm` Bahnschrift SemiBold type size for cleaner strokes and less ornamentation.
+- The `Raspberry` label size is derived from measured Bahnschrift bounds: its rotated length is approximately `33.97 mm`, leaving at least `5 mm` to both depth edges of the `44 mm` roof panel and `5 mm` to the installed USB-A flange.
+- The Neural Jack label is anchored `5 mm` from the roof panel's right edge, and its mounting hole sits `5 mm` immediately to the left of the text.
+- The fixed `Power Cell` USB-C opening moves to the lower rear wall of the left chamber.
+- Its center is at assembled `x = -33.75 mm`, midway between the center joint and the full-depth display-divider wall, and at `z = 26.5 mm`.
+- The `Power` / `Cell` marking is raised from the rear wall and centered below the opening, avoiding any reduction of the `3 mm` wall thickness.
+- The rear-wall glyph geometry is mirrored before its inward structural extrusion so `Power` / `Cell` reads normally from outside the back of the chassis.
+- Moving the screen also moves the rear center-joint passthrough to assembled `y = 47.15 mm`, keeping it aligned near the display's rear screw row.
+- Exact-config assembly export is manifold (`Simple: yes`) with an envelope of approximately `385.05 mm x 212 mm x 120.176 mm`.
+
+### Revision 0003 Structural Review
+
+- Roof-frame join: the new frame intersects the existing roof through the complete `3 mm` roof thickness across the frame footprint.
+- Roof support: the recessed seat retains a `3 mm` support floor and a `6 mm` ledge, both meeting the repository structural minimums.
+- Roof fasteners: each M3 hole is retained in an integral `16 mm` corner land with more than `3 mm` material outside the hole.
+- Front-lid rails: all three frames share the same rear datum; rail thickness is `3 mm`, rail width is `7 mm`, attachment overlap is `3 mm`, and the corner-pad-to-rail overlap is approximately `3.4 mm`.
+- Center-joint fasteners: the upper center M3 hole is at `z = 38 mm`; its shortest post-subtraction ligament to the angled screen recess is approximately `3.45 mm` and is enforced by a direct assertion.
+- Control-panel engraving: the common `5.48 mm` label size leaves approximately `5.016 mm` at the Raspberry label's limiting panel edges, `5 mm` to its installed connector flange, and `4.45 mm` of solid lid thickness below every engraving.
+- Center-lid PTT: the `28 mm` through-hole retains `7.4 mm` to the pull slot and more than `3 mm` to every recessed corner fastener; the installed `34 mm` cap and label retain at least `5 mm` visual clearance.
+- Minimum-edge review: roof borders, support ledges, screw-hole ligaments, front-lid separator, rear Power Cell margins, and label margins are asserted at or above `3 mm`; the rear label is raised instead of engraved into the minimum-thickness wall.
+- Verification evidence: exact `rev_0003` assembly, center lid, right lid, and roof I/O panel STL exports completed as `Simple: yes`; all 17 configured assembly preview images rendered.
+- Connectivity audit: each chamber STL contains one dominant connected structural shell; the only additional components are the intentionally separate raised floor-label glyphs.
+- Fabrication status: this revision verifies the changed roof, front-lid, and Power Cell geometry only. Unchanged legacy subsystems remain subject to the broader structural audit before the complete deck is fabrication-ready.
 
 ## Revision 0002 Printable Chamber Study
 
@@ -57,18 +101,18 @@ First-draft visual mockup and design brief for a cyberdeck OpenSCAD model.
 - The shortened right-front lid remains full width, keeps its existing front and side boundaries, and is approximately `63 mm` deep.
 - The resulting finished gap between the right-front lid and I/O panel is approximately `4.2 mm`, including the two `0.6 mm` panel clearances around the `3 mm` chassis web.
 - Arcade-button planning assumes a `28 mm` mounting hole, `34 mm` external button body, and at least `5 mm` of panel material around a mounting hole.
-- The removable I/O panel includes one `28 mm` arcade-button mounting hole on its left side for push-to-talk control.
-- The push-to-talk hole is centered front/back on the `44 mm` panel, retaining `8 mm` of panel material around the mounting hole and `5 mm` around the installed `34 mm` button cap at the front and rear edges.
-- The removable I/O panel includes two centered `29 mm` mounting holes for USB-A panel jacks between the push-to-talk button and Neural Jack.
+- The center-front lid includes one centered `28 mm` arcade-button mounting hole for push-to-talk control.
+- The installed push-to-talk cap is modeled as `34 mm` diameter, and its two-line label is centered above it with `5 mm` clearance.
+- The removable I/O panel includes two centered `29 mm` mounting holes for the Raspberry and Orange USB-A panel jacks, followed by the Neural Jack at the right.
 - The USB-A jacks use a `31.75 mm` (`1.25 inch`) installed flange footprint, with `3 mm` between the two flange edges.
 - The left USB-A jack is labeled `Raspberry`; the right USB-A jack is labeled `Orange`.
-- The removable-panel control order is push-to-talk, Raspberry USB-A, Orange USB-A, then Neural Jack from left to right.
-- The horizontal two-line `Push` / `To Talk` engraving sits outside-left of the push-to-talk hole, and the horizontal two-line `Neural` / `Jack` engraving sits outside-right of its hole.
-- Only the Raspberry and Orange labels are rotated `90 degrees`; each uses smaller type and sits close to its corresponding USB-A flange so the association is visually clear.
+- The removable-panel control order is Raspberry USB-A, Orange USB-A, then Neural Jack from left to right.
+- The horizontal two-line `Push` / `To Talk` engraving sits above the centered button on the center lid, while `Neural` / `Jack` remains to the right of its roof-panel hole.
+- Raspberry and Orange remain rotated `90 degrees`; all control labels now use the same larger type size.
 - The existing right-side `Neural` / `Jack` USB-C opening and engraving move onto the removable I/O panel. The left-side `Power` / `Cell` connector remains on the left chamber roof.
-- The right-side USB-C opening is centered front/back and positioned so the space from its hole edge to the right panel edge exactly matches the space from the installed `34 mm` push-to-talk cap to the left panel edge.
-- The matching outer columns use the same horizontal two-line label treatment, giving `Push` / `To Talk` and `Neural` / `Jack` a symmetric appearance.
-- The shared OpenSCAD label font is currently `Orbitron:style=Bold`.
+- The right-side USB-C opening is centered front/back and positioned `5 mm` immediately left of its Neural Jack label.
+- Push To Talk and Neural Jack use the same horizontal two-line label treatment even though they are now on separate removable panels.
+- The shared OpenSCAD control-label font is `Bahnschrift:style=SemiBold`; matching font installation is required to reproduce the measured text bounds exactly.
 - The fixed `Power` / `Cell` USB-C label remains a horizontal two-line engraving beside the left jack.
 - The dome roof has a centered `96 mm` circular cutout.
 - The acrylic dome mount uses four M3 clearance holes on a `56 mm` radius bolt circle.
@@ -162,6 +206,8 @@ First-draft visual mockup and design brief for a cyberdeck OpenSCAD model.
 - The mating faces use a six-bolt M3 pattern.
 - Four bolts sit near the mating-face corners.
 - Two bolts sit on the vertical centerline, one low and one high.
+- The upper center bolt is lowered to `z = 38 mm`, leaving approximately `3.45 mm` of material between its `3.4 mm` clearance hole and the angled screen recess.
+- A direct post-subtraction ligament assertion now prevents the upper center bolt from approaching the screen recess more closely than the `3 mm` minimum internal-edge requirement.
 - Bolt holes are modeled as `3.4 mm` M3 clearance holes.
 - The M3 bolt pattern and passthrough conduits are plain flush holes through the mating walls, with no internal reinforcement bosses.
 - This revision is still an enclosure architecture study, not a final printable mechanical design.

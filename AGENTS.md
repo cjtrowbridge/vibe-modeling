@@ -82,6 +82,7 @@ These rules apply to every design unless a design documents a stricter requireme
 - No internal edge, rim, rail, flange, web, bridge, land, or strip of material may be narrower than `minimum_wall_thickness` at any point.
 - Material between a void and an exterior edge, or between two voids, must be at least `minimum_wall_thickness`, measured by the shortest path through solid material.
 - Fastener holes, recesses, chamfers, and other subtractions must not leave an internal edge margin below `minimum_wall_thickness`.
+- For every wall, rail, flange, or web containing multiple cuts, inventory every pair of cuts whose projected bounds can overlap or approach each other. Assert the shortest post-subtraction ligament for each applicable pair; checking each cut only against the outer boundary is insufficient.
 - Use named dimensions and `assert()` statements to enforce the construction contract. Do not rely on coordinates that merely appear to meet.
 - A successful OpenSCAD render or manifold STL does not prove adequate structural overlap. Perform the sectional and connectivity checks required by the structural-joins playbook.
 - Intentionally separate parts and decorative disconnected geometry must be identified as such. Unexpected disconnected shells are failures.

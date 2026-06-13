@@ -13,7 +13,7 @@
 // 10 = left-side carrying handle
 // 11 = dome bucket insert
 // 12 = right chamber Orange Pi tray
-// 13 = removable right-side I/O panel
+// 13 = removable full-width rear-roof I/O panel
 
 include <lib/defaults.scad>;
 include <parts/cyberdeck.scad>;
