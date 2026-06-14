@@ -29,6 +29,7 @@ First-draft visual mockup and design brief for a cyberdeck OpenSCAD model.
 - `part_id = 11`: dome bucket insert
 - `part_id = 12`: right chamber Orange Pi tray
 - `part_id = 13`: removable full-width rear-roof I/O panel
+- `part_id = 14`: right chamber Raspberry Pi side tray
 
 ## Revision 0003 Rear-Roof I/O Study
 
@@ -222,6 +223,16 @@ First-draft visual mockup and design brief for a cyberdeck OpenSCAD model.
 - The Orange Pi board envelope is centered across the narrowed tray with `3 mm` nominal clearance at each side.
 - The Raspberry Pi mounting study has been removed from this tray. The Raspberry Pi remains part of the overall hardware plan but requires a different internal mount.
 - The tray opening, backplate, fasteners, and Orange Pi footprint are all derived from the narrowed cottage-style tray dimensions rather than the full chamber width.
+- A second independent tray enters through the right outside wall for the Raspberry Pi 5.
+- The Raspberry Pi tray occupies the narrow strip beside the Orange Pi tray without changing the chamber dimensions. Its inserted left edge retains approximately `3.3 mm` clearance from the Orange Pi tray.
+- The Raspberry Pi board is rotated so its `56 mm` dimension runs across the chamber and its `85 mm` dimension runs front-to-back, parallel to the Orange Pi board.
+- The Raspberry Pi connector edge faces the deck front.
+- The board datum is biased `1 mm` toward the front to preserve at least `3 mm` of physical board clearance and prevent point-only contact between the rear mounting bosses and tray rail.
+- The side tray has a `65 mm` insertion depth and `93 mm` front-to-back bed, with a `95 mm x 44 mm` chamber opening and `1 mm` slide clearance.
+- Its `117.4 mm x 52 mm` exterior closure plate uses four M3 holes and ends `3 mm` ahead of the rear chamber edge, placing the tray as far back as the required edge margin permits.
+- The Raspberry Pi mount preserves the drawing's rotated `49 mm x 58 mm` M2.5 hole pattern and its `3.5 mm` board-edge datum.
+- The `9 mm` mounting pads retain at least `3 mm` of material around their holes and to the nearest tray edge.
+- The tray floor, low perimeter walls, leading wall, and closure plate are `3 mm` thick. The floor overlaps through the full `3 mm` closure-plate thickness.
 - The left and right chambers have matching circular side passthroughs on the mating faces.
 - Current design uses two `30 mm` passthroughs, split front/back from the centerline.
 - The passthrough centerline is lowered to `z = 22 mm` so the flush conduit holes clear the inset lid rails.

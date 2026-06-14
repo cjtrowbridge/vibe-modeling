@@ -14,6 +14,7 @@
 // 11 = dome bucket insert
 // 12 = right chamber Orange Pi tray
 // 13 = removable full-width rear-roof I/O panel
+// 14 = right chamber Raspberry Pi side tray
 
 include <lib/defaults.scad>;
 include <parts/cyberdeck.scad>;
@@ -48,6 +49,8 @@ if (_part_id == 0) {
   cyberdeck_right_chamber_tray();
 } else if (_part_id == 13) {
   cyberdeck_right_io_panel();
+} else if (_part_id == 14) {
+  cyberdeck_right_chamber_rpi_side_tray();
 } else {
   assert(false, str("Unknown part_id: ", _part_id));
 }
