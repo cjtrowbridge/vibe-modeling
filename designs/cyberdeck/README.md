@@ -63,6 +63,9 @@ First-draft visual mockup and design brief for a cyberdeck OpenSCAD model.
 - Clearance checks treat each underside retaining nut as the same diameter as its visible top hardware: `35 mm` for PTT and `31.75 mm` for USB-A.
 - The fixed center-lid support frame is relieved by `44 mm` and `40.75 mm` circles, providing `4.5 mm` radial clearance around the respective `35 mm` PTT and `31.75 mm` USB-A underside hardware envelopes.
 - The larger PTT relief intentionally notches the `7 mm` rear support rail while retaining a `4.625 mm` continuous rail throat and at least `3.065 mm` of material around the nearest M3 support hole.
+- A future adhesive blacklight LED strip can run horizontally along the inside face of the front wall across both chambers.
+- The center chamber-bonding walls and the left display-divider wall each receive a `15 mm` semicircular passage centered vertically at `z = 26.5 mm`.
+- Each passage starts at the front wall's interior face and curves rearward, preserving the complete `3 mm` wall-to-front structural overlap and leaving the exterior front face closed.
 - All four control labels use the same `5.48 mm` Bahnschrift SemiBold type size for cleaner strokes and less ornamentation.
 - The `Raspberry` label size is derived from measured Bahnschrift bounds: its rotated length is approximately `33.97 mm`, leaving at least `5 mm` to both depth edges of the `44 mm` roof panel and `5 mm` to the installed USB-A flange.
 - The Neural Jack label is anchored `5 mm` from the roof panel's right edge, and its mounting hole sits `5 mm` immediately to the left of the text.
@@ -86,9 +89,10 @@ First-draft visual mockup and design brief for a cyberdeck OpenSCAD model.
 - Control-panel engraving: the common `5.48 mm` label size leaves approximately `5.016 mm` at the Raspberry label's limiting panel edges, `5 mm` to its installed connector flange, and `4.45 mm` of solid lid thickness below every engraving.
 - Center-lid controls: the `28 mm` PTT and new `29 mm` USB-A holes retain at least `3 mm` printed material to lid edges, neighboring holes, and recessed corner fasteners.
 - Two-sided hardware clearance: the `35 mm` PTT and `31.75 mm` USB-A installed envelopes are checked identically above and below the lid.
-- Underside support clearance: matching circular reliefs remove the conflicting portions of the center-lid corner pads while retaining at least `3 mm` around every M3 support hole; the perimeter rails remain outside both relief circles.
+- Underside support clearance: matching circular reliefs remove the conflicting portions of the center-lid corner pads while retaining at least `3 mm` around every M3 support hole; the PTT relief intentionally notches the rear rail while retaining a `4.625 mm` throat.
+- Front LED-strip route: the three aligned `15 mm` semicircular passages retain the full `3 mm` front-wall joint, `16 mm` above the floor, `19 mm` below the wall top, and approximately `8.21 mm` from the nearest chamber-bonding bolt.
 - Minimum-edge review: roof borders, support ledges, screw-hole ligaments, front-lid separator, rear Power Cell margins, and label margins are asserted at or above `3 mm`; the rear label is raised instead of engraved into the minimum-thickness wall.
-- Verification evidence: the exact `rev_0003` assembly export and all 17 configured preview images completed after the bulkhead change; an isolated final-Boolean Y-Z section confirms the continuous front-rail and rear-wall intersections.
+- Verification evidence: the exact `rev_0003` assembly export and all 17 configured preview images completed after the LED-route change; a focused final-Boolean section confirms the semicircular divider-wall cut while the exterior front wall remains closed.
 - Connectivity audit: each standalone chamber STL contains one dominant connected structural shell spanning the complete chamber bounds; every smaller component is confined to the intentionally separate raised floor-label glyph height at `z = 3.2 mm` to `3.55 mm`.
 - Fabrication status: this revision verifies the changed roof, front-lid, and Power Cell geometry only. Unchanged legacy subsystems remain subject to the broader structural audit before the complete deck is fabrication-ready.
 

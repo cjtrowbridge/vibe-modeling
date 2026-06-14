@@ -222,6 +222,7 @@ chamber_joint_bolt_edge_inset_y = 14.0;
 chamber_joint_bolt_edge_inset_z = 10.0;
 chamber_joint_center_upper_bolt_z = 38.0;
 chamber_joint_bolt_clearance_d = 3.4;
+chamber_front_led_strip_passage_d = 15.0;
 
 // Secondary display and rack rails
 display_active_x = 208.0;
