@@ -70,6 +70,7 @@ First-draft visual mockup and design brief for a cyberdeck OpenSCAD model.
 - The `Raspberry` label size is derived from measured Bahnschrift bounds: its rotated length is approximately `33.97 mm`, leaving at least `5 mm` to both depth edges of the `44 mm` roof panel and `5 mm` to the installed USB-A flange.
 - The Neural Jack label is anchored `5 mm` from the roof panel's right edge, and its mounting hole sits `5 mm` immediately to the left of the text.
 - The fixed `Power Cell` USB-C opening moves to the lower rear wall of the left chamber.
+- Its cutter is centered on the `3 mm` rear-wall midplane and extends beyond both wall faces, ensuring the `23 mm` opening is a true through-hole rather than leaving an internal membrane.
 - Its center is at assembled `x = -33.75 mm`, midway between the center joint and the full-depth display-divider wall, and at `z = 26.5 mm`.
 - The `Power` / `Cell` marking is raised from the rear wall and centered below the opening, avoiding any reduction of the `3 mm` wall thickness.
 - The rear-wall glyph geometry is mirrored before its inward structural extrusion so `Power` / `Cell` reads normally from outside the back of the chassis.
@@ -207,19 +208,20 @@ First-draft visual mockup and design brief for a cyberdeck OpenSCAD model.
 - Each fan screw hole has a `10.4 mm` diameter annular spacer that projects `2 mm` behind the rear wall.
 - Each spacer overlaps the complete `3 mm` rear-wall thickness and leaves a nominal `3.1 mm` of radial material around its `4.2 mm` screw hole.
 - The four spacers hold each fan `2 mm` off the rear wall, providing a protected wiring gap and reducing direct wire pressure against the fan housing.
-- The right chamber has a rear slide-out tray opening through the lower back wall.
-- The right tray back opening is `164.5 mm` wide and `44 mm` tall, leaving side material around the opening for M3 backplate fasteners.
+- The right chamber has a left-aligned rear slide-out tray opening through the lower back wall.
+- The right tray back opening is `108 mm` wide and `44 mm` tall.
+- The `130.4 mm` wide backplate is positioned as far left as the structural rules allow: its left edge retains exactly `3 mm` of right-chamber rear wall.
+- This places the opening's left edge `14.2 mm` from the chamber boundary while leaving substantially more intact wall at the right.
 - The former low internal floor rails in the right chamber are removed. Any replacement tray-guidance or retention system will be designed later.
-- The right tray is a separate `3 mm` thick drawer-style part with a rear backplate, low side walls, Orange Pi mounting pads, and an exhaust opening in the backplate.
+- The right tray has a `106 mm` wide sliding bed extending `131 mm` from its front edge to the backplate datum, with a `3 mm` floor and walls, rear backplate, low side walls, Orange Pi mounting pads, and an exhaust opening in the backplate.
+- The floor continues through the full `3 mm` backplate thickness, producing a required `3 mm` structural overlap and a `134 mm` overall front-to-rear STL envelope.
 - The tray backplate bottom is flush with the tray floor bottom, so the rear wall does not extend below the sliding tray.
 - The tray backplate is slightly larger than the rear opening and uses four M3 corner holes with at least `3 mm` edge margin on both the wall and the backplate.
 - The Orange Pi mount uses the proven cottage tray orientation: the `94 mm` hole spacing runs across the tray and the `98 mm` spacing runs front/back toward the rear exhaust backplate.
 - The rear stud pair is `3 mm` from the rear tray datum, matching the cottage-style exhaust-side convention.
-- The Orange Pi board envelope starts `10 mm` from the left edge of the right tray.
-- The right tray still contains the earlier Raspberry Pi 5 M2.5 mounting-stud study.
-- The Raspberry Pi 5 mount uses the provided `85 mm x 56 mm` board envelope and `58 mm x 49 mm` mounting-hole rectangle.
-- The Raspberry Pi 5 footprint is rotated so the port/jack edge faces the front of the deck.
-- The corrected Orange Pi footprint makes the requested side-by-side Raspberry Pi placement exceed the tray width. Tray export remains intentionally blocked until the Raspberry Pi is relocated or removed.
+- The Orange Pi board envelope is centered across the narrowed tray with `3 mm` nominal clearance at each side.
+- The Raspberry Pi mounting study has been removed from this tray. The Raspberry Pi remains part of the overall hardware plan but requires a different internal mount.
+- The tray opening, backplate, fasteners, and Orange Pi footprint are all derived from the narrowed cottage-style tray dimensions rather than the full chamber width.
 - The left and right chambers have matching circular side passthroughs on the mating faces.
 - Current design uses two `30 mm` passthroughs, split front/back from the centerline.
 - The passthrough centerline is lowered to `z = 22 mm` so the flush conduit holes clear the inset lid rails.

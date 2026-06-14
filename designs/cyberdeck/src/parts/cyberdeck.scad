@@ -84,6 +84,10 @@ function chamber_power_cell_rear_x() =
   (chamber_display_wedge_left_x() + 0) / 2;
 function chamber_power_cell_rear_z() =
   chamber_total_z() / 2;
+function chamber_power_cell_rear_wall_center_y() =
+  chamber_piece_y / 2 - chamber_wall / 2;
+function chamber_power_cell_rear_cut_depth() =
+  chamber_wall + 1.2;
 function chamber_power_cell_rear_label_center_z() =
   minimum_internal_edge_width
   + chamber_power_cell_rear_label_size / 2
@@ -422,18 +426,35 @@ function chamber_dome_bucket_passage_center_z() =
   + chamber_dome_bucket_wall
   + chamber_dome_bucket_passage_h / 2
   + 4;
-function chamber_tray_opening_w() =
-  chamber_piece_x - 2 * chamber_tray_back_opening_side_margin;
+function chamber_tray_opi_board_w() =
+  chamber_tray_opi_board_y;
+function chamber_tray_opi_board_d() =
+  chamber_tray_opi_board_x;
 function chamber_tray_w() =
-  chamber_tray_opening_w() - 2 * chamber_tray_slide_clearance;
+  chamber_tray_opi_board_w() + 2 * chamber_tray_board_clearance_xy;
 function chamber_tray_d() =
-  chamber_piece_y - chamber_wall - chamber_tray_front_clearance;
-function chamber_tray_y_front() =
-  -chamber_piece_y / 2 + chamber_tray_front_clearance;
+  chamber_tray_opi_board_d()
+  + 2 * chamber_tray_board_clearance_xy
+  + chamber_tray_service_depth;
+function chamber_tray_opening_w() =
+  chamber_tray_w() + 2 * chamber_tray_slide_clearance;
 function chamber_tray_y_back() =
   chamber_piece_y / 2;
+function chamber_tray_y_front() =
+  chamber_tray_y_back() - chamber_tray_d();
+function chamber_tray_floor_y_back() =
+  chamber_tray_y_back() + chamber_tray_wall;
 function chamber_tray_backplate_w() =
-  chamber_piece_x - 2 * chamber_tray_backplate_side_clearance;
+  chamber_tray_opening_w()
+  + 2 * (
+    chamber_tray_backplate_screw_side_offset
+    + chamber_tray_backplate_screw_clearance_d / 2
+    + chamber_tray_backplate_screw_edge_margin
+  );
+function chamber_tray_center_x(chamber_xa) =
+  chamber_xa
+  + minimum_internal_edge_width
+  + chamber_tray_backplate_w() / 2;
 function chamber_tray_backplate_bottom_z() =
   chamber_tray_back_opening_z0;
 function chamber_tray_backplate_body_h() =
@@ -450,24 +471,17 @@ function chamber_tray_backplate_screw_low_z() =
   chamber_tray_back_opening_z0 + chamber_tray_backplate_screw_z_offset;
 function chamber_tray_backplate_screw_high_z() =
   chamber_tray_back_opening_top_z() - chamber_tray_backplate_screw_z_offset;
-function chamber_tray_opi_board_w() =
-  chamber_tray_opi_board_y;
-function chamber_tray_opi_board_d() =
-  chamber_tray_opi_board_x;
 function chamber_tray_opi_center_x() =
-  -chamber_tray_w() / 2
-  + chamber_tray_opi_left_margin
-  + chamber_tray_opi_board_w() / 2;
+  0;
 function chamber_tray_opi_center_y_pos() =
   chamber_tray_y_back()
+  - chamber_tray_wall
   - chamber_tray_opi_rear_row_wall_inset
   - chamber_tray_opi_mount_y_spacing / 2;
 function chamber_tray_opi_front_row_y() =
   chamber_tray_opi_center_y_pos() - chamber_tray_opi_mount_y_spacing / 2;
 function chamber_tray_opi_rear_row_y() =
   chamber_tray_opi_center_y_pos() + chamber_tray_opi_mount_y_spacing / 2;
-function chamber_tray_opi_right_x() =
-  chamber_tray_opi_center_x() + chamber_tray_opi_board_w() / 2;
 function chamber_tray_exhaust_center_x() =
   chamber_tray_opi_center_x() + chamber_tray_exhaust_x_offset;
 function chamber_tray_exhaust_center_z() =
@@ -476,35 +490,6 @@ function chamber_tray_exhaust_center_z() =
   + chamber_tray_opi_standoff_z
   + chamber_tray_opi_board_thickness
   + chamber_tray_exhaust_z_from_board_top;
-function chamber_tray_rpi_board_w() =
-  chamber_tray_rpi_board_y;
-function chamber_tray_rpi_board_d() =
-  chamber_tray_rpi_board_x;
-function chamber_tray_rpi_left_x() =
-  chamber_tray_opi_right_x() + chamber_tray_rpi_gap_from_opi;
-function chamber_tray_rpi_right_x() =
-  chamber_tray_rpi_left_x() + chamber_tray_rpi_board_w();
-function chamber_tray_rpi_center_x() =
-  (chamber_tray_rpi_left_x() + chamber_tray_rpi_right_x()) / 2;
-function chamber_tray_rpi_back_y() =
-  chamber_tray_y_back() - chamber_tray_wall - chamber_tray_rpi_near_back_offset;
-function chamber_tray_rpi_front_y() =
-  chamber_tray_rpi_back_y() - chamber_tray_rpi_board_d();
-function chamber_tray_rpi_center_y() =
-  (chamber_tray_rpi_front_y() + chamber_tray_rpi_back_y()) / 2;
-function chamber_tray_rpi_hole_orig_x(i) =
-  i == 0
-    ? chamber_tray_rpi_mount_left_inset
-    : chamber_tray_rpi_mount_left_inset + chamber_tray_rpi_mount_x_spacing;
-function chamber_tray_rpi_hole_orig_y(i) =
-  i == 0
-    ? chamber_tray_rpi_mount_bottom_inset
-    : chamber_tray_rpi_mount_bottom_inset + chamber_tray_rpi_mount_y_spacing;
-function chamber_tray_rpi_mount_x(iy) =
-  chamber_tray_rpi_left_x() + chamber_tray_rpi_hole_orig_y(iy);
-function chamber_tray_rpi_mount_y(ix) =
-  chamber_tray_rpi_front_y()
-  + (chamber_tray_rpi_board_x - chamber_tray_rpi_hole_orig_x(ix));
 function chamber_rear_fan_panel_w() =
   chamber_rear_fan_frame + 2 * chamber_rear_fan_edge_margin;
 function chamber_rear_fan_center_z() =
@@ -1189,6 +1174,8 @@ module _assert_dims() {
       - chamber_power_cell_rear_z()
       - chamber_control_usb_c_jack_d / 2 >= minimum_internal_edge_width,
     "Power Cell rear opening must retain lower-wall edge material");
+  assert(chamber_power_cell_rear_cut_depth() > chamber_wall,
+    "Power Cell rear opening cutter must pass completely through the wall");
   assert(chamber_control_usb_c_label_gap >= 0
     && chamber_power_cell_rear_label_size > 0
     && chamber_power_cell_rear_label_line_gap
@@ -1341,10 +1328,45 @@ module _assert_dims() {
     "dome bucket lip screw centers must match the existing dome bolt pattern");
   assert(chamber_tray_wall == 3,
     "right chamber tray is intentionally fixed at 3 mm wall thickness for this study");
-  assert(chamber_tray_w() > chamber_tray_opi_board_w() + 2 * chamber_tray_opi_mount_pad_d,
-    "right chamber tray is too narrow for the Orange Pi proxy mount");
-  assert(chamber_tray_d() > chamber_tray_opi_board_d() + 2 * chamber_tray_wall,
-    "right chamber tray is too shallow for the Orange Pi proxy mount");
+  assert(chamber_tray_board_clearance_xy >= minimum_internal_edge_width,
+    "Orange Pi tray board clearance must meet the minimum internal edge width");
+  assert(chamber_tray_w()
+      == chamber_tray_opi_board_w() + 2 * chamber_tray_board_clearance_xy,
+    "Orange Pi tray width must derive from the cottage board-clearance footprint");
+  assert(chamber_tray_d()
+      == chamber_tray_opi_board_d()
+        + 2 * chamber_tray_board_clearance_xy
+        + chamber_tray_service_depth,
+    "Orange Pi tray depth must derive from the cottage service-clearance footprint");
+  assert(chamber_tray_opening_w()
+      == chamber_tray_w() + 2 * chamber_tray_slide_clearance,
+    "rear tray opening must match the narrowed tray plus slide clearance");
+  assert(abs(
+      chamber_tray_center_x(0)
+      - chamber_tray_backplate_w() / 2
+      - minimum_internal_edge_width
+    ) < 0.01,
+    "tray backplate must be left aligned with the minimum chamber-edge margin");
+  assert(chamber_tray_center_x(0) + chamber_tray_backplate_w() / 2
+      <= chamber_piece_x - minimum_internal_edge_width,
+    "left-aligned tray backplate must retain minimum right-wall material");
+  assert(chamber_tray_center_x(0) - chamber_tray_opening_w() / 2
+      >= minimum_internal_edge_width
+    && chamber_tray_center_x(0) + chamber_tray_opening_w() / 2
+      <= chamber_piece_x - minimum_internal_edge_width,
+    "left-aligned rear tray opening must retain minimum side-wall material");
+  assert(chamber_tray_y_front()
+      >= -chamber_piece_y / 2 + chamber_wall,
+    "cottage-sized tray must remain inside the right chamber depth");
+  assert(chamber_tray_floor_y_back() - chamber_tray_y_back()
+      >= minimum_structural_overlap,
+    "tray floor and rear backplate must overlap by the minimum structural amount");
+  assert(chamber_tray_w()
+      >= chamber_tray_opi_mount_x_spacing + chamber_tray_opi_mount_pad_d,
+    "right chamber tray is too narrow for the Orange Pi mounting pads");
+  assert(chamber_tray_d()
+      >= chamber_tray_opi_mount_y_spacing + chamber_tray_opi_mount_pad_d,
+    "right chamber tray is too shallow for the Orange Pi mounting pads");
   assert(chamber_tray_back_opening_h > chamber_tray_wall
     && chamber_tray_back_opening_top_z() < chamber_total_z(),
     "right chamber tray rear opening must fit in the lower chamber wall");
@@ -1361,7 +1383,7 @@ module _assert_dims() {
         + chamber_tray_backplate_screw_clearance_d / 2
         + chamber_tray_backplate_screw_edge_margin
     && chamber_tray_backplate_screw_x_abs()
-      < chamber_tray_backplate_w() / 2
+      <= chamber_tray_backplate_w() / 2
         - chamber_tray_backplate_screw_clearance_d / 2
         - chamber_tray_backplate_screw_edge_margin,
     "tray backplate screw holes must keep 3 mm margin from opening and outer edge");
@@ -1374,11 +1396,8 @@ module _assert_dims() {
         - chamber_tray_backplate_screw_clearance_d / 2
         - chamber_tray_backplate_screw_edge_margin,
     "tray backplate screw holes must keep 3 mm vertical edge margin");
-  assert(abs(
-      chamber_tray_opi_center_x() - chamber_tray_opi_board_w() / 2
-      - (-chamber_tray_w() / 2 + chamber_tray_opi_left_margin)
-    ) < 0.01,
-    "Orange Pi board envelope must retain the requested left-edge clearance");
+  assert(abs(chamber_tray_opi_center_x()) < 0.01,
+    "Orange Pi board must remain centered in the cottage-sized tray");
   assert(abs(
       chamber_tray_opi_board_w() - chamber_tray_opi_mount_x_spacing
     ) / 2 >= minimum_internal_edge_width,
@@ -1395,6 +1414,7 @@ module _assert_dims() {
     "Orange Pi tray mount holes exceed tray depth");
   assert(abs(
       chamber_tray_y_back() - chamber_tray_opi_rear_row_y()
+      - chamber_tray_wall
       - chamber_tray_opi_rear_row_wall_inset
     ) < 0.01,
     "rear Orange Pi stud row must use the cottage exhaust-wall datum");
@@ -1415,32 +1435,6 @@ module _assert_dims() {
     && chamber_tray_exhaust_center_z() + chamber_tray_exhaust_h / 2
       <= chamber_tray_backplate_h - minimum_internal_edge_width,
     "Orange Pi exhaust must retain minimum top and bottom backplate material");
-  if (part_id == 12) {
-    assert(abs(chamber_tray_rpi_left_x()
-        - chamber_tray_opi_right_x()
-        - chamber_tray_rpi_gap_from_opi) < 0.01,
-      "Raspberry Pi tray mount must keep the requested gap from the Orange Pi");
-    assert(chamber_tray_rpi_right_x() + chamber_tray_rpi_mount_pad_d / 2
-        <= chamber_tray_w() / 2,
-      "Raspberry Pi tray mount exceeds the right side of the tray");
-    assert(chamber_tray_rpi_front_y() >= chamber_tray_y_front()
-      && chamber_tray_rpi_back_y() <= chamber_tray_y_back() - chamber_tray_wall,
-      "Raspberry Pi tray footprint exceeds tray depth");
-    assert(chamber_tray_rpi_mount_x_spacing > 0
-      && chamber_tray_rpi_mount_y_spacing > 0
-      && chamber_tray_rpi_mount_left_inset
-        + chamber_tray_rpi_mount_x_spacing < chamber_tray_rpi_board_x
-      && chamber_tray_rpi_mount_bottom_inset
-        + chamber_tray_rpi_mount_y_spacing < chamber_tray_rpi_board_y,
-      "Raspberry Pi mounting diagram dimensions are invalid");
-    assert(chamber_tray_rpi_mount_screw_clearance_d >= 2.75,
-      "Raspberry Pi tray mount holes should clear M2.5 hardware");
-    assert(chamber_tray_rpi_mount_screw_head_d
-        > chamber_tray_rpi_mount_screw_clearance_d
-      && chamber_tray_rpi_mount_screw_head_depth > 0
-      && chamber_tray_rpi_mount_screw_head_depth <= chamber_tray_wall,
-      "Raspberry Pi tray mount underside recess dimensions are invalid");
-  }
   assert(chamber_joint_passthrough_count == 2,
     "this chamber mockup expects two front/back passthroughs");
   assert(chamber_joint_passthrough_d > 0,
@@ -1729,10 +1723,10 @@ module _chamber_io_center_bulkhead_bolt_cut(joint_face_x, i) {
 }
 
 module _right_chamber_tray_rear_opening_cut(xa, xb) {
-  chamber_center_x = (xa + xb) / 2;
+  tray_center_x = chamber_tray_center_x(xa);
 
   translate([
-    chamber_center_x,
+    tray_center_x,
     chamber_piece_y / 2,
     chamber_tray_back_opening_center_z()
   ])
@@ -1744,13 +1738,13 @@ module _right_chamber_tray_rear_opening_cut(xa, xb) {
 }
 
 module _right_chamber_tray_backplate_screw_cut(xa, xb, sx, sz) {
-  chamber_center_x = (xa + xb) / 2;
+  tray_center_x = chamber_tray_center_x(xa);
   screw_z = sz < 0
     ? chamber_tray_backplate_screw_low_z()
     : chamber_tray_backplate_screw_high_z();
 
   translate([
-    chamber_center_x + sx * chamber_tray_backplate_screw_x_abs(),
+    tray_center_x + sx * chamber_tray_backplate_screw_x_abs(),
     chamber_piece_y / 2,
     screw_z
   ])
@@ -2045,13 +2039,13 @@ module _chamber_dome_mount_screw_cuts(center_x, center_y) {
 module _chamber_power_cell_rear_jack_cut(center_x) {
   translate([
     center_x,
-    chamber_piece_y / 2,
+    chamber_power_cell_rear_wall_center_y(),
     chamber_power_cell_rear_z()
   ])
     rotate([90, 0, 0])
       cylinder(
         d = chamber_control_usb_c_jack_d,
-        h = chamber_wall + 1.2,
+        h = chamber_power_cell_rear_cut_depth(),
         center = true,
         $fn = 72
       );
@@ -2853,24 +2847,6 @@ module _right_chamber_tray_opi_mount_cut(x, y, cut_h) {
     );
 }
 
-module _right_chamber_tray_rpi_mount_cut(x, y, cut_h) {
-  translate([x, y, chamber_tray_back_opening_z0 - 0.2])
-    cylinder(
-      d = chamber_tray_rpi_mount_screw_clearance_d,
-      h = cut_h,
-      center = false,
-      $fn = 32
-    );
-
-  translate([x, y, chamber_tray_back_opening_z0 - 0.2])
-    cylinder(
-      d = chamber_tray_rpi_mount_screw_head_d,
-      h = chamber_tray_rpi_mount_screw_head_depth + 0.2,
-      center = false,
-      $fn = 36
-    );
-}
-
 module _right_chamber_tray_exhaust_cut() {
   translate([
     chamber_tray_exhaust_center_x(),
@@ -2886,7 +2862,7 @@ module _right_chamber_tray_exhaust_cut() {
 
 module _right_chamber_tray_body() {
   tray_floor_z = chamber_tray_back_opening_z0;
-  tray_floor_y_back = chamber_tray_y_back() + 0.6;
+  tray_floor_y_back = chamber_tray_floor_y_back();
   tray_floor_d = tray_floor_y_back - chamber_tray_y_front();
   stud_z = tray_floor_z + chamber_tray_wall - 0.2;
 
@@ -2945,21 +2921,6 @@ module _right_chamber_tray_body() {
         }
       }
 
-      for (ix = [0, 1]) {
-        for (iy = [0, 1]) {
-          translate([
-            chamber_tray_rpi_mount_x(iy),
-            chamber_tray_rpi_mount_y(ix),
-            stud_z
-          ])
-            cylinder(
-              d = chamber_tray_rpi_mount_pad_d,
-              h = chamber_tray_rpi_mount_stud_h + 0.2,
-              center = false,
-              $fn = 48
-            );
-        }
-      }
     }
 
     for (sx = [-1, 1]) {
@@ -2984,17 +2945,6 @@ module _right_chamber_tray_body() {
       }
     }
 
-    for (ix = [0, 1]) {
-      for (iy = [0, 1]) {
-        _right_chamber_tray_rpi_mount_cut(
-          chamber_tray_rpi_mount_x(iy),
-          chamber_tray_rpi_mount_y(ix),
-          chamber_tray_wall
-            + chamber_tray_rpi_mount_stud_h
-            + 1.0
-        );
-      }
-    }
   }
 }
 
