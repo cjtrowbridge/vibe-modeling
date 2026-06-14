@@ -290,6 +290,12 @@ function chamber_center_lid_control_label_w() =
   * chamber_center_lid_control_label_width_per_size;
 function chamber_center_lid_control_label_h() =
   chamber_io_panel_horizontal_label_h();
+function chamber_center_lid_ptt_support_clearance_d() =
+  chamber_arcade_button_outer_d
+  + chamber_center_lid_support_fit_clearance_d;
+function chamber_center_lid_usb_support_clearance_d() =
+  chamber_io_panel_usb_a_outer_d
+  + chamber_center_lid_support_fit_clearance_d;
 function chamber_center_lid_installed_envelope_gap() =
   chamber_center_lid_ptt_y_pos()
   - chamber_arcade_button_outer_d / 2
@@ -332,6 +338,57 @@ function chamber_center_lid_hardware_to_corner_screw_gap(
   )
   - chamber_lid_mount_screw_head_d / 2
   - hardware_outer_d / 2;
+function chamber_center_lid_support_cut_to_screw_ligament(
+  hardware_x,
+  hardware_y,
+  support_clearance_d,
+  sx,
+  sy
+) =
+  sqrt(
+    pow(
+      sx * (chamber_center_lid_w() / 2 - chamber_lid_mount_inset)
+      - hardware_x,
+      2
+    )
+    + pow(
+      sy * (chamber_main_lid_d() / 2 - chamber_lid_mount_inset)
+      - hardware_y,
+      2
+    )
+  )
+  - support_clearance_d / 2
+  - chamber_lid_mount_screw_clearance_d / 2;
+function chamber_center_lid_support_inner_front_y() =
+  chamber_keyboard_lid_front_edge_y()
+  - minimum_structural_overlap
+  + chamber_keyboard_lid_rail_w;
+function chamber_center_lid_support_inner_back_y() =
+  chamber_keyboard_lid_back_edge_y
+  + minimum_structural_overlap
+  - chamber_keyboard_lid_rail_w;
+function chamber_center_lid_center_y() =
+  (chamber_lid_front_y() + chamber_lid_right_back_y()) / 2;
+function chamber_center_lid_ptt_support_to_rear_rail_gap() =
+  chamber_center_lid_support_inner_back_y()
+  - (
+    chamber_center_lid_center_y()
+    + chamber_center_lid_ptt_y_pos()
+    + chamber_center_lid_ptt_support_clearance_d() / 2
+  );
+function chamber_center_lid_usb_support_to_front_rail_gap() =
+  (
+    chamber_center_lid_center_y()
+    + chamber_center_lid_usb_a_y_pos()
+    - chamber_center_lid_usb_support_clearance_d() / 2
+  )
+  - chamber_center_lid_support_inner_front_y();
+function chamber_center_lid_ptt_rear_rail_throat() =
+  chamber_keyboard_lid_rail_w
+  + min(chamber_center_lid_ptt_support_to_rear_rail_gap(), 0);
+function chamber_center_lid_usb_front_rail_throat() =
+  chamber_keyboard_lid_rail_w
+  + min(chamber_center_lid_usb_support_to_front_rail_gap(), 0);
 function chamber_lid_set_w() =
   max(
     chamber_right_lid_w() + chamber_lid_layout_gap + chamber_io_panel_w(),
@@ -814,9 +871,8 @@ module _assert_dims() {
       >= minimum_internal_edge_width,
     "center-lid PTT and USB-A through-holes must retain minimum material");
   assert(chamber_center_lid_installed_envelope_gap()
-      >= 2 * minimum_internal_edge_width
-        + chamber_center_lid_control_label_h(),
-    "center-lid installed hardware envelopes must leave room for the centered label");
+      >= 3.0,
+    "center-lid installed hardware envelopes must retain 3 mm clearance");
   assert(chamber_io_panel_usb_a_mount_d > 0
       && chamber_io_panel_usb_a_outer_d >= chamber_io_panel_usb_a_mount_d,
     "USB-A flange diameter must enclose its mounting hole");
@@ -896,15 +952,27 @@ module _assert_dims() {
       "Neural Jack must clear the right-side recessed panel fasteners"
     );
   }
-  assert(chamber_center_lid_ptt_to_label_gap()
+  assert(chamber_center_lid_w() / 2
+      - chamber_center_lid_control_label_x
+      - chamber_center_lid_control_label_h() / 2
       >= minimum_internal_edge_width,
-    "center-lid label must clear the PTT cap and underside nut envelope");
-  assert(chamber_center_lid_label_to_usb_gap()
+    "center-lid side labels must retain minimum outer-edge material");
+  assert(chamber_center_lid_control_label_x
+      - chamber_center_lid_control_label_h() / 2
+      - max(
+        chamber_arcade_button_outer_d,
+        chamber_io_panel_usb_a_outer_d
+      ) / 2
       >= minimum_internal_edge_width,
-    "center-lid label must clear the USB-A flange and underside nut envelope");
+    "center-lid side labels must clear both installed hardware envelopes");
   assert(chamber_center_lid_control_label_w()
-      <= chamber_center_lid_w() - 2 * chamber_io_panel_label_edge_margin,
-    "single-line push-to-talk label must fit the center lid width");
+      <= chamber_main_lid_d()
+        - 2 * (
+          chamber_lid_mount_inset
+          + chamber_lid_mount_screw_head_d / 2
+          + minimum_internal_edge_width
+        ),
+    "vertical push-to-talk labels must clear the front/rear fasteners");
   assert(chamber_lid_thickness - chamber_control_usb_c_label_engrave_h
       >= minimum_internal_edge_width,
     "control-label engraving must retain minimum lid thickness");
@@ -932,8 +1000,36 @@ module _assert_dims() {
           >= minimum_internal_edge_width,
         "center-lid USB-A flange and underside nut must clear recessed corner fasteners"
       );
+      assert(
+        chamber_center_lid_support_cut_to_screw_ligament(
+          chamber_center_lid_ptt_x_pos(),
+          chamber_center_lid_ptt_y_pos(),
+          chamber_center_lid_ptt_support_clearance_d(),
+          sx,
+          sy
+        )
+          >= minimum_internal_edge_width,
+        "center-lid PTT underside relief must retain minimum material around support screws"
+      );
+      assert(
+        chamber_center_lid_support_cut_to_screw_ligament(
+          chamber_center_lid_usb_a_x_pos(),
+          chamber_center_lid_usb_a_y_pos(),
+          chamber_center_lid_usb_support_clearance_d(),
+          sx,
+          sy
+        )
+          >= minimum_internal_edge_width,
+        "center-lid USB-A underside relief must retain minimum material around support screws"
+      );
     }
   }
+  assert(chamber_center_lid_ptt_rear_rail_throat()
+      >= minimum_internal_edge_width,
+    "center-lid PTT underside relief must retain minimum rear-rail throat");
+  assert(chamber_center_lid_usb_front_rail_throat()
+      >= minimum_internal_edge_width,
+    "center-lid USB-A underside relief must retain minimum front-rail throat");
   assert(abs(
       chamber_rear_housing_depth
       - (
@@ -1444,7 +1540,8 @@ module _chamber_shell(side, center_x, assembly_position) {
         keyboard_rail_xa,
         keyboard_rail_xb,
         chamber_keyboard_lid_front_edge_y(),
-        chamber_keyboard_lid_back_edge_y
+        chamber_keyboard_lid_back_edge_y,
+        side < 0
       );
     }
 
@@ -1636,7 +1733,13 @@ module _right_chamber_tray_backplate_screw_cuts(xa, xb) {
   }
 }
 
-module _chamber_keyboard_lid_support_rail(xa, xb, y_front, y_back) {
+module _chamber_keyboard_lid_support_rail(
+  xa,
+  xb,
+  y_front,
+  y_back,
+  include_center_control_clearances = false
+) {
   attach_overlap = minimum_structural_overlap;
   outer_xa = xa + chamber_wall - attach_overlap;
   outer_xb = xb - chamber_wall + attach_overlap;
@@ -1703,8 +1806,48 @@ module _chamber_keyboard_lid_support_rail(xa, xb, y_front, y_back) {
             );
         }
       }
+
+      if (include_center_control_clearances) {
+        _chamber_center_lid_support_clearance_cuts(
+          (xa + xb) / 2
+        );
+      }
     }
   }
+}
+
+module _chamber_center_lid_support_clearance_cut(
+  center_x,
+  local_x,
+  local_y,
+  clearance_d
+) {
+  translate([
+    center_x + local_x,
+    chamber_center_lid_center_y() + local_y,
+    chamber_keyboard_lid_rail_center_z()
+  ])
+    cylinder(
+      d = clearance_d,
+      h = chamber_keyboard_lid_rail_h + 1.2,
+      center = true,
+      $fn = 72
+    );
+}
+
+module _chamber_center_lid_support_clearance_cuts(center_x) {
+  _chamber_center_lid_support_clearance_cut(
+    center_x,
+    chamber_center_lid_ptt_x_pos(),
+    chamber_center_lid_ptt_y_pos(),
+    chamber_center_lid_ptt_support_clearance_d()
+  );
+  _chamber_center_lid_support_clearance_cut(
+    center_x,
+    chamber_center_lid_usb_a_x_pos(),
+    chamber_center_lid_usb_a_y_pos(),
+    chamber_center_lid_usb_support_clearance_d()
+  );
 }
 
 module _chamber_profile_shell(
@@ -2086,11 +2229,35 @@ module _io_panel_control_labels_cut() {
   );
 }
 
-module _center_lid_ptt_label_cut() {
-  _io_panel_horizontal_label_line_cut(
-    0,
+module _center_lid_side_label_cut(x, rotation_z) {
+  translate([
+    x,
     chamber_center_lid_control_label_y,
-    chamber_center_lid_control_label
+    chamber_lid_thickness - chamber_control_usb_c_label_engrave_h
+  ])
+    linear_extrude(
+      height = chamber_control_usb_c_label_engrave_h + 0.25,
+      center = false,
+      convexity = 2
+    )
+      rotate([0, 0, rotation_z])
+        text(
+          chamber_center_lid_control_label,
+          size = chamber_io_panel_label_size,
+          font = chamber_label_font,
+          halign = "center",
+          valign = "center"
+        );
+}
+
+module _center_lid_ptt_label_cuts() {
+  _center_lid_side_label_cut(
+    -chamber_center_lid_control_label_x,
+    90
+  );
+  _center_lid_side_label_cut(
+    chamber_center_lid_control_label_x,
+    -90
   );
 }
 
@@ -2402,7 +2569,7 @@ module _chamber_lid_panel(
 
     if (include_ptt) {
       _center_lid_ptt_button_cut();
-      _center_lid_ptt_label_cut();
+      _center_lid_ptt_label_cuts();
       _center_lid_usb_a_jack_cut();
     }
   }
