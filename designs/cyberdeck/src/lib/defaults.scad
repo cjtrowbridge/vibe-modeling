@@ -140,6 +140,7 @@ handle_mount_screw_spacing = 26.0;
 handle_mount_bevel_d = 30.0;
 handle_mount_bevel_len = 16.0;
 handle_mount_overlap = 0.8;
+handle_right_rear_center_above_tray_backplate = 5.0;
 chamber_keyboard_lid_inset = 2.0;
 chamber_keyboard_lid_rail_w = 7.0;
 chamber_keyboard_lid_rail_h = 3.0;

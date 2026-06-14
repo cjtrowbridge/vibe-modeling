@@ -155,9 +155,12 @@ First-draft visual mockup and design brief for a cyberdeck OpenSCAD model.
 - The carrying handle uses a `100 mm` cylindrical grip span, a `40 mm` outer reach from the chassis side, and a `14 mm` tube diameter.
 - The handle terminates in two `40 mm x 40 mm x 3 mm` square mounting plates with four M3 clearance holes per plate.
 - The tube-to-plate joints use tapered collars to spread load into the mounting plates.
-- Matching M3 clearance holes are cut into the left outside wall of the left chamber and the right outside wall of the right chamber.
-- The mirrored side-wall handle hole patterns are centered front/back on each chamber side, with plate centers at assembled `y = -50 mm` and `y = 50 mm`.
-- The side-wall handle screw rows are centered vertically on the flat chamber side at assembled `z = 13 mm` and `z = 39 mm`.
+- M3 clearance holes are cut into the left outside wall of the left chamber and the right outside wall of the right chamber.
+- The unrotated left-side pattern has plate centers at assembled `y = -50 mm` and `y = 50 mm`, with screw rows at `z = 13 mm` and `z = 39 mm`.
+- The right-chamber pattern is rotated approximately `19.88 degrees` in the side-wall plane around the center of its front four-hole group at `y = -50 mm`, `z = 26 mm`.
+- The rotated rear four-hole group is centered at approximately `y = 44.04 mm`, `z = 60 mm`, exactly `5 mm` above the inserted tray backplate's `z = 55 mm` top.
+- The existing handle can use this pattern when the complete handle is installed at the same `19.88 degree` angle.
+- The left-chamber pattern and the current printable left-side handle remain horizontal and unchanged.
 - The dome bucket insert is a separate printable pot for the pan/tilt eye and laser mechanism.
 - The insert body is sized to slide into the `96 mm` dome roof hole with `1 mm` radial clearance, giving a `94 mm` outer cylinder.
 - The bucket, raised internal floor, top lip, and screw-hole edge margin all use `3 mm` wall thickness/margin.

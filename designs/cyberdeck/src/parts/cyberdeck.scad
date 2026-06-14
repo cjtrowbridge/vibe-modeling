@@ -109,6 +109,47 @@ function handle_mount_screw_y(i, sy) =
   handle_mount_plate_center_y(i) + sy * handle_mount_screw_spacing / 2;
 function handle_chamber_mount_screw_z(sz) =
   handle_chamber_mount_center_z() + sz * handle_mount_screw_spacing / 2;
+function handle_right_mount_pivot_y() =
+  handle_mount_plate_center_y(0);
+function handle_right_mount_pivot_z() =
+  handle_chamber_mount_center_z();
+function handle_right_rear_mount_center_target_z() =
+  chamber_tray_backplate_h
+  + handle_right_rear_center_above_tray_backplate;
+function handle_right_mount_rotation_angle() =
+  asin(
+    (
+      handle_right_rear_mount_center_target_z()
+      - handle_right_mount_pivot_z()
+    ) / handle_length
+  );
+function handle_right_mount_screw_y(i, sy, sz) =
+  let(
+    angle = handle_right_mount_rotation_angle(),
+    local_y = handle_mount_screw_y(i, sy) - handle_right_mount_pivot_y(),
+    local_z = handle_chamber_mount_screw_z(sz) - handle_right_mount_pivot_z()
+  )
+    handle_right_mount_pivot_y()
+    + local_y * cos(angle)
+    - local_z * sin(angle);
+function handle_right_mount_screw_z(i, sy, sz) =
+  let(
+    angle = handle_right_mount_rotation_angle(),
+    local_y = handle_mount_screw_y(i, sy) - handle_right_mount_pivot_y(),
+    local_z = handle_chamber_mount_screw_z(sz) - handle_right_mount_pivot_z()
+  )
+    handle_right_mount_pivot_z()
+    + local_y * sin(angle)
+    + local_z * cos(angle);
+function chamber_side_outer_top_z(y) =
+  y <= chamber_profile_screen_foot_y()
+    ? chamber_total_z()
+    : y <= chamber_profile_peak_y()
+      ? chamber_total_z()
+        + (
+          y - chamber_profile_screen_foot_y()
+        ) * chamber_profile_peak_rise / chamber_profile_screen_slope_run
+      : chamber_profile_peak_z();
 function chamber_display_void_cut_overlap() = chamber_wall + 0.6;
 function chamber_display_mount_screw_y(face_offset) =
   chamber_display_void_center_y()
@@ -1219,11 +1260,42 @@ module _assert_dims() {
     "handle mounting plate height must fit print volume Z");
   assert(handle_mount_plate_size <= chamber_piece_y,
     "handle mounting plates must fit centered on the chamber side depth");
+  assert(handle_right_rear_center_above_tray_backplate >= 0,
+    "right handle rear mounting-group offset above the tray backplate must be nonnegative");
+  assert(abs(
+      handle_right_rear_mount_center_target_z()
+      - handle_right_mount_pivot_z()
+    ) <= handle_length,
+    "right handle mounting rotation target exceeds the handle center spacing");
+  assert(abs(
+      sin(handle_right_mount_rotation_angle()) * handle_length
+      + handle_right_mount_pivot_z()
+      - handle_right_rear_mount_center_target_z()
+    ) < 0.01,
+    "right handle rear mounting-group center must reach its tray-backplate height target");
   for (i = [0 : 1]) {
     for (sy = [-1, 1]) {
       assert(abs(handle_mount_screw_y(i, sy)) + handle_mount_screw_clearance_d / 2
         <= chamber_piece_y / 2 - chamber_wall,
         "handle side-wall screw holes exceed chamber depth");
+      for (sz = [-1, 1]) {
+        assert(abs(handle_right_mount_screw_y(i, sy, sz))
+            + handle_mount_screw_clearance_d / 2
+            <= chamber_piece_y / 2 - minimum_internal_edge_width,
+          "rotated right handle screw holes exceed the chamber depth");
+        assert(handle_right_mount_screw_z(i, sy, sz)
+              - handle_mount_screw_clearance_d / 2
+              - chamber_bottom
+            >= minimum_internal_edge_width,
+          "rotated right handle screw holes need minimum material above the chamber floor");
+        assert(chamber_side_outer_top_z(
+              handle_right_mount_screw_y(i, sy, sz)
+            )
+              - handle_right_mount_screw_z(i, sy, sz)
+              - handle_mount_screw_clearance_d / 2
+            >= minimum_internal_edge_width,
+          "rotated right handle screw holes need minimum material below the side-wall profile");
+      }
     }
   }
   for (sz = [-1, 1]) {
@@ -2446,11 +2518,20 @@ module _chamber_bolt_cut(joint_face_x, i) {
       );
 }
 
-module _chamber_handle_mount_screw_cut(side_face_x, i, sy, sz) {
+module _chamber_handle_mount_screw_cut(side, side_face_x, i, sy, sz) {
+  screw_y =
+    side > 0
+      ? handle_right_mount_screw_y(i, sy, sz)
+      : handle_mount_screw_y(i, sy);
+  screw_z =
+    side > 0
+      ? handle_right_mount_screw_z(i, sy, sz)
+      : handle_chamber_mount_screw_z(sz);
+
   translate([
     side_face_x,
-    handle_mount_screw_y(i, sy),
-    handle_chamber_mount_screw_z(sz)
+    screw_y,
+    screw_z
   ])
     rotate([0, 90, 0])
       cylinder(
@@ -2461,11 +2542,11 @@ module _chamber_handle_mount_screw_cut(side_face_x, i, sy, sz) {
       );
 }
 
-module _chamber_handle_mount_screw_cuts(side_face_x) {
+module _chamber_handle_mount_screw_cuts(side, side_face_x) {
   for (i = [0 : 1]) {
     for (sy = [-1, 1]) {
       for (sz = [-1, 1]) {
-        _chamber_handle_mount_screw_cut(side_face_x, i, sy, sz);
+        _chamber_handle_mount_screw_cut(side, side_face_x, i, sy, sz);
       }
     }
   }
@@ -2529,7 +2610,7 @@ module _chamber_body(side, assembly_position, label_text) {
           _chamber_dome_roof_cut(dome_roof_cut_x, chamber_dome_roof_center_y());
           _chamber_dome_mount_screw_cuts(dome_roof_cut_x, chamber_dome_roof_center_y());
         }
-        _chamber_handle_mount_screw_cuts(outer_side_face_x);
+        _chamber_handle_mount_screw_cuts(side, outer_side_face_x);
         for (i = [0 : chamber_joint_bolt_count - 1]) {
           _chamber_bolt_cut(joint_face_x, i);
         }
