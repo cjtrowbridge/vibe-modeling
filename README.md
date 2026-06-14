@@ -32,18 +32,22 @@ If the agent follows the included playbooks, it should also document what it cha
 
 - `scripts/`
   - `scad_build.py` / `scad_build.sh`: build STL + the full required multi-view PNG set from a config
+  - `scad_build_all.py`: stage, validate, install, and audit every part declared by a design
   - `scad_new_revision.py` / `scad_new_revision.sh`: create next numbered revision and build it
 - `designs/<design>/`
   - `src/main.scad`: CLI entrypoint and part selection
   - `src/*_base.scad` / `src/*_roof.scad` / `src/*_drawer.scad` (optional): direct per-part print entrypoints
   - `src/lib/defaults.scad`: design defaults
   - `src/parts/*.scad`: geometry modules
+  - `parts.json` (multi-part designs): authoritative complete-build part IDs and names
   - `configs/rev_000N.json`: committed parameter sets
   - Included designs: `example_box`, `helical`, `yagi`, `yagi_card`, `dtv_yagi`, `winegard_gm6000_logic_backplane`, `gigachad_xavier_void`, `cottage_pi6_plus`, `old_rca_display_baseplate`, `opi_zero_2w_carrier`, `cyberdeck`
 - `output/`
-  - scratch outputs (generated; ignored by default; a few example artifacts are committed)
+  - current scratch outputs only (`output/<design>/`; generated and ignored)
 - `revisions/`
   - revision snapshots and artifact checkpoints (generated; ignored)
+- `.tmp/scad/`
+  - managed staging, probes, sections, and partial/debug artifacts (generated and ignored)
 - `playbooks/`
   - repeatable workflows for agents and humans
 
@@ -86,7 +90,31 @@ python scripts/scad_build.py \
 
 Artifacts are written to `output/example_box/`.
 
-### 3. Create a new numbered revision
+### 3. Build and audit a complete multi-part design
+
+Designs with `designs/<design>/parts.json` must use the complete-build command
+when producing the authoritative current artifact set:
+
+```bash
+python scripts/scad_build_all.py \
+  --design cyberdeck \
+  --config designs/cyberdeck/configs/rev_0003.json
+```
+
+The command renders every part under `.tmp/scad/cyberdeck/`, verifies the exact
+expected file set, records hashes and provenance in `build_manifest.json`, and
+then replaces `output/cyberdeck/` as one unit.
+
+Audit an installed build without rendering:
+
+```bash
+python scripts/scad_build_all.py \
+  --design cyberdeck \
+  --config designs/cyberdeck/configs/rev_0003.json \
+  --audit-only
+```
+
+### 4. Create a new numbered revision
 
 ```bash
 python scripts/scad_new_revision.py \
@@ -139,6 +167,13 @@ The build pipeline always renders this full PNG set on every run (plus `<part>.p
 - Guard structural dimensions with named parameters and `assert()` statements, then inspect section views and disconnected-shell results. A successful render or manifold STL alone is insufficient.
 - Treat designs as structurally unverified until these checks are recorded for the exact revision/config. Build success does not by itself make a model fabrication-ready.
 - Every post-change summary must report the structural-join review and minimum-edge review as `passed`, `failed`, `unverified`, or `not applicable`.
+- Multi-part designs must declare their authoritative export set in `parts.json`.
+- Use only `output/<design>/`, `revisions/<design>/rev_000N/`, and `.tmp/scad/<design>/` for generated artifacts.
+- Do not create revision-named directories under `output/`.
+- Do not place `.scad` probes or source files under `output/` or `revisions/`.
+- A complete/current build requires a passing `build_manifest.json` audit.
+- Revision directories are immutable. Create a new revision after geometry or config changes.
+- Generated outputs are not committed.
 
 See `playbooks/how_to_design_and_verify_structural_openscad_joins.md` for the mandatory structural geometry contract and verification procedure.
 
@@ -147,7 +182,7 @@ See `playbooks/how_to_design_and_verify_structural_openscad_joins.md` for the ma
 1. Start from a design config (`rev_000N.json`).
 2. Create a new revision checkpoint with `scad_new_revision.py`.
 3. Edit SCAD or config parameters.
-4. Rebuild to `output/<design>/` for fast iteration.
+4. Rebuild a single part for focused inspection, or use `scad_build_all.py` to replace the authoritative complete output.
 5. Review artifacts, adjust, and repeat.
 6. Commit the source/config changes (not generated outputs).
 
@@ -178,4 +213,4 @@ See `playbooks/how_to_iterate_openscad_designs.md` for the full workflow.
   - Concept-first workspace for a modular mechanical computer using composable 3D-printed logic cubes, synchronized motor-chain expansion, and magnetic cube-to-cube attachment
 - `designs/cyberdeck/`
   - First-draft visual mockup workspace for a cassette-futurist cyberdeck with asymmetric eye module, wide touchscreen, folding keyboard, hardware toggles, and internal proxy volumes
-- Sample artifacts for selected examples are included under `output/` so users can inspect pipeline results without building first
+- Generated artifacts remain local under `output/` and `revisions/`; source and configs are the committed record

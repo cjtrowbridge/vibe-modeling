@@ -94,37 +94,56 @@ def main() -> int:
     if config_path.exists():
         fail(f"Revision config already exists: {config_path}")
 
-    part_name = args.part_name or config_data.get("part")
-    if not isinstance(part_name, str) or not part_name.strip():
-        fail("No --part-name provided and base config is missing a non-empty 'part' field.")
-    part_name = part_name.strip()
-
     info(f"Creating {rev_name}")
     info(f"Design: {args.design}")
     info(f"BaseConfig: {base_config}")
     if args.dry_run:
         info("DryRun enabled for OpenSCAD build only; revision files will still be written.")
 
-    rev_dir.mkdir(parents=True, exist_ok=False)
     payload = json.dumps(config_data, indent=2) + "\n"
     config_path.write_text(payload, encoding="utf-8")
-    params_path.write_text(payload, encoding="utf-8")
-
-    build_script = Path(__file__).with_name("scad_build.py")
-    build_cmd = [
-        sys.executable,
-        str(build_script),
-        "--design",
-        args.design,
-        "--config",
-        str(config_path),
-        "--part-name",
-        part_name,
-        "--out-dir",
-        str(rev_dir),
-        "--main-scad",
-        str(main_scad),
-    ]
+    parts_manifest = Path("designs") / args.design / "parts.json"
+    if parts_manifest.exists():
+        canonical_revisions_dir = Path("revisions") / args.design
+        if revisions_dir.resolve() != canonical_revisions_dir.resolve():
+            fail(
+                "Manifest-driven designs require the canonical revision directory: "
+                f"{canonical_revisions_dir}"
+            )
+        build_script = Path(__file__).with_name("scad_build_all.py")
+        build_cmd = [
+            sys.executable,
+            str(build_script),
+            "--design",
+            args.design,
+            "--config",
+            str(config_path),
+            "--destination",
+            "revision",
+            "--main-scad",
+            str(main_scad),
+        ]
+    else:
+        part_name = args.part_name or config_data.get("part")
+        if not isinstance(part_name, str) or not part_name.strip():
+            fail("No --part-name provided and base config is missing a non-empty 'part' field.")
+        part_name = part_name.strip()
+        rev_dir.mkdir(parents=True, exist_ok=False)
+        build_script = Path(__file__).with_name("scad_build.py")
+        build_cmd = [
+            sys.executable,
+            str(build_script),
+            "--design",
+            args.design,
+            "--config",
+            str(config_path),
+            "--part-name",
+            part_name,
+            "--out-dir",
+            str(rev_dir),
+            "--main-scad",
+            str(main_scad),
+        ]
     if args.openscad_path:
         build_cmd.extend(["--openscad-path", args.openscad_path])
     if args.dry_run:
@@ -133,6 +152,9 @@ def main() -> int:
     info(f"Building artifacts into: {rev_dir}")
     info(f"Invoking: {format_cmd(build_cmd)}")
     subprocess.run(build_cmd, check=True)
+    if not rev_dir.exists():
+        rev_dir.mkdir(parents=True, exist_ok=False)
+    params_path.write_text(payload, encoding="utf-8")
 
     info(f"Revision ready: {rev_dir}")
     return 0

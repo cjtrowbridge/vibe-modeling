@@ -27,6 +27,12 @@ Review/update these files when relevant:
    - structural joins: `passed`, `failed`, `unverified`, or `not applicable`
    - minimum internal edge/material width: `passed`, `failed`, `unverified`, or `not applicable`
    - identify the exact revision/config reviewed when CAD geometry changed
+8. Every final task summary that builds CAD artifacts must also include:
+   - build scope: single part or complete manifest
+   - exact destination
+   - expected and actual STL/PNG counts
+   - artifact audit result
+   - config and source provenance result
 
 ## 3. Self-Evolving Workflow
 
@@ -64,6 +70,19 @@ The intended source-of-truth structure is:
 - `revisions/` for numbered snapshots (generated)
 - `playbooks/` for repeatable workflows
 
+Artifact directory names are fixed:
+
+- `output/<design>/` is the only current/scratch destination.
+- `revisions/<design>/rev_000N/` is the only numbered revision destination.
+- `.tmp/scad/<design>/` is the only location for probes, sections, partial builds, and staging.
+- Never create `output/<design>_rev_000N/` or another ad hoc artifact directory.
+- Never place `.scad` source/probe files in `output/` or `revisions/`.
+- Generated `output/` and `revisions/` files must not be committed.
+
+For a multi-part design with `designs/<design>/parts.json`, use
+`scripts/scad_build_all.py`. A directory is not a complete or current build
+unless its `build_manifest.json` passes `--audit-only`.
+
 ## 6. Logging & Debugging Standards
 
 - Favor scripts that print explicit command paths, inputs, and outputs.
@@ -88,3 +107,15 @@ These rules apply to every design unless a design documents a stricter requireme
 - Intentionally separate parts and decorative disconnected geometry must be identified as such. Unexpected disconnected shells are failures.
 - Do not call a design print-ready or fabrication-ready until the structural verification gates are documented for the exact revision/config being printed.
 - Treat existing designs that predate these rules as structurally unverified until audited.
+
+## 8. Artifact Governance
+
+- A part manifest is authoritative for the complete set of exported parts and names.
+- Complete builds must render into `.tmp/scad/<design>/` first.
+- Validate the complete expected file set before replacing `output/<design>/`.
+- Installing a current build must replace the previous directory as one unit. Do not copy new files over old files.
+- Reject missing, unexpected, duplicate, stale, or hash-mismatched artifacts.
+- Record config, parts-manifest, OpenSCAD source-tree, Git, and artifact hashes in `build_manifest.json`.
+- Numbered revision directories are immutable. Geometry or config changes require a new revision.
+- A revision number in a filename is not provenance. Provenance requires a passing build-manifest audit.
+- Single-part builds are partial by definition and must not be represented as complete-design outputs.

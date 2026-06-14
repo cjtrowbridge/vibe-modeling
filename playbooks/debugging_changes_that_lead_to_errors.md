@@ -113,6 +113,25 @@ These are structural failures even when the STL is manifold or a slicer accepts 
 
 Also inspect every internal rim, rail, flange, web, bridge, fastener margin, and strip of material around or between voids. A join may be connected but still fail because a subtraction or angled intersection leaves a local material width below `minimum_wall_thickness`.
 
+### Known Build Failure Mode: Ambiguous or Stale Artifact Directory
+
+A directory can look like a revision while containing partial, stale, debug, or
+mixed-source artifacts. A revision suffix in a directory or filename does not
+establish provenance.
+
+Required diagnosis:
+
+1. Accept only `output/<design>/`, `revisions/<design>/rev_000N/`, or
+   `.tmp/scad/<design>/`.
+2. Reject `.scad` probes under `output/` and `revisions/`.
+3. For manifest-driven designs, run `scad_build_all.py --audit-only`.
+4. Compare exact artifact names and counts with `parts.json`.
+5. Verify config, parts-manifest, source-tree, and artifact hashes from
+   `build_manifest.json`.
+6. If any check fails, treat the entire directory as non-authoritative. Rebuild
+   into staging and replace the destination as one unit; do not copy selected
+   files over the suspect directory.
+
 ### 11) Git Hygiene
 
 Follow `playbooks/how_to_commit_and_push_changes.md`.

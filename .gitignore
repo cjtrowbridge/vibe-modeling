@@ -1,8 +1,13 @@
 # Generated artifacts
+output/
 revisions/
 
 # Local verification scratch
 .tmp/
+
+# Python runtime artifacts
+__pycache__/
+*.pyc
 
 # Common OS/editor noise
 Thumbs.db

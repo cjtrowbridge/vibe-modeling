@@ -7,6 +7,7 @@ import os
 import shlex
 import shutil
 import subprocess
+import re
 from pathlib import Path
 from typing import Dict, List, NamedTuple, NoReturn, Optional, Tuple
 
@@ -44,6 +45,8 @@ PNG_VIEW_PRESETS: List[PngViewPreset] = [
 # Keep a legacy single-preview filename for compatibility while also
 # generating the explicit named view files above.
 LEGACY_PREVIEW_SUFFIX = "iso_front_right"
+REPO_ROOT = Path(__file__).resolve().parent.parent
+REVISION_DIR_RE = re.compile(r"^rev_\d{4}$")
 
 
 def info(message: str) -> None:
@@ -156,6 +159,36 @@ def resolve_part_name(config: dict, explicit_part_name: Optional[str]) -> str:
     fail("No --part-name provided and config is missing a non-empty 'part' field.")
 
 
+def validate_output_directory(path: Path, design: str) -> Path:
+    resolved = path.resolve()
+    allowed_current = (REPO_ROOT / "output" / design).resolve()
+    allowed_revisions = (REPO_ROOT / "revisions" / design).resolve()
+    allowed_tmp = (REPO_ROOT / ".tmp" / "scad" / design).resolve()
+
+    if resolved == allowed_current:
+        return resolved
+    try:
+        revision_relative = resolved.relative_to(allowed_revisions)
+        if len(revision_relative.parts) == 1 and REVISION_DIR_RE.fullmatch(
+            revision_relative.parts[0]
+        ):
+            return resolved
+    except ValueError:
+        pass
+    try:
+        resolved.relative_to(allowed_tmp)
+        return resolved
+    except ValueError:
+        pass
+
+    fail(
+        "Invalid artifact destination. Use output/<design> for current scratch "
+        "artifacts, revisions/<design>/rev_000N for a revision, or "
+        ".tmp/scad/<design>/... for managed debug/staging files. "
+        f"Rejected: {path}"
+    )
+
+
 def build_camera_arg(
     rotation: Tuple[float, float, float],
     target: Tuple[float, float, float] = (0.0, 0.0, 0.0),
@@ -180,7 +213,8 @@ def main() -> int:
     args = parser.parse_args()
 
     config_path = Path(args.config)
-    out_dir = Path(args.out_dir) if args.out_dir else Path("output") / args.design
+    requested_out_dir = Path(args.out_dir) if args.out_dir else Path("output") / args.design
+    out_dir = validate_output_directory(requested_out_dir, args.design)
     main_scad = (
         Path(args.main_scad)
         if args.main_scad

@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "parts": [
+    {
+      "part_id": 0,
+      "name": "cyberdeck_visual_mockup"
+    },
+    {
+      "part_id": 1,
+      "name": "cyberdeck_top_layout_mockup"
+    },
+    {
+      "part_id": 2,
+      "name": "cyberdeck_internal_hardware_proxy_layout"
+    },
+    {
+      "part_id": 3,
+      "name": "cyberdeck_two_chamber_structure"
+    },
+    {
+      "part_id": 4,
+      "name": "cyberdeck_left_chamber"
+    },
+    {
+      "part_id": 5,
+      "name": "cyberdeck_right_chamber"
+    },
+    {
+      "part_id": 6,
+      "name": "cyberdeck_removable_panel_set"
+    },
+    {
+      "part_id": 7,
+      "name": "cyberdeck_left_front_lid"
+    },
+    {
+      "part_id": 8,
+      "name": "cyberdeck_center_left_lid"
+    },
+    {
+      "part_id": 9,
+      "name": "cyberdeck_right_front_lid"
+    },
+    {
+      "part_id": 10,
+      "name": "cyberdeck_left_side_handle"
+    },
+    {
+      "part_id": 11,
+      "name": "cyberdeck_dome_bucket_insert"
+    },
+    {
+      "part_id": 12,
+      "name": "cyberdeck_right_chamber_tray"
+    },
+    {
+      "part_id": 13,
+      "name": "cyberdeck_right_io_panel"
+    },
+    {
+      "part_id": 14,
+      "name": "cyberdeck_right_chamber_rpi_side_tray"
+    }
+  ]
+}
