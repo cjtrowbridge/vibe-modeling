@@ -45,6 +45,11 @@ First-draft visual mockup and design brief for a cyberdeck OpenSCAD model.
 - The rear roof is locally thickened to a continuous `5 mm` structural frame.
 - The top `2 mm` forms the panel recess, leaving a `3 mm` thick support floor.
 - A `6 mm` support ledge surrounds the service opening, with integral `16 mm` corner lands for the four M3 mounting holes.
+- Matching `3 mm` center-seam bulkheads now support the previously unsupported front I/O-panel rails on both chamber halves.
+- Each bulkhead runs from the front support rail to the rear wall beneath the panel, with a horizontal top edge and a `45 degree` lower edge.
+- The front of each bulkhead is truncated to retain a full `3 mm` vertical material width instead of ending at a zero-thickness point.
+- The paired bulkheads use two aligned `3.4 mm` M3 clearance holes so the upper chamber structure can be bolted together.
+- The bulkheads retain at least `3 mm` from the angled screen recess and remain clear of all current roof-panel connector and mounting holes.
 - The roof frame overlaps the original `3 mm` housing roof through its full thickness rather than relying on coincident faces.
 - The I/O panel sits `2 mm` into the roof and remains `3 mm` proud of the surrounding surface.
 - The full-width panel is rotated `45 degrees` for its standalone export. Its rounded modeled footprint is approximately `207.4 mm x 207.4 mm`, inside the `220 mm x 220 mm` print bed.
@@ -65,13 +70,16 @@ First-draft visual mockup and design brief for a cyberdeck OpenSCAD model.
 - Roof-frame join: the new frame intersects the existing roof through the complete `3 mm` roof thickness across the frame footprint.
 - Roof support: the recessed seat retains a `3 mm` support floor and a `6 mm` ledge, both meeting the repository structural minimums.
 - Roof fasteners: each M3 hole is retained in an integral `16 mm` corner land with more than `3 mm` material outside the hole.
+- Upper center seam: each `3 mm` bulkhead overlaps the front roof rail by `6 mm`, the rear wall by `3 mm`, and the roof support vertically by `3 mm`.
+- Upper center fasteners: the front M3 hole's limiting edge ligament is approximately `6.785 mm`; the rear hole's limiting edge ligament is `9.9 mm`.
+- Screen and I/O clearance: the bulkhead-to-screen-recess ligament is approximately `3.011 mm`; direct assertions also protect every current USB-A, USB-C, and nearest roof-panel fastener opening from the new seam structure.
 - Front-lid rails: all three frames share the same rear datum; rail thickness is `3 mm`, rail width is `7 mm`, attachment overlap is `3 mm`, and the corner-pad-to-rail overlap is approximately `3.4 mm`.
 - Center-joint fasteners: the upper center M3 hole is at `z = 38 mm`; its shortest post-subtraction ligament to the angled screen recess is approximately `3.45 mm` and is enforced by a direct assertion.
 - Control-panel engraving: the common `5.48 mm` label size leaves approximately `5.016 mm` at the Raspberry label's limiting panel edges, `5 mm` to its installed connector flange, and `4.45 mm` of solid lid thickness below every engraving.
 - Center-lid PTT: the `28 mm` through-hole retains `7.4 mm` to the pull slot and more than `3 mm` to every recessed corner fastener; the installed `34 mm` cap and label retain at least `5 mm` visual clearance.
 - Minimum-edge review: roof borders, support ledges, screw-hole ligaments, front-lid separator, rear Power Cell margins, and label margins are asserted at or above `3 mm`; the rear label is raised instead of engraved into the minimum-thickness wall.
-- Verification evidence: exact `rev_0003` assembly, center lid, right lid, and roof I/O panel STL exports completed as `Simple: yes`; all 17 configured assembly preview images rendered.
-- Connectivity audit: each chamber STL contains one dominant connected structural shell; the only additional components are the intentionally separate raised floor-label glyphs.
+- Verification evidence: the exact `rev_0003` assembly export and all 17 configured preview images completed after the bulkhead change; an isolated final-Boolean Y-Z section confirms the continuous front-rail and rear-wall intersections.
+- Connectivity audit: each standalone chamber STL contains one dominant connected structural shell spanning the complete chamber bounds; every smaller component is confined to the intentionally separate raised floor-label glyph height at `z = 3.2 mm` to `3.55 mm`.
 - Fabrication status: this revision verifies the changed roof, front-lid, and Power Cell geometry only. Unchanged legacy subsystems remain subject to the broader structural audit before the complete deck is fabrication-ready.
 
 ## Revision 0002 Printable Chamber Study

@@ -185,6 +185,60 @@ function chamber_io_panel_through_front_y() =
   chamber_io_panel_front_y() + chamber_io_panel_support_w;
 function chamber_io_panel_through_back_y() =
   chamber_io_panel_back_y() - chamber_io_panel_support_w;
+function chamber_io_bulkhead_front_y() =
+  chamber_io_panel_front_y();
+function chamber_io_bulkhead_back_y() =
+  chamber_piece_y / 2;
+function chamber_io_bulkhead_top_z() =
+  chamber_io_panel_seat_z();
+function chamber_io_bulkhead_front_lower_z() =
+  chamber_io_panel_frame_bottom_z();
+function chamber_io_bulkhead_lower_z(y) =
+  chamber_io_bulkhead_front_lower_z()
+  - (y - chamber_io_bulkhead_front_y());
+function chamber_io_bulkhead_rear_lower_z() =
+  chamber_io_bulkhead_lower_z(chamber_io_bulkhead_back_y());
+function chamber_io_bulkhead_screen_ligament() =
+  chamber_screen_face_tangent_position(
+    chamber_io_bulkhead_front_y(),
+    chamber_io_bulkhead_front_lower_z()
+  ) - chamber_display_void_h / 2;
+function chamber_io_bulkhead_bolt_y(i) =
+  chamber_io_bulkhead_front_y()
+  + (
+    i == 0
+      ? chamber_io_bulkhead_front_bolt_offset_y
+      : chamber_io_bulkhead_rear_bolt_offset_y
+  );
+function chamber_io_bulkhead_bolt_z(i) =
+  chamber_io_bulkhead_top_z()
+  - (
+    i == 0
+      ? chamber_io_bulkhead_front_bolt_drop_z
+      : chamber_io_bulkhead_rear_bolt_drop_z
+  );
+function chamber_io_bulkhead_bolt_top_ligament(i) =
+  chamber_io_bulkhead_top_z()
+  - chamber_io_bulkhead_bolt_z(i)
+  - chamber_io_bulkhead_bolt_clearance_d / 2;
+function chamber_io_bulkhead_bolt_front_ligament(i) =
+  chamber_io_bulkhead_bolt_y(i)
+  - chamber_io_bulkhead_front_y()
+  - chamber_io_bulkhead_bolt_clearance_d / 2;
+function chamber_io_bulkhead_bolt_back_ligament(i) =
+  chamber_io_bulkhead_back_y()
+  - chamber_io_bulkhead_bolt_y(i)
+  - chamber_io_bulkhead_bolt_clearance_d / 2;
+function chamber_io_bulkhead_bolt_lower_ligament(i) =
+  (
+    chamber_io_bulkhead_bolt_z(i)
+    - chamber_io_bulkhead_lower_z(chamber_io_bulkhead_bolt_y(i))
+  ) / sqrt(2)
+  - chamber_io_bulkhead_bolt_clearance_d / 2;
+function chamber_io_bulkhead_cut_ligament(global_cut_x, cut_d) =
+  abs(global_cut_x)
+  - chamber_io_bulkhead_wall
+  - cut_d / 2;
 function chamber_io_panel_print_span_45() =
   (chamber_io_panel_w() + chamber_io_panel_d) / sqrt(2);
 function chamber_io_panel_usb_c_x() =
@@ -856,6 +910,78 @@ module _assert_dims() {
     "I/O roof screw holes must retain minimum panel and support-pad material");
   assert(chamber_io_panel_support_w >= minimum_structural_overlap,
     "I/O roof corner pads must overlap the support ledge structurally");
+  assert(chamber_io_bulkhead_wall >= minimum_wall_thickness,
+    "I/O center bulkheads must meet the minimum wall thickness");
+  assert(chamber_io_bulkhead_top_z()
+      - chamber_io_bulkhead_front_lower_z()
+      >= minimum_wall_thickness,
+    "I/O center bulkheads must retain a full-thickness front tip");
+  assert(chamber_io_panel_through_front_y()
+      - chamber_io_bulkhead_front_y()
+      >= minimum_structural_overlap,
+    "I/O center bulkheads must overlap the front roof rail structurally");
+  assert(chamber_io_bulkhead_back_y()
+      - (chamber_piece_y / 2 - chamber_wall)
+      >= minimum_structural_overlap,
+    "I/O center bulkheads must overlap the rear wall structurally");
+  assert(chamber_io_bulkhead_top_z()
+      - chamber_io_panel_frame_bottom_z()
+      >= minimum_structural_overlap,
+    "I/O center bulkheads must overlap the roof support through its full thickness");
+  assert(abs(
+      chamber_io_bulkhead_front_lower_z()
+      - chamber_io_bulkhead_rear_lower_z()
+      - (
+        chamber_io_bulkhead_back_y()
+        - chamber_io_bulkhead_front_y()
+      )
+    ) < 0.01,
+    "I/O center bulkhead lower edges must remain at 45 degrees");
+  assert(chamber_io_bulkhead_rear_lower_z()
+      >= chamber_total_z() + minimum_internal_edge_width,
+    "I/O center bulkheads must leave minimum clearance above the lower chamber");
+  assert(chamber_io_bulkhead_screen_ligament()
+      >= minimum_internal_edge_width,
+    "I/O center bulkheads must retain minimum material from the screen recess");
+  assert(chamber_io_bulkhead_bolt_count == 2,
+    "I/O center bulkhead study expects two matched M3 bonding holes");
+  assert(chamber_io_bulkhead_bolt_clearance_d >= 3.4,
+    "I/O center bulkhead holes must clear M3 hardware");
+  for (i = [0 : chamber_io_bulkhead_bolt_count - 1]) {
+    assert(chamber_io_bulkhead_bolt_top_ligament(i)
+        >= minimum_internal_edge_width,
+      "I/O center bulkhead bolt must retain minimum top-edge material");
+    assert(chamber_io_bulkhead_bolt_front_ligament(i)
+        >= minimum_internal_edge_width,
+      "I/O center bulkhead bolt must retain minimum front-edge material");
+    assert(chamber_io_bulkhead_bolt_back_ligament(i)
+        >= minimum_internal_edge_width,
+      "I/O center bulkhead bolt must retain minimum rear-edge material");
+    assert(chamber_io_bulkhead_bolt_lower_ligament(i)
+        >= minimum_internal_edge_width,
+      "I/O center bulkhead bolt must retain minimum material above the 45-degree edge");
+  }
+  for (x = [
+    chamber_io_panel_center_x() + chamber_io_panel_usb_a_left_x,
+    chamber_io_panel_center_x() + chamber_io_panel_usb_a_right_x
+  ]) {
+    assert(chamber_io_bulkhead_cut_ligament(
+        x,
+        chamber_io_panel_usb_a_mount_d
+      ) >= minimum_internal_edge_width,
+      "I/O center bulkheads must clear the roof-panel USB-A openings");
+  }
+  assert(chamber_io_bulkhead_cut_ligament(
+      chamber_io_panel_center_x() + chamber_io_panel_usb_c_x(),
+      chamber_control_usb_c_jack_d
+    ) >= minimum_internal_edge_width,
+    "I/O center bulkheads must clear the Neural Jack opening");
+  assert(chamber_io_bulkhead_cut_ligament(
+      chamber_io_panel_center_x()
+        - (chamber_io_panel_w() / 2 - chamber_lid_mount_inset),
+      chamber_lid_mount_screw_clearance_d
+    ) >= minimum_internal_edge_width,
+    "I/O center bulkheads must clear the nearest roof-panel mounting holes");
   assert(chamber_control_band_back_y() - chamber_control_band_front_y()
       >= chamber_wall - 0.01,
     "front lids must retain a full-wall separator before the screen slope");
@@ -1344,6 +1470,58 @@ module _chamber_io_roof_frame(xa, xb) {
       chamber_rear_housing_depth,
       chamber_io_panel_frame_h
     ], center = false);
+}
+
+module _chamber_io_center_bulkhead(side, joint_face_x) {
+  bulkhead_xa =
+    side < 0
+      ? joint_face_x - chamber_io_bulkhead_wall
+      : joint_face_x;
+
+  multmatrix([
+    [0, 0, 1, bulkhead_xa],
+    [1, 0, 0, 0],
+    [0, 1, 0, 0],
+    [0, 0, 0, 1]
+  ])
+    linear_extrude(
+      height = chamber_io_bulkhead_wall,
+      center = false,
+      convexity = 4
+    )
+      polygon(points = [
+        [
+          chamber_io_bulkhead_front_y(),
+          chamber_io_bulkhead_front_lower_z()
+        ],
+        [
+          chamber_io_bulkhead_front_y(),
+          chamber_io_bulkhead_top_z()
+        ],
+        [
+          chamber_io_bulkhead_back_y(),
+          chamber_io_bulkhead_top_z()
+        ],
+        [
+          chamber_io_bulkhead_back_y(),
+          chamber_io_bulkhead_rear_lower_z()
+        ]
+      ]);
+}
+
+module _chamber_io_center_bulkhead_bolt_cut(joint_face_x, i) {
+  translate([
+    joint_face_x,
+    chamber_io_bulkhead_bolt_y(i),
+    chamber_io_bulkhead_bolt_z(i)
+  ])
+    rotate([0, 90, 0])
+      cylinder(
+        d = chamber_io_bulkhead_bolt_clearance_d,
+        h = chamber_io_bulkhead_wall * 2 + 1.2,
+        center = true,
+        $fn = 32
+      );
 }
 
 module _right_chamber_tray_rear_opening_cut(xa, xb) {
@@ -2046,6 +2224,13 @@ module _chamber_body(side, assembly_position, label_text) {
         _chamber_handle_mount_screw_cuts(outer_side_face_x);
         for (i = [0 : chamber_joint_bolt_count - 1]) {
           _chamber_bolt_cut(joint_face_x, i);
+        }
+      }
+
+      difference() {
+        _chamber_io_center_bulkhead(side, joint_face_x);
+        for (i = [0 : chamber_io_bulkhead_bolt_count - 1]) {
+          _chamber_io_center_bulkhead_bolt_cut(joint_face_x, i);
         }
       }
 
