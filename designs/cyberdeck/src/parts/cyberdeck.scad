@@ -3096,19 +3096,6 @@ module _right_chamber_tray_body() {
           chamber_tray_wall
         ], center = false);
 
-      for (side = [-1, 1]) {
-        translate([
-          side < 0 ? -chamber_tray_w() / 2 : chamber_tray_w() / 2 - chamber_tray_wall,
-          chamber_tray_y_front(),
-          tray_floor_z
-        ])
-          cube([
-            chamber_tray_wall,
-            tray_floor_d,
-            chamber_tray_side_wall_h
-          ], center = false);
-      }
-
       translate([
         -chamber_tray_backplate_w() / 2,
         chamber_tray_y_back(),
@@ -3222,32 +3209,6 @@ module _right_chamber_rpi_side_tray_body() {
           floor_x,
           floor_y,
           chamber_rpi_side_tray_wall
-        ], center = false);
-
-      for (sy = [-1, 1]) {
-        translate([
-          floor_xa,
-          sy < 0
-            ? -floor_y / 2
-            : floor_y / 2 - chamber_rpi_side_tray_wall,
-          floor_z
-        ])
-          cube([
-            floor_x,
-            chamber_rpi_side_tray_wall,
-            chamber_rpi_side_tray_side_wall_h
-          ], center = false);
-      }
-
-      translate([
-        floor_xa,
-        -floor_y / 2,
-        floor_z
-      ])
-        cube([
-          chamber_rpi_side_tray_wall,
-          floor_y,
-          chamber_rpi_side_tray_side_wall_h
         ], center = false);
 
       translate([

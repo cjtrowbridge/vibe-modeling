@@ -214,7 +214,8 @@ First-draft visual mockup and design brief for a cyberdeck OpenSCAD model.
 - The `130.4 mm` wide backplate is positioned as far left as the structural rules allow: its left edge retains exactly `3 mm` of right-chamber rear wall.
 - This places the opening's left edge `14.2 mm` from the chamber boundary while leaving substantially more intact wall at the right.
 - The former low internal floor rails in the right chamber are removed. Any replacement tray-guidance or retention system will be designed later.
-- The right tray has a `106 mm` wide sliding bed extending `131 mm` from its front edge to the backplate datum, with a `3 mm` floor and walls, rear backplate, low side walls, Orange Pi mounting pads, and an exhaust opening in the backplate.
+- The right tray has a `106 mm` wide flat sliding bed extending `131 mm` from its front edge to the backplate datum, with a `3 mm` floor, rear backplate, Orange Pi mounting pads, and an exhaust opening in the backplate.
+- The Orange Pi tray intentionally has no interior perimeter lips or side walls so the board ports and switches remain accessible.
 - The floor continues through the full `3 mm` backplate thickness, producing a required `3 mm` structural overlap and a `134 mm` overall front-to-rear STL envelope.
 - The tray backplate bottom is flush with the tray floor bottom, so the rear wall does not extend below the sliding tray.
 - The tray backplate is slightly larger than the rear opening and uses four M3 corner holes with at least `3 mm` edge margin on both the wall and the backplate.
@@ -232,7 +233,8 @@ First-draft visual mockup and design brief for a cyberdeck OpenSCAD model.
 - Its `117.4 mm x 52 mm` exterior closure plate uses four M3 holes and ends `3 mm` ahead of the rear chamber edge, placing the tray as far back as the required edge margin permits.
 - The Raspberry Pi mount preserves the drawing's rotated `49 mm x 58 mm` M2.5 hole pattern and its `3.5 mm` board-edge datum.
 - The `9 mm` mounting pads retain at least `3 mm` of material around their holes and to the nearest tray edge.
-- The tray floor, low perimeter walls, leading wall, and closure plate are `3 mm` thick. The floor overlaps through the full `3 mm` closure-plate thickness.
+- The Raspberry Pi tray intentionally has no interior perimeter lips, side walls, or leading wall so the board ports and switches remain accessible.
+- The tray floor and closure plate are `3 mm` thick. The floor overlaps through the full `3 mm` closure-plate thickness.
 - The left and right chambers have matching circular side passthroughs on the mating faces.
 - Current design uses two `30 mm` passthroughs, split front/back from the centerline.
 - The passthrough centerline is lowered to `z = 22 mm` so the flush conduit holes clear the inset lid rails.
