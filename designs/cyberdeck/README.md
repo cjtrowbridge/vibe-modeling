@@ -31,6 +31,14 @@ First-draft visual mockup and design brief for a cyberdeck OpenSCAD model.
 - `part_id = 13`: removable full-width rear-roof I/O panel
 - `part_id = 14`: right chamber Raspberry Pi side tray
 
+## Design Notes
+
+- Dome pan/tilt apparatus planning is tracked in [docs/dome_pan_tilt_plan.md](docs/dome_pan_tilt_plan.md).
+- The dome mechanism plan uses two MG996R-compatible servos: one fixed vertical pan servo in the bucket and one horizontal tilt servo carried by the rotating pan stage.
+- The plan requires stock servo horns captured in printed receiver pockets instead of direct printed splines.
+- The first implementation should be a serviceable gimbal cartridge with a supported pan plate, two-sided tilt yoke, camera/dual-laser carriage, hard stops, wire relief, and swept-volume checks inside the acrylic dome.
+- Actual horn and camera mounting dimensions still need measurement before final receiver pockets and camera screw bosses are modeled.
+
 ## Revision 0003 Rear-Roof I/O Study
 
 - The keyboard is now treated as a separate accessory rather than a component that must fit on the deck's flat top.
