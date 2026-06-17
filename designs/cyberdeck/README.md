@@ -55,6 +55,10 @@ First-draft visual mockup and design brief for a cyberdeck OpenSCAD model.
 - The I/O panel sits `2 mm` into the roof and remains `3 mm` proud of the surrounding surface.
 - The full-width panel is rotated `45 degrees` for its standalone export. Its rounded modeled footprint is approximately `207.4 mm x 207.4 mm`, inside the `220 mm x 220 mm` print bed.
 - The roof I/O panel retains the Raspberry USB-A, Orange USB-A, and Neural Jack openings and labels.
+- The left side of the removable roof I/O panel now includes two keyed `20 mm` rocker-switch openings labeled `Fans` and `Ultraviolet`.
+- The `Fans` and `Ultraviolet` labels sit in front of their switch openings.
+- Each switch opening uses a `20 mm` circular cut plus a right-facing keyed notch, producing the specified `20.8 mm` keyed span and keeping the notches toward `+X`.
+- With the switch notch to the right, the intended installed orientation is back/off and forward/on.
 - The center-front lid carries a rear/top push-to-talk button and an additional front/bottom double-USB-A panel jack.
 - This USB-A opening is an additional port; the Raspberry and Orange USB-A openings remain on the roof I/O panel.
 - The center lid's pull slot is removed to make room for the controls.
@@ -89,6 +93,7 @@ First-draft visual mockup and design brief for a cyberdeck OpenSCAD model.
 - Front-lid rails: all three frames share the same rear datum; rail thickness is `3 mm`, rail width is `7 mm`, attachment overlap is `3 mm`, and the corner-pad-to-rail overlap is approximately `3.4 mm`.
 - Center-joint fasteners: the upper center M3 hole is at `z = 38 mm`; its shortest post-subtraction ligament to the angled screen recess is approximately `3.45 mm` and is enforced by a direct assertion.
 - Control-panel engraving: the common `5.48 mm` label size leaves approximately `5.016 mm` at the Raspberry label's limiting panel edges, `5 mm` to its installed connector flange, and `4.45 mm` of solid lid thickness below every engraving.
+- Roof-panel rocker switches: the two `20 mm` keyed switch cuts retain at least `3 mm` to the panel edges, support ledge, corner screw heads, existing I/O keepouts, and the hidden center-seam bulkhead.
 - Center-lid controls: the `28 mm` PTT and new `29 mm` USB-A holes retain at least `3 mm` printed material to lid edges, neighboring holes, and recessed corner fasteners.
 - Two-sided hardware clearance: the `35 mm` PTT and `31.75 mm` USB-A installed envelopes are checked identically above and below the lid.
 - Underside support clearance: matching circular reliefs remove the conflicting portions of the center-lid corner pads while retaining at least `3 mm` around every M3 support hole; the PTT relief intentionally notches the rear rail while retaining a `4.625 mm` throat.

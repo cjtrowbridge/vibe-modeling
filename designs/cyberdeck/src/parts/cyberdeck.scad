@@ -281,6 +281,87 @@ function chamber_io_panel_horizontal_label_h() =
 function chamber_io_panel_two_line_label_h() =
   chamber_io_panel_label_line_gap
   + chamber_io_panel_horizontal_label_h();
+function chamber_io_panel_switch_notch_depth() =
+  chamber_io_panel_switch_keyed_span_x - chamber_io_panel_switch_mount_d;
+function chamber_io_panel_switch_cut_right_radius() =
+  chamber_io_panel_switch_mount_d / 2
+  + chamber_io_panel_switch_notch_depth();
+function chamber_io_panel_switch_outer_radius() =
+  chamber_io_panel_switch_outer_d / 2;
+function chamber_io_panel_switch_global_x(x) =
+  chamber_io_panel_center_x() + x;
+function chamber_io_panel_switch_global_y(y) =
+  chamber_io_panel_center_y() + y;
+function chamber_io_panel_switch_panel_x_ligament(x) =
+  chamber_io_panel_w() / 2
+  - abs(x)
+  - chamber_io_panel_switch_outer_radius();
+function chamber_io_panel_switch_panel_y_ligament(y) =
+  chamber_io_panel_d / 2
+  - abs(y)
+  - chamber_io_panel_switch_outer_radius();
+function chamber_io_panel_switch_support_left_ligament(x) =
+  chamber_io_panel_switch_global_x(x)
+  - chamber_io_panel_switch_outer_radius()
+  - chamber_io_panel_through_xa();
+function chamber_io_panel_switch_support_right_ligament(x) =
+  chamber_io_panel_through_xb()
+  - chamber_io_panel_switch_global_x(x)
+  - chamber_io_panel_switch_outer_radius();
+function chamber_io_panel_switch_support_front_ligament(y) =
+  chamber_io_panel_switch_global_y(y)
+  - chamber_io_panel_switch_outer_radius()
+  - chamber_io_panel_through_front_y();
+function chamber_io_panel_switch_support_back_ligament(y) =
+  chamber_io_panel_through_back_y()
+  - chamber_io_panel_switch_global_y(y)
+  - chamber_io_panel_switch_outer_radius();
+function chamber_io_panel_switch_bulkhead_ligament(x) =
+  abs(chamber_io_panel_switch_global_x(x))
+  - chamber_io_bulkhead_wall
+  - chamber_io_panel_switch_cut_right_radius();
+function chamber_io_panel_switch_pair_ligament() =
+  abs(chamber_io_panel_switch_uv_x - chamber_io_panel_switch_fans_x)
+  - chamber_io_panel_switch_outer_d;
+function chamber_io_panel_switch_to_corner_screw_ligament(x, y, sx, sy) =
+  sqrt(
+    pow(sx * (chamber_io_panel_w() / 2 - chamber_lid_mount_inset) - x, 2)
+    + pow(sy * (chamber_io_panel_d / 2 - chamber_lid_mount_inset) - y, 2)
+  )
+  - chamber_lid_mount_screw_head_d / 2
+  - chamber_io_panel_switch_outer_radius();
+function chamber_io_panel_switch_to_round_hardware_ligament(
+  switch_x,
+  switch_y,
+  hardware_x,
+  hardware_y,
+  hardware_d
+) =
+  sqrt(
+    pow(switch_x - hardware_x, 2)
+    + pow(switch_y - hardware_y, 2)
+  )
+  - chamber_io_panel_switch_outer_radius()
+  - hardware_d / 2;
+function chamber_io_panel_switch_label_h() =
+  chamber_io_panel_switch_label_size
+  * chamber_io_panel_horizontal_label_height_per_size;
+function chamber_io_panel_switch_fans_label_w() =
+  chamber_io_panel_switch_label_size
+  * chamber_io_panel_switch_fans_width_per_size;
+function chamber_io_panel_switch_uv_label_w() =
+  chamber_io_panel_switch_label_size
+  * chamber_io_panel_switch_uv_width_per_size;
+function chamber_io_panel_switch_label_edge_ligament(x, label_w) =
+  chamber_io_panel_w() / 2 - abs(x) - label_w / 2;
+function chamber_io_panel_switch_label_y_edge_ligament() =
+  chamber_io_panel_d / 2
+  - abs(chamber_io_panel_switch_label_y)
+  - chamber_io_panel_switch_label_h() / 2;
+function chamber_io_panel_switch_label_to_switch_ligament() =
+  abs(chamber_io_panel_switch_label_y - chamber_io_panel_switch_y)
+  - chamber_io_panel_switch_label_h() / 2
+  - chamber_io_panel_switch_outer_radius();
 function chamber_center_lid_ptt_x_pos() =
   chamber_center_lid_ptt_x;
 function chamber_center_lid_ptt_y_pos() =
@@ -1343,6 +1424,78 @@ module _assert_dims() {
     && abs(chamber_io_panel_usb_c_y()) + chamber_control_usb_c_jack_d / 2
       < chamber_io_panel_d / 2,
     "roof-panel USB-C cutout must remain enclosed by the I/O panel");
+  assert(chamber_io_panel_switch_mount_d == 20
+      && chamber_io_panel_switch_keyed_span_x >= chamber_io_panel_switch_mount_d
+      && chamber_io_panel_switch_notch_w > 0
+      && chamber_io_panel_switch_outer_d >= chamber_io_panel_switch_mount_d,
+    "roof-panel rocker switch geometry must match the keyed 20 mm panel opening");
+  assert(abs(chamber_io_panel_switch_notch_depth() - 0.8) < 0.01,
+    "roof-panel rocker switch notch must preserve the 20.8 mm keyed opening span");
+  assert(chamber_io_panel_switch_pair_ligament()
+      >= minimum_internal_edge_width,
+    "roof-panel rocker switch caps must retain minimum clearance from each other");
+  for (x = [
+    chamber_io_panel_switch_fans_x,
+    chamber_io_panel_switch_uv_x
+  ]) {
+    assert(chamber_io_panel_switch_panel_x_ligament(x)
+        >= minimum_internal_edge_width
+      && chamber_io_panel_switch_panel_y_ligament(chamber_io_panel_switch_y)
+        >= minimum_internal_edge_width,
+      "roof-panel rocker switches must retain minimum material to panel edges");
+    assert(chamber_io_panel_switch_support_left_ligament(x)
+        >= minimum_internal_edge_width
+      && chamber_io_panel_switch_support_right_ligament(x)
+        >= minimum_internal_edge_width
+      && chamber_io_panel_switch_support_front_ligament(chamber_io_panel_switch_y)
+        >= minimum_internal_edge_width
+      && chamber_io_panel_switch_support_back_ligament(chamber_io_panel_switch_y)
+        >= minimum_internal_edge_width,
+      "roof-panel rocker switches must clear the under-panel support ledge");
+    assert(chamber_io_panel_switch_bulkhead_ligament(x)
+        >= minimum_internal_edge_width,
+      "roof-panel rocker switches must clear the center seam bulkhead underneath");
+    for (sx = [-1, 1]) {
+      for (sy = [-1, 1]) {
+        assert(chamber_io_panel_switch_to_corner_screw_ligament(
+            x,
+            chamber_io_panel_switch_y,
+            sx,
+            sy
+          ) >= minimum_internal_edge_width,
+          "roof-panel rocker switch caps must clear recessed corner screws");
+      }
+    }
+    for (hardware = [
+      [chamber_io_panel_usb_a_left_x, chamber_io_panel_usb_a_y(), chamber_io_panel_usb_a_outer_d],
+      [chamber_io_panel_usb_a_right_x, chamber_io_panel_usb_a_y(), chamber_io_panel_usb_a_outer_d],
+      [chamber_io_panel_usb_c_x(), chamber_io_panel_usb_c_y(), chamber_control_usb_c_jack_d]
+    ]) {
+      assert(chamber_io_panel_switch_to_round_hardware_ligament(
+          x,
+          chamber_io_panel_switch_y,
+          hardware[0],
+          hardware[1],
+          hardware[2]
+        ) >= minimum_internal_edge_width,
+        "roof-panel rocker switch caps must clear existing I/O keepouts");
+    }
+  }
+  assert(chamber_io_panel_switch_label_size > 0
+      && chamber_io_panel_switch_label_y_edge_ligament()
+        >= minimum_internal_edge_width
+      && chamber_io_panel_switch_label_to_switch_ligament()
+        >= minimum_internal_edge_width,
+    "roof-panel rocker switch labels must fit between the switch caps and nearest panel edge");
+  assert(chamber_io_panel_switch_label_edge_ligament(
+        chamber_io_panel_switch_fans_x,
+        chamber_io_panel_switch_fans_label_w()
+      ) >= minimum_internal_edge_width
+    && chamber_io_panel_switch_label_edge_ligament(
+        chamber_io_panel_switch_uv_x,
+        chamber_io_panel_switch_uv_label_w()
+      ) >= minimum_internal_edge_width,
+    "roof-panel rocker switch labels must retain minimum side margins");
   assert(chamber_left_lid_w() <= print_volume_x
     && chamber_left_lid_d() <= print_volume_y
     && chamber_center_lid_w() <= print_volume_x
@@ -2483,7 +2636,67 @@ module _io_panel_usb_a_jack_cut(x, y = chamber_io_panel_usb_a_y()) {
     );
 }
 
+module _io_panel_switch_cut(x, y = chamber_io_panel_switch_y) {
+  cut_h = chamber_lid_thickness + 1.2;
+  notch_depth = chamber_io_panel_switch_notch_depth();
+  notch_overlap = min(0.05, notch_depth / 2);
+
+  translate([
+    x,
+    y,
+    chamber_lid_thickness / 2
+  ])
+    cylinder(
+      d = chamber_io_panel_switch_mount_d,
+      h = cut_h,
+      center = true,
+      $fn = 72
+    );
+
+  translate([
+    x
+      + chamber_io_panel_switch_mount_d / 2
+      + notch_depth / 2
+      - notch_overlap / 2,
+    y,
+    chamber_lid_thickness / 2
+  ])
+    cube([
+      notch_depth + notch_overlap,
+      chamber_io_panel_switch_notch_w,
+      cut_h
+    ], center = true);
+}
+
+module _io_panel_switch_label_cut(x, label_text) {
+  translate([
+    x,
+    chamber_io_panel_switch_label_y,
+    chamber_lid_thickness - chamber_control_usb_c_label_engrave_h
+  ])
+    linear_extrude(
+      height = chamber_control_usb_c_label_engrave_h + 0.25,
+      center = false,
+      convexity = 2
+    )
+      text(
+        label_text,
+        size = chamber_io_panel_switch_label_size,
+        font = chamber_label_font,
+        halign = "center",
+        valign = "center"
+      );
+}
+
 module _io_panel_control_labels_cut() {
+  _io_panel_switch_label_cut(
+    chamber_io_panel_switch_fans_x,
+    chamber_io_panel_switch_fans_label
+  );
+  _io_panel_switch_label_cut(
+    chamber_io_panel_switch_uv_x,
+    chamber_io_panel_switch_uv_label
+  );
   _io_panel_vertical_label_line_cut(
     chamber_io_panel_usb_a_left_label_x(),
     chamber_io_panel_usb_a_y(),
@@ -2883,6 +3096,8 @@ module _chamber_io_panel() {
 
     _io_panel_usb_a_jack_cut(chamber_io_panel_usb_a_left_x);
     _io_panel_usb_a_jack_cut(chamber_io_panel_usb_a_right_x);
+    _io_panel_switch_cut(chamber_io_panel_switch_fans_x);
+    _io_panel_switch_cut(chamber_io_panel_switch_uv_x);
     _io_panel_usb_c_jack_cut();
     _io_panel_control_labels_cut();
   }
