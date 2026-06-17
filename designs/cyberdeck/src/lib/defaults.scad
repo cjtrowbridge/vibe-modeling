@@ -183,6 +183,14 @@ chamber_lid_mount_pad_size = 16.0;
 chamber_lid_mount_screw_clearance_d = 3.4;
 chamber_lid_mount_screw_head_d = 7.0;
 chamber_lid_mount_screw_head_depth = 2.4;
+// Left-front lid auxiliary mounting/cable pattern.
+// The 80 mm span is intentionally across X because the finished lid is only
+// about 80.8 mm deep, which leaves no structural edge material for an
+// 80 mm front/back pattern.
+chamber_left_lid_center_hole_d = 30.0;
+chamber_left_lid_m3_pattern_x = 80.0;
+chamber_left_lid_m3_pattern_y = 40.0;
+chamber_left_lid_m3_hole_d = chamber_lid_mount_screw_clearance_d;
 chamber_dome_bucket_wall = 3.0;
 chamber_dome_bucket_slide_clearance = 1.0;
 chamber_dome_bucket_lip_h = 3.0;

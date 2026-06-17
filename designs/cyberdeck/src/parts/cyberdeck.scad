@@ -1077,6 +1077,46 @@ module _assert_dims() {
     "left keyboard lid rail back edge must leave a usable opening");
   assert(chamber_keyboard_lid_left_back_edge_y <= chamber_dome_roof_front_y() + 0.1,
     "left keyboard lid rail back edge must stay in front of the dome roof");
+  assert(chamber_left_lid_center_hole_d > 0,
+    "left lid center hole diameter must be > 0");
+  assert(chamber_left_lid_m3_pattern_x > 0
+      && chamber_left_lid_m3_pattern_y > 0,
+    "left lid M3 pattern dimensions must be > 0");
+  assert(chamber_left_lid_m3_hole_d >= 3.0,
+    "left lid auxiliary M3 holes should clear M3 hardware");
+  assert(chamber_left_lid_center_hole_d / 2
+      + minimum_internal_edge_width <= min(chamber_left_lid_w(), chamber_left_lid_d()) / 2,
+    "left lid centered 30 mm hole must retain minimum edge material");
+  assert(chamber_left_lid_m3_pattern_x / 2
+      + chamber_left_lid_m3_hole_d / 2
+      + minimum_internal_edge_width <= chamber_left_lid_w() / 2,
+    "left lid M3 pattern must retain minimum side-edge material");
+  assert(chamber_left_lid_m3_pattern_y / 2
+      + chamber_left_lid_m3_hole_d / 2
+      + minimum_internal_edge_width <= chamber_left_lid_d() / 2,
+    "left lid M3 pattern must retain minimum front/back edge material");
+  assert(
+    sqrt(
+      pow(chamber_left_lid_m3_pattern_x / 2, 2)
+      + pow(chamber_left_lid_m3_pattern_y / 2, 2)
+    )
+      - chamber_left_lid_center_hole_d / 2
+      - chamber_left_lid_m3_hole_d / 2
+      >= minimum_internal_edge_width,
+    "left lid centered hole and auxiliary M3 holes must retain minimum material"
+  );
+  assert(
+    sqrt(
+      pow(chamber_left_lid_w() / 2 - chamber_lid_mount_inset
+          - chamber_left_lid_m3_pattern_x / 2, 2)
+      + pow(chamber_left_lid_d() / 2 - chamber_lid_mount_inset
+          - chamber_left_lid_m3_pattern_y / 2, 2)
+    )
+      - chamber_lid_mount_screw_head_d / 2
+      - chamber_left_lid_m3_hole_d / 2
+      >= minimum_internal_edge_width,
+    "left lid auxiliary M3 holes must clear recessed corner fasteners"
+  );
   assert(chamber_arcade_button_outer_d >= chamber_arcade_button_mount_d,
     "arcade-button external diameter must not be smaller than its mounting hole");
   assert(abs(chamber_center_lid_ptt_x_pos())
@@ -3280,6 +3320,45 @@ module _chamber_lid_panel(
   }
 }
 
+module _left_lid_aux_cut_pattern(cut_h) {
+  translate([0, 0, -0.4])
+    cylinder(
+      d = chamber_left_lid_center_hole_d,
+      h = cut_h,
+      center = false,
+      $fn = 96
+    );
+
+  for (sx = [-1, 1]) {
+    for (sy = [-1, 1]) {
+      translate([
+        sx * chamber_left_lid_m3_pattern_x / 2,
+        sy * chamber_left_lid_m3_pattern_y / 2,
+        -0.4
+      ])
+        cylinder(
+          d = chamber_left_lid_m3_hole_d,
+          h = cut_h,
+          center = false,
+          $fn = 32
+        );
+    }
+  }
+}
+
+module _chamber_left_lid_panel() {
+  w = chamber_left_lid_w();
+  d = chamber_left_lid_d();
+  cut_h = chamber_lid_thickness + 0.8;
+
+  difference() {
+    // Reuse the standard lid panel and its four recessed corner fasteners,
+    // but disable the obround finger/pull slot for this left lid.
+    _chamber_lid_panel(w, d, "LEFT", true, false, false);
+    _left_lid_aux_cut_pattern(cut_h);
+  }
+}
+
 module _chamber_io_panel() {
   w = chamber_io_panel_w();
   d = chamber_io_panel_d;
@@ -3342,7 +3421,7 @@ module _chamber_lid_set_layout() {
     _chamber_io_panel();
 
   translate([left_x, lower_y, 0])
-    _chamber_lid_panel(chamber_left_lid_w(), chamber_left_lid_d(), "LEFT");
+    _chamber_left_lid_panel();
 
   translate([center_x, lower_y, 0])
     _chamber_lid_panel(
@@ -4763,7 +4842,7 @@ module cyberdeck_removable_panel_set() {
 
 module cyberdeck_left_front_lid() {
   _assert_dims();
-  _chamber_lid_panel(chamber_left_lid_w(), chamber_left_lid_d(), "LEFT");
+  _chamber_left_lid_panel();
 }
 
 module cyberdeck_center_left_lid() {

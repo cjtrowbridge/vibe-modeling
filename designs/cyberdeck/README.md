@@ -54,6 +54,23 @@ First-draft visual mockup and design brief for a cyberdeck OpenSCAD model.
 - The laser carriage includes one laser saddle on each side of the camera, rear wire exits, a camera pigtail relief, and cable-routing clearance toward the existing front/side bucket passthrough windows.
 - The horn receiver and camera mounting-hole positions remain starter defaults pending caliper measurement of the actual horn and camera PCB.
 
+## Revision 0005 Left-Lid Auxiliary Mount Study
+
+- The left-front inset lid removes its obround finger/pull slot.
+- The left-front inset lid now has a centered `30 mm` circular through-hole.
+- The left-front inset lid now has four additional M3 clearance holes in a centered `40 mm x 80 mm` rectangular pattern.
+- The `80 mm` span is oriented across the lid width and the `40 mm` span is oriented front/back because the current lid is only about `80.8 mm` deep.
+- The existing four recessed corner mounting holes and the `LEFT` top label are retained.
+- The standalone `part_id = 7` export and the removable-panel preview `part_id = 6` both use the updated left lid.
+
+### Revision 0005 Structural Review
+
+- Source revision/config reviewed: source patch against current `designs/cyberdeck/configs/rev_0004.json` defaults and model source.
+- Structural joins: not applicable; this change subtracts holes from an existing standalone lid and does not add a joined load-bearing feature.
+- Minimum-edge review: new OpenSCAD assertions require the centered `30 mm` hole, the four auxiliary M3 holes, lid edges, and existing recessed corner fasteners to retain at least the configured `minimum_internal_edge_width`.
+- The `80 mm` auxiliary M3 span is placed across X rather than front/back because a front/back `80 mm` span would leave no practical edge material in the current `80.8 mm` lid depth.
+- Build status: unbuilt in this patch handoff; run the normal complete cyberdeck build/audit before treating the revision as fabrication-ready.
+
 ## Revision 0004 Dome Pan/Tilt Gimbal Prototype
 
 - Revision `rev_0004` adds the first standalone dome gimbal prototype parts to the manifest.
@@ -208,7 +225,7 @@ First-draft visual mockup and design brief for a cyberdeck OpenSCAD model.
 - The left and center front lid rail frames stop at assembled `y = -20 mm`, matching the front edge of the dome roof and control band.
 - The keyboard-area lid rail is constrained to the display/keyboard bay to the right of the dome roof so it does not intersect the dome cutout.
 - The center lid remains aligned with the left-front lid depth, while the right-front lid is shortened further to make room for the removable I/O panel and separator web.
-- The three front lids are modeled as separate `5 mm` thick panels with `0.6 mm` edge clearance and `3 mm` corner radii. The left and right lids retain obround pull slots; the control-filled center lid does not.
+- The three front lids are modeled as separate `5 mm` thick panels with `0.6 mm` edge clearance and `3 mm` corner radii. The right lid retains an obround pull slot; the left lid now uses a centered auxiliary `30 mm` hole plus a `40 mm x 80 mm` M3 pattern, and the control-filled center lid has no pull slot.
 - Each lid opening has small corner pads pulled into the opening for M3 corner fasteners.
 - Each lid has four M3 clearance holes inset `8 mm` from the lid edges, with `7 mm` diameter counterbores so the screw heads sit below the top face.
 - The thicker lids rest on the inset rail and may sit slightly proud of the surrounding deck surface.
