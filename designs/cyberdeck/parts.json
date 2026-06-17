@@ -60,6 +60,26 @@
     {
       "part_id": 14,
       "name": "cyberdeck_right_chamber_rpi_side_tray"
+    },
+    {
+      "part_id": 15,
+      "name": "cyberdeck_dome_pan_servo_cradle"
+    },
+    {
+      "part_id": 16,
+      "name": "cyberdeck_dome_pan_rotating_plate"
+    },
+    {
+      "part_id": 17,
+      "name": "cyberdeck_dome_tilt_servo_yoke"
+    },
+    {
+      "part_id": 18,
+      "name": "cyberdeck_dome_camera_laser_carriage"
+    },
+    {
+      "part_id": 19,
+      "name": "cyberdeck_dome_gimbal_clearance_mockup"
     }
   ]
 }

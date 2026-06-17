@@ -522,6 +522,97 @@ function chamber_dome_bucket_passage_center_z() =
   + chamber_dome_bucket_wall
   + chamber_dome_bucket_passage_h / 2
   + 4;
+function dome_gimbal_bucket_inner_radius() =
+  chamber_dome_bucket_inner_d() / 2;
+function dome_gimbal_pan_cradle_radius() =
+  dome_gimbal_pan_cradle_d / 2;
+function dome_gimbal_pan_plate_radius() =
+  dome_gimbal_pan_plate_d / 2;
+function dome_gimbal_pan_servo_body_center_x() =
+  (dome_gimbal_servo_mount_x_a + dome_gimbal_servo_mount_x_b) / 2;
+function dome_gimbal_pan_servo_body_min_x() =
+  dome_gimbal_pan_servo_body_center_x()
+  - dome_gimbal_servo_service_cutout_x / 2;
+function dome_gimbal_pan_servo_body_max_x() =
+  dome_gimbal_pan_servo_body_center_x()
+  + dome_gimbal_servo_service_cutout_x / 2;
+function dome_gimbal_pan_servo_body_min_y() =
+  -dome_gimbal_servo_service_cutout_y / 2;
+function dome_gimbal_pan_servo_body_max_y() =
+  dome_gimbal_servo_service_cutout_y / 2;
+function dome_gimbal_pan_cradle_radial_clearance() =
+  dome_gimbal_bucket_inner_radius() - dome_gimbal_pan_cradle_radius();
+function dome_gimbal_pan_plate_radial_clearance() =
+  dome_gimbal_bucket_inner_radius() - dome_gimbal_pan_plate_radius();
+function dome_gimbal_tilt_yoke_half_w() =
+  dome_gimbal_tilt_yoke_outer_w / 2;
+function dome_gimbal_tilt_yoke_inner_w() =
+  dome_gimbal_tilt_yoke_outer_w - 2 * dome_gimbal_tilt_yoke_side_t;
+function dome_gimbal_tilt_servo_body_center_x() =
+  dome_gimbal_tilt_yoke_half_w()
+  - dome_gimbal_tilt_yoke_side_t
+  - dome_gimbal_servo_body_x / 2;
+function dome_gimbal_carriage_side_clearance() =
+  (dome_gimbal_tilt_yoke_inner_w()
+    - dome_gimbal_camera_laser_carriage_w) / 2;
+function dome_gimbal_camera_laser_required_w() =
+  2 * (
+    dome_gimbal_laser_center_x
+    + dome_gimbal_laser_d / 2
+  );
+function dome_gimbal_laser_saddle_wall() =
+  (dome_gimbal_laser_saddle_w
+    - dome_gimbal_laser_saddle_clearance_d) / 2;
+function dome_gimbal_carriage_edge_ligament() =
+  dome_gimbal_camera_laser_carriage_w / 2
+  - dome_gimbal_laser_center_x
+  - dome_gimbal_laser_saddle_w / 2;
+function dome_gimbal_mock_cradle_z() =
+  chamber_dome_bucket_floor_z() + chamber_dome_bucket_wall;
+function dome_gimbal_mock_pan_plate_z() =
+  dome_gimbal_mock_cradle_z()
+  + dome_gimbal_pan_cradle_h
+  + dome_gimbal_servo_body_z
+  + 1.0;
+function dome_gimbal_mock_yoke_z() =
+  dome_gimbal_mock_pan_plate_z() + dome_gimbal_pan_plate_h;
+function dome_gimbal_mock_tilt_axis_z() =
+  dome_gimbal_mock_yoke_z() + dome_gimbal_tilt_axis_z;
+function dome_gimbal_mock_carriage_top_z() =
+  dome_gimbal_mock_tilt_axis_z()
+  + dome_gimbal_camera_laser_carriage_h / 2;
+function dome_gimbal_mock_carriage_bottom_z() =
+  dome_gimbal_mock_tilt_axis_z()
+  - dome_gimbal_camera_laser_carriage_h / 2;
+function dome_gimbal_mock_dome_base_z() =
+  chamber_total_z();
+function dome_gimbal_mock_dome_top_z() =
+  dome_gimbal_mock_dome_base_z() + chamber_dome_outer_d / 2;
+function dome_gimbal_mock_max_payload_radius() =
+  sqrt(
+    pow(
+      dome_gimbal_laser_center_x
+      + dome_gimbal_laser_saddle_w / 2,
+      2
+    )
+    + pow(
+      dome_gimbal_camera_laser_carriage_plate_t / 2
+      + dome_gimbal_laser_len
+      + dome_gimbal_laser_saddle_extra_len,
+      2
+    )
+  );
+function dome_gimbal_mock_dome_radius_at_tilt_axis() =
+  sqrt(
+    pow(chamber_dome_outer_d / 2, 2)
+    - pow(
+      dome_gimbal_mock_tilt_axis_z()
+      - dome_gimbal_mock_dome_base_z(),
+      2
+    )
+  );
+function dome_gimbal_pan_mount_radius(mx, my) =
+  sqrt(pow(mx, 2) + pow(my, 2));
 function chamber_tray_opi_board_w() =
   chamber_tray_opi_board_y;
 function chamber_tray_opi_board_d() =
@@ -1569,6 +1660,96 @@ module _assert_dims() {
     && chamber_dome_mount_screw_radius - chamber_dome_mount_screw_clearance_d / 2
       > chamber_dome_bucket_lip_inner_d() / 2,
     "dome bucket lip screw centers must match the existing dome bolt pattern");
+  assert(dome_gimbal_servo_profile == "mg996r_standard_servo_profile_v1",
+    "dome gimbal expects the documented MG996R profile");
+  assert(dome_gimbal_servo_service_cutout_x >= 41.1
+      && dome_gimbal_servo_service_cutout_y >= 20.8,
+    "MG996R body cutout must be at least the documented serviceable size");
+  assert(dome_gimbal_servo_mount_x_a == -36.0
+      && dome_gimbal_servo_mount_x_b == 14.0
+      && dome_gimbal_servo_mount_y_abs == 5.0,
+    "MG996R pan-servo mount holes must use the shaft-centered reference pattern");
+  for (mx = [dome_gimbal_servo_mount_x_a, dome_gimbal_servo_mount_x_b]) {
+    for (my = [-dome_gimbal_servo_mount_y_abs, dome_gimbal_servo_mount_y_abs]) {
+      assert(
+        dome_gimbal_pan_mount_radius(mx, my)
+          + dome_gimbal_servo_mount_screw_clearance_d / 2
+          <= dome_gimbal_pan_cradle_radius()
+            - minimum_internal_edge_width,
+        "pan-servo mounting holes must retain minimum material to the cradle edge"
+      );
+    }
+  }
+  assert(dome_gimbal_pan_cradle_radial_clearance()
+      >= minimum_internal_edge_width,
+    "pan-servo cradle needs at least 3 mm radial clearance inside the bucket");
+  assert(dome_gimbal_pan_plate_radial_clearance()
+      >= minimum_internal_edge_width,
+    "pan plate needs at least 3 mm radial clearance inside the bucket");
+  assert(dome_gimbal_pan_cradle_h >= minimum_wall_thickness
+      && dome_gimbal_pan_plate_h >= minimum_wall_thickness
+      && dome_gimbal_tilt_yoke_base_h >= minimum_wall_thickness
+      && dome_gimbal_tilt_yoke_side_t >= minimum_wall_thickness
+      && dome_gimbal_camera_laser_carriage_plate_t >= minimum_wall_thickness,
+    "dome gimbal primary printed walls/plates must meet the 3 mm minimum");
+  assert(dome_gimbal_tilt_servo_support_rib_w >= minimum_wall_thickness
+      && dome_gimbal_tilt_servo_support_rib_h >= minimum_wall_thickness,
+    "tilt-servo support ribs must meet the 3 mm minimum");
+  assert(dome_gimbal_horn_center_screw_access_d >= 7.0,
+    "servo horn receiver must preserve center-screw access");
+  assert(dome_gimbal_horn_pocket_arm_w >= minimum_internal_edge_width,
+    "servo horn receiver cross arms need printable material width");
+  assert(dome_gimbal_tilt_yoke_inner_w()
+      > dome_gimbal_camera_laser_carriage_w,
+    "camera/laser carriage needs clearance between the yoke side plates");
+  assert(dome_gimbal_carriage_side_clearance() >= 0.5,
+    "camera/laser carriage needs mechanical side clearance inside the yoke");
+  assert(dome_gimbal_camera_laser_required_w()
+      + 2 * minimum_internal_edge_width
+      <= dome_gimbal_camera_laser_carriage_w,
+    "camera plus two laser bodies need minimum side material on the carriage");
+  assert(dome_gimbal_laser_saddle_wall()
+      >= minimum_internal_edge_width,
+    "laser saddles need at least 3 mm material around the 12 mm modules");
+  assert(dome_gimbal_carriage_edge_ligament()
+      >= minimum_internal_edge_width,
+    "laser saddle outer edge must retain at least 3 mm material");
+  assert(dome_gimbal_camera_mount_spacing
+      + dome_gimbal_camera_mount_screw_clearance_d
+      + 2 * minimum_internal_edge_width
+      <= min(
+        dome_gimbal_camera_laser_carriage_w,
+        dome_gimbal_camera_laser_carriage_h
+      ),
+    "starter camera mounting holes need minimum material on the printed carriage plate");
+  assert(
+    sqrt(
+      pow(dome_gimbal_tilt_yoke_half_w(), 2)
+      + pow(dome_gimbal_tilt_yoke_base_d / 2, 2)
+    )
+      <= dome_gimbal_bucket_inner_radius(),
+    "tilt yoke rotating base must fit through the bucket inner diameter"
+  );
+  assert(
+    sqrt(
+      pow(dome_gimbal_tilt_yoke_half_w(), 2)
+      + pow(dome_gimbal_tilt_yoke_side_d / 2, 2)
+    )
+      <= dome_gimbal_bucket_inner_radius(),
+    "tilt yoke side plates must fit through the bucket inner diameter"
+  );
+  assert(dome_gimbal_mock_carriage_top_z()
+      <= dome_gimbal_mock_dome_top_z(),
+    "camera/laser carriage top exceeds the acrylic dome height");
+  assert(dome_gimbal_mock_carriage_bottom_z()
+      >= chamber_total_z(),
+    "camera/laser carriage bottom must remain above the bucket lip plane");
+  assert(dome_gimbal_mock_max_payload_radius()
+      <= dome_gimbal_mock_dome_radius_at_tilt_axis(),
+    "camera/laser payload exceeds the acrylic dome radius at the tilt axis");
+  assert(chamber_dome_bucket_passage_w
+      >= dome_gimbal_camera_laser_carriage_wire_slot_w,
+    "bucket passthrough must accommodate the gimbal wire bundle");
   assert(chamber_tray_wall == 3,
     "right chamber tray is intentionally fixed at 3 mm wall thickness for this study");
   assert(chamber_tray_board_clearance_xy >= minimum_internal_edge_width,
@@ -3272,6 +3453,676 @@ module _dome_bucket_body() {
   }
 }
 
+module _dome_bucket_cutaway_body() {
+  intersection() {
+    _dome_bucket_body();
+    translate([
+      0,
+      chamber_dome_bucket_outer_d() / 4,
+      chamber_dome_bucket_total_h() / 2
+    ])
+      cube([
+        chamber_dome_bucket_lip_outer_d() + 2,
+        chamber_dome_bucket_outer_d() / 2 + 2,
+        chamber_dome_bucket_total_h() + 2
+      ], center = true);
+  }
+}
+
+module _dome_shell_cutaway_body() {
+  intersection() {
+    sphere(d = chamber_dome_outer_d, $fn = 128);
+    translate([0, 0, chamber_dome_outer_d / 4])
+      cube([
+        chamber_dome_outer_d,
+        chamber_dome_outer_d,
+        chamber_dome_outer_d / 2
+      ], center = true);
+    translate([
+      0,
+      chamber_dome_outer_d / 4,
+      chamber_dome_outer_d / 4
+    ])
+      cube([
+        chamber_dome_outer_d + 2,
+        chamber_dome_outer_d / 2 + 2,
+        chamber_dome_outer_d / 2 + 2
+      ], center = true);
+  }
+}
+
+module _dome_gimbal_obround_slot_y(slot_w, slot_d, cut_h) {
+  hull() {
+    for (sy = [-1, 1]) {
+      translate([0, sy * (slot_d - slot_w) / 2, cut_h / 2])
+        cylinder(d = slot_w, h = cut_h, center = true, $fn = 28);
+    }
+  }
+}
+
+module _dome_gimbal_servo_mount_hole_cut(x, y, cut_h) {
+  translate([x, y, -0.4])
+    cylinder(
+      d = dome_gimbal_servo_mount_screw_clearance_d,
+      h = cut_h + 0.8,
+      center = false,
+      $fn = 32
+    );
+}
+
+module _dome_gimbal_tilt_base_mount_cut(x, y, cut_h) {
+  translate([x, y, -0.4])
+    cylinder(
+      d = dome_gimbal_tilt_base_mount_screw_clearance_d,
+      h = cut_h + 0.8,
+      center = false,
+      $fn = 32
+    );
+}
+
+module _dome_gimbal_horn_receiver_cuts(cut_h) {
+  translate([0, 0, dome_gimbal_horn_pocket_depth / 2 - 0.1])
+    cube([
+      dome_gimbal_horn_pocket_arm_l,
+      dome_gimbal_horn_pocket_arm_w,
+      dome_gimbal_horn_pocket_depth + 0.2
+    ], center = true);
+
+  translate([0, 0, dome_gimbal_horn_pocket_depth / 2 - 0.1])
+    cube([
+      dome_gimbal_horn_pocket_arm_w,
+      dome_gimbal_horn_pocket_arm_l,
+      dome_gimbal_horn_pocket_depth + 0.2
+    ], center = true);
+
+  translate([0, 0, -0.4])
+    cylinder(
+      d = dome_gimbal_horn_hub_clearance_d,
+      h = dome_gimbal_horn_pocket_depth + 0.8,
+      center = false,
+      $fn = 48
+    );
+
+  translate([0, 0, -0.4])
+    cylinder(
+      d = dome_gimbal_horn_center_screw_access_d,
+      h = cut_h + 0.8,
+      center = false,
+      $fn = 40
+    );
+
+  for (a = [0, 90]) {
+    rotate([0, 0, a])
+      for (x = [-dome_gimbal_horn_pocket_arm_l / 4,
+                dome_gimbal_horn_pocket_arm_l / 4]) {
+        translate([x, 0, -0.4])
+          cylinder(
+            d = dome_gimbal_horn_mount_screw_d,
+            h = cut_h + 0.8,
+            center = false,
+            $fn = 24
+          );
+      }
+  }
+}
+
+module _dome_gimbal_pan_servo_cradle_body() {
+  cut_h = dome_gimbal_pan_cradle_h
+    + dome_gimbal_pan_cradle_guide_wall_h
+    + dome_gimbal_servo_mount_pad_h
+    + 1.0;
+
+  difference() {
+    union() {
+      cylinder(
+        d = dome_gimbal_pan_cradle_d,
+        h = dome_gimbal_pan_cradle_h,
+        center = false,
+        $fn = 128
+      );
+
+      for (mx = [
+        dome_gimbal_servo_mount_x_a,
+        dome_gimbal_servo_mount_x_b
+      ]) {
+        for (my = [
+          -dome_gimbal_servo_mount_y_abs,
+          dome_gimbal_servo_mount_y_abs
+        ]) {
+          translate([mx, my, dome_gimbal_pan_cradle_h - 0.2])
+            cylinder(
+              d = dome_gimbal_servo_mount_pad_d,
+              h = dome_gimbal_servo_mount_pad_h + 0.2,
+              center = false,
+              $fn = 48
+            );
+        }
+      }
+
+      for (sy = [-1, 1]) {
+        translate([
+          dome_gimbal_pan_servo_body_center_x(),
+          sy * (
+            dome_gimbal_servo_service_cutout_y / 2
+            + dome_gimbal_pan_cradle_guide_wall_t / 2
+          ),
+          dome_gimbal_pan_cradle_h
+            + dome_gimbal_pan_cradle_guide_wall_h / 2
+            - 0.1
+        ])
+          cube([
+            dome_gimbal_servo_service_cutout_x
+              + 2 * dome_gimbal_pan_cradle_guide_wall_t,
+            dome_gimbal_pan_cradle_guide_wall_t,
+            dome_gimbal_pan_cradle_guide_wall_h + 0.2
+          ], center = true);
+      }
+    }
+
+    translate([
+      dome_gimbal_pan_servo_body_center_x(),
+      0,
+      dome_gimbal_pan_cradle_h
+        - dome_gimbal_pan_cradle_pocket_depth / 2
+        + 0.02
+    ])
+      cube([
+        dome_gimbal_servo_service_cutout_x,
+        dome_gimbal_servo_service_cutout_y,
+        dome_gimbal_pan_cradle_pocket_depth + 0.08
+      ], center = true);
+
+    translate([
+      dome_gimbal_pan_servo_body_center_x(),
+      -dome_gimbal_pan_cradle_wire_slot_d / 2,
+      -0.4
+    ])
+      _dome_gimbal_obround_slot_y(
+        dome_gimbal_pan_cradle_wire_slot_w,
+        dome_gimbal_pan_cradle_wire_slot_d,
+        cut_h
+      );
+
+    for (mx = [
+      dome_gimbal_servo_mount_x_a,
+      dome_gimbal_servo_mount_x_b
+    ]) {
+      for (my = [
+        -dome_gimbal_servo_mount_y_abs,
+        dome_gimbal_servo_mount_y_abs
+      ]) {
+        _dome_gimbal_servo_mount_hole_cut(mx, my, cut_h);
+      }
+    }
+  }
+}
+
+module _dome_gimbal_pan_rotating_plate_body() {
+  cut_h = dome_gimbal_pan_plate_h + dome_gimbal_pan_hard_stop_h + 1.0;
+
+  difference() {
+    union() {
+      cylinder(
+        d = dome_gimbal_pan_plate_d,
+        h = dome_gimbal_pan_plate_h,
+        center = false,
+        $fn = 128
+      );
+
+      for (sx = [-1, 1]) {
+        translate([
+          sx * dome_gimbal_pan_plate_d / 4,
+          dome_gimbal_pan_plate_radius()
+            - dome_gimbal_pan_hard_stop_d / 2,
+          dome_gimbal_pan_plate_h - 0.2
+        ])
+          cube([
+            dome_gimbal_pan_hard_stop_w,
+            dome_gimbal_pan_hard_stop_d,
+            dome_gimbal_pan_hard_stop_h + 0.2
+          ], center = true);
+      }
+    }
+
+    _dome_gimbal_horn_receiver_cuts(cut_h);
+
+    translate([
+      0,
+      -dome_gimbal_pan_plate_cable_slot_d / 2,
+      -0.4
+    ])
+      _dome_gimbal_obround_slot_y(
+        dome_gimbal_pan_plate_cable_slot_w,
+        dome_gimbal_pan_plate_cable_slot_d,
+        cut_h
+      );
+
+    for (sx = [-1, 1]) {
+      for (sy = [-1, 1]) {
+        _dome_gimbal_tilt_base_mount_cut(
+          sx * dome_gimbal_tilt_base_mount_spacing_x / 2,
+          sy * dome_gimbal_tilt_base_mount_spacing_y / 2,
+          cut_h
+        );
+      }
+    }
+  }
+}
+
+module _dome_gimbal_tilt_yoke_body() {
+  side_x_abs =
+    dome_gimbal_tilt_yoke_outer_w / 2
+    - dome_gimbal_tilt_yoke_side_t / 2;
+  cut_h = dome_gimbal_tilt_yoke_side_t + 1.2;
+
+  difference() {
+    union() {
+      _rounded_box(
+        dome_gimbal_tilt_yoke_outer_w,
+        dome_gimbal_tilt_yoke_base_d,
+        dome_gimbal_tilt_yoke_base_h,
+        min(4, dome_gimbal_tilt_yoke_base_d / 4)
+      );
+
+      for (sx = [-1, 1]) {
+        translate([
+          sx * side_x_abs,
+          0,
+          dome_gimbal_tilt_yoke_side_h / 2
+        ])
+          cube([
+            dome_gimbal_tilt_yoke_side_t,
+            dome_gimbal_tilt_yoke_side_d,
+            dome_gimbal_tilt_yoke_side_h
+          ], center = true);
+      }
+
+      for (sx = [-1, 1]) {
+        translate([
+          sx * side_x_abs,
+          0,
+          dome_gimbal_tilt_axis_z
+        ])
+          rotate([0, 90, 0])
+            cylinder(
+              d = dome_gimbal_tilt_passive_boss_d,
+              h = dome_gimbal_tilt_yoke_side_t + 2.0,
+              center = true,
+              $fn = 48
+            );
+      }
+
+      for (sy = [-1, 1]) {
+        translate([
+          dome_gimbal_tilt_servo_body_center_x(),
+          sy * dome_gimbal_tilt_servo_support_rib_y,
+          dome_gimbal_tilt_yoke_base_h
+            + dome_gimbal_tilt_servo_support_rib_h / 2
+            - 0.2
+        ])
+          cube([
+            dome_gimbal_servo_body_x,
+            dome_gimbal_tilt_servo_support_rib_w,
+            dome_gimbal_tilt_servo_support_rib_h + 0.4
+          ], center = true);
+      }
+
+      translate([
+        0,
+        -dome_gimbal_tilt_yoke_base_d / 2
+          + minimum_structural_overlap / 2,
+        dome_gimbal_tilt_yoke_base_h
+      ])
+        cube([
+          dome_gimbal_tilt_yoke_outer_w
+            - 2 * dome_gimbal_tilt_yoke_side_t,
+          minimum_structural_overlap,
+          minimum_structural_overlap
+        ], center = true);
+    }
+
+    for (sx = [-1, 1]) {
+      for (sy = [-1, 1]) {
+        _dome_gimbal_tilt_base_mount_cut(
+          sx * dome_gimbal_tilt_base_mount_spacing_x / 2,
+          sy * dome_gimbal_tilt_base_mount_spacing_y / 2,
+          dome_gimbal_tilt_yoke_base_h + 0.8
+        );
+      }
+    }
+
+    for (sx = [-1, 1]) {
+      translate([
+        sx * side_x_abs,
+        0,
+        dome_gimbal_tilt_axis_z
+      ])
+        rotate([0, 90, 0])
+          cylinder(
+            d = dome_gimbal_tilt_axis_clearance_d,
+            h = cut_h,
+            center = true,
+            $fn = 48
+          );
+    }
+
+    translate([
+      0,
+      -dome_gimbal_tilt_yoke_base_d / 2
+        + dome_gimbal_pan_plate_cable_slot_w / 2,
+      -0.4
+    ])
+      _dome_gimbal_obround_slot_y(
+        dome_gimbal_pan_plate_cable_slot_w,
+        dome_gimbal_tilt_yoke_base_d / 2,
+        dome_gimbal_tilt_yoke_base_h + 0.8
+      );
+  }
+}
+
+module _dome_gimbal_camera_laser_carriage_body() {
+  saddle_len = dome_gimbal_laser_len + dome_gimbal_laser_saddle_extra_len;
+  saddle_center_y =
+    dome_gimbal_camera_laser_carriage_plate_t / 2
+    + saddle_len / 2;
+  pivot_z = dome_gimbal_camera_laser_carriage_h / 2;
+
+  difference() {
+    union() {
+      translate([
+        0,
+        0,
+        dome_gimbal_camera_laser_carriage_h / 2
+      ])
+        cube([
+          dome_gimbal_camera_laser_carriage_w,
+          dome_gimbal_camera_laser_carriage_plate_t,
+          dome_gimbal_camera_laser_carriage_h
+        ], center = true);
+
+      for (sx = [-1, 1]) {
+        translate([
+          sx * dome_gimbal_laser_center_x,
+          saddle_center_y,
+          pivot_z
+        ])
+          cube([
+            dome_gimbal_laser_saddle_w,
+            saddle_len,
+            dome_gimbal_laser_saddle_h
+          ], center = true);
+      }
+
+      for (sx = [-1, 1]) {
+        translate([
+          sx * dome_gimbal_camera_laser_carriage_w / 2,
+          0,
+          pivot_z
+        ])
+          rotate([0, 90, 0])
+            cylinder(
+              d = dome_gimbal_camera_laser_carriage_pivot_boss_d,
+              h = dome_gimbal_camera_laser_carriage_pivot_boss_l,
+              center = true,
+              $fn = 48
+            );
+      }
+    }
+
+    translate([0, 0, pivot_z])
+      rotate([90, 0, 0])
+        cylinder(
+          d = dome_gimbal_camera_lens_clearance_d,
+          h = dome_gimbal_camera_laser_carriage_plate_t + 1.2,
+          center = true,
+          $fn = 48
+        );
+
+    for (sx = [-1, 1]) {
+      for (sz = [-1, 1]) {
+        translate([
+          sx * dome_gimbal_camera_mount_spacing / 2,
+          0,
+          pivot_z + sz * dome_gimbal_camera_mount_spacing / 2
+        ])
+          rotate([90, 0, 0])
+            cylinder(
+              d = dome_gimbal_camera_mount_screw_clearance_d,
+              h = dome_gimbal_camera_laser_carriage_plate_t + 1.2,
+              center = true,
+              $fn = 28
+            );
+      }
+    }
+
+    translate([0, 0, pivot_z - 12])
+      cube([
+        dome_gimbal_camera_laser_carriage_wire_slot_w,
+        dome_gimbal_camera_laser_carriage_plate_t + 1.2,
+        dome_gimbal_camera_laser_carriage_wire_slot_h
+      ], center = true);
+
+    for (sx = [-1, 1]) {
+      translate([
+        sx * dome_gimbal_laser_center_x,
+        saddle_center_y,
+        pivot_z
+      ])
+        rotate([90, 0, 0])
+          cylinder(
+            d = dome_gimbal_laser_saddle_clearance_d,
+            h = saddle_len + 1.2,
+            center = true,
+            $fn = 48
+          );
+
+      translate([
+        sx * dome_gimbal_laser_center_x,
+        0,
+        pivot_z
+      ])
+        rotate([90, 0, 0])
+          cylinder(
+            d = dome_gimbal_laser_saddle_clearance_d,
+            h = dome_gimbal_camera_laser_carriage_plate_t + 1.2,
+            center = true,
+            $fn = 48
+          );
+
+      translate([
+        sx * dome_gimbal_laser_center_x,
+        saddle_center_y + saddle_len / 2 - 1.5,
+        pivot_z - dome_gimbal_laser_saddle_h / 2
+          + dome_gimbal_laser_wire_slot_h / 2
+      ])
+        cube([
+          dome_gimbal_laser_wire_slot_w,
+          4.0,
+          dome_gimbal_laser_wire_slot_h
+        ], center = true);
+
+      translate([
+        sx * dome_gimbal_laser_center_x,
+        saddle_center_y,
+        pivot_z + dome_gimbal_laser_saddle_h / 2
+      ])
+        cube([
+          dome_gimbal_laser_saddle_w + 1.0,
+          saddle_len + 1.0,
+          dome_gimbal_laser_saddle_h
+        ], center = true);
+    }
+  }
+}
+
+module _dome_gimbal_camera_board_proxy() {
+  color([0.02, 0.02, 0.024, 1.0])
+    translate([
+      0,
+      -dome_gimbal_camera_laser_carriage_plate_t / 2 - 0.8,
+      dome_gimbal_camera_laser_carriage_h / 2
+    ])
+      cube([
+        dome_gimbal_camera_board_w,
+        dome_gimbal_camera_board_t,
+        dome_gimbal_camera_board_h
+      ], center = true);
+
+  color([0.03, 0.03, 0.035, 1.0])
+    translate([
+      0,
+      -dome_gimbal_camera_laser_carriage_plate_t / 2 - 2.2,
+      dome_gimbal_camera_laser_carriage_h / 2
+    ])
+      rotate([90, 0, 0])
+        cylinder(d = 14, h = 4, center = true, $fn = 40);
+}
+
+module _dome_gimbal_laser_proxies() {
+  saddle_len = dome_gimbal_laser_len + dome_gimbal_laser_saddle_extra_len;
+  laser_center_y =
+    dome_gimbal_camera_laser_carriage_plate_t / 2
+    + dome_gimbal_laser_len / 2;
+  pivot_z = dome_gimbal_camera_laser_carriage_h / 2;
+
+  for (sx = [-1, 1]) {
+    color([0.55, 0.05, 0.04, 0.86])
+      translate([
+        sx * dome_gimbal_laser_center_x,
+        laser_center_y,
+        pivot_z
+      ])
+        rotate([90, 0, 0])
+          cylinder(
+            d = dome_gimbal_laser_d,
+            h = dome_gimbal_laser_len,
+            center = true,
+            $fn = 40
+          );
+
+    color([0.02, 0.02, 0.02, 1.0])
+      translate([
+        sx * dome_gimbal_laser_center_x,
+        dome_gimbal_camera_laser_carriage_plate_t / 2 + saddle_len,
+        pivot_z - 2
+      ])
+        cube([3, 10, 2], center = true);
+  }
+}
+
+module _dome_gimbal_pan_servo_proxy() {
+  color([0.18, 0.18, 0.17, 0.72])
+    translate([
+      dome_gimbal_pan_servo_body_center_x(),
+      0,
+      dome_gimbal_servo_body_z / 2
+    ])
+      cube([
+        dome_gimbal_servo_body_x,
+        dome_gimbal_servo_body_y,
+        dome_gimbal_servo_body_z
+      ], center = true);
+
+  color([0.72, 0.72, 0.66, 0.86])
+    translate([0, 0, dome_gimbal_servo_body_z + 1.5])
+      cylinder(d = 10, h = 3, center = true, $fn = 40);
+}
+
+module _dome_gimbal_tilt_servo_proxy() {
+  color([0.18, 0.18, 0.17, 0.72])
+    translate([
+      dome_gimbal_tilt_servo_body_center_x(),
+      0,
+      dome_gimbal_tilt_yoke_base_h
+        + dome_gimbal_servo_body_y / 2
+    ])
+      cube([
+        dome_gimbal_servo_body_x,
+        dome_gimbal_servo_body_y,
+        dome_gimbal_servo_body_y
+      ], center = true);
+
+  color([0.72, 0.72, 0.66, 0.86])
+    translate([
+      dome_gimbal_tilt_yoke_half_w()
+        - dome_gimbal_tilt_yoke_side_t / 2,
+      0,
+      dome_gimbal_tilt_axis_z
+    ])
+      rotate([0, 90, 0])
+        cylinder(d = 10, h = 4, center = true, $fn = 40);
+}
+
+module _dome_gimbal_wire_route_proxy() {
+  color([0.02, 0.02, 0.02, 1.0]) {
+    translate([
+      0,
+      0,
+      chamber_dome_bucket_passage_center_z()
+    ])
+      cube([
+        dome_gimbal_camera_laser_carriage_wire_slot_w,
+        chamber_dome_bucket_outer_d() / 2,
+        3
+      ], center = true);
+
+    translate([
+      chamber_dome_bucket_outer_d() / 4,
+      0,
+      chamber_dome_bucket_passage_center_z() + 3
+    ])
+      cube([
+        chamber_dome_bucket_outer_d() / 2,
+        4,
+        3
+      ], center = true);
+  }
+}
+
+module _dome_gimbal_clearance_mockup_body() {
+  color([0.12, 0.65, 0.64, 0.28])
+    _dome_bucket_cutaway_body();
+
+  color([0.58, 0.82, 0.98, 0.22])
+    translate([0, 0, dome_gimbal_mock_dome_base_z()])
+      _dome_shell_cutaway_body();
+
+  translate([0, 0, dome_gimbal_mock_cradle_z()])
+    color([0.10, 0.11, 0.105, 1.0])
+      _dome_gimbal_pan_servo_cradle_body();
+
+  translate([0, 0, dome_gimbal_mock_cradle_z() + dome_gimbal_pan_cradle_h])
+    _dome_gimbal_pan_servo_proxy();
+
+  rotate([0, 0, dome_gimbal_mockup_pan_angle]) {
+    translate([0, 0, dome_gimbal_mock_pan_plate_z()])
+      color([0.09, 0.12, 0.12, 1.0])
+        _dome_gimbal_pan_rotating_plate_body();
+
+    translate([0, 0, dome_gimbal_mock_yoke_z()])
+      color([0.12, 0.18, 0.18, 1.0])
+        _dome_gimbal_tilt_yoke_body();
+
+    translate([0, 0, dome_gimbal_mock_yoke_z()])
+      _dome_gimbal_tilt_servo_proxy();
+
+    translate([0, 0, dome_gimbal_mock_tilt_axis_z()])
+      rotate([dome_gimbal_mockup_tilt_angle, 0, 0])
+        translate([
+          0,
+          0,
+          -dome_gimbal_camera_laser_carriage_h / 2
+        ]) {
+          color([0.16, 0.20, 0.20, 1.0])
+            _dome_gimbal_camera_laser_carriage_body();
+          _dome_gimbal_camera_board_proxy();
+          _dome_gimbal_laser_proxies();
+        }
+  }
+
+  _dome_gimbal_wire_route_proxy();
+}
+
 module _right_chamber_tray_backplate_screw_cut_for_tray(sx, sz) {
   screw_z = sz < 0
     ? chamber_tray_backplate_screw_low_z()
@@ -3950,6 +4801,31 @@ module cyberdeck_right_chamber_tray() {
 module cyberdeck_right_chamber_rpi_side_tray() {
   _assert_dims();
   _right_chamber_rpi_side_tray_body();
+}
+
+module cyberdeck_dome_pan_servo_cradle() {
+  _assert_dims();
+  _dome_gimbal_pan_servo_cradle_body();
+}
+
+module cyberdeck_dome_pan_rotating_plate() {
+  _assert_dims();
+  _dome_gimbal_pan_rotating_plate_body();
+}
+
+module cyberdeck_dome_tilt_servo_yoke() {
+  _assert_dims();
+  _dome_gimbal_tilt_yoke_body();
+}
+
+module cyberdeck_dome_camera_laser_carriage() {
+  _assert_dims();
+  _dome_gimbal_camera_laser_carriage_body();
+}
+
+module cyberdeck_dome_gimbal_clearance_mockup() {
+  _assert_dims();
+  _dome_gimbal_clearance_mockup_body();
 }
 
 module cyberdeck_right_io_panel() {

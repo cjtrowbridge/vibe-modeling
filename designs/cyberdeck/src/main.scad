@@ -15,6 +15,11 @@
 // 12 = right chamber Orange Pi tray
 // 13 = removable full-width rear-roof I/O panel
 // 14 = right chamber Raspberry Pi side tray
+// 15 = dome pan servo cradle
+// 16 = dome pan rotating plate
+// 17 = dome tilt servo yoke
+// 18 = dome camera and dual-laser carriage
+// 19 = dome gimbal clearance mockup
 
 include <lib/defaults.scad>;
 include <parts/cyberdeck.scad>;
@@ -51,6 +56,16 @@ if (_part_id == 0) {
   cyberdeck_right_io_panel();
 } else if (_part_id == 14) {
   cyberdeck_right_chamber_rpi_side_tray();
+} else if (_part_id == 15) {
+  cyberdeck_dome_pan_servo_cradle();
+} else if (_part_id == 16) {
+  cyberdeck_dome_pan_rotating_plate();
+} else if (_part_id == 17) {
+  cyberdeck_dome_tilt_servo_yoke();
+} else if (_part_id == 18) {
+  cyberdeck_dome_camera_laser_carriage();
+} else if (_part_id == 19) {
+  cyberdeck_dome_gimbal_clearance_mockup();
 } else {
   assert(false, str("Unknown part_id: ", _part_id));
 }

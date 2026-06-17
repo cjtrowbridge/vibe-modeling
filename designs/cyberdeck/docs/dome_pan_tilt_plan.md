@@ -1,6 +1,6 @@
 # Cyberdeck Dome Pan/Tilt Apparatus Plan
 
-This document records the first implementation plan for the sensor dome mechanism before any OpenSCAD geometry is added.
+This document records the first implementation plan and implementation status for the sensor dome mechanism.
 
 The goal is a serviceable MG996R-based pan/tilt gimbal inside the existing dome bucket insert. The mechanism carries one `32 mm x 32 mm` USB PCB camera and two cylindrical laser diode modules, one on each side of the camera.
 
@@ -189,6 +189,60 @@ Implement the mechanism as separate parts before integrating into the bucket:
    - assembled swept-volume study inside the current dome bucket and acrylic dome envelope.
 
 Do not combine these into the existing bucket STL until their clearances are visually and dimensionally verified.
+
+## Revision 0004 Implementation Status
+
+Revision `rev_0004` implements the first standalone prototype parts for the dome gimbal:
+
+1. `cyberdeck_dome_pan_servo_cradle`
+   - Fixed circular cradle that drops into the existing dome bucket.
+   - Uses the MG996R shaft-centered mounting pattern `[-36, +/-5]`, `[14, +/-5]`.
+   - Keeps the pan shaft on the bucket centerline while offsetting the servo body correctly.
+   - Provides a body service pocket, four M3-compatible servo mounting holes, guide walls, and a wire relief slot.
+2. `cyberdeck_dome_pan_rotating_plate`
+   - Circular rotating stage sized to clear the bucket inner wall.
+   - Includes a starter stock-horn receiver pocket with center-screw access and anti-rotation arm geometry.
+   - Includes cable passage and yoke mounting holes.
+   - Includes first-pass hard-stop blocks for limited pan travel and wire-wrap prevention.
+3. `cyberdeck_dome_tilt_servo_yoke`
+   - Low-profile U-shaped tilt support that mounts to the pan plate.
+   - Uses two side plates with pivot clearances so the camera/laser carriage is supported on both sides.
+   - Includes low MG996R support ribs on the base rather than a tall full-height side mount, preserving dome clearance.
+   - Includes base mounting holes and a central cable relief.
+4. `cyberdeck_dome_camera_laser_carriage`
+   - Holds a `32 mm x 32 mm` camera board proxy in the center.
+   - Provides one `12 mm` laser module saddle on each side of the camera.
+   - Provides rear laser wire exits, camera pigtail relief, four starter camera-board screw holes, and side pivot bosses.
+5. `cyberdeck_dome_gimbal_clearance_mockup`
+   - Assembles a cutaway bucket, `115 mm` dome envelope, pan servo proxy, pan plate, tilt yoke, tilt servo proxy, camera proxy, two laser proxies, and wire-route proxies.
+   - The cutaway is intentional so the camera, dual lasers, servo stack, and wire routes can be visually inspected in generated PNGs.
+
+The first implementation uses the documented `115 mm` acrylic dome envelope and the existing bucket insert geometry. The bucket remains the removable chassis interface; the pan/tilt parts are separate prototype prints.
+
+### Revision 0004 Verification
+
+- Complete manifest build for `designs/cyberdeck/configs/rev_0004.json` passed.
+- Current output audit passed at `output/cyberdeck`.
+- Immutable revision artifact audit passed at `revisions/cyberdeck/rev_0004`.
+- Expected artifact set: `20` STL files and `340` PNG files.
+- Actual artifact set: `20` STL files and `340` PNG files.
+- Reviewed renders:
+  - assembled cutaway dome/gimbal mockup,
+  - front/top/right orthographic mockup views,
+  - bucket insert,
+  - pan servo cradle,
+  - pan rotating plate,
+  - tilt yoke,
+  - camera and dual-laser carriage.
+
+### Revision 0004 Prototype Limits
+
+- This is ready as a first mechanical prototype print, not as a final hardware-fit release.
+- The MG996R body and mounting pattern are governed by the standard profile, but the stock horn receiver pocket still uses starter dimensions.
+- The actual horn type, horn thickness, hub diameter, and horn screw pattern must be measured before relying on the horn receiver for final torque transfer.
+- The camera PCB mounting holes are starter placeholders; the actual PCB hole diameter and center spacing must be measured before finalizing screw bosses.
+- Camera pigtail bend radius, laser wire stiffness, and servo lead routing must be validated with the real parts before expanding tilt/pan travel.
+- The low-profile tilt servo support is a packaging-first starter layout. Final tilt-servo retention should be revised after confirming the actual servo, horn, and armature hardware.
 
 ## Required Assertions And Reviews
 

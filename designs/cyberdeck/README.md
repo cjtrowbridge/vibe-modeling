@@ -30,6 +30,11 @@ First-draft visual mockup and design brief for a cyberdeck OpenSCAD model.
 - `part_id = 12`: right chamber Orange Pi tray
 - `part_id = 13`: removable full-width rear-roof I/O panel
 - `part_id = 14`: right chamber Raspberry Pi side tray
+- `part_id = 15`: dome pan servo cradle
+- `part_id = 16`: dome pan rotating plate
+- `part_id = 17`: dome tilt servo yoke
+- `part_id = 18`: dome camera and dual-laser carriage
+- `part_id = 19`: dome gimbal clearance mockup
 
 ## Design Notes
 
@@ -38,6 +43,46 @@ First-draft visual mockup and design brief for a cyberdeck OpenSCAD model.
 - The plan requires stock servo horns captured in printed receiver pockets instead of direct printed splines.
 - The first implementation should be a serviceable gimbal cartridge with a supported pan plate, two-sided tilt yoke, camera/dual-laser carriage, hard stops, wire relief, and swept-volume checks inside the acrylic dome.
 - Actual horn and camera mounting dimensions still need measurement before final receiver pockets and camera screw bosses are modeled.
+- The first CAD implementation exports the dome mechanism as separate prototype units rather than merging them into the existing bucket STL:
+  - pan servo cradle,
+  - pan rotating plate,
+  - tilt servo yoke,
+  - camera plus dual-laser carriage,
+  - assembled bucket/dome clearance mockup.
+- The prototype uses the documented MG996R shaft-centered pan mount pattern and stock-horn receiver pockets with center-screw access.
+- The tilt stage is intentionally low-profile so the `32 mm x 32 mm` camera board and two `12 mm x 35 mm` laser modules remain within the `115 mm` acrylic dome envelope.
+- The laser carriage includes one laser saddle on each side of the camera, rear wire exits, a camera pigtail relief, and cable-routing clearance toward the existing front/side bucket passthrough windows.
+- The horn receiver and camera mounting-hole positions remain starter defaults pending caliper measurement of the actual horn and camera PCB.
+
+## Revision 0004 Dome Pan/Tilt Gimbal Prototype
+
+- Revision `rev_0004` adds the first standalone dome gimbal prototype parts to the manifest.
+- The implemented mechanism uses a fixed vertical MG996R pan servo cradle in the bucket, a horn-driven rotating pan plate, a low-profile tilt yoke, and a separate camera/dual-laser carriage.
+- The carriage centers a `32 mm x 32 mm` camera board proxy and places one `12 mm x 35 mm` laser module saddle on each side of the camera.
+- The assembled clearance mockup uses a cutaway bucket and the `115 mm` acrylic dome envelope so the servo stack, pan plate, camera, two lasers, and wire-route proxies can be inspected.
+- The gimbal routes camera USB, laser wiring, and servo leads down through the rotating pan stage toward the bucket's existing front and side passthrough windows.
+- The pan servo cradle uses the documented MG996R shaft-centered hole pattern: `[-36, +/-5]`, `[14, +/-5]`.
+- The pan rotating plate includes a starter stock-horn receiver pocket with center-screw access and anti-rotation arm geometry rather than a printed spline.
+- The tilt stage is intentionally compact; it uses low MG996R support ribs instead of a tall side-mounted servo cage so the payload remains inside the dome envelope.
+- The new geometry includes direct assertions for the MG996R mount pattern, bucket radial clearance, dome height/radius clearance, laser saddle wall thickness, camera-board starter hole edge margins, yoke clearances, and wire-passthrough capacity.
+- Complete builds passed for both `revisions/cyberdeck/rev_0004` and `output/cyberdeck`.
+- Build audit result for the current output: `20` parts, `20` STL files, `340` PNG files, `360` modeled artifacts.
+- Reviewed renders include the cutaway assembled dome mockup, front/top/right orthographic mockup views, bucket insert, pan cradle, pan plate, tilt yoke, and camera/dual-laser carriage.
+- Prototype limit: this is suitable for first mechanical prototype printing, but the final horn receiver, tilt-servo retention, camera screw bosses, wire bend radii, and pan/tilt travel still need validation with actual hardware.
+
+### Revision 0004 Structural Review
+
+- Source revision/config reviewed: `designs/cyberdeck/configs/rev_0004.json`.
+- Structural minimums remain `3 mm` wall thickness, `3 mm` structural overlap, and `3 mm` minimum internal edge/material width.
+- The new gimbal parts use named dimensions and assertions for every critical clearance and minimum-material contract.
+- Pan cradle: the circular cradle, servo guide walls, servo mounting pads, and wire relief retain the required radial material to the bucket wall and around mounting holes by assertion.
+- Pan plate: the rotating stage fits inside the bucket with asserted radial clearance, keeps center-screw access, and uses non-circular horn-pocket arms for torque transfer.
+- Tilt yoke: side plates, base, ribs, pivot clearances, and mounting features meet the configured minimum material width by assertion.
+- Camera/laser carriage: the `32 mm` camera opening, four starter board holes, two `12 mm` laser saddles, pivot bosses, and rear wire exits retain asserted printed ligaments.
+- Dome clearance: the mockup asserts that the tilted camera/laser payload remains below the `115 mm` dome envelope and above the bucket floor/chamber top.
+- Wire routing: the bucket passthrough width is asserted to fit the first-pass gimbal wire bundle route.
+- Verification evidence: `rev_0004` complete manifest build and audit passed, and the cutaway/orthographic PNGs were visually reviewed.
+- Fabrication status: first prototype print only. Final hardware-fit print is blocked until the actual stock servo horn and camera PCB mounting dimensions are measured and folded into the model.
 
 ## Revision 0003 Rear-Roof I/O Study
 
