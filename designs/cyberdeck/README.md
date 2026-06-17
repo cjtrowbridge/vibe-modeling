@@ -54,9 +54,12 @@ First-draft visual mockup and design brief for a cyberdeck OpenSCAD model.
 - The roof frame overlaps the original `3 mm` housing roof through its full thickness rather than relying on coincident faces.
 - The I/O panel sits `2 mm` into the roof and remains `3 mm` proud of the surrounding surface.
 - The full-width panel is rotated `45 degrees` for its standalone export. Its rounded modeled footprint is approximately `207.4 mm x 207.4 mm`, inside the `220 mm x 220 mm` print bed.
-- The roof I/O panel retains the Raspberry USB-A, Orange USB-A, and Neural Jack openings and labels.
-- The left side of the removable roof I/O panel now includes two keyed `20 mm` rocker-switch openings labeled `Fans` and `Ultraviolet`.
-- The `Fans` and `Ultraviolet` labels sit in front of their switch openings.
+- The roof I/O panel retains the Raspberry USB-A, Orange USB-A, and Neural Jack openings.
+- The left side of the removable roof I/O panel includes keyed `20 mm` rocker-switch openings labeled `Fans` and `Ultraviolet`.
+- Two additional keyed `20 mm` rocker-switch openings provide Raspberry Pi and Orange Pi power-switch positions, paired with their matching USB-A panel jacks.
+- The Raspberry/Orange roof-panel order is Raspberry power switch, Raspberry USB-A, Orange power switch, Orange USB-A, then Neural Jack from left to right.
+- The Raspberry and Orange USB-A pair shifts right so the Orange USB-A installed flange retains `10 mm` from the Neural Jack opening.
+- The `Fans`, `Ultraviolet`, `Raspberry`, and `Orange` labels sit in front of their corresponding switch openings.
 - Each switch opening uses a `20 mm` circular cut plus a right-facing keyed notch, producing the specified `20.8 mm` keyed span and keeping the notches toward `+X`.
 - With the switch notch to the right, the intended installed orientation is back/off and forward/on.
 - The center-front lid carries a rear/top push-to-talk button and an additional front/bottom double-USB-A panel jack.
@@ -71,8 +74,8 @@ First-draft visual mockup and design brief for a cyberdeck OpenSCAD model.
 - A future adhesive blacklight LED strip can run horizontally along the inside face of the front wall across both chambers.
 - The center chamber-bonding walls and the left display-divider wall each receive a `15 mm` semicircular passage centered vertically at `z = 26.5 mm`.
 - Each passage starts at the front wall's interior face and curves rearward, preserving the complete `3 mm` wall-to-front structural overlap and leaving the exterior front face closed.
-- All four control labels use the same `5.48 mm` Bahnschrift SemiBold type size for cleaner strokes and less ornamentation.
-- The `Raspberry` label size is derived from measured Bahnschrift bounds: its rotated length is approximately `33.97 mm`, leaving at least `5 mm` to both depth edges of the `44 mm` roof panel and `5 mm` to the installed USB-A flange.
+- The main control labels use Bahnschrift SemiBold for cleaner strokes and less ornamentation.
+- The Raspberry/Orange switch labels use the largest shared front-of-switch label size that retains `3 mm` from the switch openings and panel front edge.
 - The Neural Jack label is anchored `5 mm` from the roof panel's right edge, and its mounting hole sits `5 mm` immediately to the left of the text.
 - The fixed `Power Cell` USB-C opening moves to the lower rear wall of the left chamber.
 - Its cutter is centered on the `3 mm` rear-wall midplane and extends beyond both wall faces, ensuring the `23 mm` opening is a true through-hole rather than leaving an internal membrane.
@@ -92,8 +95,8 @@ First-draft visual mockup and design brief for a cyberdeck OpenSCAD model.
 - Screen and I/O clearance: the bulkhead-to-screen-recess ligament is approximately `3.011 mm`; direct assertions also protect every current USB-A, USB-C, and nearest roof-panel fastener opening from the new seam structure.
 - Front-lid rails: all three frames share the same rear datum; rail thickness is `3 mm`, rail width is `7 mm`, attachment overlap is `3 mm`, and the corner-pad-to-rail overlap is approximately `3.4 mm`.
 - Center-joint fasteners: the upper center M3 hole is at `z = 38 mm`; its shortest post-subtraction ligament to the angled screen recess is approximately `3.45 mm` and is enforced by a direct assertion.
-- Control-panel engraving: the common `5.48 mm` label size leaves approximately `5.016 mm` at the Raspberry label's limiting panel edges, `5 mm` to its installed connector flange, and `4.45 mm` of solid lid thickness below every engraving.
-- Roof-panel rocker switches: the two `20 mm` keyed switch cuts retain at least `3 mm` to the panel edges, support ledge, corner screw heads, existing I/O keepouts, and the hidden center-seam bulkhead.
+- Control-panel engraving: the shallow roof-panel and lid engravings retain more than `3 mm` of solid lid thickness below every engraving.
+- Roof-panel rocker switches: the four `20 mm` keyed switch cuts retain at least `3 mm` to the panel edges, support ledge, corner screw heads, adjacent I/O keepouts, and the hidden center-seam bulkhead.
 - Center-lid controls: the `28 mm` PTT and new `29 mm` USB-A holes retain at least `3 mm` printed material to lid edges, neighboring holes, and recessed corner fasteners.
 - Two-sided hardware clearance: the `35 mm` PTT and `31.75 mm` USB-A installed envelopes are checked identically above and below the lid.
 - Underside support clearance: matching circular reliefs remove the conflicting portions of the center-lid corner pads while retaining at least `3 mm` around every M3 support hole; the PTT relief intentionally notches the rear rail while retaining a `4.625 mm` throat.
@@ -132,12 +135,12 @@ First-draft visual mockup and design brief for a cyberdeck OpenSCAD model.
 - Arcade-button planning assumes a `28 mm` mounting hole, `34 mm` external button body, and at least `5 mm` of panel material around a mounting hole.
 - The center-front lid includes a rear/top `28 mm` arcade-button mounting hole for push-to-talk control and a new front/bottom `29 mm` double-USB-A mounting hole.
 - The installed push-to-talk cap/nut envelope is modeled as `35 mm` diameter, the USB-A flange/nut envelope is `31.75 mm`, and both envelopes are checked above and below the lid.
-- The removable I/O panel includes two centered `29 mm` mounting holes for the Raspberry and Orange USB-A panel jacks, followed by the Neural Jack at the right.
-- The USB-A jacks use a `31.75 mm` (`1.25 inch`) installed flange footprint, with `3 mm` between the two flange edges.
-- The left USB-A jack is labeled `Raspberry`; the right USB-A jack is labeled `Orange`.
-- The removable-panel control order is Raspberry USB-A, Orange USB-A, then Neural Jack from left to right.
+- The removable I/O panel includes Raspberry and Orange control groups: a keyed `20 mm` power-switch opening immediately followed by a `29 mm` USB-A panel-jack opening for each board.
+- The USB-A jacks use a `31.75 mm` (`1.25 inch`) installed flange footprint, and the rocker switches use a `23.2 mm` installed top footprint.
+- Adjacent Raspberry/Orange hardware footprints retain at least `3 mm` of clearance, and the Orange USB-A footprint retains `10 mm` from the Neural Jack opening.
+- The removable-panel control order is Raspberry power switch, Raspberry USB-A, Orange power switch, Orange USB-A, then Neural Jack from left to right.
 - Two vertical `Push To Talk` engravings sit along the long sides of the center lid with their bottoms facing inward, while `Neural` / `Jack` remains to the right of its roof-panel hole.
-- Raspberry and Orange remain rotated `90 degrees`; all control labels now use the same larger type size.
+- Raspberry and Orange move to front-of-switch roof-panel labels so each label identifies both the board's power switch and the adjacent USB-A port.
 - The existing right-side `Neural` / `Jack` USB-C opening and engraving move onto the removable I/O panel. The left-side `Power` / `Cell` connector remains on the left chamber roof.
 - The right-side USB-C opening is centered front/back and positioned `5 mm` immediately left of its Neural Jack label.
 - Push To Talk uses mirrored inward-facing vertical lines on the center lid; Neural Jack retains its horizontal two-line roof-panel treatment.

@@ -323,6 +323,15 @@ function chamber_io_panel_switch_bulkhead_ligament(x) =
 function chamber_io_panel_switch_pair_ligament() =
   abs(chamber_io_panel_switch_uv_x - chamber_io_panel_switch_fans_x)
   - chamber_io_panel_switch_outer_d;
+function chamber_io_panel_hardware_x_ligament(left_x, left_d, right_x, right_d) =
+  right_x - left_x - left_d / 2 - right_d / 2;
+function chamber_io_panel_usb_a_neural_jack_ligament() =
+  chamber_io_panel_hardware_x_ligament(
+    chamber_io_panel_usb_a_right_x,
+    chamber_io_panel_usb_a_outer_d,
+    chamber_io_panel_usb_c_x(),
+    chamber_control_usb_c_jack_d
+  );
 function chamber_io_panel_switch_to_corner_screw_ligament(x, y, sx, sy) =
   sqrt(
     pow(sx * (chamber_io_panel_w() / 2 - chamber_lid_mount_inset) - x, 2)
@@ -352,6 +361,12 @@ function chamber_io_panel_switch_fans_label_w() =
 function chamber_io_panel_switch_uv_label_w() =
   chamber_io_panel_switch_label_size
   * chamber_io_panel_switch_uv_width_per_size;
+function chamber_io_panel_switch_raspberry_label_w() =
+  chamber_io_panel_switch_label_size
+  * chamber_io_panel_switch_raspberry_width_per_size;
+function chamber_io_panel_switch_orange_label_w() =
+  chamber_io_panel_switch_label_size
+  * chamber_io_panel_switch_orange_width_per_size;
 function chamber_io_panel_switch_label_edge_ligament(x, label_w) =
   chamber_io_panel_w() / 2 - abs(x) - label_w / 2;
 function chamber_io_panel_switch_label_y_edge_ligament() =
@@ -1046,32 +1061,13 @@ module _assert_dims() {
       + minimum_internal_edge_width
       <= chamber_io_panel_usb_c_x() - chamber_control_usb_c_jack_d / 2,
     "Orange USB-A flange must remain clear of the Neural Jack opening");
+  assert(chamber_io_panel_usb_a_neural_jack_ligament()
+      >= chamber_io_panel_usb_a_neural_jack_gap,
+    "Orange USB-A flange must retain the requested clearance from the Neural Jack opening");
   assert(chamber_io_panel_label_size > 0
       && chamber_io_panel_label_line_gap
         > chamber_io_panel_horizontal_label_h(),
     "I/O-panel label dimensions must be valid");
-  assert(
-    (chamber_io_panel_d - chamber_io_panel_raspberry_length()) / 2
-      >= chamber_io_panel_label_edge_margin,
-    "Raspberry label must retain its requested margin to both panel edges"
-  );
-  assert(
-    (chamber_io_panel_d - chamber_io_panel_raspberry_length()) / 2
-      < chamber_io_panel_label_edge_margin + 0.05,
-    "Raspberry label should use the largest 0.01 mm type size that preserves its edge margin"
-  );
-  assert(chamber_io_panel_usb_a_left_label_x()
-      - chamber_io_panel_rotated_label_thickness() / 2
-      <= chamber_io_panel_usb_a_left_x
-        - chamber_io_panel_usb_a_outer_d / 2
-        - chamber_io_panel_label_mount_margin,
-    "Raspberry label must clear its installed USB-A flange");
-  assert(chamber_io_panel_usb_a_right_label_x()
-      + chamber_io_panel_rotated_label_thickness() / 2
-      <= chamber_io_panel_usb_c_x()
-        - chamber_control_usb_c_jack_d / 2
-        - chamber_io_panel_label_mount_margin,
-    "Orange label must clear both its flange and the Neural Jack");
   assert(chamber_io_panel_usb_c_label_x()
       - chamber_io_panel_neural_label_w() / 2
       >= chamber_io_panel_usb_c_x()
@@ -1434,9 +1430,37 @@ module _assert_dims() {
   assert(chamber_io_panel_switch_pair_ligament()
       >= minimum_internal_edge_width,
     "roof-panel rocker switch caps must retain minimum clearance from each other");
+  assert(chamber_io_panel_hardware_x_ligament(
+        chamber_io_panel_switch_raspberry_x,
+        chamber_io_panel_switch_outer_d,
+        chamber_io_panel_usb_a_left_x,
+        chamber_io_panel_usb_a_outer_d
+      ) >= minimum_internal_edge_width
+    && chamber_io_panel_hardware_x_ligament(
+        chamber_io_panel_usb_a_left_x,
+        chamber_io_panel_usb_a_outer_d,
+        chamber_io_panel_switch_orange_x,
+        chamber_io_panel_switch_outer_d
+      ) >= minimum_internal_edge_width
+    && chamber_io_panel_hardware_x_ligament(
+        chamber_io_panel_switch_orange_x,
+        chamber_io_panel_switch_outer_d,
+        chamber_io_panel_usb_a_right_x,
+        chamber_io_panel_usb_a_outer_d
+      ) >= minimum_internal_edge_width,
+    "roof-panel Raspberry/Orange power and USB-A hardware must retain minimum clearance");
+  assert(chamber_io_panel_hardware_x_ligament(
+        chamber_io_panel_switch_uv_x,
+        chamber_io_panel_switch_outer_d,
+        chamber_io_panel_switch_raspberry_x,
+        chamber_io_panel_switch_outer_d
+      ) >= minimum_internal_edge_width,
+    "roof-panel utility switches must clear the Raspberry power switch");
   for (x = [
     chamber_io_panel_switch_fans_x,
-    chamber_io_panel_switch_uv_x
+    chamber_io_panel_switch_uv_x,
+    chamber_io_panel_switch_raspberry_x,
+    chamber_io_panel_switch_orange_x
   ]) {
     assert(chamber_io_panel_switch_panel_x_ligament(x)
         >= minimum_internal_edge_width
@@ -1494,6 +1518,14 @@ module _assert_dims() {
     && chamber_io_panel_switch_label_edge_ligament(
         chamber_io_panel_switch_uv_x,
         chamber_io_panel_switch_uv_label_w()
+      ) >= minimum_internal_edge_width
+    && chamber_io_panel_switch_label_edge_ligament(
+        chamber_io_panel_switch_raspberry_x,
+        chamber_io_panel_switch_raspberry_label_w()
+      ) >= minimum_internal_edge_width
+    && chamber_io_panel_switch_label_edge_ligament(
+        chamber_io_panel_switch_orange_x,
+        chamber_io_panel_switch_orange_label_w()
       ) >= minimum_internal_edge_width,
     "roof-panel rocker switch labels must retain minimum side margins");
   assert(chamber_left_lid_w() <= print_volume_x
@@ -2697,17 +2729,13 @@ module _io_panel_control_labels_cut() {
     chamber_io_panel_switch_uv_x,
     chamber_io_panel_switch_uv_label
   );
-  _io_panel_vertical_label_line_cut(
-    chamber_io_panel_usb_a_left_label_x(),
-    chamber_io_panel_usb_a_y(),
-    chamber_io_panel_usb_a_left_label,
-    chamber_io_panel_label_size
+  _io_panel_switch_label_cut(
+    chamber_io_panel_switch_raspberry_x,
+    chamber_io_panel_switch_raspberry_label
   );
-  _io_panel_vertical_label_line_cut(
-    chamber_io_panel_usb_a_right_label_x(),
-    chamber_io_panel_usb_a_y(),
-    chamber_io_panel_usb_a_right_label,
-    chamber_io_panel_label_size
+  _io_panel_switch_label_cut(
+    chamber_io_panel_switch_orange_x,
+    chamber_io_panel_switch_orange_label
   );
   _io_panel_horizontal_two_line_label_cut(
     chamber_io_panel_usb_c_label_x(),
@@ -3098,6 +3126,8 @@ module _chamber_io_panel() {
     _io_panel_usb_a_jack_cut(chamber_io_panel_usb_a_right_x);
     _io_panel_switch_cut(chamber_io_panel_switch_fans_x);
     _io_panel_switch_cut(chamber_io_panel_switch_uv_x);
+    _io_panel_switch_cut(chamber_io_panel_switch_raspberry_x);
+    _io_panel_switch_cut(chamber_io_panel_switch_orange_x);
     _io_panel_usb_c_jack_cut();
     _io_panel_control_labels_cut();
   }
