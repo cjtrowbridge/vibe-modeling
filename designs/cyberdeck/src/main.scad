@@ -20,6 +20,8 @@
 // 17 = dome tilt servo yoke
 // 18 = dome camera and dual-laser carriage
 // 19 = dome gimbal clearance mockup
+// 20 = left chamber battery drawer
+// 21 = left chamber Meshtastic drawer
 
 include <lib/defaults.scad>;
 include <parts/cyberdeck.scad>;
@@ -66,6 +68,10 @@ if (_part_id == 0) {
   cyberdeck_dome_camera_laser_carriage();
 } else if (_part_id == 19) {
   cyberdeck_dome_gimbal_clearance_mockup();
+} else if (_part_id == 20) {
+  cyberdeck_left_battery_drawer();
+} else if (_part_id == 21) {
+  cyberdeck_left_meshtastic_drawer();
 } else {
   assert(false, str("Unknown part_id: ", _part_id));
 }

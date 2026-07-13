@@ -32,6 +32,14 @@
     {
       "part_id": 13,
       "name": "cyberdeck_right_io_panel"
+    },
+    {
+      "part_id": 20,
+      "name": "cyberdeck_left_battery_drawer"
+    },
+    {
+      "part_id": 21,
+      "name": "cyberdeck_left_meshtastic_drawer"
     }
   ]
 }

@@ -37,6 +37,8 @@ The source retains these IDs for historical configs and direct exports. The auth
 - `part_id = 17`: dome tilt servo yoke
 - `part_id = 18`: dome camera and dual-laser carriage
 - `part_id = 19`: dome gimbal clearance mockup
+- `part_id = 20`: left chamber battery drawer
+- `part_id = 21`: left chamber Meshtastic drawer
 
 ## Design Notes
 
@@ -55,6 +57,29 @@ The source retains these IDs for historical configs and direct exports. The auth
 - The tilt stage is intentionally low-profile so the `32 mm x 32 mm` camera board and two `12 mm x 35 mm` laser modules remain within the `115 mm` acrylic dome envelope.
 - The laser carriage includes one laser saddle on each side of the camera, rear wire exits, a camera pigtail relief, and cable-routing clearance toward the existing front/side bucket passthrough windows.
 - The horn receiver and camera mounting-hole positions remain starter defaults pending caliper measurement of the actual horn and camera PCB.
+
+## Revision 0018 Left-Chamber Side-by-Side Drawers
+
+- Revision `rev_0018` adds a side-by-side dual-drawer layout to the widened left chamber.
+- The battery drawer occupies the outer left lane and loads from the front of the cyberdeck.
+- The Meshtastic drawer occupies the inner right lane and loads from the rear so its outer tray wall remains available for antenna-related follow-on work.
+- Both drawer systems are sized around the requested `60 mm x 60 mm x 160 mm` payload envelope with derived slide clearance, `3 mm` walls, `3 mm` backplates, and shared M3 backplate fasteners.
+- The left chamber now includes a full-depth central divider between the two drawer lanes. That divider provides the requested right-side support for the battery drawer while also stabilizing the rear Meshtastic drawer.
+- Each drawer has a floor and two `60 mm` side walls, with the inboard end intentionally left open.
+- The authoritative manifest now exports ten parts: the prior eight rev_0016 outputs plus `cyberdeck_left_battery_drawer` and `cyberdeck_left_meshtastic_drawer`.
+
+### Revision 0018 Verification Record
+
+- Source revision/config reviewed: `designs/cyberdeck/configs/rev_0018.json` with source-tree hash `5b1c73b870d5fbe580af85c044a38c42ec254804095d9613734b69195acd259c`.
+- Build scope: complete ten-part manifest. `output/cyberdeck` passed the complete-build audit with `10` STL, `170` PNG, and `180` modeled artifacts, with no missing or unexpected files.
+- Provenance: `output/cyberdeck/build_manifest.json` matches `designs/cyberdeck/configs/rev_0018.json` and `designs/cyberdeck/parts.json`. The current output config hash is `d2197644c0c1ff9dd867f639ca74bfd05ec0616df660d440c328885c2daa0422`; the parts-manifest hash is `decbe84edb26ea91bb861240190a24fa28f09a019acc1420c7171a13c0de1ea9`.
+- Parameter and post-subtraction gates: passed. The new left-chamber assertions enforce the dual-lane side margins, the divider placement, the backplate screw edge margins, the rear opening's clearance from the existing Power Cell port, and the `160 mm` drawer depth fit inside the available chamber length.
+- Visual review: audited `rev_0018` front, rear, and underside renders confirm the new front battery-drawer opening, the rear Meshtastic-drawer opening, the shared divider inside the left chamber, and the two new exported drawer parts.
+- Connectivity gate: unverified in this record because no separate shell-topology audit was run beyond the successful OpenSCAD manifest build.
+- Slicer gate: unverified because no supported slicer executable is available in the verification environment.
+- Structural joins: unverified overall until dedicated section and slicer layer-path review. The changed geometry now has assertion-backed lane/divider/backplate contracts, but this record does not include explicit sectional seam captures through the new divider and opening margins.
+- Minimum internal edge/material width: passed for the rev_0018 changed geometry via the new assertion set.
+- Fabrication status: not print-ready while the sectioned structural review, shell/connectivity audit, and slicer gate remain incomplete.
 
 ## Revision 0016 Widened Screen Wedge and Right-Side Arcade Buttons
 
