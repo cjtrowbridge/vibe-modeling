@@ -646,7 +646,16 @@ function chamber_tray_center_x(chamber_xa) =
   chamber_xa
   + minimum_internal_edge_width
   + chamber_tray_backplate_w() / 2;
-function chamber_tray_installed_center_x() = chamber_tray_center_x(0);
+function chamber_tray_compact_center_x(chamber_xb) =
+  chamber_xb
+  - minimum_internal_edge_width
+  - chamber_tray_backplate_w() / 2;
+function chamber_tray_center_x_for_body(chamber_xa, chamber_xb) =
+  compact_body_enabled
+    ? chamber_tray_compact_center_x(chamber_xb)
+    : chamber_tray_center_x(chamber_xa);
+function chamber_tray_installed_center_x() =
+  chamber_tray_center_x_for_body(0, chamber_assembly_right_x());
 function chamber_tray_installed_left_x() =
   chamber_tray_installed_center_x() - chamber_tray_backplate_w() / 2;
 function chamber_tray_installed_right_x() =
@@ -1837,20 +1846,25 @@ module _assert_dims() {
   assert(chamber_tray_opening_w()
       == chamber_tray_w() + 2 * chamber_tray_slide_clearance,
     "rear tray opening must match the narrowed tray plus slide clearance");
-  assert(abs(
-      chamber_tray_center_x(0)
-      - chamber_tray_backplate_w() / 2
+  assert(!compact_body_enabled || abs(
+      chamber_assembly_right_x()
+      - chamber_tray_installed_right_x()
       - minimum_internal_edge_width
     ) < 0.01,
-    "tray backplate must be left aligned with the minimum chamber-edge margin");
-  assert(chamber_tray_center_x(0) + chamber_tray_backplate_w() / 2
-      <= chamber_piece_x - minimum_internal_edge_width,
-    "left-aligned tray backplate must retain minimum right-wall material");
-  assert(chamber_tray_center_x(0) - chamber_tray_opening_w() / 2
+    "compact tray backplate must be right aligned with the minimum wall margin");
+  assert(compact_body_enabled || abs(
+      chamber_tray_installed_left_x() - minimum_internal_edge_width
+    ) < 0.01,
+    "legacy tray backplate must be left aligned with the minimum wall margin");
+  assert(chamber_tray_installed_left_x() >= minimum_internal_edge_width
+    && chamber_tray_installed_right_x()
+      <= chamber_assembly_right_x() - minimum_internal_edge_width,
+    "tray backplate must retain minimum material to both chamber side walls");
+  assert(chamber_tray_installed_center_x() - chamber_tray_opening_w() / 2
       >= minimum_internal_edge_width
-    && chamber_tray_center_x(0) + chamber_tray_opening_w() / 2
-      <= chamber_piece_x - minimum_internal_edge_width,
-    "left-aligned rear tray opening must retain minimum side-wall material");
+    && chamber_tray_installed_center_x() + chamber_tray_opening_w() / 2
+      <= chamber_assembly_right_x() - minimum_internal_edge_width,
+    "rear tray opening must retain minimum chamber side-wall material");
   assert(chamber_tray_y_front()
       >= -chamber_piece_y / 2 + chamber_wall,
     "cottage-sized tray must remain inside the right chamber depth");
@@ -2324,7 +2338,7 @@ module _chamber_io_center_bulkhead_bolt_cut(joint_face_x, i) {
 }
 
 module _right_chamber_tray_rear_opening_cut(xa, xb) {
-  tray_center_x = chamber_tray_center_x(xa);
+  tray_center_x = chamber_tray_center_x_for_body(xa, xb);
 
   translate([
     tray_center_x,
@@ -2339,7 +2353,7 @@ module _right_chamber_tray_rear_opening_cut(xa, xb) {
 }
 
 module _right_chamber_tray_backplate_screw_cut(xa, xb, sx, sz) {
-  tray_center_x = chamber_tray_center_x(xa);
+  tray_center_x = chamber_tray_center_x_for_body(xa, xb);
   screw_z = sz < 0
     ? chamber_tray_backplate_screw_low_z()
     : chamber_tray_backplate_screw_high_z();
