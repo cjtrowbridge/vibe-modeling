@@ -51,8 +51,8 @@ function chamber_display_right_half_x() =
   compact_body_enabled
     ? max(
         chamber_display_mount_left_half_x(),
-        chamber_display_right_arcade_button_x
-          + chamber_arcade_button_outer_d / 2
+        chamber_display_right_screen_port_x
+          + chamber_io_panel_usb_a_outer_d / 2
           + minimum_internal_edge_width
       )
     : chamber_display_legacy_half_x();
@@ -182,47 +182,91 @@ function chamber_display_mount_screw_z(face_offset) =
   + face_offset * chamber_profile_peak_rise / chamber_profile_screen_face_len();
 function chamber_display_mount_rear_screw_y() =
   chamber_display_mount_screw_y(chamber_display_mount_screw_face_spacing / 2);
-function chamber_display_arcade_button_face_offset(i) =
-  (i == 0 ? -1 : 1) * chamber_display_right_arcade_button_face_spacing / 2;
-function chamber_display_arcade_button_screen_ligament() =
-  chamber_display_right_arcade_button_x
+function chamber_display_face_hardware_face_offset(i) =
+  (i == 0 ? -1 : 1) * chamber_display_screen_face_hardware_face_spacing / 2;
+function chamber_display_right_usb_a_face_offset() =
+  chamber_display_face_hardware_face_offset(0);
+function chamber_display_right_usb_c_face_offset() =
+  chamber_display_face_hardware_face_offset(1);
+function chamber_display_left_arcade_button_screen_ligament() =
+  chamber_display_left_arcade_button_x
   - chamber_display_void_x / 2
   - chamber_arcade_button_mount_d / 2;
-function chamber_display_arcade_button_right_hole_edge_ligament() =
-  chamber_display_right_half_x()
-  - chamber_display_right_arcade_button_x
+function chamber_display_left_arcade_button_left_hole_edge_ligament() =
+  chamber_display_left_half_x()
+  - chamber_display_left_arcade_button_x
   - chamber_arcade_button_mount_d / 2;
-function chamber_display_arcade_button_right_outer_edge_ligament() =
-  chamber_display_right_half_x()
-  - chamber_display_right_arcade_button_x
+function chamber_display_left_arcade_button_left_outer_edge_ligament() =
+  chamber_display_left_half_x()
+  - chamber_display_left_arcade_button_x
   - chamber_arcade_button_outer_d / 2;
-function chamber_display_arcade_button_face_end_ligament(face_offset) =
+function chamber_display_face_end_ligament(face_offset, cut_d) =
   chamber_profile_screen_face_len() / 2
   - abs(face_offset)
-  - chamber_arcade_button_mount_d / 2;
-function chamber_display_arcade_button_outer_face_end_ligament(face_offset) =
+  - cut_d / 2;
+function chamber_display_face_outer_end_ligament(face_offset, outer_d) =
   chamber_profile_screen_face_len() / 2
   - abs(face_offset)
-  - chamber_arcade_button_outer_d / 2;
-function chamber_display_arcade_button_pair_mount_ligament() =
-  chamber_display_right_arcade_button_face_spacing
+  - outer_d / 2;
+function chamber_display_left_arcade_button_pair_mount_ligament() =
+  chamber_display_screen_face_hardware_face_spacing
   - chamber_arcade_button_mount_d;
-function chamber_display_arcade_button_pair_outer_gap() =
-  chamber_display_right_arcade_button_face_spacing
+function chamber_display_left_arcade_button_pair_outer_gap() =
+  chamber_display_screen_face_hardware_face_spacing
   - chamber_arcade_button_outer_d;
-function chamber_display_arcade_button_to_mount_screw_ligament(
+function chamber_display_right_usb_a_screen_ligament() =
+  chamber_display_right_screen_port_x
+  - chamber_display_void_x / 2
+  - chamber_io_panel_usb_a_mount_d / 2;
+function chamber_display_right_usb_a_outer_screen_ligament() =
+  chamber_display_right_screen_port_x
+  - chamber_display_void_x / 2
+  - chamber_io_panel_usb_a_outer_d / 2;
+function chamber_display_right_usb_c_screen_ligament() =
+  chamber_display_right_screen_port_x
+  - chamber_display_void_x / 2
+  - chamber_control_usb_c_jack_d / 2;
+function chamber_display_right_usb_a_right_hole_edge_ligament() =
+  chamber_display_right_half_x()
+  - chamber_display_right_screen_port_x
+  - chamber_io_panel_usb_a_mount_d / 2;
+function chamber_display_right_usb_a_right_outer_edge_ligament() =
+  chamber_display_right_half_x()
+  - chamber_display_right_screen_port_x
+  - chamber_io_panel_usb_a_outer_d / 2;
+function chamber_display_right_usb_c_right_hole_edge_ligament() =
+  chamber_display_right_half_x()
+  - chamber_display_right_screen_port_x
+  - chamber_control_usb_c_jack_d / 2;
+function chamber_display_right_usb_c_right_outer_edge_ligament() =
+  chamber_display_right_half_x()
+  - chamber_display_right_screen_port_x
+  - chamber_control_usb_c_jack_d / 2;
+function chamber_display_right_usb_port_pair_mount_ligament() =
+  chamber_display_right_usb_c_face_offset()
+  - chamber_display_right_usb_a_face_offset()
+  - chamber_control_usb_c_jack_d / 2
+  - chamber_io_panel_usb_a_mount_d / 2;
+function chamber_display_right_usb_port_pair_outer_gap() =
+  chamber_display_right_usb_c_face_offset()
+  - chamber_display_right_usb_a_face_offset()
+  - chamber_control_usb_c_jack_d / 2
+  - chamber_io_panel_usb_a_outer_d / 2;
+function chamber_display_face_hardware_to_mount_screw_ligament(
+  hardware_center_x,
+  hardware_d,
   face_offset,
+  screw_center_x,
   screw_face_offset
 ) =
   sqrt(
     pow(
-      chamber_display_right_arcade_button_x
-      - chamber_display_mount_screw_x_offset,
+      hardware_center_x - screw_center_x,
       2
     )
     + pow(face_offset - screw_face_offset, 2)
   )
-  - chamber_arcade_button_mount_d / 2
+  - hardware_d / 2
   - chamber_display_mount_screw_clearance_d / 2;
 function chamber_keyboard_lid_rail_top_z() =
   chamber_total_z() - chamber_keyboard_lid_inset;
@@ -1120,40 +1164,110 @@ module _assert_dims() {
     "display mount screw spacing must fit on the angled display face");
   assert(chamber_display_mount_screw_clearance_d >= 3.0,
     "display mount screw clearance must clear M3 hardware");
-  assert(chamber_display_right_arcade_button_x > chamber_display_void_x / 2,
-    "display-face arcade buttons must land to the right of the screen opening");
-  assert(chamber_display_arcade_button_screen_ligament()
+  assert(chamber_display_left_arcade_button_x > chamber_display_void_x / 2,
+    "display-face left arcade buttons must land to the left of the screen opening");
+  assert(chamber_display_left_arcade_button_screen_ligament()
       >= minimum_internal_edge_width,
-    "display-face arcade buttons must retain minimum material from the screen opening");
-  assert(chamber_display_right_arcade_button_x
+    "display-face left arcade buttons must retain minimum material from the screen opening");
+  assert(chamber_display_left_arcade_button_x
       + chamber_arcade_button_mount_d / 2
       + chamber_arcade_button_mount_margin
-      <= chamber_display_right_half_x(),
-    "display-face arcade buttons must retain their requested right-edge hole margin");
-  assert(chamber_display_arcade_button_right_outer_edge_ligament()
+      <= chamber_display_left_half_x(),
+    "display-face left arcade buttons must retain their requested outer-edge hole margin");
+  assert(chamber_display_left_arcade_button_left_outer_edge_ligament()
       >= minimum_internal_edge_width,
-    "display-face arcade button envelopes must retain minimum material to the right wedge edge");
-  assert(chamber_display_arcade_button_pair_mount_ligament()
+    "display-face left arcade button envelopes must retain minimum material to the left wedge edge");
+  assert(chamber_display_left_arcade_button_pair_mount_ligament()
       >= minimum_internal_edge_width,
-    "display-face arcade button holes must retain minimum material between each other");
-  assert(chamber_display_arcade_button_pair_outer_gap()
+    "display-face left arcade button holes must retain minimum material between each other");
+  assert(chamber_display_left_arcade_button_pair_outer_gap()
       >= minimum_internal_edge_width,
-    "display-face arcade button envelopes must retain minimum clearance between each other");
+    "display-face left arcade button envelopes must retain minimum clearance between each other");
   for (i = [0 : 1]) {
-    face_offset = chamber_display_arcade_button_face_offset(i);
-    assert(chamber_display_arcade_button_face_end_ligament(face_offset)
+    face_offset = chamber_display_face_hardware_face_offset(i);
+    assert(chamber_display_face_end_ligament(face_offset, chamber_arcade_button_mount_d)
         >= chamber_arcade_button_mount_margin,
-      "display-face arcade buttons must retain their requested top/bottom hole margins");
-    assert(chamber_display_arcade_button_outer_face_end_ligament(face_offset)
+      "display-face left arcade buttons must retain their requested top/bottom hole margins");
+    assert(chamber_display_face_outer_end_ligament(face_offset, chamber_arcade_button_outer_d)
         >= minimum_internal_edge_width,
-      "display-face arcade button envelopes must retain minimum top/bottom material");
+      "display-face left arcade button envelopes must retain minimum top/bottom material");
     for (sz = [-1, 1]) {
-      assert(chamber_display_arcade_button_to_mount_screw_ligament(
+      assert(chamber_display_face_hardware_to_mount_screw_ligament(
+            -chamber_display_left_arcade_button_x,
+            chamber_arcade_button_mount_d,
             face_offset,
+            -chamber_display_mount_screw_x_offset,
             sz * chamber_display_mount_screw_face_spacing / 2
           ) >= minimum_internal_edge_width,
-        "display-face arcade buttons must retain minimum material from the screen mount holes");
+        "display-face left arcade buttons must retain minimum material from the screen mount holes");
     }
+  }
+  assert(chamber_display_right_screen_port_x > chamber_display_void_x / 2,
+    "display-face right USB ports must land to the right of the screen opening");
+  assert(chamber_display_right_usb_a_screen_ligament()
+      >= minimum_internal_edge_width,
+    "display-face right USB-A hole must retain minimum material from the screen opening");
+  assert(chamber_display_right_usb_a_outer_screen_ligament()
+      >= minimum_internal_edge_width,
+    "display-face right USB-A envelope must retain minimum material from the screen opening");
+  assert(chamber_display_right_usb_c_screen_ligament()
+      >= minimum_internal_edge_width,
+    "display-face right USB-C hole must retain minimum material from the screen opening");
+  assert(chamber_display_right_usb_a_right_hole_edge_ligament()
+      >= minimum_internal_edge_width,
+    "display-face right USB-A hole must retain minimum material to the outer wedge edge");
+  assert(chamber_display_right_usb_a_right_outer_edge_ligament()
+      >= minimum_internal_edge_width,
+    "display-face right USB-A envelope must retain minimum material to the outer wedge edge");
+  assert(chamber_display_right_usb_c_right_hole_edge_ligament()
+      >= minimum_internal_edge_width,
+    "display-face right USB-C hole must retain minimum material to the outer wedge edge");
+  assert(chamber_display_right_usb_c_right_outer_edge_ligament()
+      >= minimum_internal_edge_width,
+    "display-face right USB-C envelope must retain minimum material to the outer wedge edge");
+  assert(chamber_display_right_usb_port_pair_mount_ligament()
+      >= minimum_internal_edge_width,
+    "display-face right USB-A and USB-C holes must retain minimum material between each other");
+  assert(chamber_display_right_usb_port_pair_outer_gap()
+      >= minimum_internal_edge_width,
+    "display-face right USB-A and USB-C envelopes must retain minimum material between each other");
+  assert(chamber_display_face_end_ligament(
+        chamber_display_right_usb_a_face_offset(),
+        chamber_io_panel_usb_a_mount_d
+      ) >= minimum_internal_edge_width,
+    "display-face right USB-A hole must retain minimum top/bottom material");
+  assert(chamber_display_face_outer_end_ligament(
+        chamber_display_right_usb_a_face_offset(),
+        chamber_io_panel_usb_a_outer_d
+      ) >= minimum_internal_edge_width,
+    "display-face right USB-A envelope must retain minimum top/bottom material");
+  assert(chamber_display_face_end_ligament(
+        chamber_display_right_usb_c_face_offset(),
+        chamber_control_usb_c_jack_d
+      ) >= minimum_internal_edge_width,
+    "display-face right USB-C hole must retain minimum top/bottom material");
+  assert(chamber_display_face_outer_end_ligament(
+        chamber_display_right_usb_c_face_offset(),
+        chamber_control_usb_c_jack_d
+      ) >= minimum_internal_edge_width,
+    "display-face right USB-C envelope must retain minimum top/bottom material");
+  for (sz = [-1, 1]) {
+    assert(chamber_display_face_hardware_to_mount_screw_ligament(
+          chamber_display_right_screen_port_x,
+          chamber_io_panel_usb_a_mount_d,
+          chamber_display_right_usb_a_face_offset(),
+          chamber_display_mount_screw_x_offset,
+          sz * chamber_display_mount_screw_face_spacing / 2
+        ) >= minimum_internal_edge_width,
+      "display-face right USB-A hole must retain minimum material from the screen mount holes");
+    assert(chamber_display_face_hardware_to_mount_screw_ligament(
+          chamber_display_right_screen_port_x,
+          chamber_control_usb_c_jack_d,
+          chamber_display_right_usb_c_face_offset(),
+          chamber_display_mount_screw_x_offset,
+          sz * chamber_display_mount_screw_face_spacing / 2
+        ) >= minimum_internal_edge_width,
+      "display-face right USB-C hole must retain minimum material from the screen mount holes");
   }
   assert(chamber_dome_outer_d > 0 && chamber_dome_mount_margin >= 0,
     "dome outer diameter must be > 0 and dome margin must be >= 0");
@@ -3521,7 +3635,7 @@ module _left_chamber_drawer_divider() {
     ], center = false);
 }
 
-module _chamber_display_arcade_button_cut(center_x, face_offset) {
+module _chamber_display_round_face_cut(center_x, face_offset, cut_d) {
   translate([
     center_x,
     chamber_display_void_center_y(),
@@ -3531,20 +3645,39 @@ module _chamber_display_arcade_button_cut(center_x, face_offset) {
       translate([0, chamber_display_void_cut_overlap() / 2, face_offset])
         rotate([90, 0, 0])
           cylinder(
-            d = chamber_arcade_button_mount_d,
+            d = cut_d,
             h = chamber_display_void_cut_overlap() * 2,
             center = true,
             $fn = 72
           );
 }
 
-module _chamber_display_arcade_button_cuts(center_x) {
+module _chamber_display_left_arcade_button_cuts(center_x) {
   for (i = [0 : 1]) {
-    _chamber_display_arcade_button_cut(
-      center_x + chamber_display_right_arcade_button_x,
-      chamber_display_arcade_button_face_offset(i)
+    _chamber_display_round_face_cut(
+      center_x - chamber_display_left_arcade_button_x,
+      chamber_display_face_hardware_face_offset(i),
+      chamber_arcade_button_mount_d
     );
   }
+}
+
+module _chamber_display_right_port_cuts(center_x) {
+  _chamber_display_round_face_cut(
+    center_x + chamber_display_right_screen_port_x,
+    chamber_display_right_usb_a_face_offset(),
+    chamber_io_panel_usb_a_mount_d
+  );
+  _chamber_display_round_face_cut(
+    center_x + chamber_display_right_screen_port_x,
+    chamber_display_right_usb_c_face_offset(),
+    chamber_control_usb_c_jack_d
+  );
+}
+
+module _chamber_display_face_hardware_cuts(center_x) {
+  _chamber_display_left_arcade_button_cuts(center_x);
+  _chamber_display_right_port_cuts(center_x);
 }
 
 module _chamber_bolt_cut(joint_face_x, i) {
@@ -3620,7 +3753,7 @@ module _chamber_body(side, assembly_position, label_text) {
         _chamber_front_led_strip_passage_cut(joint_face_x);
         _chamber_display_void_cut(display_void_cut_x);
         _chamber_display_mount_screw_cuts(display_void_cut_x);
-        _chamber_display_arcade_button_cuts(display_void_cut_x);
+        _chamber_display_face_hardware_cuts(display_void_cut_x);
         _chamber_io_roof_cuts(model_x_offset);
         _chamber_rear_fan_cut(
           chamber_rear_fan_center_x(side) + model_x_offset

@@ -58,6 +58,26 @@ The source retains these IDs for historical configs and direct exports. The auth
 - The laser carriage includes one laser saddle on each side of the camera, rear wire exits, a camera pigtail relief, and cable-routing clearance toward the existing front/side bucket passthrough windows.
 - The horn receiver and camera mounting-hole positions remain starter defaults pending caliper measurement of the actual horn and camera PCB.
 
+## Revision 0020 Left-Side Arcade Buttons and Right-Side Screen-Face USB Ports
+
+- Revision `rev_0020` moves the two angled screen-face arcade-button holes from the right side of the display opening to the left side.
+- The new left-side arcade-button column shifts inward to `x = -123 mm` relative to the screen center so it clears the current compact left wedge without widening the chassis again.
+- The right side of the angled screen face now carries one `29 mm` USB-A hole and one `23 mm` USB-C hole, vertically stacked at the prior `40 mm` spacing and anchored at `x = +136.5 mm`.
+- The compact wedge envelope remains effectively the `rev_0019` asymmetric shape because the left-side button relocation is handled by moving the button column inward rather than by broadening the shell.
+
+### Revision 0020 Verification Record
+
+- Source revision/config reviewed: `designs/cyberdeck/configs/rev_0020.json` with source-tree hash `bfe284f87a4b9573b6f9879a5d6f850ce42427d196615ad941c78abfa660f16c`.
+- Build scope: complete ten-part manifest installed to both `revisions/cyberdeck/rev_0020` and `output/cyberdeck`. Both complete-build audits passed with `10` STL, `170` PNG, and `180` modeled artifacts, with no missing or unexpected files.
+- Provenance: both `revisions/cyberdeck/rev_0020/build_manifest.json` and `output/cyberdeck/build_manifest.json` match `designs/cyberdeck/configs/rev_0020.json` and `designs/cyberdeck/parts.json`. The current output config hash is `35ca4060c36300eeb2918ca76ce058e63e039351274a7f135f58d57a42363121`; the parts-manifest hash is `decbe84edb26ea91bb861240190a24fa28f09a019acc1420c7171a13c0de1ea9`.
+- Parameter and post-subtraction gates: passed. The updated assertions cover the inward-shifted left button column, the new right USB-A/USB-C screen-face column, the pairwise hole ligaments, the face-end material margins, and the hardware-to-screen-mount-screw clearances.
+- Visual review: audited `output/cyberdeck/cyberdeck_two_chamber_structure_rev_0020_ortho_front.png` confirms the two arcade-button holes now sit left of the screen opening and the new USB-A/USB-C column sits right of the opening.
+- Connectivity gate: unverified in this record because no separate shell-topology audit was run beyond the successful OpenSCAD manifest builds.
+- Slicer gate: unverified because no supported slicer executable is available in the verification environment.
+- Structural joins: unverified overall until dedicated section and slicer layer-path review covers the changed screen-face hole region and the surrounding wedge shell.
+- Minimum internal edge/material width: passed for the rev_0020 changed geometry via the updated assertion set.
+- Fabrication status: not print-ready while the sectioned structural review, shell/connectivity audit, and slicer gate remain incomplete.
+
 ## Revision 0019 Asymmetric Wedge, Seam Counterbores, and Center-Row Tray Fasteners
 
 - Revision `rev_0019` removes the unintended mirrored left-side screen-wedge growth while preserving the right-side arcade-button clearance contract.
