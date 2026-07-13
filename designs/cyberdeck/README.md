@@ -56,6 +56,25 @@ The source retains these IDs for historical configs and direct exports. The auth
 - The laser carriage includes one laser saddle on each side of the camera, rear wire exits, a camera pigtail relief, and cable-routing clearance toward the existing front/side bucket passthrough windows.
 - The horn receiver and camera mounting-hole positions remain starter defaults pending caliper measurement of the actual horn and camera PCB.
 
+## Revision 0013 Minimum-Tab Lid Mounts
+
+- Revision `rev_0013` pushes the lid and roof-panel corner mounts to the smallest tabs permitted by the current `3 mm` minimum edge-width contract and the existing `7 mm` M3 counterbore head diameter.
+- The corner-screw inset is reduced from `7.0 mm` to `6.5 mm`, which is the smallest value that still leaves the required `3 mm` of lid material outside the recessed counterbores.
+- The corner-pad size is reduced from `15.0 mm` to `13.4 mm`, leaving only about `0.1 mm` of modeled margin above the minimum required rail overlap and support-hole material limits.
+
+### Revision 0013 Verification Record
+
+- Source revision/config reviewed: `designs/cyberdeck/configs/rev_0013.json` with source-tree hash `4526bd802bdacdb2d854b8ba4a4e959d1bd9ccbea55ab5377201c5ef37002d9e`.
+- Build scope: complete eight-part manifest. Both `output/cyberdeck` and immutable `revisions/cyberdeck/rev_0013` passed independent artifact audits: `8` STL, `136` PNG, `144` modeled artifacts, with no missing or unexpected files.
+- Provenance: both build manifests match the revision config, `designs/cyberdeck/parts.json`, and the exact source tree above.
+- Parameter and post-subtraction gates: passed. The `6.5 mm` inset preserves the required `3 mm` outer lid margin to the `7 mm` counterbores, and the `13.4 mm` corner pads retain the minimum support-hole material and approximately `3.1 mm` of front-lid rail overlap in the final assertion set.
+- Visual review: audited `rev_0013` top views confirm the center lid, right lid, and roof I/O panel use the tightest current corner tabs while preserving the shared M3 recessed-fastener layout.
+- Connectivity gate: passed. The left and right chamber exports are manifold (`Simple: yes`) and each has one connected vertex component. Their triangle counts remain `8506` and `5944` in the current audited output.
+- Slicer gate: unverified because no supported slicer executable is available in the verification environment.
+- Structural joins: unverified overall until dedicated section and slicer layer-path review; the changed lid-support and roof-panel support joins still pass their overlap assertions but were not isolated in a dedicated slice export for this revision record.
+- Minimum internal edge/material width: passed for the rev_0013 changed geometry.
+- Fabrication status: not print-ready while the slicer gate remains unverified.
+
 ## Revision 0012 Balanced Lid-Mount Update
 
 - Revision `rev_0012` standardizes the angled screen-face mounting holes to the same `3.4 mm` M3-clearance pattern used elsewhere in the enclosure.
