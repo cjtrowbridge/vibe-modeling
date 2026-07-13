@@ -647,10 +647,12 @@ function chamber_tray_center_x(chamber_xa) =
   + minimum_internal_edge_width
   + chamber_tray_backplate_w() / 2;
 function chamber_tray_installed_center_x() = chamber_tray_center_x(0);
+function chamber_tray_installed_left_x() =
+  chamber_tray_installed_center_x() - chamber_tray_backplate_w() / 2;
 function chamber_tray_installed_right_x() =
   chamber_tray_installed_center_x() + chamber_tray_backplate_w() / 2;
 function chamber_compact_split_x() =
-  chamber_tray_installed_right_x() + minimum_internal_edge_width;
+  chamber_tray_installed_left_x() - minimum_internal_edge_width;
 function chamber_split_x() = compact_body_enabled ? chamber_compact_split_x() : 0;
 function chamber_left_piece_w() = chamber_split_x() - chamber_assembly_left_x();
 function chamber_right_piece_w() = chamber_assembly_right_x() - chamber_split_x();
@@ -906,9 +908,9 @@ module _assert_dims() {
     "each calculated chamber half must retain usable width");
   assert(!compact_body_enabled
       || abs(chamber_split_x()
-          - chamber_tray_installed_right_x()
-          - minimum_internal_edge_width) < 0.01,
-    "compact split must retain minimum material beside the Orange Pi backplate");
+          - chamber_tray_installed_left_x()
+          + minimum_internal_edge_width) < 0.01,
+    "compact split must retain minimum material before the Orange Pi backplate");
   assert(chamber_piece_y + chamber_rear_fan_spacer_projection
       <= print_volume_y,
     "each chamber plus rear fan spacers must fit the print volume in Y");
@@ -1459,7 +1461,7 @@ module _assert_dims() {
     "USB-C jack cutout diameter must be > 0");
   assert(chamber_power_cell_rear_x() - chamber_display_wedge_left_x()
       - chamber_control_usb_c_jack_d / 2 >= minimum_internal_edge_width
-    && -chamber_power_cell_rear_x()
+    && chamber_split_x() - chamber_power_cell_rear_x()
       - chamber_control_usb_c_jack_d / 2 >= minimum_internal_edge_width,
     "Power Cell rear opening must retain material to both dividing walls");
   assert(chamber_power_cell_rear_z()
@@ -3213,8 +3215,7 @@ module _chamber_body(side, assembly_position, label_text) {
         _chamber_rear_fan_cut(
           chamber_rear_fan_center_x(side) + model_x_offset
         );
-        if ((!compact_body_enabled && side > 0)
-            || (compact_body_enabled && side < 0)) {
+        if (side > 0) {
           _right_chamber_tray_rear_opening_cut(
             0 + model_x_offset,
             global_body_xb + model_x_offset

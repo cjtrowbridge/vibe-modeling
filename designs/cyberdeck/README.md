@@ -56,6 +56,27 @@ The source retains these IDs for historical configs and direct exports. The auth
 - The laser carriage includes one laser saddle on each side of the camera, rear wire exits, a camera pigtail relief, and cable-routing clearance toward the existing front/side bucket passthrough windows.
 - The horn receiver and camera mounting-hole positions remain starter defaults pending caliper measurement of the actual horn and camera PCB.
 
+## Revision 0007 Tray-Left Split Correction
+
+- Revision `rev_0007` keeps the compact body but corrects the two-piece split orientation: it is now `x = 0 mm`, immediately to the left of the Orange Pi tray backplate.
+- The split is derived as the installed Orange Pi backplate's left edge minus `minimum_internal_edge_width`; the current backplate begins at `x = 3 mm`, so the seam is `3 mm` clear of it.
+- The left print half contains the rear Power Cell/charger opening and is approximately `67.55 mm x 212 mm x 120.175 mm`; the right print half contains the Orange Pi rear tray and is approximately `192.55 mm x 212 mm x 120.175 mm`.
+- The charger opening's right edge remains `22.25 mm` from the new split, exceeding the `3 mm` minimum internal-edge requirement. The Orange Pi rear-opening cut is again emitted only in the physical right half.
+- This supersedes the revision 0006 split placement only; the compact body footprint, dome/left-opening removal, and Raspberry Pi tray/opening removal remain unchanged.
+
+### Revision 0007 Verification Record
+
+- Source revision/config reviewed: `designs/cyberdeck/configs/rev_0007.json` with source-tree hash `e7a1c7097316cbf874ec79972447fdfe8c4c831297a64a4a606e6852d8a9303a`.
+- Build scope: complete eight-part manifest. Both `output/cyberdeck` and immutable `revisions/cyberdeck/rev_0007` passed their independent artifact audits: `8` STL, `136` PNG, `144` modeled artifacts, with no missing or unexpected files.
+- Provenance: both manifests match the revision config, `designs/cyberdeck/parts.json`, and the exact source tree above.
+- Parameter and post-subtraction gates: passed. Assertions enforce the tray-left split, the `3 mm` tray-side margin, and the charger cutout's material margin to both the screen-side wall and relocated split.
+- Section gate: passed for the relocated seam at front (`y = -90 mm`), middle (`y = 0 mm`), and rear (`y = 90 mm`) slices; each showed continuous final material through the seam.
+- Connectivity gate: passed. The left and right chamber exports are manifold (`Simple: yes`) and each has one connected triangle component. Their measured envelopes are approximately `67.55 mm x 212 mm x 120.175 mm` and `192.55 mm x 212 mm x 120.175 mm`.
+- Slicer gate: unverified because no supported slicer executable is available in the verification environment.
+- Structural joins: unverified overall until slicer layer-path review; changed-geometry parameter, section, post-subtraction, and connectivity gates passed.
+- Minimum internal edge/material width: passed for the rev_0007 changed geometry.
+- Fabrication status: not print-ready while the slicer gate remains unverified.
+
 ## Revision 0006 Compact Two-Piece Body
 
 - Revision `rev_0006` enables `compact_body_enabled` and derives the assembled left boundary from `chamber_display_wedge_left_x()`, currently `x = -67.5 mm`.
