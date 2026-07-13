@@ -2,18 +2,6 @@
   "schema_version": 1,
   "parts": [
     {
-      "part_id": 0,
-      "name": "cyberdeck_visual_mockup"
-    },
-    {
-      "part_id": 1,
-      "name": "cyberdeck_top_layout_mockup"
-    },
-    {
-      "part_id": 2,
-      "name": "cyberdeck_internal_hardware_proxy_layout"
-    },
-    {
       "part_id": 3,
       "name": "cyberdeck_two_chamber_structure"
     },
@@ -30,10 +18,6 @@
       "name": "cyberdeck_removable_panel_set"
     },
     {
-      "part_id": 7,
-      "name": "cyberdeck_left_front_lid"
-    },
-    {
       "part_id": 8,
       "name": "cyberdeck_center_left_lid"
     },
@@ -42,44 +26,12 @@
       "name": "cyberdeck_right_front_lid"
     },
     {
-      "part_id": 10,
-      "name": "cyberdeck_left_side_handle"
-    },
-    {
-      "part_id": 11,
-      "name": "cyberdeck_dome_bucket_insert"
-    },
-    {
       "part_id": 12,
       "name": "cyberdeck_right_chamber_tray"
     },
     {
       "part_id": 13,
       "name": "cyberdeck_right_io_panel"
-    },
-    {
-      "part_id": 14,
-      "name": "cyberdeck_right_chamber_rpi_side_tray"
-    },
-    {
-      "part_id": 15,
-      "name": "cyberdeck_dome_pan_servo_cradle"
-    },
-    {
-      "part_id": 16,
-      "name": "cyberdeck_dome_pan_rotating_plate"
-    },
-    {
-      "part_id": 17,
-      "name": "cyberdeck_dome_tilt_servo_yoke"
-    },
-    {
-      "part_id": 18,
-      "name": "cyberdeck_dome_camera_laser_carriage"
-    },
-    {
-      "part_id": 19,
-      "name": "cyberdeck_dome_gimbal_clearance_mockup"
     }
   ]
 }

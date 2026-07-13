@@ -13,7 +13,9 @@ First-draft visual mockup and design brief for a cyberdeck OpenSCAD model.
 - Uses clearly named proxy dimensions for hardware that still needs exact mechanical measurement.
 - Does not yet define printable enclosure details, final mounting geometry, wiring channels, or manufacturable clearances.
 
-## Part IDs
+## Historical Part IDs
+
+The source retains these IDs for historical configs and direct exports. The authoritative current part set is `parts.json`; rev_0006 intentionally excludes obsolete visual mockups, dome/handle parts, the removed left lid, and the Raspberry Pi side tray.
 
 - `part_id = 0`: full visual mockup
 - `part_id = 1`: top layout mockup
@@ -53,6 +55,40 @@ First-draft visual mockup and design brief for a cyberdeck OpenSCAD model.
 - The tilt stage is intentionally low-profile so the `32 mm x 32 mm` camera board and two `12 mm x 35 mm` laser modules remain within the `115 mm` acrylic dome envelope.
 - The laser carriage includes one laser saddle on each side of the camera, rear wire exits, a camera pigtail relief, and cable-routing clearance toward the existing front/side bucket passthrough windows.
 - The horn receiver and camera mounting-hole positions remain starter defaults pending caliper measurement of the actual horn and camera PCB.
+
+## Revision 0006 Compact Two-Piece Body
+
+- Revision `rev_0006` enables `compact_body_enabled` and derives the assembled left boundary from `chamber_display_wedge_left_x()`, currently `x = -67.5 mm`.
+- The assembled body is reduced from `385 mm` to `260 mm` wide. Its depth remains `210 mm`, with rear fan spacers extending the printable depth to approximately `212 mm`; peak height remains approximately `120.175 mm`.
+- The complete dome zone, left-front opening and lid, left handle mounts, dome bucket, and dome-gimbal exports are removed from the current manifest.
+- The Raspberry Pi side tray export, exterior opening, backplate fasteners, and tray-only proxy exports are removed. The right exterior wall is now continuous across the former opening.
+- The Orange Pi rear tray retains its existing installed position and complete backplate, insertion, mounting, exhaust, and service envelope.
+- The two-piece division moves from assembled `x = 0` to a calculated `x = 136.4 mm`, exactly `3 mm` beyond the Orange Pi tray backplate envelope.
+- The resulting printable body widths are `203.95 mm` for the main/left section and `56.15 mm` for the right closure section. Including the rear fan spacer projection, each part has a maximum envelope of approximately `203.95 mm x 212 mm x 120.175 mm` or `56.15 mm x 212 mm x 120.175 mm`, within the configured `220 mm x 220 mm x 220 mm` print volume.
+- The current complete manifest contains eight exports: the assembled structure, both enclosure sections, the remaining panel set, center lid, right lid, Orange Pi tray, and roof I/O panel.
+
+### Revision 0006 Structural Review
+
+- Source revision/config reviewed: `designs/cyberdeck/configs/rev_0006.json` with the current source tree.
+- Structural minimums remain `3 mm` wall thickness, `3 mm` structural overlap, and `3 mm` minimum internal edge/material width.
+- Parameter assertions derive the split from the Orange Pi backplate edge plus `minimum_internal_edge_width`, enforce both calculated part widths against the print volume, and retain the existing joint bolt/passthrough ligament checks at the relocated datum.
+- The former Raspberry Pi opening and screw cuts are disabled in compact mode, so the exterior wall is produced by the original continuous shell rather than by adding a thin patch.
+- Final build, sectional, connectivity, artifact, and provenance results are recorded after the complete rev_0006 verification run below.
+
+### Revision 0006 Verification Record
+
+- Build scope: complete eight-part manifest.
+- Destinations: `output/cyberdeck` and immutable `revisions/cyberdeck/rev_0006`.
+- Expected and actual artifacts at each destination: `8` STL, `136` PNG, `144` modeled artifacts; both manifest audits passed.
+- Config and source provenance: both build manifests match `designs/cyberdeck/configs/rev_0006.json`, `designs/cyberdeck/parts.json`, and the exact OpenSCAD source tree used for the build.
+- Parameter gate: passed for all eight manifest exports.
+- Section gate: changed seam and left-end sections were reviewed at front, middle, and rear locations. The new left wall remains continuous; the relocated seam retains the intended wall/floor and upper-bulkhead material around its documented passthroughs.
+- Post-subtraction and minimum-edge gate for changed geometry: passed by direct split/backplate/print-envelope assertions, existing bolt-to-passthrough and boundary ligament assertions, final sections, and removal of the Raspberry Pi cutters from the compact-mode final Boolean.
+- Connectivity gate: passed. The left and right chamber STL exports are manifold (`Simple: yes`) and each contains one connected triangle component. The complete measured envelopes are `203.95 mm x 212 mm x 120.175 mm` and `56.15 mm x 212 mm x 120.175 mm`.
+- Slicer gate: unverified because no supported slicer executable is installed in the verification environment.
+- Structural joins: unverified overall until slicer layer-path review is completed; changed-geometry parameter, section, post-subtraction, and connectivity gates passed.
+- Minimum internal edge/material width: passed for the rev_0006 changed geometry; unchanged legacy geometry remains governed by its earlier verification status.
+- Fabrication status: not print-ready while the slicer gate remains unverified.
 
 ## Revision 0005 Left-Lid Auxiliary Mount Study
 

@@ -41,11 +41,15 @@ function exhaust_total_x() =
   + (opi_exhaust_slot_count - 1) * opi_exhaust_slot_gap;
 function cell_pitch() = cell18650_d + 2.5;
 function chamber_total_z() = chamber_bottom + chamber_internal_clearance_z;
-function chamber_assembly_left_x() = -chamber_piece_x;
+function chamber_legacy_assembly_left_x() = -chamber_piece_x;
 function chamber_assembly_right_x() = chamber_piece_x;
 function chamber_display_wedge_right_x() = chamber_assembly_right_x();
 function chamber_display_wedge_left_x() =
   chamber_display_wedge_right_x() - chamber_display_wedge_x;
+function chamber_assembly_left_x() =
+  compact_body_enabled
+    ? chamber_display_wedge_left_x()
+    : chamber_legacy_assembly_left_x();
 function chamber_display_wedge_center_x() =
   (chamber_display_wedge_left_x() + chamber_display_wedge_right_x()) / 2;
 function chamber_left_flat_area_x() =
@@ -642,6 +646,18 @@ function chamber_tray_center_x(chamber_xa) =
   chamber_xa
   + minimum_internal_edge_width
   + chamber_tray_backplate_w() / 2;
+function chamber_tray_installed_center_x() = chamber_tray_center_x(0);
+function chamber_tray_installed_right_x() =
+  chamber_tray_installed_center_x() + chamber_tray_backplate_w() / 2;
+function chamber_compact_split_x() =
+  chamber_tray_installed_right_x() + minimum_internal_edge_width;
+function chamber_split_x() = compact_body_enabled ? chamber_compact_split_x() : 0;
+function chamber_left_piece_w() = chamber_split_x() - chamber_assembly_left_x();
+function chamber_right_piece_w() = chamber_assembly_right_x() - chamber_split_x();
+function chamber_piece_center_x(side) =
+  side < 0
+    ? (chamber_assembly_left_x() + chamber_split_x()) / 2
+    : (chamber_split_x() + chamber_assembly_right_x()) / 2;
 function chamber_tray_backplate_bottom_z() =
   chamber_tray_back_opening_z0;
 function chamber_tray_backplate_body_h() =
@@ -734,7 +750,7 @@ function chamber_rpi_side_tray_left_x_assembled() =
   - chamber_wall
   - chamber_rpi_side_tray_insertion_d();
 function chamber_tray_right_x_assembled() =
-  chamber_tray_center_x(0) + chamber_tray_w() / 2;
+  chamber_tray_installed_center_x() + chamber_tray_w() / 2;
 function chamber_rear_fan_panel_w() =
   chamber_rear_fan_frame + 2 * chamber_rear_fan_edge_margin;
 function chamber_rear_fan_center_z() =
@@ -882,6 +898,17 @@ module _assert_dims() {
     "print volume dimensions must be > 0");
   assert(chamber_piece_x <= print_volume_x,
     "each chamber must fit the print volume in X");
+  assert(chamber_left_piece_w() <= print_volume_x
+      && chamber_right_piece_w() <= print_volume_x,
+    "each calculated chamber half must fit the print volume in X");
+  assert(chamber_left_piece_w() > 2 * chamber_wall
+      && chamber_right_piece_w() > 2 * chamber_wall,
+    "each calculated chamber half must retain usable width");
+  assert(!compact_body_enabled
+      || abs(chamber_split_x()
+          - chamber_tray_installed_right_x()
+          - minimum_internal_edge_width) < 0.01,
+    "compact split must retain minimum material beside the Orange Pi backplate");
   assert(chamber_piece_y + chamber_rear_fan_spacer_projection
       <= print_volume_y,
     "each chamber plus rear fan spacers must fit the print volume in Y");
@@ -933,11 +960,11 @@ module _assert_dims() {
   assert(chamber_dome_mount_screw_xy_offset() + chamber_dome_mount_screw_clearance_d / 2
     <= min(chamber_dome_area_x, chamber_dome_area_y) / 2,
     "dome mount screws exceed the dome roof area");
-  assert(chamber_left_flat_area_x() >= chamber_dome_area_x,
+  assert(compact_body_enabled || chamber_left_flat_area_x() >= chamber_dome_area_x,
     "left flat dome area is too narrow for the acrylic dome");
   assert(chamber_dome_roof_front_y() >= -chamber_piece_y / 2,
     "dome roof area exceeds the chamber depth");
-  assert(chamber_display_wedge_left_x() > chamber_assembly_left_x(),
+  assert(compact_body_enabled || chamber_display_wedge_left_x() > chamber_assembly_left_x(),
     "display wedge leaves no flat left-side dome area");
   assert(chamber_display_wedge_left_x() < 0,
     "display wedge left structural web should land inside the left chamber");
@@ -1033,8 +1060,8 @@ module _assert_dims() {
     && chamber_rear_fan_right_x() + chamber_rear_fan_panel_w() / 2
       <= chamber_display_wedge_right_x(),
     "rear fan interfaces must remain inside the display-wedge ends");
-  assert(chamber_rear_fan_left_x() + chamber_rear_fan_panel_w() / 2 < 0
-    && chamber_rear_fan_right_x() - chamber_rear_fan_panel_w() / 2 > 0,
+  assert(chamber_rear_fan_left_x() + chamber_rear_fan_panel_w() / 2 < chamber_split_x()
+    && chamber_rear_fan_right_x() - chamber_rear_fan_panel_w() / 2 > chamber_split_x(),
     "each rear fan interface must remain on its own printed chamber half");
   assert(chamber_rear_fan_center_z()
       - chamber_rear_fan_hole_spacing / 2
@@ -1064,6 +1091,7 @@ module _assert_dims() {
   assert(chamber_profile_screen_foot_y() - chamber_keyboard_lid_back_edge_y
       >= chamber_io_panel_separator_d - 0.01,
     "center/right lid openings must retain the screen-side separator");
+  if (!compact_body_enabled) {
   assert(abs(
       chamber_keyboard_lid_back_edge_y
       - chamber_keyboard_lid_left_back_edge_y
@@ -1117,6 +1145,7 @@ module _assert_dims() {
       >= minimum_internal_edge_width,
     "left lid auxiliary M3 holes must clear recessed corner fasteners"
   );
+  }
   assert(chamber_arcade_button_outer_d >= chamber_arcade_button_mount_d,
     "arcade-button external diameter must not be smaller than its mounting hole");
   assert(abs(chamber_center_lid_ptt_x_pos())
@@ -1525,11 +1554,12 @@ module _assert_dims() {
     && chamber_lid_mount_screw_head_depth > 0
     && chamber_lid_mount_screw_head_depth < chamber_lid_thickness,
     "lid screw counterbores must fit inside the lid thickness");
-  assert(chamber_left_lid_w() > 2 * chamber_lid_corner_r
+  assert(compact_body_enabled || chamber_left_lid_w() > 2 * chamber_lid_corner_r
     && chamber_left_lid_d() > 2 * chamber_lid_corner_r,
     "left-front lid dimensions are invalid");
-  assert(chamber_left_lid_w() > 2 * chamber_lid_mount_inset
+  assert((compact_body_enabled || (chamber_left_lid_w() > 2 * chamber_lid_mount_inset
     && chamber_left_lid_d() > 2 * chamber_lid_mount_inset
+    ))
     && chamber_center_lid_w() > 2 * chamber_lid_mount_inset
     && chamber_main_lid_d() > 2 * chamber_lid_mount_inset
     && chamber_right_lid_w() > 2 * chamber_lid_mount_inset
@@ -1899,6 +1929,7 @@ module _assert_dims() {
     && chamber_tray_exhaust_center_z() + chamber_tray_exhaust_h / 2
       <= chamber_tray_backplate_h - minimum_internal_edge_width,
     "Orange Pi exhaust must retain minimum top and bottom backplate material");
+  if (!compact_body_enabled) {
   assert(chamber_rpi_side_tray_wall == minimum_wall_thickness,
     "Raspberry Pi side tray must use the minimum wall thickness");
   assert(chamber_rpi_side_tray_board_clearance_x
@@ -2002,6 +2033,7 @@ module _assert_dims() {
     "Raspberry Pi side-tray floor must overlap the backplate through its full thickness");
   assert(chamber_rpi_side_tray_wall >= minimum_structural_overlap,
     "Raspberry Pi mounting pads must overlap through the full tray-floor thickness");
+  }
   assert(chamber_joint_passthrough_count == 2,
     "this chamber mockup expects two front/back passthroughs");
   assert(chamber_joint_passthrough_d > 0,
@@ -2108,9 +2140,9 @@ module _rounded_box(w, d, h, r) {
 }
 
 module _chamber_shell(side, center_x, assembly_position) {
-  global_body_xa = side < 0 ? chamber_assembly_left_x() : 0;
-  global_body_xb = side < 0 ? 0 : chamber_assembly_right_x();
-  model_x_offset = assembly_position ? 0 : -side * chamber_piece_x / 2;
+  global_body_xa = side < 0 ? chamber_assembly_left_x() : chamber_split_x();
+  global_body_xb = side < 0 ? chamber_split_x() : chamber_assembly_right_x();
+  model_x_offset = assembly_position ? 0 : -chamber_piece_center_x(side);
   wedge_xa = max(chamber_display_wedge_left_x(), global_body_xa) + model_x_offset;
   wedge_xb = min(chamber_display_wedge_right_x(), global_body_xb) + model_x_offset;
   wedge_global_xa = max(chamber_display_wedge_left_x(), global_body_xa);
@@ -2128,8 +2160,8 @@ module _chamber_shell(side, center_x, assembly_position) {
 
   union() {
     _chamber_flat_tray(
-      center_x - chamber_piece_x / 2,
-      center_x + chamber_piece_x / 2,
+      global_body_xa + model_x_offset,
+      global_body_xb + model_x_offset,
       -chamber_piece_y / 2,
       chamber_piece_y / 2
     );
@@ -3151,11 +3183,11 @@ module _chamber_floor_label(center_x, label_text) {
 }
 
 module _chamber_body(side, assembly_position, label_text) {
-  center_x = assembly_position ? side * chamber_piece_x / 2 : 0;
-  global_body_xa = side < 0 ? chamber_assembly_left_x() : 0;
-  global_body_xb = side < 0 ? 0 : chamber_assembly_right_x();
-  joint_face_x = assembly_position ? 0 : -side * chamber_piece_x / 2;
-  model_x_offset = assembly_position ? 0 : -side * chamber_piece_x / 2;
+  center_x = assembly_position ? chamber_piece_center_x(side) : 0;
+  global_body_xa = side < 0 ? chamber_assembly_left_x() : chamber_split_x();
+  global_body_xb = side < 0 ? chamber_split_x() : chamber_assembly_right_x();
+  model_x_offset = assembly_position ? 0 : -chamber_piece_center_x(side);
+  joint_face_x = chamber_split_x() + model_x_offset;
   outer_side_face_x =
     (side < 0 ? global_body_xa : global_body_xb) + model_x_offset;
   wedge_web_x = chamber_display_wedge_left_x() + model_x_offset;
@@ -3181,32 +3213,37 @@ module _chamber_body(side, assembly_position, label_text) {
         _chamber_rear_fan_cut(
           chamber_rear_fan_center_x(side) + model_x_offset
         );
-        if (side > 0) {
+        if ((!compact_body_enabled && side > 0)
+            || (compact_body_enabled && side < 0)) {
           _right_chamber_tray_rear_opening_cut(
-            global_body_xa + model_x_offset,
+            0 + model_x_offset,
             global_body_xb + model_x_offset
           );
           _right_chamber_tray_backplate_screw_cuts(
-            global_body_xa + model_x_offset,
+            0 + model_x_offset,
             global_body_xb + model_x_offset
           );
-          _right_chamber_rpi_side_opening_cut(outer_side_face_x);
-          _right_chamber_rpi_side_backplate_screw_cuts(
-            outer_side_face_x
-          );
+          if (!compact_body_enabled) {
+            _right_chamber_rpi_side_opening_cut(outer_side_face_x);
+            _right_chamber_rpi_side_backplate_screw_cuts(
+              outer_side_face_x
+            );
+          }
         }
         if (side < 0) {
           _chamber_power_cell_rear_jack_cut(
             chamber_power_cell_rear_x() + model_x_offset
           );
-          for (i = [0 : chamber_joint_passthrough_count - 1]) {
-            _chamber_passthrough_cut(wedge_web_x, i);
+          if (!compact_body_enabled) {
+            for (i = [0 : chamber_joint_passthrough_count - 1]) {
+              _chamber_passthrough_cut(wedge_web_x, i);
+            }
+            _chamber_front_led_strip_passage_cut(wedge_web_x);
+            _chamber_dome_roof_cut(dome_roof_cut_x, chamber_dome_roof_center_y());
+            _chamber_dome_mount_screw_cuts(dome_roof_cut_x, chamber_dome_roof_center_y());
           }
-          _chamber_front_led_strip_passage_cut(wedge_web_x);
-          _chamber_dome_roof_cut(dome_roof_cut_x, chamber_dome_roof_center_y());
-          _chamber_dome_mount_screw_cuts(dome_roof_cut_x, chamber_dome_roof_center_y());
         }
-        if (side < 0) {
+        if (side < 0 && !compact_body_enabled) {
           _chamber_handle_mount_screw_cuts(outer_side_face_x);
         }
         for (i = [0 : chamber_joint_bolt_count - 1]) {
@@ -3228,7 +3265,9 @@ module _chamber_body(side, assembly_position, label_text) {
       }
     }
 
-  _chamber_floor_label(center_x, label_text);
+  if (!compact_body_enabled) {
+    _chamber_floor_label(center_x, label_text);
+  }
 }
 
 module _lid_pull_slot(slot_w, slot_d, cut_h) {
@@ -3405,14 +3444,20 @@ module _chamber_lid_installed(xa, xb, yf, yb, label_text) {
 module _chamber_lid_set_layout() {
   upper_row_w = chamber_right_lid_w() + chamber_lid_layout_gap + chamber_io_panel_w();
   upper_row_d = max(chamber_right_lid_d(), chamber_io_panel_d);
-  lower_row_w = chamber_left_lid_w() + chamber_lid_layout_gap + chamber_center_lid_w();
-  lower_row_d = max(chamber_left_lid_d(), chamber_main_lid_d());
+  lower_row_w = compact_body_enabled
+    ? chamber_center_lid_w()
+    : chamber_left_lid_w() + chamber_lid_layout_gap + chamber_center_lid_w();
+  lower_row_d = compact_body_enabled
+    ? chamber_main_lid_d()
+    : max(chamber_left_lid_d(), chamber_main_lid_d());
   upper_y = chamber_lid_layout_gap / 2 + upper_row_d / 2;
   lower_y = -chamber_lid_layout_gap / 2 - lower_row_d / 2;
   right_x = -upper_row_w / 2 + chamber_right_lid_w() / 2;
   io_x = upper_row_w / 2 - chamber_io_panel_w() / 2;
   left_x = -lower_row_w / 2 + chamber_left_lid_w() / 2;
-  center_x = lower_row_w / 2 - chamber_center_lid_w() / 2;
+  center_x = compact_body_enabled
+    ? 0
+    : lower_row_w / 2 - chamber_center_lid_w() / 2;
 
   translate([right_x, upper_y, 0])
     _chamber_lid_panel(chamber_right_lid_w(), chamber_right_lid_d(), "RIGHT");
@@ -3420,8 +3465,10 @@ module _chamber_lid_set_layout() {
   translate([io_x, upper_y, 0])
     _chamber_io_panel();
 
-  translate([left_x, lower_y, 0])
-    _chamber_left_lid_panel();
+  if (!compact_body_enabled) {
+    translate([left_x, lower_y, 0])
+      _chamber_left_lid_panel();
+  }
 
   translate([center_x, lower_y, 0])
     _chamber_lid_panel(

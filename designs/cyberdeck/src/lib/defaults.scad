@@ -14,6 +14,9 @@ minimum_wall_thickness = 3.0;
 minimum_structural_overlap = minimum_wall_thickness;
 minimum_internal_edge_width = minimum_wall_thickness;
 
+// Revision 0006 compact-body mode. Older configs retain the legacy envelope.
+compact_body_enabled = false;
+
 // Part selector
 // 0 = full visual mockup
 // 1 = top layout mockup
