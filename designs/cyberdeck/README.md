@@ -58,6 +58,27 @@ The source retains these IDs for historical configs and direct exports. The auth
 - The laser carriage includes one laser saddle on each side of the camera, rear wire exits, a camera pigtail relief, and cable-routing clearance toward the existing front/side bucket passthrough windows.
 - The horn receiver and camera mounting-hole positions remain starter defaults pending caliper measurement of the actual horn and camera PCB.
 
+## Revision 0019 Asymmetric Wedge, Seam Counterbores, and Center-Row Tray Fasteners
+
+- Revision `rev_0019` removes the unintended mirrored left-side screen-wedge growth while preserving the right-side arcade-button clearance contract.
+- The compact display wedge is now asymmetric around the preserved display datum: the right half remains `157 mm`, the left half is reduced to about `144.4 mm`, and the effective compact wedge width becomes about `301.4 mm`.
+- The left chamber gains a reinforced inner seam strip sized for recessed M3 merge-bolt heads on the seam side, preserving the repository `3 mm` minimum throat behind the new counterbores.
+- The right Orange Pi tray, the historical Raspberry Pi side tray, and both new left drawers now use a single reachable middle screw row instead of upper/lower screw rows.
+- The tray backplate side offsets are reduced to `4.8 mm`, shrinking the backplates while preserving the `3 mm` minimum material contract to both the openings and the outer edges.
+- The left chamber width is re-derived from the actual drawer and backplate packaging requirement rather than from the prior symmetric wedge. Under the new compact datums, the left chamber width is about `168.4 mm` and the remaining drawer side margin is about `10.5 mm`, down from the earlier `16.3 mm`.
+
+### Revision 0019 Verification Record
+
+- Source revision/config reviewed: `designs/cyberdeck/configs/rev_0019.json` with source-tree hash `6c471b866a9d50c2674d7442a8f52434f08e7483111921bf765e74fe544c745b`.
+- Build scope: complete ten-part manifest installed to `output/cyberdeck`. The complete-build audit passed with `10` STL, `170` PNG, and `180` modeled artifacts, with no missing or unexpected files.
+- Provenance: `output/cyberdeck/build_manifest.json` matches `designs/cyberdeck/configs/rev_0019.json` and `designs/cyberdeck/parts.json`. The current output config hash is `3e3f9f4a28f0ea89d9257ba4da514eb63a72c3e663cbb85f15f95f00287b0ebe`; the parts-manifest hash is `decbe84edb26ea91bb861240190a24fa28f09a019acc1420c7171a13c0de1ea9`.
+- Parameter and post-subtraction gates: passed. The updated assertions cover the asymmetric wedge extents, the right-button edge ligaments, the left seam counterbore clearances to the passthroughs and LED passage, the reinforced seam throat, the single-row tray fastener margins, and the reduced left-chamber drawer packaging.
+- Connectivity gate: unverified in this record because no separate shell-topology audit was run beyond the successful OpenSCAD manifest build.
+- Slicer gate: unverified because no supported slicer executable is available in the verification environment.
+- Structural joins: unverified overall until dedicated section and slicer layer-path review. The changed geometry now has assertion-backed wedge, seam, and tray contracts, but this record does not include explicit sectional seam captures through the reinforced left seam or the revised wedge transition.
+- Minimum internal edge/material width: passed for the rev_0019 changed geometry via the updated assertion set.
+- Fabrication status: not print-ready while the sectioned structural review, shell/connectivity audit, and slicer gate remain incomplete.
+
 ## Revision 0018 Left-Chamber Side-by-Side Drawers
 
 - Revision `rev_0018` adds a side-by-side dual-drawer layout to the widened left chamber.
