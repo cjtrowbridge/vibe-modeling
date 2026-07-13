@@ -954,8 +954,8 @@ module _assert_dims() {
   assert(chamber_display_mount_screw_face_spacing > 0
     && chamber_display_mount_screw_face_spacing < chamber_profile_screen_face_len(),
     "display mount screw spacing must fit on the angled display face");
-  assert(chamber_display_mount_screw_clearance_d > 0,
-    "display mount screw clearance must be > 0");
+  assert(chamber_display_mount_screw_clearance_d >= 3.0,
+    "display mount screw clearance must clear M3 hardware");
   assert(chamber_dome_outer_d > 0 && chamber_dome_mount_margin >= 0,
     "dome outer diameter must be > 0 and dome margin must be >= 0");
   assert(chamber_dome_area_x >= chamber_dome_outer_d + 2 * chamber_dome_mount_margin,
