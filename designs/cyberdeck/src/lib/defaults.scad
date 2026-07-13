@@ -52,7 +52,9 @@ print_volume_x = 220.0;
 print_volume_y = 220.0;
 print_volume_z = 220.0;
 chamber_piece_y = 210.0;
-chamber_internal_clearance_z = 50.0;
+// The flat lid rail is inset 2 mm below the deck top, so 82 mm yields the
+// required 80 mm clear height from the interior floor to the lid underside.
+chamber_internal_clearance_z = 82.0;
 chamber_wall = 3.0;
 chamber_bottom = 3.0;
 chamber_display_cutout_h = 85.0;

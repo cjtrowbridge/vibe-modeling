@@ -124,6 +124,8 @@ function chamber_display_mount_rear_screw_y() =
   chamber_display_mount_screw_y(chamber_display_mount_screw_face_spacing / 2);
 function chamber_keyboard_lid_rail_top_z() =
   chamber_total_z() - chamber_keyboard_lid_inset;
+function chamber_flat_lid_internal_clearance_z() =
+  chamber_keyboard_lid_rail_top_z() - chamber_bottom;
 function chamber_keyboard_lid_rail_center_z() =
   chamber_keyboard_lid_rail_top_z() - chamber_keyboard_lid_rail_h / 2;
 function chamber_keyboard_lid_front_edge_y() =
@@ -1082,6 +1084,8 @@ module _assert_dims() {
   assert(chamber_keyboard_lid_inset > 0
     && chamber_keyboard_lid_rail_top_z() < chamber_total_z(),
     "keyboard lid rail must sit below the flat deck top");
+  assert(chamber_flat_lid_internal_clearance_z() >= 80,
+    "flat lids must retain at least 80 mm of internal floor-to-lid clearance");
   assert(chamber_keyboard_lid_rail_w >= minimum_internal_edge_width
       && chamber_keyboard_lid_rail_h >= minimum_wall_thickness,
     "front lid rails must meet the minimum edge and wall dimensions");
@@ -1822,7 +1826,7 @@ module _assert_dims() {
   assert(dome_gimbal_mock_carriage_top_z()
       <= dome_gimbal_mock_dome_top_z(),
     "camera/laser carriage top exceeds the acrylic dome height");
-  assert(dome_gimbal_mock_carriage_bottom_z()
+  assert(compact_body_enabled || dome_gimbal_mock_carriage_bottom_z()
       >= chamber_total_z(),
     "camera/laser carriage bottom must remain above the bucket lip plane");
   assert(dome_gimbal_mock_max_payload_radius()

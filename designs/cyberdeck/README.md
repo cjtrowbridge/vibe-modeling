@@ -56,6 +56,26 @@ The source retains these IDs for historical configs and direct exports. The auth
 - The laser carriage includes one laser saddle on each side of the camera, rear wire exits, a camera pigtail relief, and cable-routing clearance toward the existing front/side bucket passthrough windows.
 - The horn receiver and camera mounting-hole positions remain starter defaults pending caliper measurement of the actual horn and camera PCB.
 
+## Revision 0009 Increased Internal Height
+
+- Revision `rev_0009` increases the flat-lid interior from the previous `48 mm` actual floor-to-lid clearance to `80 mm`.
+- The named `chamber_internal_clearance_z` is `82 mm` rather than `80 mm` because the installed lid-support rail is intentionally inset `2 mm` below the flat deck; the resulting floor-to-lid underside distance is exactly `80 mm`.
+- The flat enclosure height increases from `53 mm` to `85 mm`, and the unchanged screen profile rises with it from approximately `120.175 mm` to `152.175 mm` peak height. This remains within the configured `220 mm` print-height limit.
+- The Orange Pi tray geometry, its right-aligned installed placement, and the horizontal split at `x = 56.1 mm` are unchanged.
+
+### Revision 0009 Verification Record
+
+- Source revision/config reviewed: `designs/cyberdeck/configs/rev_0009.json` with source-tree hash `213e66241ca4ebba13bdd985c057894cdf35e93b9894ef128b6c1215381c2292`.
+- Build scope: complete eight-part manifest. Both `output/cyberdeck` and immutable `revisions/cyberdeck/rev_0009` passed independent artifact audits: `8` STL, `136` PNG, `144` modeled artifacts, with no missing or unexpected files.
+- Provenance: both build manifests match the revision config, `designs/cyberdeck/parts.json`, and the exact source tree above.
+- Parameter and post-subtraction gates: passed. `chamber_flat_lid_internal_clearance_z()` asserts the required `80 mm` actual floor-to-lid clearance; print-envelope, tray, split, cutout, and fastener ligament assertions also passed at the taller profile.
+- Section gate: passed for the relocated seam at front (`y = -90 mm`), middle (`y = 0 mm`), and rear (`y = 90 mm`) slices; each showed continuous final material through the taller seam.
+- Connectivity gate: passed. The left and right chamber exports are manifold (`Simple: yes`) and each has one connected vertex component. Their horizontal envelopes remain approximately `123.6 mm x 212 mm` and `136.4 mm x 212 mm`; peak height is approximately `152.175 mm`.
+- Slicer gate: unverified because no supported slicer executable is available in the verification environment.
+- Structural joins: unverified overall until slicer layer-path review; changed-geometry parameter, section, post-subtraction, and connectivity gates passed.
+- Minimum internal edge/material width: passed for the rev_0009 changed geometry.
+- Fabrication status: not print-ready while the slicer gate remains unverified.
+
 ## Revision 0008 Right-Aligned Orange Pi Tray
 
 - Revision `rev_0008` right-aligns the Orange Pi tray backplate against the compact body's right wall, retaining the required `3 mm` wall margin.
