@@ -56,6 +56,33 @@ The source retains these IDs for historical configs and direct exports. The auth
 - The laser carriage includes one laser saddle on each side of the camera, rear wire exits, a camera pigtail relief, and cable-routing clearance toward the existing front/side bucket passthrough windows.
 - The horn receiver and camera mounting-hole positions remain starter defaults pending caliper measurement of the actual horn and camera PCB.
 
+## Revision 0011 Handle-Mount Ligament Verification
+
+- Revision `rev_0011` records the final handle-mount source after explicit M3 hole-to-hole ligament assertions were added.
+- The assertions require at least `3 mm` of remaining material both between adjacent holes in a mounting row and between the two handle-mount groups.
+
+### Revision 0011 Verification Record
+
+- Source revision/config reviewed: `designs/cyberdeck/configs/rev_0011.json` with source-tree hash `d03feafbaeaa55b97a94bdd794fbbe4609cbb70e6fdf7e8a3f0046e33c5fb0af`.
+- Build scope: complete eight-part manifest. Both `output/cyberdeck` and immutable `revisions/cyberdeck/rev_0011` passed independent artifact audits: `8` STL, `136` PNG, `144` modeled artifacts, with no missing or unexpected files.
+- Provenance: both build manifests match the revision config, `designs/cyberdeck/parts.json`, and the exact source tree above.
+- Parameter and post-subtraction gates: passed. Compact mode now restores the historical left-side handle-hole pattern, and the added pairwise ligament assertions require at least `3 mm` of remaining material both within each hole row and between the two mounting groups.
+- Connectivity gate: passed. The left and right chamber exports are manifold (`Simple: yes`) and each has one connected vertex component. Their triangle counts are `8482` and `5904` in the current audited output.
+- Slicer gate: unverified because no supported slicer executable is available in the verification environment.
+- Structural joins: unverified overall until slicer layer-path review; this change restores exterior fastener holes and does not introduce a new joined structural member.
+- Minimum internal edge/material width: passed for the rev_0011 changed geometry.
+- Fabrication status: not print-ready while the slicer gate remains unverified.
+
+## Revision 0010 Left-Side Handle Mount Pattern Restored
+
+- Revision `rev_0010` restores the historical left-side handle mounting-hole pattern to the compact left chamber.
+- The current manifest remains dome-free and does not export the historical standalone handle; this revision restores only the eight M3 clearance holes in the enclosure's left exterior wall for a future compatible handle.
+- The taller `80 mm` actual internal clearance places the two screw rows at approximately `z = 29.5 mm` and `z = 55.5 mm`, retaining the existing asserted wall-edge margins.
+
+### Revision 0010 Verification Record
+
+- Initial geometric checkpoint only. The immutable `revisions/cyberdeck/rev_0010` artifact set was retained, but the final source for this task added explicit hole-to-hole ligament assertions and was recorded as `rev_0011`.
+
 ## Revision 0009 Increased Internal Height
 
 - Revision `rev_0009` increases the flat-lid interior from the previous `48 mm` actual floor-to-lid clearance to `80 mm`.

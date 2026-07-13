@@ -1514,6 +1514,13 @@ module _assert_dims() {
     && handle_mount_screw_spacing + handle_mount_screw_clearance_d
       < handle_mount_plate_size,
     "handle screw pattern must fit inside each mounting plate");
+  assert(handle_mount_screw_spacing - handle_mount_screw_clearance_d
+      >= minimum_internal_edge_width
+    && 2 * handle_half_length()
+      - handle_mount_screw_spacing
+      - handle_mount_screw_clearance_d
+      >= minimum_internal_edge_width,
+    "handle mounting-hole rows must retain minimum material between holes");
   assert(handle_mount_bevel_d >= handle_bar_d
     && handle_mount_bevel_d < handle_mount_plate_size,
     "handle bevel collar must fit on the mounting plate");
@@ -3262,7 +3269,7 @@ module _chamber_body(side, assembly_position, label_text) {
             _chamber_dome_mount_screw_cuts(dome_roof_cut_x, chamber_dome_roof_center_y());
           }
         }
-        if (side < 0 && !compact_body_enabled) {
+        if (side < 0) {
           _chamber_handle_mount_screw_cuts(outer_side_face_x);
         }
         for (i = [0 : chamber_joint_bolt_count - 1]) {
