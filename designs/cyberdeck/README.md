@@ -56,6 +56,27 @@ The source retains these IDs for historical configs and direct exports. The auth
 - The laser carriage includes one laser saddle on each side of the camera, rear wire exits, a camera pigtail relief, and cable-routing clearance toward the existing front/side bucket passthrough windows.
 - The horn receiver and camera mounting-hole positions remain starter defaults pending caliper measurement of the actual horn and camera PCB.
 
+## Revision 0016 Widened Screen Wedge and Right-Side Arcade Buttons
+
+- Revision `rev_0016` widens the compact display wedge/body from `260 mm` to `314 mm` and adds two `28 mm` arcade-button mounting holes on the angled screen face to the right of the display opening.
+- The planned `345 mm` wedge target was not printable under the existing `220 mm` X-axis build limit and would also have pushed the removable rear I/O panel beyond its supported `45 degree` print span. The implemented width is the largest value that keeps the current print contract while still fitting the new buttons with the required margins.
+- The two new screen-face button holes share `x = +136.5 mm` relative to the screen center and are vertically stacked on the face with `40 mm` center-to-center spacing.
+- The rear removable I/O panel remains printable because its width is no longer tied directly to the widened wedge; it stays centered on the display zone at the previous nominal printable width instead of expanding to the full new body width.
+- The compact body's right-aligned Orange Pi tray remains unchanged, but the wider shell shifts the split and increases the left printable half from approximately `123.6 mm` to `177.6 mm` while the right half remains approximately `136.4 mm` wide.
+- The wider body materially improves left-chamber width for later storage work, but it does not by itself resolve the previously blocked dual-`160 mm` drawer concept, which remains constrained by front-to-back depth and the low flat-lid clearance region.
+
+### Revision 0016 Verification Record
+
+- Source revision/config reviewed: `designs/cyberdeck/configs/rev_0016.json` with source-tree hash `02bccc2e1353e36ee238b30db39e482e3b7fa73b8a1828a089df4d85f5d6435d`.
+- Build scope: complete eight-part manifest. Both `output/cyberdeck` and immutable `revisions/cyberdeck/rev_0016` passed independent artifact audits: `8` STL, `136` PNG, `144` modeled artifacts, with no missing or unexpected files.
+- Provenance: both build manifests match the revision config, `designs/cyberdeck/parts.json`, and the exact source tree above.
+- Parameter and post-subtraction gates: passed. The widened `314 mm` screen wedge remains within the `220 mm` print-axis envelope, the centered rear I/O panel remains within its `45 degree` printable span, and the new screen-face arcade-button holes retain the modeled minimum ligaments to the display opening, the screen-mount holes, the face boundaries, and the new outer wedge edge.
+- Visual review: audited front and top views confirm the widened display wedge and the two new right-of-screen arcade-button holes on the angled display face.
+- Slicer gate: unverified because no supported slicer executable is available in the verification environment.
+- Structural joins: unverified overall until dedicated section and slicer layer-path review; the changed screen-face and widened-wedge geometry pass their assertion-backed overlap and edge-width contracts, but this revision record does not include isolated section exports for every changed seam.
+- Minimum internal edge/material width: passed for the rev_0016 changed geometry.
+- Fabrication status: not print-ready while the slicer gate remains unverified.
+
 ## Revision 0013 Minimum-Tab Lid Mounts
 
 - Revision `rev_0013` pushes the lid and roof-panel corner mounts to the smallest tabs permitted by the current `3 mm` minimum edge-width contract and the existing `7 mm` M3 counterbore head diameter.
