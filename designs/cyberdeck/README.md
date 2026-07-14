@@ -58,6 +58,28 @@ The source retains these IDs for historical configs and direct exports. The auth
 - The laser carriage includes one laser saddle on each side of the camera, rear wire exits, a camera pigtail relief, and cable-routing clearance toward the existing front/side bucket passthrough windows.
 - The horn receiver and camera mounting-hole positions remain starter defaults pending caliper measurement of the actual horn and camera PCB.
 
+## Revision 0021 Reduced Base Height
+
+- Revision `rev_0021` reduces the flat chamber/body height by `10 mm`, from `85 mm` overall to `75 mm` overall.
+- The named chamber clearance parameter drops from `82 mm` to `72 mm`.
+- Because the flat lid rail remains inset `2 mm` below the deck top, the actual floor-to-lid underside clearance drops from `80 mm` to `70 mm`.
+- The flat-lid clearance contract is now explicit as `chamber_min_flat_lid_internal_clearance_z = 70 mm` rather than being hard-coded in the assertion text.
+- This keeps the current left-drawer opening stack valid: the drawer opening still tops out at `68 mm`, leaving `7 mm` to the new `75 mm` flat deck and preserving the repository `3 mm` minimum top-wall material requirement.
+- The peaked rear housing lowers with the chamber body, so the overall peak height drops by the same `10 mm`, from approximately `152.175 mm` to `142.175 mm`.
+
+### Revision 0021 Verification Record
+
+- Source revision/config reviewed: `designs/cyberdeck/configs/rev_0021.json` with source-tree hash `3bd8a262e6f7cc5d428e41e449afe4d5f7fef0e2f460d4a0605082349e17748c`.
+- Build scope: complete ten-part manifest installed to both `revisions/cyberdeck/rev_0021` and `output/cyberdeck`. Both complete-build audits passed with `10` STL, `170` PNG, and `180` modeled artifacts, with no missing or unexpected files.
+- Provenance: both `revisions/cyberdeck/rev_0021/build_manifest.json` and `output/cyberdeck/build_manifest.json` match `designs/cyberdeck/configs/rev_0021.json` and `designs/cyberdeck/parts.json`. The current output config hash is `6e19af7f7f6dff960d45b44857508d221e2da43e078dfc48cc49c130ad3a9c87`; the parts-manifest hash is `decbe84edb26ea91bb861240190a24fa28f09a019acc1420c7171a13c0de1ea9`.
+- Parameter and post-subtraction gates: passed. The updated assertions cover the reduced flat-lid clearance contract, while the existing drawer-opening, tray-opening, power-cell-opening, rear-fan, and print-envelope assertions all still pass at the lower body height.
+- Visual review: audited the updated rev_0021 complete-build renders to confirm the shorter enclosure profile and unchanged drawer/backplate fit.
+- Connectivity gate: unverified in this record because no separate shell-topology audit was run beyond the successful OpenSCAD manifest builds.
+- Slicer gate: unverified because no supported slicer executable is available in the verification environment.
+- Structural joins: unverified overall until dedicated section and slicer layer-path review covers the lowered chamber/wedge transitions and the existing enclosure seams.
+- Minimum internal edge/material width: passed for the rev_0021 changed geometry via the existing assertion set, including the reduced remaining top-wall material above the left drawer openings.
+- Fabrication status: not print-ready while the sectioned structural review, shell/connectivity audit, and slicer gate remain incomplete.
+
 ## Revision 0020 Left-Side Arcade Buttons and Right-Side Screen-Face USB Ports
 
 - Revision `rev_0020` moves the two angled screen-face arcade-button holes from the right side of the display opening to the left side.

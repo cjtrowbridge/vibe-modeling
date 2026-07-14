@@ -1397,8 +1397,9 @@ module _assert_dims() {
   assert(chamber_keyboard_lid_inset > 0
     && chamber_keyboard_lid_rail_top_z() < chamber_total_z(),
     "keyboard lid rail must sit below the flat deck top");
-  assert(chamber_flat_lid_internal_clearance_z() >= 80,
-    "flat lids must retain at least 80 mm of internal floor-to-lid clearance");
+  assert(chamber_flat_lid_internal_clearance_z() >= chamber_min_flat_lid_internal_clearance_z,
+    str("flat lids must retain at least ", chamber_min_flat_lid_internal_clearance_z,
+      " mm of internal floor-to-lid clearance"));
   assert(chamber_keyboard_lid_rail_w >= minimum_internal_edge_width
       && chamber_keyboard_lid_rail_h >= minimum_wall_thickness,
     "front lid rails must meet the minimum edge and wall dimensions");
