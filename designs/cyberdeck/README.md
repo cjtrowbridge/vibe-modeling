@@ -58,6 +58,27 @@ The source retains these IDs for historical configs and direct exports. The auth
 - The laser carriage includes one laser saddle on each side of the camera, rear wire exits, a camera pigtail relief, and cable-routing clearance toward the existing front/side bucket passthrough windows.
 - The horn receiver and camera mounting-hole positions remain starter defaults pending caliper measurement of the actual horn and camera PCB.
 
+## Revision 0023 Left-Chamber Divider-End Overlap Repair
+
+- Revision `rev_0023` repairs the left-chamber center divider after review showed that the front and rear drawer-opening clearances were nibbling into the divider ends.
+- The divider thickness increases from `3 mm` to `5 mm`.
+- The front battery opening and rear Meshtastic opening still each overcut `1 mm` into the divider because of the existing `1 mm` slide clearance per side.
+- That means the repaired end ligament is now `4 mm` at each affected divider-to-wall joint instead of the prior `2 mm`.
+- The drawer lane side margins remain above the repository minimum after the thicker divider because the extra divider width is absorbed from the previously unused side margin.
+
+### Revision 0023 Verification Record
+
+- Source revision/config reviewed: `designs/cyberdeck/configs/rev_0023.json` with source-tree hash `9c6e402caccc9d9d1cc8e07dbcd6ca0a39ca655fbaed3adbc1d1db43f841d680`.
+- Build scope: complete ten-part manifest installed to both `revisions/cyberdeck/rev_0023` and `output/cyberdeck`. Both complete-build audits passed with `10` STL, `170` PNG, and `180` modeled artifacts, with no missing or unexpected files.
+- Provenance: both `revisions/cyberdeck/rev_0023/build_manifest.json` and `output/cyberdeck/build_manifest.json` match `designs/cyberdeck/configs/rev_0023.json` and `designs/cyberdeck/parts.json`. The config hash is `f2aec4be663b574b4063d7db66b7115469f2a3cca9bfd357349af38661d7c5d3`; the parts-manifest hash is `decbe84edb26ea91bb861240190a24fa28f09a019acc1420c7171a13c0de1ea9`.
+- Parameter and post-subtraction gates: passed. The updated assertions now explicitly require the left divider end ligament after drawer-opening clearances to remain at least the `3 mm` repository minimum; at `rev_0023` that modeled ligament is `4 mm`.
+- Visual review: audited the updated `rev_0023` left-chamber complete-build renders to confirm the thicker divider and the more substantial divider termination at the front and rear wall regions.
+- Connectivity gate: unverified in this record because no separate shell-topology audit was run beyond the successful OpenSCAD manifest builds.
+- Slicer gate: unverified because no supported slicer executable is available in the verification environment.
+- Structural joins: passed for the repaired divider front/rear end joints by construction and assertion; overall enclosure structural verification remains incomplete pending broader section and slicer review.
+- Minimum internal edge/material width: passed for the rev_0023 changed geometry, including the repaired divider-end ligaments after the opening clearances.
+- Fabrication status: not print-ready while the remaining whole-design section review, shell/connectivity audit, and slicer gate remain incomplete.
+
 ## Revision 0022 Battery Drawer Display Window and Left-Handle Recenter
 
 - Revision `rev_0022` adds a rectangular display-view window through the outer wall of the left battery drawer and a matching rectangular window through the left chamber outer wall behind it.

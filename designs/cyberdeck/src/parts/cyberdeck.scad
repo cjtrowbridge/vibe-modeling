@@ -983,6 +983,8 @@ function chamber_left_drawer_side_margin() =
     - 2 * chamber_left_drawer_outer_w()
     - chamber_left_drawer_divider_w
   ) / 2;
+function chamber_left_drawer_divider_end_ligament() =
+  chamber_left_drawer_divider_w - chamber_left_drawer_slide_clearance;
 function chamber_left_battery_lane_center_x() =
   chamber_left_inner_xa()
   + chamber_left_drawer_side_margin()
@@ -2459,6 +2461,8 @@ module _assert_dims() {
     "battery display window spans must be positive");
   assert(chamber_left_drawer_side_margin() >= minimum_internal_edge_width,
     "left-chamber dual-drawer lanes must retain minimum wall material at the outer edges");
+  assert(chamber_left_drawer_divider_end_ligament() >= minimum_internal_edge_width,
+    "left-chamber divider ends must retain minimum material after the drawer-opening clearances");
   assert(chamber_left_drawer_opening_z0 >= chamber_bottom,
     "left-chamber drawer openings must start above the chamber floor");
   assert(chamber_left_drawer_opening_top_z() <= chamber_total_z() - minimum_internal_edge_width,
