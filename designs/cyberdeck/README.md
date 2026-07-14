@@ -58,6 +58,29 @@ The source retains these IDs for historical configs and direct exports. The auth
 - The laser carriage includes one laser saddle on each side of the camera, rear wire exits, a camera pigtail relief, and cable-routing clearance toward the existing front/side bucket passthrough windows.
 - The horn receiver and camera mounting-hole positions remain starter defaults pending caliper measurement of the actual horn and camera PCB.
 
+## Revision 0022 Battery Drawer Display Window and Left-Handle Recenter
+
+- Revision `rev_0022` adds a rectangular display-view window through the outer wall of the left battery drawer and a matching rectangular window through the left chamber outer wall behind it.
+- The shared nominal viewing zone runs from `80 mm` to `140 mm` back from the front wall, for a `60 mm` front-to-rear span.
+- The shared nominal viewing zone runs from `15 mm` to `50 mm` above the battery-drawer inside floor, for a `35 mm` vertical span.
+- Because the drawer outer wall and chamber outer wall are separated by the existing left-lane side gap, the result is a viewing tunnel rather than one single-thickness opening.
+- The left-side handle mounting-hole datum is now re-derived from the battery-display window center so the chamber-side handle pattern is centered on the new viewing zone instead of remaining centered on the chamber length.
+- Under the existing `26 mm x 26 mm` handle plate hole pattern and `3.4 mm` M3 clearance holes, the nearest window-edge to handle-hole edge ligament is about `5.3 mm`, not `6 mm`.
+- The revision keeps the current handle hardware family and pattern because that `5.3 mm` local ligament remains above the repository `3 mm` minimum internal-edge requirement.
+
+### Revision 0022 Verification Record
+
+- Source revision/config reviewed: `designs/cyberdeck/configs/rev_0022.json` with source-tree hash `5711e0a45f54cd4f7237d9d56bafff2c47147dab5ccde81506bdea332355f137`.
+- Build scope: complete ten-part manifest installed to both `revisions/cyberdeck/rev_0022` and `output/cyberdeck`. Both complete-build audits passed with `10` STL, `170` PNG, and `180` modeled artifacts, with no missing or unexpected files.
+- Provenance: both `revisions/cyberdeck/rev_0022/build_manifest.json` and `output/cyberdeck/build_manifest.json` match `designs/cyberdeck/configs/rev_0022.json` and `designs/cyberdeck/parts.json`. The config hash is `6b6d0cddf0bba796c718ae0dad95f1f69df913ed6ef20573e748ca6e816fe794`; the parts-manifest hash is `decbe84edb26ea91bb861240190a24fa28f09a019acc1420c7171a13c0de1ea9`.
+- Parameter and post-subtraction gates: passed. The updated assertions cover drawer-window front/rear and top/bottom remaining-wall margins, chamber-window front/rear and top/bottom remaining-wall margins, and the minimum chamber-wall ligament from the relocated handle holes to the new window.
+- Visual review: audited the updated `rev_0022` complete-build renders to confirm the new battery-drawer side window, the matching left outer-wall opening, and the rear-shifted left-handle hole pattern centered on that viewing zone.
+- Connectivity gate: unverified in this record because no separate shell-topology audit was run beyond the successful OpenSCAD manifest builds.
+- Slicer gate: unverified because no supported slicer executable is available in the verification environment.
+- Structural joins: unverified overall until dedicated section and slicer layer-path review covers the changed left outer-wall region, the existing chamber seams, and the window tunnel area.
+- Minimum internal edge/material width: passed for the rev_0022 changed geometry via the updated assertion set, including the new window-to-handle-hole ligament checks.
+- Fabrication status: not print-ready while the sectioned structural review, shell/connectivity audit, and slicer gate remain incomplete.
+
 ## Revision 0021 Reduced Base Height
 
 - Revision `rev_0021` reduces the flat chamber/body height by `10 mm`, from `85 mm` overall to `75 mm` overall.

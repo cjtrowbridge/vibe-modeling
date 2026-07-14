@@ -171,8 +171,24 @@ function handle_mount_plate_center_y(i) =
   i == 0 ? -handle_half_length() : handle_half_length();
 function handle_mount_screw_y(i, sy) =
   handle_mount_plate_center_y(i) + sy * handle_mount_screw_spacing / 2;
+function handle_chamber_mount_center_y() =
+  chamber_left_battery_display_window_center_y();
+function handle_chamber_mount_plate_center_y(i) =
+  handle_chamber_mount_center_y()
+  + (i == 0 ? -handle_half_length() : handle_half_length());
+function handle_chamber_mount_screw_y(i, sy) =
+  handle_chamber_mount_plate_center_y(i) + sy * handle_mount_screw_spacing / 2;
 function handle_chamber_mount_screw_z(sz) =
   handle_chamber_mount_center_z() + sz * handle_mount_screw_spacing / 2;
+function distance_to_interval(value, min_value, max_value) =
+  value < min_value ? min_value - value
+  : value > max_value ? value - max_value
+  : 0;
+function point_to_rect_distance(y, z, y0, y1, z0, z1) =
+  sqrt(
+    pow(distance_to_interval(y, y0, y1), 2)
+    + pow(distance_to_interval(z, z0, z1), 2)
+  );
 function chamber_display_void_cut_overlap() = chamber_wall + 0.6;
 function chamber_display_mount_screw_y(face_offset) =
   chamber_display_void_center_y()
@@ -916,6 +932,51 @@ function chamber_left_drawer_backplate_screw_x_abs() =
   + chamber_left_drawer_backplate_screw_side_offset;
 function chamber_left_drawer_backplate_screw_center_z() =
   chamber_left_drawer_backplate_single_row_z;
+function chamber_left_battery_display_window_y_span() =
+  chamber_left_battery_display_window_rear_offset
+  - chamber_left_battery_display_window_front_offset;
+function chamber_left_battery_display_window_z_span() =
+  chamber_left_battery_display_window_floor_top_offset
+  - chamber_left_battery_display_window_floor_bottom_offset;
+function chamber_left_battery_display_window_center_y() =
+  chamber_left_drawer_front_y()
+  + (
+    chamber_left_battery_display_window_front_offset
+    + chamber_left_battery_display_window_rear_offset
+  ) / 2;
+function chamber_left_battery_display_window_center_z() =
+  chamber_left_drawer_opening_z0
+  + chamber_left_drawer_floor_t
+  + (
+    chamber_left_battery_display_window_floor_bottom_offset
+    + chamber_left_battery_display_window_floor_top_offset
+  ) / 2;
+function chamber_left_battery_display_window_bottom_z() =
+  chamber_left_battery_display_window_center_z()
+  - chamber_left_battery_display_window_z_span() / 2;
+function chamber_left_battery_display_window_top_z() =
+  chamber_left_battery_display_window_center_z()
+  + chamber_left_battery_display_window_z_span() / 2;
+function chamber_left_battery_display_window_front_y() =
+  chamber_left_drawer_front_y()
+  + chamber_left_battery_display_window_front_offset;
+function chamber_left_battery_display_window_rear_y() =
+  chamber_left_drawer_front_y()
+  + chamber_left_battery_display_window_rear_offset;
+function chamber_left_battery_display_window_drawer_center_y() =
+  (
+    chamber_left_battery_display_window_front_offset
+    + chamber_left_battery_display_window_rear_offset
+  ) / 2;
+function chamber_left_battery_display_window_clearance_to_handle_hole(i, sy, sz) =
+  point_to_rect_distance(
+    handle_chamber_mount_screw_y(i, sy),
+    handle_chamber_mount_screw_z(sz),
+    chamber_left_battery_display_window_front_y(),
+    chamber_left_battery_display_window_rear_y(),
+    chamber_left_battery_display_window_bottom_z(),
+    chamber_left_battery_display_window_top_z()
+  ) - handle_mount_screw_clearance_d / 2;
 function chamber_left_drawer_side_margin() =
   (
     chamber_left_inner_w()
@@ -1852,7 +1913,7 @@ module _assert_dims() {
     "handle mounting plates must fit centered on the chamber side depth");
   for (i = [0 : 1]) {
     for (sy = [-1, 1]) {
-      assert(abs(handle_mount_screw_y(i, sy)) + handle_mount_screw_clearance_d / 2
+      assert(abs(handle_chamber_mount_screw_y(i, sy)) + handle_mount_screw_clearance_d / 2
         <= chamber_piece_y / 2 - chamber_wall,
         "handle side-wall screw holes exceed chamber depth");
     }
@@ -2383,6 +2444,19 @@ module _assert_dims() {
     && chamber_left_drawer_payload_h == 60
     && chamber_left_drawer_payload_d == 160,
     "left-chamber drawer study is sized around the required 60 x 60 x 160 mm payload envelope");
+  assert(chamber_left_battery_display_window_front_offset >= minimum_internal_edge_width
+    && chamber_left_drawer_floor_outer_d()
+      - chamber_left_battery_display_window_rear_offset
+      >= minimum_internal_edge_width,
+    "battery drawer display window must retain front and rear wall material");
+  assert(chamber_left_battery_display_window_floor_bottom_offset >= minimum_internal_edge_width
+    && chamber_left_drawer_side_wall_h
+      - chamber_left_battery_display_window_floor_top_offset
+      >= minimum_internal_edge_width,
+    "battery drawer display window must retain lower and upper wall material");
+  assert(chamber_left_battery_display_window_y_span() > 0
+    && chamber_left_battery_display_window_z_span() > 0,
+    "battery display window spans must be positive");
   assert(chamber_left_drawer_side_margin() >= minimum_internal_edge_width,
     "left-chamber dual-drawer lanes must retain minimum wall material at the outer edges");
   assert(chamber_left_drawer_opening_z0 >= chamber_bottom,
@@ -2429,6 +2503,24 @@ module _assert_dims() {
   assert(chamber_left_drawer_floor_inner_d() + chamber_left_drawer_backplate_t
       <= chamber_piece_y - 2 * chamber_wall,
     "each left-chamber drawer must fit the available chamber depth");
+  assert(chamber_left_battery_display_window_front_offset >= minimum_internal_edge_width
+    && chamber_piece_y - chamber_left_battery_display_window_rear_offset
+      >= minimum_internal_edge_width,
+    "left chamber display window must retain front and rear outer-wall material");
+  assert(chamber_left_battery_display_window_bottom_z() - chamber_bottom
+      >= minimum_internal_edge_width
+    && chamber_total_z() - chamber_left_battery_display_window_top_z()
+      >= minimum_internal_edge_width,
+    "left chamber display window must retain lower and upper outer-wall material");
+  for (i = [0 : 1]) {
+    for (sy = [-1, 1]) {
+      for (sz = [-1, 1]) {
+        assert(chamber_left_battery_display_window_clearance_to_handle_hole(i, sy, sz)
+            >= minimum_internal_edge_width,
+          "left chamber display window must retain minimum material to each handle hole");
+      }
+    }
+  }
   assert(chamber_joint_passthrough_count == 2,
     "this chamber mockup expects two front/back passthroughs");
   assert(chamber_joint_passthrough_d > 0,
@@ -3695,7 +3787,7 @@ module _chamber_bolt_cut(joint_face_x, i) {
 module _chamber_handle_mount_screw_cut(side_face_x, i, sy, sz) {
   translate([
     side_face_x,
-    handle_mount_screw_y(i, sy),
+    handle_chamber_mount_screw_y(i, sy),
     handle_chamber_mount_screw_z(sz)
   ])
     rotate([0, 90, 0])
@@ -3715,6 +3807,19 @@ module _chamber_handle_mount_screw_cuts(side_face_x) {
       }
     }
   }
+}
+
+module _left_chamber_battery_display_window_cut(side_face_x) {
+  translate([
+    side_face_x,
+    chamber_left_battery_display_window_center_y(),
+    chamber_left_battery_display_window_center_z()
+  ])
+    cube([
+      chamber_wall * 6,
+      chamber_left_battery_display_window_y_span(),
+      chamber_left_battery_display_window_z_span()
+    ], center = true);
 }
 
 module _chamber_floor_label(center_x, label_text) {
@@ -3791,6 +3896,7 @@ module _chamber_body(side, assembly_position, label_text) {
           _chamber_power_cell_rear_jack_cut(
             chamber_power_cell_rear_x() + model_x_offset
           );
+          _left_chamber_battery_display_window_cut(outer_side_face_x);
           if (!compact_body_enabled) {
             for (i = [0 : chamber_joint_passthrough_count - 1]) {
               _chamber_passthrough_cut(wedge_web_x, i);
@@ -5045,6 +5151,21 @@ module _left_drawer_front_backplate_screw_cut_for_drawer(sx, sz) {
       );
 }
 
+module _left_battery_drawer_display_window_cut() {
+  outer_w = chamber_left_drawer_outer_w();
+
+  translate([
+    -outer_w / 2,
+    chamber_left_battery_display_window_drawer_center_y(),
+    chamber_left_battery_display_window_center_z()
+  ])
+    cube([
+      chamber_left_drawer_wall * 6,
+      chamber_left_battery_display_window_y_span(),
+      chamber_left_battery_display_window_z_span()
+    ], center = true);
+}
+
 module _left_chamber_bolt_counterbore_cut(joint_face_x, i) {
   translate([
     joint_face_x - chamber_wall - chamber_left_seam_counterbore_depth / 2,
@@ -5129,6 +5250,7 @@ module _left_battery_drawer_body() {
     for (sx = [-1, 1]) {
       _left_drawer_front_backplate_screw_cut_for_drawer(sx, 0);
     }
+    _left_battery_drawer_display_window_cut();
   }
 }
 
