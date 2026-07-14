@@ -932,6 +932,8 @@ function chamber_left_drawer_backplate_screw_x_abs() =
   + chamber_left_drawer_backplate_screw_side_offset;
 function chamber_left_drawer_backplate_screw_center_z() =
   chamber_left_drawer_backplate_single_row_z;
+function chamber_left_drawer_backplate_nut_corner_d() =
+  chamber_left_drawer_backplate_nut_flat_d / cos(30);
 function chamber_left_battery_display_window_y_span() =
   chamber_left_battery_display_window_rear_offset
   - chamber_left_battery_display_window_front_offset;
@@ -2511,6 +2513,20 @@ module _assert_dims() {
         - chamber_left_drawer_backplate_screw_clearance_d / 2
         - chamber_left_drawer_backplate_screw_edge_margin,
     "left drawer backplate screws must retain minimum vertical edge material");
+  assert(chamber_left_drawer_backplate_nut_trap_depth
+      <= chamber_left_drawer_backplate_nut_boss_depth,
+    "left drawer nut-trap depth must fit inside the added boss depth");
+  assert(chamber_left_drawer_backplate_nut_boss_d
+      >= chamber_left_drawer_backplate_nut_corner_d() + 2 * minimum_wall_thickness,
+    "left drawer nut bosses must leave minimum wall material around the M3 nut traps");
+  assert(chamber_left_drawer_backplate_screw_x_abs()
+      <= chamber_left_drawer_backplate_w() / 2
+        - chamber_left_drawer_backplate_nut_boss_d / 2
+    && chamber_left_drawer_backplate_screw_center_z()
+      >= chamber_left_drawer_opening_z0 + chamber_left_drawer_backplate_nut_boss_d / 2
+    && chamber_left_drawer_backplate_screw_center_z()
+      <= chamber_left_drawer_backplate_h() - chamber_left_drawer_backplate_nut_boss_d / 2,
+    "left drawer nut bosses must fit fully inside the backplate footprint");
   assert(chamber_power_cell_rear_x() + chamber_control_usb_c_jack_d / 2
       + minimum_internal_edge_width
       <= chamber_left_meshtastic_lane_center_x() - chamber_left_drawer_backplate_w() / 2,
@@ -5166,6 +5182,44 @@ module _left_drawer_front_backplate_screw_cut_for_drawer(sx, sz) {
       );
 }
 
+module _left_drawer_backplate_nut_boss(front_face = true, sx = 1) {
+  boss_center_y = front_face
+    ? chamber_left_drawer_backplate_t + chamber_left_drawer_backplate_nut_boss_depth / 2
+    : -chamber_left_drawer_backplate_t - chamber_left_drawer_backplate_nut_boss_depth / 2;
+
+  translate([
+    sx * chamber_left_drawer_backplate_screw_x_abs(),
+    boss_center_y,
+    chamber_left_drawer_backplate_screw_center_z()
+  ])
+    rotate([90, 0, 0])
+      cylinder(
+        d = chamber_left_drawer_backplate_nut_boss_d,
+        h = chamber_left_drawer_backplate_nut_boss_depth,
+        center = true,
+        $fn = 40
+      );
+}
+
+module _left_drawer_backplate_nut_trap_cut(front_face = true, sx = 1) {
+  nut_center_y = front_face
+    ? chamber_left_drawer_backplate_t + chamber_left_drawer_backplate_nut_trap_depth / 2
+    : -chamber_left_drawer_backplate_t - chamber_left_drawer_backplate_nut_trap_depth / 2;
+
+  translate([
+    sx * chamber_left_drawer_backplate_screw_x_abs(),
+    nut_center_y,
+    chamber_left_drawer_backplate_screw_center_z()
+  ])
+    rotate([90, 0, 0])
+      cylinder(
+        d = chamber_left_drawer_backplate_nut_corner_d(),
+        h = chamber_left_drawer_backplate_nut_trap_depth + 0.4,
+        center = true,
+        $fn = 6
+      );
+}
+
 module _left_battery_drawer_display_window_cut() {
   outer_w = chamber_left_drawer_outer_w();
 
@@ -5260,10 +5314,15 @@ module _left_battery_drawer_body() {
           chamber_left_drawer_backplate_t,
           chamber_left_drawer_backplate_body_h()
         ], center = false);
+
+      for (sx = [-1, 1]) {
+        _left_drawer_backplate_nut_boss(true, sx);
+      }
     }
 
     for (sx = [-1, 1]) {
       _left_drawer_front_backplate_screw_cut_for_drawer(sx, 0);
+      _left_drawer_backplate_nut_trap_cut(true, sx);
     }
     _left_battery_drawer_display_window_cut();
   }
@@ -5318,10 +5377,15 @@ module _left_meshtastic_drawer_body() {
           chamber_left_drawer_backplate_t,
           chamber_left_drawer_backplate_body_h()
         ], center = false);
+
+      for (sx = [-1, 1]) {
+        _left_drawer_backplate_nut_boss(false, sx);
+      }
     }
 
     for (sx = [-1, 1]) {
       _left_drawer_rear_backplate_screw_cut_for_drawer(sx, 0);
+      _left_drawer_backplate_nut_trap_cut(false, sx);
     }
   }
 }

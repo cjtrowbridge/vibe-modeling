@@ -58,6 +58,27 @@ The source retains these IDs for historical configs and direct exports. The auth
 - The laser carriage includes one laser saddle on each side of the camera, rear wire exits, a camera pigtail relief, and cable-routing clearance toward the existing front/side bucket passthrough windows.
 - The horn receiver and camera mounting-hole positions remain starter defaults pending caliper measurement of the actual horn and camera PCB.
 
+## Revision 0025 Drawer Nut-Boss Fastening Redesign
+
+- Revision `rev_0025` replaces the previously unusable left-drawer plain through-hole mounting condition with modeled hardware pockets.
+- Each left drawer backplate now includes two inward-projecting cylindrical nut bosses on the drawer side of the backplate, centered on the existing M3 screw bores.
+- Each boss contains a blind hex M3 nut trap, so the drawer can be fastened with exterior screws through the chamber wall into trapped nuts instead of requiring loose hardware in the inaccessible chamber-side gap.
+- The left drawer backplate flange footprint increases to support those nut bosses while keeping the required minimum material around the hole edges, the nut pockets, and the backplate perimeter.
+- The chamber-side holes remain simple exterior-access screws; the meaningful usability change in this revision is the modeled nut volume and structure on the drawer side.
+
+### Revision 0025 Verification Record
+
+- Source revision/config reviewed: `designs/cyberdeck/configs/rev_0025.json` with source-tree hash `c2e0b75854574f6cc88bd5a253aa56f389d5946d938820dd3b17c081cc7a8694`.
+- Build scope: complete ten-part manifest installed to both `revisions/cyberdeck/rev_0025` and `output/cyberdeck`. Both complete-build audits passed with `10` STL, `170` PNG, and `180` modeled artifacts, with no missing or unexpected files.
+- Provenance: both `revisions/cyberdeck/rev_0025/build_manifest.json` and `output/cyberdeck/build_manifest.json` match `designs/cyberdeck/configs/rev_0025.json` and `designs/cyberdeck/parts.json`. The config hash is `6135550b094bedf0edac39be6facee446b9bcb7413fbbc8b5dce802f0f946e6b`; the parts-manifest hash is `decbe84edb26ea91bb861240190a24fa28f09a019acc1420c7171a13c0de1ea9`.
+- Parameter and post-subtraction gates: passed. The updated assertions require the nut-trap depth to fit within the added boss depth, require at least the repository minimum wall material around the hex nut pockets, and require the enlarged boss footprints to remain fully inside the drawer backplate footprint while preserving the existing screw-hole edge margins.
+- Visual review: audited the `rev_0025` left battery and Meshtastic drawer renders to confirm the new internal nut-boss geometry is present on both drawer backplates.
+- Connectivity gate: unverified in this record because no separate shell-topology audit was run beyond the successful OpenSCAD manifest builds.
+- Slicer gate: unverified because no supported slicer executable is available in the verification environment.
+- Structural joins: passed for the changed drawer-backplate fastening bosses and nut-pocket support geometry by construction and assertion; overall enclosure structural verification remains incomplete pending broader section and slicer review.
+- Minimum internal edge/material width: passed for the rev_0025 changed geometry, including the enlarged backplate flanges and the remaining material around the nut traps and screw bores.
+- Fabrication status: improved hardware usability for the left drawers, but not fully print-ready while the remaining whole-design section review, shell/connectivity audit, and slicer gate remain incomplete.
+
 ## Revision 0024 Divider-Flush Drawer Openings and Wider Screw Margins
 
 - Revision `rev_0024` removes the remaining divider-end notch mismatch in the left chamber by shifting each drawer opening so its divider-side edge terminates exactly flush with the center divider instead of overcutting into it.
