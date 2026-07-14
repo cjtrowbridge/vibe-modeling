@@ -985,6 +985,14 @@ function chamber_left_drawer_side_margin() =
   ) / 2;
 function chamber_left_drawer_divider_end_ligament() =
   chamber_left_drawer_divider_w - chamber_left_drawer_slide_clearance;
+function chamber_left_battery_opening_center_x() =
+  chamber_left_battery_lane_center_x() - chamber_left_drawer_slide_clearance;
+function chamber_left_meshtastic_opening_center_x() =
+  chamber_left_meshtastic_lane_center_x() + chamber_left_drawer_slide_clearance;
+function chamber_left_battery_opening_divider_edge_x() =
+  chamber_left_battery_opening_center_x() + chamber_left_drawer_opening_w() / 2;
+function chamber_left_meshtastic_opening_divider_edge_x() =
+  chamber_left_meshtastic_opening_center_x() - chamber_left_drawer_opening_w() / 2;
 function chamber_left_battery_lane_center_x() =
   chamber_left_inner_xa()
   + chamber_left_drawer_side_margin()
@@ -2482,6 +2490,9 @@ module _assert_dims() {
     && chamber_left_meshtastic_lane_center_x() - chamber_left_divider_xb()
       >= chamber_left_drawer_outer_w() / 2,
     "left-chamber divider must sit between the two drawer lanes");
+  assert(abs(chamber_left_battery_opening_divider_edge_x() - chamber_left_divider_xa()) < 0.001
+    && abs(chamber_left_meshtastic_opening_divider_edge_x() - chamber_left_divider_xb()) < 0.001,
+    "left-chamber divider-side tray-opening edges must terminate flush with the divider");
   assert(chamber_left_drawer_backplate_screw_x_abs()
       > chamber_left_drawer_opening_w() / 2
         + chamber_left_drawer_backplate_screw_clearance_d / 2
@@ -3886,13 +3897,13 @@ module _chamber_body(side, assembly_position, label_text) {
         }
         if (side < 0) {
           _left_chamber_drawer_front_opening_cut(
-            chamber_left_battery_lane_center_x() + model_x_offset
+            chamber_left_battery_opening_center_x() + model_x_offset
           );
           _left_chamber_drawer_front_backplate_screw_cuts(
             chamber_left_battery_lane_center_x() + model_x_offset
           );
           _left_chamber_drawer_rear_opening_cut(
-            chamber_left_meshtastic_lane_center_x() + model_x_offset
+            chamber_left_meshtastic_opening_center_x() + model_x_offset
           );
           _left_chamber_drawer_rear_backplate_screw_cuts(
             chamber_left_meshtastic_lane_center_x() + model_x_offset
