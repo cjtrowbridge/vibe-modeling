@@ -1,0 +1,796 @@
+{
+  "schema_version": 1,
+  "build_scope": "complete",
+  "design": "cyberdeck",
+  "revision": "rev_0015",
+  "destination": "revision",
+  "generated_at_utc": "2026-07-13T17:07:34.952157+00:00",
+  "config": {
+    "path": "designs/cyberdeck/configs/rev_0015.json",
+    "sha256": "0f4fd73f41b5c5b718d979ee22040ba8e13e0f183ade17b081184ad84c472b36"
+  },
+  "parts_manifest": {
+    "path": "designs/cyberdeck/parts.json",
+    "sha256": "4da5f0b133d529f3214e74bea24a85b4f1f28c363e96f31ce2b60be8eda5a989"
+  },
+  "source": {
+    "path": "designs/cyberdeck/src",
+    "sha256": "54b93b652832a9e63921587c3f91f55e18ec7290b306c0ac892cb96ef3639c46",
+    "main_scad": "designs/cyberdeck/src/main.scad"
+  },
+  "git": {
+    "commit": "b73d10d780afb859e0926870d06c720e83d0f35a",
+    "dirty": true
+  },
+  "openscad": "C:\\Program Files (x86)\\OpenSCAD\\openscad.exe",
+  "counts": {
+    "parts": 8,
+    "stl": 8,
+    "png": 136,
+    "artifacts": 144
+  },
+  "parts": [
+    {
+      "part_id": 3,
+      "name": "cyberdeck_two_chamber_structure",
+      "output_name": "cyberdeck_two_chamber_structure_rev_0015"
+    },
+    {
+      "part_id": 4,
+      "name": "cyberdeck_left_chamber",
+      "output_name": "cyberdeck_left_chamber_rev_0015"
+    },
+    {
+      "part_id": 5,
+      "name": "cyberdeck_right_chamber",
+      "output_name": "cyberdeck_right_chamber_rev_0015"
+    },
+    {
+      "part_id": 6,
+      "name": "cyberdeck_removable_panel_set",
+      "output_name": "cyberdeck_removable_panel_set_rev_0015"
+    },
+    {
+      "part_id": 8,
+      "name": "cyberdeck_center_left_lid",
+      "output_name": "cyberdeck_center_left_lid_rev_0015"
+    },
+    {
+      "part_id": 9,
+      "name": "cyberdeck_right_front_lid",
+      "output_name": "cyberdeck_right_front_lid_rev_0015"
+    },
+    {
+      "part_id": 12,
+      "name": "cyberdeck_right_chamber_tray",
+      "output_name": "cyberdeck_right_chamber_tray_rev_0015"
+    },
+    {
+      "part_id": 13,
+      "name": "cyberdeck_right_io_panel",
+      "output_name": "cyberdeck_right_io_panel_rev_0015"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "cyberdeck_center_left_lid_rev_0015.png",
+      "bytes": 36343,
+      "sha256": "308d946c594dfb19f8a7e569e9aab2b6e419002c3455015711b30826a6b880c5"
+    },
+    {
+      "path": "cyberdeck_center_left_lid_rev_0015.stl",
+      "bytes": 914170,
+      "sha256": "14ab2215d7e10ab13a12f95dfcea837256230580f9261da78b1b36ea9c5b6d1c"
+    },
+    {
+      "path": "cyberdeck_center_left_lid_rev_0015_inspect_inside_bottom_iso.png",
+      "bytes": 16202,
+      "sha256": "bcc9717e62ec9af5dd3f01da2b758f4bdf39e5f3bfc6886352e25259dfa34895"
+    },
+    {
+      "path": "cyberdeck_center_left_lid_rev_0015_inspect_inside_bottom_ortho.png",
+      "bytes": 8332,
+      "sha256": "66ebcd9d0efa045aa24b981c17c195e6cb4276b032cec11a77b7b155b839844e"
+    },
+    {
+      "path": "cyberdeck_center_left_lid_rev_0015_iso_back_left.png",
+      "bytes": 36188,
+      "sha256": "d7b1703bae6e0c612f532fc9cd98aae3d314455f55741a8f3aef94ee4ac79db3"
+    },
+    {
+      "path": "cyberdeck_center_left_lid_rev_0015_iso_back_right.png",
+      "bytes": 35945,
+      "sha256": "a19f3404da4f5449d8e5e4359e614410b95a6d8cd2d166714bec0a0d3466a941"
+    },
+    {
+      "path": "cyberdeck_center_left_lid_rev_0015_iso_bottom_back_left.png",
+      "bytes": 22478,
+      "sha256": "9d4fde98d488538d0b12be6898f5698a42f5e8efe112d3a63d9bc9f58fe298fd"
+    },
+    {
+      "path": "cyberdeck_center_left_lid_rev_0015_iso_bottom_back_right.png",
+      "bytes": 22098,
+      "sha256": "37938cd28a51026fcdb94116ce24d9fadea2fae3b178f67faf7fcce057a25295"
+    },
+    {
+      "path": "cyberdeck_center_left_lid_rev_0015_iso_bottom_front_left.png",
+      "bytes": 22394,
+      "sha256": "b6cf550db1612eb6eaca9428bb3ea9c66994ea808ca059ed04aabb042e9e22cd"
+    },
+    {
+      "path": "cyberdeck_center_left_lid_rev_0015_iso_bottom_front_right.png",
+      "bytes": 22650,
+      "sha256": "5df78b227c52aee6f39d12cd790c83bd06dfb5520deb0f3da16ef145cad30846"
+    },
+    {
+      "path": "cyberdeck_center_left_lid_rev_0015_iso_front_left.png",
+      "bytes": 35714,
+      "sha256": "06288b1e90dbf25d947a21dd9fad3ac8a4df99b3e29a4e0a5fcbb04d762f022e"
+    },
+    {
+      "path": "cyberdeck_center_left_lid_rev_0015_iso_front_right.png",
+      "bytes": 36343,
+      "sha256": "308d946c594dfb19f8a7e569e9aab2b6e419002c3455015711b30826a6b880c5"
+    },
+    {
+      "path": "cyberdeck_center_left_lid_rev_0015_ortho_back.png",
+      "bytes": 5984,
+      "sha256": "735d21bdfe05c5422c8877878568cf68dd3318d48974851bded6e1c61b761e4c"
+    },
+    {
+      "path": "cyberdeck_center_left_lid_rev_0015_ortho_bottom.png",
+      "bytes": 9065,
+      "sha256": "18c6f67fa9a4c35cb26561fa2e72aab287e0d351b57d6a5dd0710f00ea99362e"
+    },
+    {
+      "path": "cyberdeck_center_left_lid_rev_0015_ortho_front.png",
+      "bytes": 5984,
+      "sha256": "735d21bdfe05c5422c8877878568cf68dd3318d48974851bded6e1c61b761e4c"
+    },
+    {
+      "path": "cyberdeck_center_left_lid_rev_0015_ortho_left.png",
+      "bytes": 5984,
+      "sha256": "9daf20ba05a9b47b27af84ee560f67beffe3c140c0eedfe49ba561bae03edadb"
+    },
+    {
+      "path": "cyberdeck_center_left_lid_rev_0015_ortho_right.png",
+      "bytes": 5984,
+      "sha256": "9daf20ba05a9b47b27af84ee560f67beffe3c140c0eedfe49ba561bae03edadb"
+    },
+    {
+      "path": "cyberdeck_center_left_lid_rev_0015_ortho_top.png",
+      "bytes": 12561,
+      "sha256": "2bd02644ecd3e95ea47c9427150cb68f3956d4ec7d6295a99f201e727740f5ea"
+    },
+    {
+      "path": "cyberdeck_left_chamber_rev_0015.png",
+      "bytes": 41737,
+      "sha256": "a0bcd640365d0ff74ed386e1f017a56d40c98aaafe55907c3b954111e791ffa9"
+    },
+    {
+      "path": "cyberdeck_left_chamber_rev_0015.stl",
+      "bytes": 1504150,
+      "sha256": "33328cd8f6a5b55ad6aa0fcd05cde42eaf79745ffc1bcccf8766b926cadfc548"
+    },
+    {
+      "path": "cyberdeck_left_chamber_rev_0015_inspect_inside_bottom_iso.png",
+      "bytes": 10948,
+      "sha256": "ac74b7a0135eff53736cf6de30691e59e7352f8ae2922f6993281f3586c9a8dc"
+    },
+    {
+      "path": "cyberdeck_left_chamber_rev_0015_inspect_inside_bottom_ortho.png",
+      "bytes": 5853,
+      "sha256": "0cb91f0d34e59b00a1ae16e26ecdd1eb00cb10fb282f2a69df010dc9768f0848"
+    },
+    {
+      "path": "cyberdeck_left_chamber_rev_0015_iso_back_left.png",
+      "bytes": 48829,
+      "sha256": "8a6540000ae53a6f53483c866f20425d05195d8f1437c3bfb12aa48bc74beb40"
+    },
+    {
+      "path": "cyberdeck_left_chamber_rev_0015_iso_back_right.png",
+      "bytes": 58783,
+      "sha256": "eca363cf0d6216b8ef226730b6d31467966e44de59ae1dea4b080fe9c8627c24"
+    },
+    {
+      "path": "cyberdeck_left_chamber_rev_0015_iso_bottom_back_left.png",
+      "bytes": 21190,
+      "sha256": "1485f7700a9d788490a17821bbe3810ac9c2adbc42ca8cbeb8edee0ebb39ad72"
+    },
+    {
+      "path": "cyberdeck_left_chamber_rev_0015_iso_bottom_back_right.png",
+      "bytes": 28881,
+      "sha256": "6863201a62584fa5577c783700afeb425dc3195a82fce31f0a8a07f8f9d70dd3"
+    },
+    {
+      "path": "cyberdeck_left_chamber_rev_0015_iso_bottom_front_left.png",
+      "bytes": 20290,
+      "sha256": "5526c68625af9d73d2c76328d9c0c1ef4ac91f7cddfa7f602a43b106fd5ebaa0"
+    },
+    {
+      "path": "cyberdeck_left_chamber_rev_0015_iso_bottom_front_right.png",
+      "bytes": 24245,
+      "sha256": "5c6f9b2209d291d9a0b62c6fc17686aa2a933232814753c5148a4158133363bc"
+    },
+    {
+      "path": "cyberdeck_left_chamber_rev_0015_iso_front_left.png",
+      "bytes": 32626,
+      "sha256": "e2ed19ee32bbb9e702d3ade67fc4b9a5c961a5a2d52146dc466b16873dbfae30"
+    },
+    {
+      "path": "cyberdeck_left_chamber_rev_0015_iso_front_right.png",
+      "bytes": 41737,
+      "sha256": "a0bcd640365d0ff74ed386e1f017a56d40c98aaafe55907c3b954111e791ffa9"
+    },
+    {
+      "path": "cyberdeck_left_chamber_rev_0015_ortho_back.png",
+      "bytes": 6550,
+      "sha256": "ea0db3d200f11d422bb5c41d313208bcc894a329ef3321d5a7f3c5ea07a5782b"
+    },
+    {
+      "path": "cyberdeck_left_chamber_rev_0015_ortho_bottom.png",
+      "bytes": 6109,
+      "sha256": "ce0b0d741759724a5ad8d644b1a17022125f77c92d462c84e9a39906dbd30383"
+    },
+    {
+      "path": "cyberdeck_left_chamber_rev_0015_ortho_front.png",
+      "bytes": 6139,
+      "sha256": "966747b8536594be3d2e05dc5b506e0e789f0fe61ed8bce3c2981ff2da333992"
+    },
+    {
+      "path": "cyberdeck_left_chamber_rev_0015_ortho_left.png",
+      "bytes": 7672,
+      "sha256": "557c1dd22c32c47f581792a346058725a976ab8d90148e1c22f5fd26819ccbd5"
+    },
+    {
+      "path": "cyberdeck_left_chamber_rev_0015_ortho_right.png",
+      "bytes": 7508,
+      "sha256": "55327c1ea718b1392010cc8ce29940e87852e44c983ee24d811223d891d1b0e9"
+    },
+    {
+      "path": "cyberdeck_left_chamber_rev_0015_ortho_top.png",
+      "bytes": 6374,
+      "sha256": "62041a7c7af695c2aa236bb315d36989f4fdb635d9b79c20b6329387e334f229"
+    },
+    {
+      "path": "cyberdeck_removable_panel_set_rev_0015.png",
+      "bytes": 26678,
+      "sha256": "60167c8d0a91c390edb170bcfbc729951dfca03bff0e290cd599f6336aa12a45"
+    },
+    {
+      "path": "cyberdeck_removable_panel_set_rev_0015.stl",
+      "bytes": 2908943,
+      "sha256": "8e1055374627e3e3f85f84ca5fae2a041fb89be196a0fda46ad9935367e8e24a"
+    },
+    {
+      "path": "cyberdeck_removable_panel_set_rev_0015_inspect_inside_bottom_iso.png",
+      "bytes": 32298,
+      "sha256": "377c10bd84d2736f3a4403868695af978daf1d2fef9c1de4fb7b767db56bac7d"
+    },
+    {
+      "path": "cyberdeck_removable_panel_set_rev_0015_inspect_inside_bottom_ortho.png",
+      "bytes": 10969,
+      "sha256": "3225bcfc6d96dc0c9c92a68e9c94812cf6c12d7faf226a45710cb827db7841b8"
+    },
+    {
+      "path": "cyberdeck_removable_panel_set_rev_0015_iso_back_left.png",
+      "bytes": 26946,
+      "sha256": "6eccb1346070cd1f48676d7eda4af308245adcb4c418f40d4cf06719ac6c249c"
+    },
+    {
+      "path": "cyberdeck_removable_panel_set_rev_0015_iso_back_right.png",
+      "bytes": 26348,
+      "sha256": "8df8ae9ac7917f4f19fd206d039ac80934941f007189255a44d6ce1fb263d8bf"
+    },
+    {
+      "path": "cyberdeck_removable_panel_set_rev_0015_iso_bottom_back_left.png",
+      "bytes": 19479,
+      "sha256": "8369213822b968b6399f577b3e426fb2d057809c91bcd58c01292a9e2939e81f"
+    },
+    {
+      "path": "cyberdeck_removable_panel_set_rev_0015_iso_bottom_back_right.png",
+      "bytes": 22708,
+      "sha256": "86cfff7c3fe8f234d4480e01be701189a34898e00afddc0f6e6055bfccc9b837"
+    },
+    {
+      "path": "cyberdeck_removable_panel_set_rev_0015_iso_bottom_front_left.png",
+      "bytes": 20954,
+      "sha256": "25f671f755582fd3c51bb6e4bfecb2d89bb7789ed55d18c615f45baa10d314e1"
+    },
+    {
+      "path": "cyberdeck_removable_panel_set_rev_0015_iso_bottom_front_right.png",
+      "bytes": 19391,
+      "sha256": "a8afee8eb1b2a2b122c017e28f63f15e9b721c78eb9f805543b9c2d54a06e66d"
+    },
+    {
+      "path": "cyberdeck_removable_panel_set_rev_0015_iso_front_left.png",
+      "bytes": 24529,
+      "sha256": "a316f65a2af481d72345ed70f121578adcec75a0945cde9d1f87183dee3fa806"
+    },
+    {
+      "path": "cyberdeck_removable_panel_set_rev_0015_iso_front_right.png",
+      "bytes": 26678,
+      "sha256": "60167c8d0a91c390edb170bcfbc729951dfca03bff0e290cd599f6336aa12a45"
+    },
+    {
+      "path": "cyberdeck_removable_panel_set_rev_0015_ortho_back.png",
+      "bytes": 5957,
+      "sha256": "62e6eead88862706c1b2d99bb89180b828a1dd4b209dd46e65db1bcf64a9d6ce"
+    },
+    {
+      "path": "cyberdeck_removable_panel_set_rev_0015_ortho_bottom.png",
+      "bytes": 8114,
+      "sha256": "be2f09fac9b3a248e018a2fed8ab2cfa04f845e45ca4d277a6ee3976ca4f7b10"
+    },
+    {
+      "path": "cyberdeck_removable_panel_set_rev_0015_ortho_front.png",
+      "bytes": 5938,
+      "sha256": "0cd9c6e5cbf595a1a0b6dec190ce66ba1eb113b76aca5dc5491968f541053b06"
+    },
+    {
+      "path": "cyberdeck_removable_panel_set_rev_0015_ortho_left.png",
+      "bytes": 5985,
+      "sha256": "1efd5339412e76a5eaa1a0446957beb9bb68c86a42b0ce9a5e0f99615b4696d9"
+    },
+    {
+      "path": "cyberdeck_removable_panel_set_rev_0015_ortho_right.png",
+      "bytes": 6006,
+      "sha256": "a8d7366cca2c200479b5a9e3f7d57c1e0a599a99d464ce4613dcf123fd96dc36"
+    },
+    {
+      "path": "cyberdeck_removable_panel_set_rev_0015_ortho_top.png",
+      "bytes": 10628,
+      "sha256": "6e8fbc11d6a2ab7ed5b9a845c4269dff86dc9b1792ea038ffbca24a60e7e5ade"
+    },
+    {
+      "path": "cyberdeck_right_chamber_rev_0015.png",
+      "bytes": 37241,
+      "sha256": "71eb3ec08714300896544957ece9b2ade21002de65ffef6ac5646db07f0702cd"
+    },
+    {
+      "path": "cyberdeck_right_chamber_rev_0015.stl",
+      "bytes": 1240692,
+      "sha256": "ccd7a6a81dca3eaa0d4e2c83babd760750bf1b61e04e533078fbce4249fc2d36"
+    },
+    {
+      "path": "cyberdeck_right_chamber_rev_0015_inspect_inside_bottom_iso.png",
+      "bytes": 10557,
+      "sha256": "978886deea3b9bb7571135b17b048223a35ff4ed4a36dee1b3c6e421f824c094"
+    },
+    {
+      "path": "cyberdeck_right_chamber_rev_0015_inspect_inside_bottom_ortho.png",
+      "bytes": 5848,
+      "sha256": "33f7b456733e8ad9316060550a6c6a379761bbf352e256bf649c750262d3eb16"
+    },
+    {
+      "path": "cyberdeck_right_chamber_rev_0015_iso_back_left.png",
+      "bytes": 48830,
+      "sha256": "04e2fed33d3ad5a92e5768b50c48e6e6fb26ed93db22878fb979ecc4554ab293"
+    },
+    {
+      "path": "cyberdeck_right_chamber_rev_0015_iso_back_right.png",
+      "bytes": 30536,
+      "sha256": "19ea2ecd9dfad46ea947d616973d24fa67b2e19c90ef4fef022155067a9c0625"
+    },
+    {
+      "path": "cyberdeck_right_chamber_rev_0015_iso_bottom_back_left.png",
+      "bytes": 45435,
+      "sha256": "3cb122f581e60cf97f60772526b2a645314d5fe29a3ba4eae294bb5a78f12901"
+    },
+    {
+      "path": "cyberdeck_right_chamber_rev_0015_iso_bottom_back_right.png",
+      "bytes": 30415,
+      "sha256": "2fbdfc89f6afb0f6767b8a793c88cc44f1bd5a8add0bfe9cae14d23728a7f6b0"
+    },
+    {
+      "path": "cyberdeck_right_chamber_rev_0015_iso_bottom_front_left.png",
+      "bytes": 34390,
+      "sha256": "69110c69b254c36ee40466b78b0f9f29b06fa41d747193445334ed2612234d65"
+    },
+    {
+      "path": "cyberdeck_right_chamber_rev_0015_iso_bottom_front_right.png",
+      "bytes": 30436,
+      "sha256": "31e87335258cbb95e451208072ed0727372409f24efcb156ade8dac057582225"
+    },
+    {
+      "path": "cyberdeck_right_chamber_rev_0015_iso_front_left.png",
+      "bytes": 46681,
+      "sha256": "3342b771ad930c7accf651d1435917872187f977fffb4fa4ae8e038466044e05"
+    },
+    {
+      "path": "cyberdeck_right_chamber_rev_0015_iso_front_right.png",
+      "bytes": 37241,
+      "sha256": "71eb3ec08714300896544957ece9b2ade21002de65ffef6ac5646db07f0702cd"
+    },
+    {
+      "path": "cyberdeck_right_chamber_rev_0015_ortho_back.png",
+      "bytes": 7416,
+      "sha256": "1facd780c59e2a5f4361520e56ace084256b5d0631661d139ca867aaabd727da"
+    },
+    {
+      "path": "cyberdeck_right_chamber_rev_0015_ortho_bottom.png",
+      "bytes": 6007,
+      "sha256": "4da6d496208f13a78cc1981a73d835dd7af0c44bbdbc6faece19698af2ea9240"
+    },
+    {
+      "path": "cyberdeck_right_chamber_rev_0015_ortho_front.png",
+      "bytes": 7737,
+      "sha256": "c812f8e93781351a7bba3af93ee40e4268145e5e3efa3523c89a9f081c95c7ae"
+    },
+    {
+      "path": "cyberdeck_right_chamber_rev_0015_ortho_left.png",
+      "bytes": 7388,
+      "sha256": "087e9d989bd52fecad02e6dfc67eb5fa6c3965d796dd8b118aba902a2856eb4e"
+    },
+    {
+      "path": "cyberdeck_right_chamber_rev_0015_ortho_right.png",
+      "bytes": 7276,
+      "sha256": "4c2729564f2e2ef9b13d0503160641d84699cda5e2ff632985576735ed5485a0"
+    },
+    {
+      "path": "cyberdeck_right_chamber_rev_0015_ortho_top.png",
+      "bytes": 8083,
+      "sha256": "94cef654e25d61a32764802e9f734133899ac68cbbfb493aa64ca00d4790911a"
+    },
+    {
+      "path": "cyberdeck_right_chamber_tray_rev_0015.png",
+      "bytes": 23708,
+      "sha256": "47c2c51d69a53c076145e7568bef6e8e585adfe0e05ba00fcb2ce4e9fc25d5a4"
+    },
+    {
+      "path": "cyberdeck_right_chamber_tray_rev_0015.stl",
+      "bytes": 457026,
+      "sha256": "353eadcbe61f06f3c2038d46140de5462b3ecc481aaec0be233dd0ddde0c0891"
+    },
+    {
+      "path": "cyberdeck_right_chamber_tray_rev_0015_inspect_inside_bottom_iso.png",
+      "bytes": 16648,
+      "sha256": "0a6236637c7dec7c75ff4e5e74ac820407c33f159ba23ff39e0a359c821edef3"
+    },
+    {
+      "path": "cyberdeck_right_chamber_tray_rev_0015_inspect_inside_bottom_ortho.png",
+      "bytes": 6324,
+      "sha256": "1fc0304e9248e1940302e9b0219847c687f397c8be24391131fd60bae1481f7c"
+    },
+    {
+      "path": "cyberdeck_right_chamber_tray_rev_0015_iso_back_left.png",
+      "bytes": 21080,
+      "sha256": "ea8406a560ccd06a9aa40cc8818125fd545334b7520808832f78bd9ae8b7d60a"
+    },
+    {
+      "path": "cyberdeck_right_chamber_tray_rev_0015_iso_back_right.png",
+      "bytes": 19060,
+      "sha256": "1f420015d91f00f992e09380c233a34e74b16390351aa01b0878288aadf3f87b"
+    },
+    {
+      "path": "cyberdeck_right_chamber_tray_rev_0015_iso_bottom_back_left.png",
+      "bytes": 20176,
+      "sha256": "5faa5afc4fdac76c40d867fb61a0a082c8fa0f347d316d935ba64b36686118e3"
+    },
+    {
+      "path": "cyberdeck_right_chamber_tray_rev_0015_iso_bottom_back_right.png",
+      "bytes": 22294,
+      "sha256": "5916b8a64130baf19bc4abf2f3b4ac22eedcf39c329277618fa23525e4e074e7"
+    },
+    {
+      "path": "cyberdeck_right_chamber_tray_rev_0015_iso_bottom_front_left.png",
+      "bytes": 17033,
+      "sha256": "ef9563e20c32e645b3f8a4b633ce6727abb73a3fe21e9c14ae93b0f56098d256"
+    },
+    {
+      "path": "cyberdeck_right_chamber_tray_rev_0015_iso_bottom_front_right.png",
+      "bytes": 16847,
+      "sha256": "d10b5d8339cede2dcc866e85f2f9660214df8ec235022dcd49f77f0bb818bea0"
+    },
+    {
+      "path": "cyberdeck_right_chamber_tray_rev_0015_iso_front_left.png",
+      "bytes": 21319,
+      "sha256": "f3531f0aeb9acf29a06fcadbdd4ceece5f104a9190f1fee73dbf6280a2dbf8d2"
+    },
+    {
+      "path": "cyberdeck_right_chamber_tray_rev_0015_iso_front_right.png",
+      "bytes": 23708,
+      "sha256": "47c2c51d69a53c076145e7568bef6e8e585adfe0e05ba00fcb2ce4e9fc25d5a4"
+    },
+    {
+      "path": "cyberdeck_right_chamber_tray_rev_0015_ortho_back.png",
+      "bytes": 6194,
+      "sha256": "4fec249d50fdca7bc6082ea709e696f193f004d9ad8a0bcfb66acd689612b5c3"
+    },
+    {
+      "path": "cyberdeck_right_chamber_tray_rev_0015_ortho_bottom.png",
+      "bytes": 6839,
+      "sha256": "50d1a10b3d2bad6e322d405ad53887ae39e6f6f2feb6a71bb46133204e0eb5eb"
+    },
+    {
+      "path": "cyberdeck_right_chamber_tray_rev_0015_ortho_front.png",
+      "bytes": 6425,
+      "sha256": "043dc9dbf7200cfda1ce0a83e283b40f927b3bc397bbb09dc7d5ddf99e90f8fc"
+    },
+    {
+      "path": "cyberdeck_right_chamber_tray_rev_0015_ortho_left.png",
+      "bytes": 6096,
+      "sha256": "ccf5474048d9af0df646e307bc24c9e17483d594a26cb7ee6c6c28300498a215"
+    },
+    {
+      "path": "cyberdeck_right_chamber_tray_rev_0015_ortho_right.png",
+      "bytes": 6101,
+      "sha256": "21c776740503056bf1e37def9488719121f2340f64047046cff0a48f3efd15f1"
+    },
+    {
+      "path": "cyberdeck_right_chamber_tray_rev_0015_ortho_top.png",
+      "bytes": 6194,
+      "sha256": "c98aa85777da83e7d294b918befa30e48b6cbe7014743422e609dc1e9472a626"
+    },
+    {
+      "path": "cyberdeck_right_front_lid_rev_0015.png",
+      "bytes": 18910,
+      "sha256": "b76709c6c1e26563e2d9949cab1b7717f48e47078f501673b3684ef7d2118ac1"
+    },
+    {
+      "path": "cyberdeck_right_front_lid_rev_0015.stl",
+      "bytes": 388981,
+      "sha256": "c9b82f13b08fcc62c247b1417f180fec43b40f4d30faa72f1fdd06e49ee4eff0"
+    },
+    {
+      "path": "cyberdeck_right_front_lid_rev_0015_inspect_inside_bottom_iso.png",
+      "bytes": 15131,
+      "sha256": "bc45d7001eaa5c1d4f1854adf3d103b089157d4718391b06fef1bdaab1216049"
+    },
+    {
+      "path": "cyberdeck_right_front_lid_rev_0015_inspect_inside_bottom_ortho.png",
+      "bytes": 6699,
+      "sha256": "a160dcf6d98915ddb53b3085421ae7521ce5d01f1ee91350ccc9522c047cfb65"
+    },
+    {
+      "path": "cyberdeck_right_front_lid_rev_0015_iso_back_left.png",
+      "bytes": 18948,
+      "sha256": "83b1f0734d1285f30a4a4d691a40bf2736f5347f71f7d3f4c382d6c465e656ce"
+    },
+    {
+      "path": "cyberdeck_right_front_lid_rev_0015_iso_back_right.png",
+      "bytes": 17586,
+      "sha256": "0af2547c049bc45f1857c16fae8a737399b4c9d5e55ac97238f3d1fa11f76073"
+    },
+    {
+      "path": "cyberdeck_right_front_lid_rev_0015_iso_bottom_back_left.png",
+      "bytes": 14105,
+      "sha256": "5541e8bc86073d16dee1b52eb7aa3454ffb4b2ae88fec7289d2e909ca00977a8"
+    },
+    {
+      "path": "cyberdeck_right_front_lid_rev_0015_iso_bottom_back_right.png",
+      "bytes": 15268,
+      "sha256": "af33e94d6bf058f6d197c2ecbaea20fb0784d74e203560d5e547edb62d35faba"
+    },
+    {
+      "path": "cyberdeck_right_front_lid_rev_0015_iso_bottom_front_left.png",
+      "bytes": 15216,
+      "sha256": "d8940886cb80209b5fc9230477afe42fb1c595cebdf570e87b4c17b36e3b2ba5"
+    },
+    {
+      "path": "cyberdeck_right_front_lid_rev_0015_iso_bottom_front_right.png",
+      "bytes": 14033,
+      "sha256": "5a3e62fee7a7d76f30c64ba1433eda3ce8fe5181c1c8f6f300bd362235534425"
+    },
+    {
+      "path": "cyberdeck_right_front_lid_rev_0015_iso_front_left.png",
+      "bytes": 17227,
+      "sha256": "4ef723554879c8e0d40df1d5a1a7c1a7ea7753ca55d59815b48f93b7fa259e3f"
+    },
+    {
+      "path": "cyberdeck_right_front_lid_rev_0015_iso_front_right.png",
+      "bytes": 18910,
+      "sha256": "b76709c6c1e26563e2d9949cab1b7717f48e47078f501673b3684ef7d2118ac1"
+    },
+    {
+      "path": "cyberdeck_right_front_lid_rev_0015_ortho_back.png",
+      "bytes": 5944,
+      "sha256": "6a2db240f4615ee12106873e262e2ffde8fde2152fb7255e167cd6cbf4c8a6d7"
+    },
+    {
+      "path": "cyberdeck_right_front_lid_rev_0015_ortho_bottom.png",
+      "bytes": 6534,
+      "sha256": "7f592ee2b77707eea977bc4eece3282a37f81a974c697f42b608716992e137a0"
+    },
+    {
+      "path": "cyberdeck_right_front_lid_rev_0015_ortho_front.png",
+      "bytes": 5944,
+      "sha256": "6a2db240f4615ee12106873e262e2ffde8fde2152fb7255e167cd6cbf4c8a6d7"
+    },
+    {
+      "path": "cyberdeck_right_front_lid_rev_0015_ortho_left.png",
+      "bytes": 5947,
+      "sha256": "7b0867de89e0e2474e4d481e8fb3b79bc429127c97ab33b8a2248191bded07c3"
+    },
+    {
+      "path": "cyberdeck_right_front_lid_rev_0015_ortho_right.png",
+      "bytes": 5947,
+      "sha256": "7b0867de89e0e2474e4d481e8fb3b79bc429127c97ab33b8a2248191bded07c3"
+    },
+    {
+      "path": "cyberdeck_right_front_lid_rev_0015_ortho_top.png",
+      "bytes": 7649,
+      "sha256": "4d5b896f2490da38224afd644fbb5e7f8fd0a2b858c9cb5d5e938ee9749f3ec3"
+    },
+    {
+      "path": "cyberdeck_right_io_panel_rev_0015.png",
+      "bytes": 23092,
+      "sha256": "a1e0233b05f175f1590b95db8724e97505791792639f3cb93b20d01b0db7b01a"
+    },
+    {
+      "path": "cyberdeck_right_io_panel_rev_0015.stl",
+      "bytes": 1648776,
+      "sha256": "4a37329722290566a6c8d99c57f7c576b2eb0ca8248d328ea68631d0a2dac185"
+    },
+    {
+      "path": "cyberdeck_right_io_panel_rev_0015_inspect_inside_bottom_iso.png",
+      "bytes": 34142,
+      "sha256": "12ecffd8f399122eeda094fe08255345e35b5bbd2814c4add4aa36cb0f401ee4"
+    },
+    {
+      "path": "cyberdeck_right_io_panel_rev_0015_inspect_inside_bottom_ortho.png",
+      "bytes": 18741,
+      "sha256": "3293cc08235c3ab19c276870cf944281a672b765043cbf240fcd6ed44b13cc76"
+    },
+    {
+      "path": "cyberdeck_right_io_panel_rev_0015_iso_back_left.png",
+      "bytes": 22709,
+      "sha256": "ef307d0aa5295d4bc38c7df47a339831c8a979c777aedb62a84d0c94ed729456"
+    },
+    {
+      "path": "cyberdeck_right_io_panel_rev_0015_iso_back_right.png",
+      "bytes": 22805,
+      "sha256": "664fd7e11b734c9398668307d749c6744c81849496cdeff098a55d88eb1b1abb"
+    },
+    {
+      "path": "cyberdeck_right_io_panel_rev_0015_iso_bottom_back_left.png",
+      "bytes": 20631,
+      "sha256": "10e9d75ee1c8d01df8f223d1c1531e023549e2ecbcfb6f21ae92cf6bbff7a453"
+    },
+    {
+      "path": "cyberdeck_right_io_panel_rev_0015_iso_bottom_back_right.png",
+      "bytes": 18411,
+      "sha256": "89bb2d542e3f3997f5c67f825cd42a7e321f750ecf6644bb8f8961a274134d18"
+    },
+    {
+      "path": "cyberdeck_right_io_panel_rev_0015_iso_bottom_front_left.png",
+      "bytes": 18868,
+      "sha256": "05032daaad6635d94c92100108bf0c202538242d3d86292aa45ca81c0a2b8ff9"
+    },
+    {
+      "path": "cyberdeck_right_io_panel_rev_0015_iso_bottom_front_right.png",
+      "bytes": 20664,
+      "sha256": "01aeb5ea0436e63ed9e5416567aad6bb897d813d9de42c12bef3ae6e94971f9f"
+    },
+    {
+      "path": "cyberdeck_right_io_panel_rev_0015_iso_front_left.png",
+      "bytes": 22624,
+      "sha256": "e98c3e96d63f06185f989310aa55970d68523ee85098f8632e251c3ae287e823"
+    },
+    {
+      "path": "cyberdeck_right_io_panel_rev_0015_iso_front_right.png",
+      "bytes": 23092,
+      "sha256": "a1e0233b05f175f1590b95db8724e97505791792639f3cb93b20d01b0db7b01a"
+    },
+    {
+      "path": "cyberdeck_right_io_panel_rev_0015_ortho_back.png",
+      "bytes": 5939,
+      "sha256": "d0eb7bf02e19d87bc01865a82cc111c2aa778f11b1ed03e032cdb384d150867d"
+    },
+    {
+      "path": "cyberdeck_right_io_panel_rev_0015_ortho_bottom.png",
+      "bytes": 13615,
+      "sha256": "2def4e947d70912840bf29aca451d9416b710f8f3b11374336831e11cba83ba1"
+    },
+    {
+      "path": "cyberdeck_right_io_panel_rev_0015_ortho_front.png",
+      "bytes": 5939,
+      "sha256": "d0eb7bf02e19d87bc01865a82cc111c2aa778f11b1ed03e032cdb384d150867d"
+    },
+    {
+      "path": "cyberdeck_right_io_panel_rev_0015_ortho_left.png",
+      "bytes": 5939,
+      "sha256": "4b195335fb0fba24112e7ebcbc3edeb985a8eceac6aa6ca3527883aeb913de2b"
+    },
+    {
+      "path": "cyberdeck_right_io_panel_rev_0015_ortho_right.png",
+      "bytes": 5939,
+      "sha256": "4b195335fb0fba24112e7ebcbc3edeb985a8eceac6aa6ca3527883aeb913de2b"
+    },
+    {
+      "path": "cyberdeck_right_io_panel_rev_0015_ortho_top.png",
+      "bytes": 17499,
+      "sha256": "290780ca775081ffe05a7b1550edbc8a63d2d2e75a8f73538b831bf3d480a352"
+    },
+    {
+      "path": "cyberdeck_two_chamber_structure_rev_0015.png",
+      "bytes": 43862,
+      "sha256": "a832f6a1d227cc004ca49a5dc1f95ea58b7eed9f3ae78b12945efe6d9c69d50a"
+    },
+    {
+      "path": "cyberdeck_two_chamber_structure_rev_0015.stl",
+      "bytes": 2424154,
+      "sha256": "aa42aed0ad9dce1a4e8b294f7ac49e1116d51447cdf979d1d063acf65a5ca215"
+    },
+    {
+      "path": "cyberdeck_two_chamber_structure_rev_0015_inspect_inside_bottom_iso.png",
+      "bytes": 11026,
+      "sha256": "728c583b17b9e95166c0a7e33dba3d019dc771488cfa680ef3a877469e60f5d5"
+    },
+    {
+      "path": "cyberdeck_two_chamber_structure_rev_0015_inspect_inside_bottom_ortho.png",
+      "bytes": 5869,
+      "sha256": "5d20ffc8c4bcf98f19308e514661eb52dbcbac44d769cc2f4450ae600225c3a4"
+    },
+    {
+      "path": "cyberdeck_two_chamber_structure_rev_0015_iso_back_left.png",
+      "bytes": 51134,
+      "sha256": "613b7d8918d5db7321a898ffa66fd3a3c5fbfbb29ed8370703c4e5eafe9a9165"
+    },
+    {
+      "path": "cyberdeck_two_chamber_structure_rev_0015_iso_back_right.png",
+      "bytes": 55420,
+      "sha256": "68a371b038bd149fdfc7099bdde6d26769c8a94dc6f8f60345974f52f63b047c"
+    },
+    {
+      "path": "cyberdeck_two_chamber_structure_rev_0015_iso_bottom_back_left.png",
+      "bytes": 38956,
+      "sha256": "fa53930623e08f5413f7b65cb5d4e3bfab7019cf392459b7a6d861dae1c1b01b"
+    },
+    {
+      "path": "cyberdeck_two_chamber_structure_rev_0015_iso_bottom_back_right.png",
+      "bytes": 36185,
+      "sha256": "0735cbc4da17f76c8f41818248627c5092440c515ec7abcc539728e5964fa5e5"
+    },
+    {
+      "path": "cyberdeck_two_chamber_structure_rev_0015_iso_bottom_front_left.png",
+      "bytes": 20394,
+      "sha256": "5d3c95e103be313504a817a8cd10c32d8bc138aebd33b98dedd9485807205dcf"
+    },
+    {
+      "path": "cyberdeck_two_chamber_structure_rev_0015_iso_bottom_front_right.png",
+      "bytes": 19411,
+      "sha256": "a1316c07b75869ba5188d40671b7697343d3719d09bc4edec95763f70b753e81"
+    },
+    {
+      "path": "cyberdeck_two_chamber_structure_rev_0015_iso_front_left.png",
+      "bytes": 41066,
+      "sha256": "e94388c40aab7693d101b860deaa6b65e867d01b3d51cad85682d03109cf915b"
+    },
+    {
+      "path": "cyberdeck_two_chamber_structure_rev_0015_iso_front_right.png",
+      "bytes": 43862,
+      "sha256": "a832f6a1d227cc004ca49a5dc1f95ea58b7eed9f3ae78b12945efe6d9c69d50a"
+    },
+    {
+      "path": "cyberdeck_two_chamber_structure_rev_0015_ortho_back.png",
+      "bytes": 7583,
+      "sha256": "4711a53779f387bfd2f1d13cda21c692361f6dfdf1366f8959e4d493ce8cfe36"
+    },
+    {
+      "path": "cyberdeck_two_chamber_structure_rev_0015_ortho_bottom.png",
+      "bytes": 6164,
+      "sha256": "e6c7726d9684d8666f52664a2b2a72c874165aaa2f3f5f80ec27f2fce3315ccc"
+    },
+    {
+      "path": "cyberdeck_two_chamber_structure_rev_0015_ortho_front.png",
+      "bytes": 7400,
+      "sha256": "a8c2d129492da867548c37d07aa5d94bd16f42e6b5a52bca5527c6d7b7226156"
+    },
+    {
+      "path": "cyberdeck_two_chamber_structure_rev_0015_ortho_left.png",
+      "bytes": 7358,
+      "sha256": "83098015d6bcb5f6d19db9e2e2fbf182625061f28f1ada96dba449b399879414"
+    },
+    {
+      "path": "cyberdeck_two_chamber_structure_rev_0015_ortho_right.png",
+      "bytes": 7048,
+      "sha256": "2bf79f201ac8993964023365e5df0fdd5c04606e687de40c6002d2d3af12a414"
+    },
+    {
+      "path": "cyberdeck_two_chamber_structure_rev_0015_ortho_top.png",
+      "bytes": 8023,
+      "sha256": "274416c81d035d2df4a8131e8d206ae205e16ea91e9ad8df5a8236d2b33abd16"
+    }
+  ]
+}
