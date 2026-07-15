@@ -118,14 +118,21 @@ chamber_io_bulkhead_rear_bolt_drop_z = 22.0;
 chamber_arcade_button_mount_d = 28.0;
 chamber_arcade_button_outer_d = 35.0;
 chamber_arcade_button_mount_margin = 5.0;
-chamber_display_left_arcade_button_x = 123.0;
-chamber_display_right_screen_port_x = 136.5;
+chamber_display_left_arcade_button_x = 130.0;
 chamber_display_screen_face_hardware_face_spacing = 40.0;
+chamber_shell_wedge_tray_overlap = minimum_structural_overlap;
 chamber_left_seam_counterbore_d = 7.0;
 chamber_left_seam_counterbore_depth = 2.4;
 chamber_left_seam_reinforcement_t = chamber_left_seam_counterbore_depth;
 chamber_io_panel_usb_a_mount_d = 29.0;
 chamber_io_panel_usb_a_outer_d = 31.75;
+// Keep the complete USB-A flange envelope outside the physical 250 mm screen
+// bracket, then let the compact wedge derive its outer edge from this datum.
+chamber_display_screen_hardware_clearance = minimum_internal_edge_width;
+chamber_display_right_screen_port_x =
+  chamber_display_mount_width / 2
+  + chamber_io_panel_usb_a_outer_d / 2
+  + chamber_display_screen_hardware_clearance;
 chamber_io_panel_usb_a_flange_gap = 3.0;
 chamber_io_panel_usb_a_neural_jack_gap = 10.0;
 chamber_io_panel_usb_a_left_x = -15.15;
@@ -354,6 +361,9 @@ chamber_left_drawer_backplate_screw_clearance_d = 3.4;
 chamber_left_drawer_backplate_screw_edge_margin = 5.0;
 chamber_left_drawer_backplate_screw_z_offset = 8.0;
 chamber_left_drawer_backplate_single_row_z = 33.0;
+chamber_left_drawer_fastener_head_d = 7.0;
+chamber_left_drawer_fastener_nut_flat_d = 5.5;
+chamber_left_drawer_fastener_install_clearance = 3.0;
 chamber_left_battery_display_window_front_offset = 80.0;
 chamber_left_battery_display_window_rear_offset = 140.0;
 chamber_left_battery_display_window_floor_bottom_offset = 15.0;

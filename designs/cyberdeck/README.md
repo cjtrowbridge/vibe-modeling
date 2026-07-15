@@ -42,6 +42,8 @@ The source retains these IDs for historical configs and direct exports. The auth
 
 ## Design Notes
 
+- Revision `rev_0029` moves the screen-face USB column outside the complete physical screen-bracket envelope, derives the USB-side outside wall from the larger USB-A flange, and asserts the required bracket and exterior-edge clearances. See [docs/rev_0029_usb_screen_bracket_clearance.md](docs/rev_0029_usb_screen_bracket_clearance.md).
+- Revision `rev_0028` restores the two-hole middle-row retention pattern on both left drawers, returns the screen M3 columns to the symmetric screen datum, removes the compact shell side transition by using one continuous profile envelope, and lowers the divider below the lid installation envelope. Its USB placement was subsequently corrected in `rev_0029` to account for the full physical screen-bracket envelope. See [docs/rev_0028_drawer_screen_shell_and_lid_clearance_repair.md](docs/rev_0028_drawer_screen_shell_and_lid_clearance_repair.md).
 - Revision `rev_0027` repairs the failed left-drawer chamber-side nut-boss experiment by replacing it with centered drawer retention screws, lowers the left divider below the lid path, and restores the compact display wedge width needed for the left screen-mount column. See [docs/rev_0027_left_drawer_mount_and_wedge_cleanup.md](docs/rev_0027_left_drawer_mount_and_wedge_cleanup.md).
 - Dome pan/tilt apparatus planning is tracked in [docs/dome_pan_tilt_plan.md](docs/dome_pan_tilt_plan.md).
 - The dome mechanism plan uses two MG996R-compatible servos: one fixed vertical pan servo in the bucket and one horizontal tilt servo carried by the rotating pan stage.

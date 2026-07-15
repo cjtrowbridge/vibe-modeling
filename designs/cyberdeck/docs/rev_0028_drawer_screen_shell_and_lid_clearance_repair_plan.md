@@ -1,6 +1,6 @@
 # Cyberdeck Revision 0028 Drawer, Screen Face, Shell Seam, and Lid-Clearance Repair Plan
 
-*Status: Proposed — no CAD geometry changes are authorized by this document alone*
+*Status: Executed — implementation evidence is recorded in `rev_0028_drawer_screen_shell_and_lid_clearance_repair.md`*
 
 ## Objective
 
