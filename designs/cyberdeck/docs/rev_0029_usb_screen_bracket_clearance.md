@@ -1,5 +1,9 @@
 # Cyberdeck rev_0029 USB-to-screen-bracket clearance repair
 
+> Superseded by `rev_0030`: this revision reserved the `250 mm` bracket body
+> but omitted its `5 mm` side tolerance, leaving the USB-A flange `2 mm` inside
+> the complete tolerance envelope.
+
 Config: `designs/cyberdeck/configs/rev_0029.json`
 
 Plan: `designs/cyberdeck/docs/rev_0029_usb_screen_bracket_clearance_plan.md`

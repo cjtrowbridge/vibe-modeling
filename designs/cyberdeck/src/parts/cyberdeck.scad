@@ -261,15 +261,15 @@ function chamber_display_right_usb_c_screen_ligament() =
   - chamber_control_usb_c_jack_d / 2;
 function chamber_display_right_usb_a_bracket_ligament() =
   chamber_display_right_screen_port_x
-  - chamber_display_mount_width / 2
+  - chamber_display_mount_left_half_x()
   - chamber_io_panel_usb_a_mount_d / 2;
 function chamber_display_right_usb_a_outer_bracket_ligament() =
   chamber_display_right_screen_port_x
-  - chamber_display_mount_width / 2
+  - chamber_display_mount_left_half_x()
   - chamber_io_panel_usb_a_outer_d / 2;
 function chamber_display_right_usb_c_bracket_ligament() =
   chamber_display_right_screen_port_x
-  - chamber_display_mount_width / 2
+  - chamber_display_mount_left_half_x()
   - chamber_control_usb_c_jack_d / 2;
 function chamber_display_right_usb_a_right_hole_edge_ligament() =
   chamber_display_right_half_x()
@@ -357,6 +357,8 @@ function chamber_right_lid_w() = chamber_lid_w(chamber_right_lid_xa(), chamber_r
 function chamber_left_lid_d() = chamber_lid_d(chamber_lid_front_y(), chamber_lid_left_back_y());
 function chamber_main_lid_d() = chamber_lid_d(chamber_lid_front_y(), chamber_lid_right_back_y());
 function chamber_right_lid_d() = chamber_lid_d(chamber_lid_front_y(), chamber_right_lid_back_y());
+function chamber_right_lid_print_span_45() =
+  (chamber_right_lid_w() + chamber_right_lid_d()) / sqrt(2);
 function chamber_io_panel_nominal_w() =
   chamber_display_mount_width
   + 2 * chamber_display_mount_side_margin
@@ -1387,13 +1389,13 @@ module _assert_dims() {
     "display-face right USB-C hole must retain minimum material from the screen opening");
   assert(chamber_display_right_usb_a_bracket_ligament()
       >= chamber_display_screen_hardware_clearance,
-    "display-face right USB-A hole must clear the full physical screen bracket");
+    "display-face right USB-A hole must clear the full screen-bracket tolerance envelope");
   assert(chamber_display_right_usb_a_outer_bracket_ligament()
       >= chamber_display_screen_hardware_clearance,
-    "display-face right USB-A flange must clear the full physical screen bracket");
+    "display-face right USB-A flange must clear the full screen-bracket tolerance envelope");
   assert(chamber_display_right_usb_c_bracket_ligament()
       >= chamber_display_screen_hardware_clearance,
-    "display-face right USB-C hole must clear the full physical screen bracket");
+    "display-face right USB-C hole must clear the full screen-bracket tolerance envelope");
   assert(chamber_display_right_usb_a_right_hole_edge_ligament()
       >= minimum_internal_edge_width,
     "display-face right USB-A hole must retain minimum material to the outer wedge edge");
@@ -2222,10 +2224,14 @@ module _assert_dims() {
     && chamber_left_lid_d() <= print_volume_y
     && chamber_center_lid_w() <= print_volume_x
     && chamber_main_lid_d() <= print_volume_y
-    && chamber_right_lid_w() <= print_volume_x
-    && chamber_right_lid_d() <= print_volume_y
+    && (
+      (chamber_right_lid_w() <= print_volume_x
+        && chamber_right_lid_d() <= print_volume_y)
+      || (chamber_right_lid_print_span_45() <= print_volume_x
+        && chamber_right_lid_print_span_45() <= print_volume_y)
+    )
     && chamber_lid_thickness <= print_volume_z,
-    "each front lid must fit the print volume");
+    "each front lid must fit the print volume axis-aligned or at the asserted 45-degree orientation");
   assert(chamber_io_panel_print_span_45() <= print_volume_x
     && chamber_io_panel_print_span_45() <= print_volume_y
     && chamber_lid_thickness <= print_volume_z,

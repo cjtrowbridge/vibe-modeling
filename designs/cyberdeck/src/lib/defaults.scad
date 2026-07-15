@@ -127,10 +127,12 @@ chamber_left_seam_reinforcement_t = chamber_left_seam_counterbore_depth;
 chamber_io_panel_usb_a_mount_d = 29.0;
 chamber_io_panel_usb_a_outer_d = 31.75;
 // Keep the complete USB-A flange envelope outside the physical 250 mm screen
-// bracket, then let the compact wedge derive its outer edge from this datum.
+// bracket plus its required side tolerance, then let the compact wedge derive
+// its outer edge from this datum.
 chamber_display_screen_hardware_clearance = minimum_internal_edge_width;
 chamber_display_right_screen_port_x =
   chamber_display_mount_width / 2
+  + chamber_display_mount_side_margin
   + chamber_io_panel_usb_a_outer_d / 2
   + chamber_display_screen_hardware_clearance;
 chamber_io_panel_usb_a_flange_gap = 3.0;
