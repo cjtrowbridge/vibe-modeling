@@ -3,8 +3,8 @@
   "build_scope": "complete",
   "design": "cyberdeck",
   "revision": "rev_0030",
-  "destination": "current",
-  "generated_at_utc": "2026-07-15T02:49:24.249284+00:00",
+  "destination": "revision",
+  "generated_at_utc": "2026-07-15T02:55:40.527734+00:00",
   "config": {
     "path": "designs/cyberdeck/configs/rev_0030.json",
     "sha256": "cd993c0b69797cf55dd5edaca19a48dbd5b1eec5377b8b815ddf7183b7abbccc"
@@ -90,7 +90,7 @@
     {
       "path": "cyberdeck_center_left_lid_rev_0030.stl",
       "bytes": 914857,
-      "sha256": "cc7304b7c8f0b936f2c5fe1ca9c751184c5f163a542f9769376715cc53ae9ce8"
+      "sha256": "24deffc7a830f685a7d338d5edc28904c60fdf241cfd551b055c01ee81edd7fb"
     },
     {
       "path": "cyberdeck_center_left_lid_rev_0030_inspect_inside_bottom_iso.png",
@@ -180,7 +180,7 @@
     {
       "path": "cyberdeck_left_battery_drawer_rev_0030.stl",
       "bytes": 51887,
-      "sha256": "415192e82f60d786094738952108ca9a20c8005fde73413629be6263b63d163e"
+      "sha256": "535e1aba0e169fd2f61e2e8751bde3d45f96f31c28ae26a4b3a520a78e2b5118"
     },
     {
       "path": "cyberdeck_left_battery_drawer_rev_0030_inspect_inside_bottom_iso.png",
@@ -270,7 +270,7 @@
     {
       "path": "cyberdeck_left_chamber_rev_0030.stl",
       "bytes": 1936064,
-      "sha256": "624163606d17907aa38c9c906ae8c8c821972e71aeb1d4030f23746222744fbf"
+      "sha256": "b99b10a177fafaad1d31f617345b9034dfe778807ce2606b4fcb87a78204e1a7"
     },
     {
       "path": "cyberdeck_left_chamber_rev_0030_inspect_inside_bottom_iso.png",
@@ -360,7 +360,7 @@
     {
       "path": "cyberdeck_left_meshtastic_drawer_rev_0030.stl",
       "bytes": 49669,
-      "sha256": "f2a35344ca97bb9ab640fb1f381ee63a60ce436224c5fc30a6f3f2044128d1af"
+      "sha256": "bf5697308ad987d8f08f93ad6b41558ae5173db7e126459b71ffeccb99051fc0"
     },
     {
       "path": "cyberdeck_left_meshtastic_drawer_rev_0030_inspect_inside_bottom_iso.png",
@@ -450,7 +450,7 @@
     {
       "path": "cyberdeck_removable_panel_set_rev_0030.stl",
       "bytes": 2911857,
-      "sha256": "6c52c9b3ee20240020726efb718bc75dda89ae6a516b8679b3137a734b4ee32f"
+      "sha256": "2ff49bc6c7a06b32e55813e0ddd75510d0d63b6bb0ca3778e52538c6f32992b3"
     },
     {
       "path": "cyberdeck_removable_panel_set_rev_0030_inspect_inside_bottom_iso.png",
@@ -540,7 +540,7 @@
     {
       "path": "cyberdeck_right_chamber_rev_0030.stl",
       "bytes": 1164961,
-      "sha256": "a549c48c73791bfc12ebb67e06ecab1b96b5315a8b72ddb93e8dcf87bea839d3"
+      "sha256": "da337942eed8d1939ec3bcee6fdba000bb2813c3258069e234807d820e15f275"
     },
     {
       "path": "cyberdeck_right_chamber_rev_0030_inspect_inside_bottom_iso.png",
@@ -630,7 +630,7 @@
     {
       "path": "cyberdeck_right_chamber_tray_rev_0030.stl",
       "bytes": 411667,
-      "sha256": "e328340fa9a57fdd5b88bc99d187f583c2433d6a2b04ba5dfc4ecb676b710c8b"
+      "sha256": "5d2fbe2fe89d04f041ae7b2ff00061cd96c6f08ff821fe327e51a33091928138"
     },
     {
       "path": "cyberdeck_right_chamber_tray_rev_0030_inspect_inside_bottom_iso.png",
@@ -720,7 +720,7 @@
     {
       "path": "cyberdeck_right_front_lid_rev_0030.stl",
       "bytes": 389747,
-      "sha256": "d97103409143861d04d04ccdca09d75b4b53f5d2e76d8a3b6865e8938327b6d8"
+      "sha256": "2dcabe9eb52b0089a26a548d7c3f8851502c2b7871ede00f8072e311a1867d5b"
     },
     {
       "path": "cyberdeck_right_front_lid_rev_0030_inspect_inside_bottom_iso.png",
@@ -810,7 +810,7 @@
     {
       "path": "cyberdeck_right_io_panel_rev_0030.stl",
       "bytes": 1648776,
-      "sha256": "dd9d031742292a10aefa51677d05448f930a3c44e922ac9447e11b1cfa5dd5d6"
+      "sha256": "ce76a54f2944e59bf84fdf6a092c1d6d4be376123c351e313a253027073ce3c7"
     },
     {
       "path": "cyberdeck_right_io_panel_rev_0030_inspect_inside_bottom_iso.png",
@@ -900,7 +900,7 @@
     {
       "path": "cyberdeck_two_chamber_structure_rev_0030.stl",
       "bytes": 2849930,
-      "sha256": "cadaed841e7e0756d9c3c397b43a9a72f768858d38046abfc0a72377b6f020ab"
+      "sha256": "49ed94032f0f65860e50d678c7d123dde02a07e6f05f493ad426bf7be96828ca"
     },
     {
       "path": "cyberdeck_two_chamber_structure_rev_0030_inspect_inside_bottom_iso.png",
