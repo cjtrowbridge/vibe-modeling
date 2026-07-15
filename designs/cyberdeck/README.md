@@ -42,6 +42,7 @@ The source retains these IDs for historical configs and direct exports. The auth
 
 ## Design Notes
 
+- Revision `rev_0027` repairs the failed left-drawer chamber-side nut-boss experiment by replacing it with centered drawer retention screws, lowers the left divider below the lid path, and restores the compact display wedge width needed for the left screen-mount column. See [docs/rev_0027_left_drawer_mount_and_wedge_cleanup.md](docs/rev_0027_left_drawer_mount_and_wedge_cleanup.md).
 - Dome pan/tilt apparatus planning is tracked in [docs/dome_pan_tilt_plan.md](docs/dome_pan_tilt_plan.md).
 - The dome mechanism plan uses two MG996R-compatible servos: one fixed vertical pan servo in the bucket and one horizontal tilt servo carried by the rotating pan stage.
 - The plan requires stock servo horns captured in printed receiver pockets instead of direct printed splines.

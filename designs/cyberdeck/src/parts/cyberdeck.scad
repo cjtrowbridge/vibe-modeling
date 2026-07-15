@@ -47,6 +47,11 @@ function chamber_display_reference_center_x() = chamber_dome_area_x / 2;
 function chamber_display_legacy_half_x() = chamber_display_wedge_x / 2;
 function chamber_display_mount_left_half_x() =
   chamber_display_mount_width / 2 + chamber_display_mount_side_margin;
+function chamber_display_left_controls_and_mount_half_x() =
+  chamber_display_left_arcade_button_x
+  + chamber_arcade_button_outer_d / 2
+  + chamber_display_mount_screw_clearance_d
+  + 2 * minimum_internal_edge_width;
 function chamber_display_right_half_x() =
   compact_body_enabled
     ? max(
@@ -94,6 +99,7 @@ function chamber_display_left_half_x() =
   compact_body_enabled
     ? max(
         chamber_display_mount_left_half_x(),
+        chamber_display_left_controls_and_mount_half_x(),
         chamber_display_reference_center_x()
           - chamber_split_x()
           + chamber_left_required_piece_w()
@@ -211,10 +217,7 @@ function chamber_display_left_mount_screw_max_x() =
   - chamber_display_mount_screw_clearance_d / 2
   - minimum_internal_edge_width;
 function chamber_display_mount_left_screw_x() =
-  (
-    chamber_display_left_mount_screw_min_x()
-    + chamber_display_left_mount_screw_max_x()
-  ) / 2;
+  chamber_display_left_mount_screw_max_x();
 function chamber_display_mount_right_screw_x() =
   chamber_display_mount_screw_right_x;
 function chamber_display_mount_rear_screw_y() =
@@ -937,24 +940,16 @@ function chamber_left_drawer_opening_top_z() =
   chamber_left_drawer_opening_z0 + chamber_left_drawer_opening_h();
 function chamber_left_drawer_backplate_w() =
   chamber_left_drawer_opening_w()
-  + 2 * (
-    chamber_left_drawer_backplate_screw_side_offset
-    + chamber_left_drawer_backplate_screw_clearance_d / 2
-    + chamber_left_drawer_backplate_screw_edge_margin
-  );
+  + 2 * chamber_left_drawer_backplate_screw_edge_margin;
 function chamber_left_drawer_backplate_h() =
   chamber_left_drawer_opening_top_z()
   + chamber_left_drawer_backplate_screw_clearance_d / 2
   + chamber_left_drawer_backplate_screw_edge_margin;
 function chamber_left_drawer_backplate_body_h() =
   chamber_left_drawer_backplate_h() - chamber_left_drawer_opening_z0;
-function chamber_left_drawer_backplate_screw_x_abs() =
-  chamber_left_drawer_opening_w() / 2
-  + chamber_left_drawer_backplate_screw_side_offset;
+function chamber_left_drawer_backplate_screw_x_abs() = 0;
 function chamber_left_drawer_backplate_screw_center_z() =
   chamber_left_drawer_backplate_single_row_z;
-function chamber_left_drawer_mount_nut_corner_d() =
-  chamber_left_drawer_mount_nut_flat_d / cos(30);
 function chamber_left_battery_display_window_y_span() =
   chamber_left_battery_display_window_rear_offset
   - chamber_left_battery_display_window_front_offset;
@@ -1026,6 +1021,8 @@ function chamber_left_divider_xb() =
   chamber_left_divider_xa() + chamber_left_drawer_divider_w;
 function chamber_left_meshtastic_lane_center_x() =
   chamber_left_divider_xb() + chamber_left_drawer_outer_w() / 2;
+function chamber_left_drawer_divider_top_z() =
+  chamber_left_drawer_opening_top_z();
 function chamber_left_drawer_front_y() =
   -chamber_piece_y / 2;
 function chamber_left_drawer_back_y() =
@@ -1266,8 +1263,6 @@ module _assert_dims() {
     "display mount screw spacing must fit on the angled display face");
   assert(chamber_display_mount_screw_clearance_d >= 3.0,
     "display mount screw clearance must clear M3 hardware");
-  assert(chamber_shell_wedge_tray_overlap >= minimum_structural_overlap,
-    "display wedge to lower tray shell overlap must meet the minimum structural overlap");
   assert(chamber_display_left_arcade_button_x > chamber_display_void_x / 2,
     "display-face left arcade buttons must land to the left of the screen opening");
   assert(chamber_display_left_arcade_button_screen_ligament()
@@ -2527,14 +2522,12 @@ module _assert_dims() {
     && abs(chamber_left_meshtastic_opening_divider_edge_x() - chamber_left_divider_xb()) < 0.001,
     "left-chamber divider-side tray-opening edges must terminate flush with the divider");
   assert(chamber_left_drawer_backplate_screw_x_abs()
-      > chamber_left_drawer_opening_w() / 2
-        + chamber_left_drawer_backplate_screw_clearance_d / 2
-        + chamber_left_drawer_backplate_screw_edge_margin
+      >= 0
     && chamber_left_drawer_backplate_screw_x_abs()
       <= chamber_left_drawer_backplate_w() / 2
         - chamber_left_drawer_backplate_screw_clearance_d / 2
         - chamber_left_drawer_backplate_screw_edge_margin,
-    "left drawer backplate screws must retain minimum side edge material");
+    "left drawer center screw must remain inside the backplate with minimum side edge material");
   assert(chamber_left_drawer_backplate_screw_center_z()
       > chamber_left_drawer_opening_z0
         + chamber_left_drawer_backplate_screw_clearance_d / 2
@@ -2544,19 +2537,9 @@ module _assert_dims() {
         - chamber_left_drawer_backplate_screw_clearance_d / 2
         - chamber_left_drawer_backplate_screw_edge_margin,
     "left drawer backplate screws must retain minimum vertical edge material");
-  assert(chamber_left_drawer_mount_nut_trap_depth
-      <= chamber_left_drawer_mount_nut_boss_depth,
-    "left drawer chamber-side nut-trap depth must fit inside the added boss depth");
-  assert(chamber_left_drawer_mount_nut_boss_d
-      >= chamber_left_drawer_mount_nut_corner_d() + 2 * minimum_wall_thickness,
-    "left drawer chamber-side nut bosses must leave minimum wall material around the M3 nut traps");
-  assert(chamber_left_drawer_mount_nut_boss_depth >= minimum_structural_overlap,
-    "left drawer chamber-side nut bosses must overlap the chamber wall by at least the structural minimum");
-  assert(chamber_left_drawer_backplate_screw_center_z()
-      >= chamber_left_drawer_opening_z0 + chamber_left_drawer_mount_nut_boss_d / 2
-    && chamber_left_drawer_backplate_screw_center_z()
-      <= chamber_total_z() - chamber_left_drawer_mount_nut_boss_d / 2,
-    "left drawer chamber-side nut bosses must fit between the chamber floor and roof");
+  assert(chamber_left_drawer_divider_top_z()
+      <= chamber_keyboard_lid_rail_center_z() - chamber_keyboard_lid_rail_h / 2 - chamber_lid_clearance,
+    "left drawer divider must stay below the lid-rail envelope");
   assert(chamber_power_cell_rear_x() + chamber_control_usb_c_jack_d / 2
       + minimum_internal_edge_width
       <= chamber_left_meshtastic_lane_center_x() - chamber_left_drawer_backplate_w() / 2,
@@ -2714,10 +2697,9 @@ module _chamber_shell(side, center_x, assembly_position) {
   wedge_xb = min(chamber_display_wedge_right_x(), global_body_xb) + model_x_offset;
   wedge_global_xa = max(chamber_display_wedge_left_x(), global_body_xa);
   wedge_global_xb = min(chamber_display_wedge_right_x(), global_body_xb);
-  tray_wedge_overlap = chamber_shell_wedge_tray_overlap;
   left_flat_tray_xa = global_body_xa + model_x_offset;
-  left_flat_tray_xb = min(global_body_xb, wedge_global_xa + tray_wedge_overlap) + model_x_offset;
-  right_flat_tray_xa = max(global_body_xa, wedge_global_xb - tray_wedge_overlap) + model_x_offset;
+  left_flat_tray_xb = min(global_body_xb, wedge_global_xa) + model_x_offset;
+  right_flat_tray_xa = max(global_body_xa, wedge_global_xb) + model_x_offset;
   right_flat_tray_xb = global_body_xb + model_x_offset;
   keep_wedge_left_wall = abs(wedge_global_xa - chamber_display_wedge_left_x()) < 0.01;
   keep_wedge_right_wall = abs(wedge_global_xb - chamber_display_wedge_right_x()) < 0.01;
@@ -3770,59 +3752,11 @@ module _left_chamber_drawer_rear_backplate_screw_cut(center_x, sx, sz) {
 }
 
 module _left_chamber_drawer_front_backplate_screw_cuts(center_x) {
-  for (sx = [-1, 1]) {
-    _left_chamber_drawer_front_backplate_screw_cut(center_x, sx, 0);
-  }
+  _left_chamber_drawer_front_backplate_screw_cut(center_x, 0, 0);
 }
 
 module _left_chamber_drawer_rear_backplate_screw_cuts(center_x) {
-  for (sx = [-1, 1]) {
-    _left_chamber_drawer_rear_backplate_screw_cut(center_x, sx, 0);
-  }
-}
-
-module _left_chamber_drawer_mount_boss(center_x, front_face = true, sx = 1) {
-  wall_inner_face_y = front_face
-    ? chamber_left_drawer_front_y() + chamber_wall
-    : chamber_left_drawer_back_y() - chamber_wall;
-  boss_center_y = front_face
-    ? wall_inner_face_y + chamber_left_drawer_mount_nut_boss_depth / 2
-    : wall_inner_face_y - chamber_left_drawer_mount_nut_boss_depth / 2;
-
-  translate([
-    center_x + sx * chamber_left_drawer_backplate_screw_x_abs(),
-    boss_center_y,
-    chamber_left_drawer_backplate_screw_center_z()
-  ])
-    rotate([90, 0, 0])
-      cylinder(
-        d = chamber_left_drawer_mount_nut_boss_d,
-        h = chamber_left_drawer_mount_nut_boss_depth,
-        center = true,
-        $fn = 40
-      );
-}
-
-module _left_chamber_drawer_mount_nut_trap_cut(center_x, front_face = true, sx = 1) {
-  wall_inner_face_y = front_face
-    ? chamber_left_drawer_front_y() + chamber_wall
-    : chamber_left_drawer_back_y() - chamber_wall;
-  nut_center_y = front_face
-    ? wall_inner_face_y + chamber_left_drawer_mount_nut_trap_depth / 2
-    : wall_inner_face_y - chamber_left_drawer_mount_nut_trap_depth / 2;
-
-  translate([
-    center_x + sx * chamber_left_drawer_backplate_screw_x_abs(),
-    nut_center_y,
-    chamber_left_drawer_backplate_screw_center_z()
-  ])
-    rotate([90, 0, 0])
-      cylinder(
-        d = chamber_left_drawer_mount_nut_corner_d(),
-        h = chamber_left_drawer_mount_nut_trap_depth + 0.4,
-        center = true,
-        $fn = 6
-      );
+  _left_chamber_drawer_rear_backplate_screw_cut(center_x, 0, 0);
 }
 
 module _left_chamber_seam_reinforcement(model_x_offset) {
@@ -3847,7 +3781,7 @@ module _left_chamber_drawer_divider() {
     cube([
       chamber_left_drawer_divider_w,
       chamber_piece_y - 2 * chamber_wall + 2 * minimum_structural_overlap,
-      chamber_internal_clearance_z
+      chamber_left_drawer_divider_top_z() - chamber_bottom
     ], center = false);
 }
 
@@ -3971,18 +3905,6 @@ module _chamber_body(side, assembly_position, label_text) {
           if (side < 0) {
             _left_chamber_drawer_divider();
             _left_chamber_seam_reinforcement(model_x_offset);
-            for (sx = [-1, 1]) {
-              _left_chamber_drawer_mount_boss(
-                chamber_left_battery_lane_center_x() + model_x_offset,
-                true,
-                sx
-              );
-              _left_chamber_drawer_mount_boss(
-                chamber_left_meshtastic_lane_center_x() + model_x_offset,
-                false,
-                sx
-              );
-            }
           }
           _chamber_rear_fan_spacers(
             chamber_rear_fan_center_x(side) + model_x_offset
@@ -4022,26 +3944,12 @@ module _chamber_body(side, assembly_position, label_text) {
           _left_chamber_drawer_front_backplate_screw_cuts(
             chamber_left_battery_lane_center_x() + model_x_offset
           );
-          for (sx = [-1, 1]) {
-            _left_chamber_drawer_mount_nut_trap_cut(
-              chamber_left_battery_lane_center_x() + model_x_offset,
-              true,
-              sx
-            );
-          }
           _left_chamber_drawer_rear_opening_cut(
             chamber_left_meshtastic_opening_center_x() + model_x_offset
           );
           _left_chamber_drawer_rear_backplate_screw_cuts(
             chamber_left_meshtastic_lane_center_x() + model_x_offset
           );
-          for (sx = [-1, 1]) {
-            _left_chamber_drawer_mount_nut_trap_cut(
-              chamber_left_meshtastic_lane_center_x() + model_x_offset,
-              false,
-              sx
-            );
-          }
           _chamber_power_cell_rear_jack_cut(
             chamber_power_cell_rear_x() + model_x_offset
           );
@@ -5396,9 +5304,7 @@ module _left_battery_drawer_body() {
         ], center = false);
     }
 
-    for (sx = [-1, 1]) {
-      _left_drawer_front_backplate_screw_cut_for_drawer(sx, 0);
-    }
+    _left_drawer_front_backplate_screw_cut_for_drawer(0, 0);
     _left_battery_drawer_display_window_cut();
   }
 }
@@ -5454,9 +5360,7 @@ module _left_meshtastic_drawer_body() {
         ], center = false);
     }
 
-    for (sx = [-1, 1]) {
-      _left_drawer_rear_backplate_screw_cut_for_drawer(sx, 0);
-    }
+    _left_drawer_rear_backplate_screw_cut_for_drawer(0, 0);
   }
 }
 
