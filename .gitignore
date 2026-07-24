@@ -1,5 +1,8 @@
 # Local verification scratch
 .tmp/
+output/
+revisions/
+designs/ac_redirectors/docs/
 
 # Python runtime artifacts
 __pycache__/

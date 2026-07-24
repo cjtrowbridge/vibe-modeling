@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "parts": [
+    {
+      "part_id": 1,
+      "name": "ac_redirector_door_side"
+    },
+    {
+      "part_id": 2,
+      "name": "ac_redirector_bed_side"
+    },
+    {
+      "part_id": 3,
+      "name": "ac_vent_rail_mockup"
+    }
+  ]
+}

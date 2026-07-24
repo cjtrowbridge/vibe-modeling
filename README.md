@@ -41,7 +41,7 @@ If the agent follows the included playbooks, it should also document what it cha
   - `src/parts/*.scad`: geometry modules
   - `parts.json` (multi-part designs): authoritative complete-build part IDs and names
   - `configs/rev_000N.json`: committed parameter sets
-  - Included designs: `example_box`, `helical`, `yagi`, `yagi_card`, `dtv_yagi`, `winegard_gm6000_logic_backplane`, `gigachad_xavier_void`, `cottage_pi6_plus`, `old_rca_display_baseplate`, `opi_zero_2w_carrier`, `cyberdeck`
+  - Included designs: `example_box`, `helical`, `yagi`, `yagi_card`, `dtv_yagi`, `winegard_gm6000_logic_backplane`, `gigachad_xavier_void`, `cottage_pi6_plus`, `old_rca_display_baseplate`, `opi_zero_2w_carrier`, `cyberdeck`, `ac_redirectors`
 - `output/`
   - current scratch outputs only (`output/<design>/`; generated and ignored)
 - `revisions/`
@@ -213,4 +213,8 @@ See `playbooks/how_to_iterate_openscad_designs.md` for the full workflow.
   - Concept-first workspace for a modular mechanical computer using composable 3D-printed logic cubes, synchronized motor-chain expansion, and magnetic cube-to-cube attachment
 - `designs/cyberdeck/`
   - First-draft visual mockup workspace for a cassette-futurist cyberdeck with asymmetric eye module, wide touchscreen, folding keyboard, hardware toggles, and internal proxy volumes
+- `designs/ac_redirectors/`
+  - Two independent rail-hung air-conditioner redirectors sharing an open 50 mm-radius quarter-turn foundation
+  - Includes a straight vertical door-side guide and a bed-side guide with parametric 45-degree swept vanes
+  - Includes a full-width reference mockup of the photographed AC vent, top ledge, and mounting rail
 - Generated artifacts remain local under `output/` and `revisions/`; source and configs are the committed record

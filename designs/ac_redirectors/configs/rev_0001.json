@@ -1,0 +1,31 @@
+{
+  "part": "ac_redirectors_rev_0001",
+  "part_id": 1,
+
+  "piece_width": 198.0,
+  "center_gap": 10.0,
+  "outlet_height": 50.0,
+  "turn_inner_radius": 50.0,
+  "wall_thickness": 3.0,
+  "end_wall_thickness": 3.0,
+
+  "rail_thickness": 3.0,
+  "rail_depth": 10.0,
+  "rail_face_setback": 56.0,
+  "hook_clearance": 0.6,
+  "hook_engagement": 12.0,
+  "hook_band_width": 11.0,
+  "ac_inlet_lower_datum_to_rail_base": 64.0,
+  "rail_flange_height": 34.0,
+  "mockup_outlet_recess_depth": 8.0,
+
+  "side_wall_outlet_rise": 20.0,
+  "top_duct_height": 50.0,
+
+  "bed_yaw_degrees": 45.0,
+  "bed_yaw_sign": -1,
+  "bed_duct_count": 5,
+
+  "maximum_print_dimension": 220.0,
+  "profile_arc_step": 5.0
+}
