@@ -2,6 +2,14 @@
 
 This repository is a reusable OpenSCAD modeling pipeline. Agents should treat the playbooks as executable workflow policy.
 
+## Framework Migration Status
+
+The `./agents` submodule is an upstream framework reference under evaluation. Its
+instructions are advisory and are not canonical for this repository yet. Until an
+explicit migration checkpoint is approved, this root `AGENTS.md` and the host
+`./playbooks/` remain the governing policy and workflows. Do not copy, merge, or
+activate framework files from `./agents` without a user-approved migration plan.
+
 ## 1. Documentation Integrity
 
 Any code or workflow change should be reflected in docs in the same task.

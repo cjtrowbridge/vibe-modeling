@@ -4,6 +4,19 @@ A reusable, agentic pipeline for iterating on OpenSCAD 3D models with parameteri
 
 This repo is an extraction of the modeling workflow originally developed across many of my projects, especially [DIY-Weather-Satellite-Uplink](https://github.com/cjtrowbridge/DIY-Weather-Satellite-Uplink), and generalized so it can be used for any modeling domain.
 
+## Agent framework migration status
+
+The reusable [`cjtrowbridge/agents`](https://github.com/cjtrowbridge/agents)
+framework is pinned as a Git submodule at `agents/` for migration analysis. It is
+currently advisory: the root `AGENTS.md` and host `playbooks/` remain canonical
+until an explicit migration checkpoint is approved.
+
+After cloning this repository, initialize the reference framework with:
+
+```bash
+git submodule update --init --recursive agents
+```
+
 ## How To Use This Pipeline
 
 1. Fork or clone this repository.
@@ -30,6 +43,8 @@ If the agent follows the included playbooks, it should also document what it cha
 
 ## Repository layout
 
+- `agents/`
+  - Pinned upstream agent-framework reference; advisory until migration cutover
 - `scripts/`
   - `scad_build.py` / `scad_build.sh`: build STL + the full required multi-view PNG set from a config
   - `scad_build_all.py`: stage, validate, install, and audit every part declared by a design
