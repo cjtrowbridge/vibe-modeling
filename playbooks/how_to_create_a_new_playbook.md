@@ -11,7 +11,8 @@ Define a repeatable process for creating a new playbook that documents a multi-s
 Before writing a new playbook:
 
 1. Read `README.md` (project purpose + architecture)
-2. Read `AGENTS.md` (agent policy + playbook index)
+2. Read `AGENTS.md` (canonical host policy + playbook index) and consult
+   `agents/RULES.md` for applicable upstream patterns.
 3. Check `playbooks/` to avoid duplicating an existing workflow
 
 ## When to Create a Playbook
@@ -58,6 +59,9 @@ Examples:
 ## Verification
 [How to confirm success]
 
+## Plan Binding
+[How the workflow selects or constrains approved active-plan checklist items]
+
 ## Lifecycle Compliance
 Prompt -> Plan (based on a known playbook) -> Request approval -> Execute -> Plan/playbook update -> Docs update -> Verification
 ```
@@ -68,9 +72,11 @@ Prompt -> Plan (based on a known playbook) -> Request approval -> Execute -> Pla
 - Anticipate common failure modes
 - Prefer repo scripts over long manual commands when available
 - Keep workflows idempotent when possible
+- State how implementation is bound to an approved active plan.
 
 ## Finalizing
 
 1. Save the file under `playbooks/`
-2. Update `AGENTS.md` playbook index if added/removed/renamed
-3. If in a git repo, review status/diff and suggest a commit message
+2. Update the `AGENTS.md` playbook index if a host playbook is added, removed, or renamed.
+3. Update the active plan and journal checkpoint.
+4. If in a git repo, review status/diff and suggest a commit message.

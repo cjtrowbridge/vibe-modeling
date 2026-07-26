@@ -4,18 +4,26 @@ A reusable, agentic pipeline for iterating on OpenSCAD 3D models with parameteri
 
 This repo is an extraction of the modeling workflow originally developed across many of my projects, especially [DIY-Weather-Satellite-Uplink](https://github.com/cjtrowbridge/DIY-Weather-Satellite-Uplink), and generalized so it can be used for any modeling domain.
 
-## Agent framework migration status
+## Agent framework integration
 
 The reusable [`cjtrowbridge/agents`](https://github.com/cjtrowbridge/agents)
-framework is pinned as a Git submodule at `agents/` for migration analysis. It is
-currently advisory: the root `AGENTS.md` and host `playbooks/` remain canonical
-until an explicit migration checkpoint is approved.
+framework is pinned as a Git submodule at `agents/`. The root `AGENTS.md` is a
+hybrid host policy: it adopts selected upstream plan-governance conventions while
+preserving this repository's CAD-specific structural and artifact rules. Host
+policy and host-managed workflow files take precedence over upstream defaults.
+
+This repository intentionally does not use the upstream kanban subsystem.
 
 After cloning this repository, initialize the reference framework with:
 
 ```bash
 git submodule update --init --recursive agents
 ```
+
+Submodule updates require a three-way synthesis of the old upstream version, new
+upstream version, and current host-managed files. Do not replace root policy or
+host playbooks wholesale. See
+`playbooks/how_to_update_submodule_and_synthesize_host_overrides.md`.
 
 ## How To Use This Pipeline
 
@@ -44,11 +52,24 @@ If the agent follows the included playbooks, it should also document what it cha
 ## Repository layout
 
 - `agents/`
-  - Pinned upstream agent-framework reference; advisory until migration cutover
+  - Pinned upstream agent-framework baseline and fallback source
+- `plans/future/`, `plans/current/`, `plans/past/`
+  - Host-owned task plans and generated lifecycle indexes
+- `journal/`
+  - Daily repository checkpoint records
+- `downtime/reports/`
+  - Optional report-only maintenance findings awaiting or completing review
+- `templates/`
+  - Host plan, journal, synthesis, and report templates
+- `references/`
+  - Host operational guidance shared by agent workflows
+- `reference/`
+  - Project engineering reference material
 - `scripts/`
   - `scad_build.py` / `scad_build.sh`: build STL + the full required multi-view PNG set from a config
   - `scad_build_all.py`: stage, validate, install, and audit every part declared by a design
   - `scad_new_revision.py` / `scad_new_revision.sh`: create next numbered revision and build it
+  - `regenerate_plan_indexes.py`: validate plans and deterministically refresh lifecycle indexes
 - `designs/<design>/`
   - `src/main.scad`: CLI entrypoint and part selection
   - `src/*_base.scad` / `src/*_roof.scad` / `src/*_drawer.scad` (optional): direct per-part print entrypoints
@@ -65,6 +86,22 @@ If the agent follows the included playbooks, it should also document what it cha
   - managed staging, probes, sections, and partial/debug artifacts (generated and ignored)
 - `playbooks/`
   - repeatable workflows for agents and humans
+
+## Plan-governed agent workflow
+
+Substantial changes use an approved plan under `plans/current/`. Plans begin in
+`plans/future/`, move to `plans/current/` immediately before execution, and move
+to `plans/past/` when no follow-up remains. Refresh or validate the indexes from
+the repository root with:
+
+```bash
+python scripts/regenerate_plan_indexes.py --repo-root .
+python scripts/regenerate_plan_indexes.py --check --repo-root .
+```
+
+Repository-changing checkpoints are recorded in `journal/YYYY-MM-DD.md` before
+commit. The complete policy, including approval boundaries and CAD verification
+requirements, is in `AGENTS.md`.
 
 ## Prerequisites
 

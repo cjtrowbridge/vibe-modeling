@@ -69,6 +69,8 @@ Pick the best match:
 1. Propose the minimal change.
 2. Explicitly list:
    - files to change
+   - active-plan checklist items that authorize the fix
+   - required plan revisions if the current scope is insufficient
    - verification plan
    - docs/playbook updates required
 
@@ -79,13 +81,15 @@ Before implementing:
 - present evidence summary
 - list hypotheses tested and outcomes
 - propose the minimal fix
+- identify the active plan path and checklist items
 - ask for approval
 
 ### 8) Execute the Fix
 
 1. Apply the minimal change.
-2. Add/adjust logging only if it improves future diagnosis.
-3. Keep the change atomic.
+2. Execute only the approved active-plan scope; pause if evidence requires expansion.
+3. Add/adjust logging only if it improves future diagnosis.
+4. Keep the change atomic.
 
 ### 9) Verify
 
@@ -135,12 +139,14 @@ Required diagnosis:
 ### 11) Git Hygiene
 
 Follow `playbooks/how_to_commit_and_push_changes.md`.
+Update the active plan and today's journal before committing.
 
 ## Verification
 
 - The original failure is no longer reproducible
 - Evidence log explains why the fix works
 - Documentation/playbooks were updated if the workflow changed
+- Plan indexes pass validation when plan files changed
 
 ## Lifecycle Compliance
 

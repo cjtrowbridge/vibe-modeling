@@ -1,129 +1,226 @@
-# Project Overview & Agent Guidelines
+# Project Overview and Agent Guidelines
 
-This repository is a reusable OpenSCAD modeling pipeline. Agents should treat the playbooks as executable workflow policy.
+This repository is a reusable OpenSCAD modeling pipeline. Documentation, plans,
+and playbooks are executable workflow policy.
 
-## Framework Migration Status
+## 1. Policy Layers and Precedence
 
-The `./agents` submodule is an upstream framework reference under evaluation. Its
-instructions are advisory and are not canonical for this repository yet. Until an
-explicit migration checkpoint is approved, this root `AGENTS.md` and the host
-`./playbooks/` remain the governing policy and workflows. Do not copy, merge, or
-activate framework files from `./agents` without a user-approved migration plan.
+This root `AGENTS.md` is the canonical host policy.
 
-## 1. Documentation Integrity
+The `agents/` submodule supplies the reusable upstream framework baseline. Read
+`agents/RULES.md` when working on agent workflow, but do not apply it blindly.
+Resolve policy in this order:
 
-Any code or workflow change should be reflected in docs in the same task.
+1. This root `AGENTS.md` and explicit user instructions.
+2. Host-managed `playbooks/`, `references/`, `templates/`, and `scripts/`.
+3. Matching files under `agents/` only when the host has no applicable artifact.
 
-Review/update these files when relevant:
+Host policy overrides upstream policy on conflict. In particular, this repository
+does not use kanban. Do not create kanban directories, files, templates,
+references, playbooks, startup steps, or completion requirements unless the user
+explicitly approves a future policy change.
 
-1. `README.md` (root): project overview, structure, usage, commands
-2. `AGENTS.md`: operating rules / playbook index
-3. `playbooks/*.md`: workflow instructions
+Never edit files inside `agents/` as part of host work. Update its Git pointer and
+synthesize affected host files through the submodule-update playbook.
 
-## 2. Operational Protocol
+## 2. Documentation Integrity
 
-1. Seek a relevant playbook in `playbooks/` first.
-2. For any load-bearing, enclosure, mounting, rail, rim, lip, boss, or joined CAD geometry, follow `playbooks/how_to_design_and_verify_structural_openscad_joins.md`.
-3. Before making substantial changes:
-   - form an atomic plan
-   - identify missing info
-   - ask for approval when the repo workflow requires it
-4. Execute the approved plan.
-5. Verify results (commands/tests/builds) and report outcomes.
-6. Update docs/playbooks when the workflow changes.
-7. Every final task summary must include a structural review result:
-   - structural joins: `passed`, `failed`, `unverified`, or `not applicable`
-   - minimum internal edge/material width: `passed`, `failed`, `unverified`, or `not applicable`
-   - identify the exact revision/config reviewed when CAD geometry changed
-8. Every final task summary that builds CAD artifacts must also include:
-   - build scope: single part or complete manifest
-   - exact destination
-   - expected and actual STL/PNG counts
-   - artifact audit result
-   - config and source provenance result
+Any code, workflow, architecture, or repository-layout change must be reflected in
+documentation in the same task. Review and update when relevant:
 
-## 3. Self-Evolving Workflow
+1. `README.md`: project structure, commands, and user-facing workflow.
+2. `AGENTS.md`: canonical host rules and artifact indexes.
+3. `playbooks/*.md`: repeatable execution workflows.
+4. `references/*.md` and `templates/*.md`: shared operational guidance.
+5. `journal/*.md`: approved repository-state checkpoints.
+6. `downtime/*` and `docs/*`: maintenance and supplemental artifacts.
+
+## 3. Plan-Governed Operational Protocol
 
 Required cycle:
 
-Prompt -> Plan (based on a known playbook) -> Request approval -> Execute -> Docs/playbook update -> Verification
+Prompt -> Select/Create Plan -> Request Approval -> Execute Approved Plan Items ->
+Update Plan -> Update Docs -> Verify -> Journal Checkpoint -> Commit
 
-If working in git:
+1. Seek a relevant host playbook first, falling back to `agents/` only when no
+   host artifact applies.
+2. Check `plans/current/index.md` for an active governing plan.
+3. Before substantial changes, create or refine an atomic plan, identify missing
+   information, list expected files and verification, and request approval.
+4. Promote a plan from `future` to `current` immediately before substantial edits.
+5. Execute only approved checklist items. Stop and request a plan revision if
+   evidence requires materially different work.
+6. Mark completed items `[x]`, uncertain items `[?]`, and deliberately closed or
+   de-scoped items `[-]`.
+7. Archive a plan to `past` when no execution remains.
+8. Regenerate indexes after plan changes:
 
-- Check `git status -sb`
-- Review diffs
-- Suggest a task-scoped commit message
-- Commit after a completed change
+   ```bash
+   python scripts/regenerate_plan_indexes.py --repo-root .
+   ```
 
-## 4. Agent Playbooks (Required Index)
+9. Verify indexes with:
 
-Current playbooks:
+   ```bash
+   python scripts/regenerate_plan_indexes.py --check --repo-root .
+   ```
 
-- `playbooks/how_to_create_a_new_playbook.md` - Create a new operational playbook for repeatable tasks.
-- `playbooks/how_to_commit_and_push_changes.md` - Safely summarize, approve, commit, and push changes.
-- `playbooks/debugging_changes_that_lead_to_errors.md` - Evidence-first debugging workflow.
-- `playbooks/how_to_iterate_openscad_designs.md` - Cross-platform OpenSCAD iteration/build/revision workflow.
-- `playbooks/how_to_add_a_new_cad_design.md` - Add a new OpenSCAD design using the shared folder conventions.
-- `playbooks/how_to_design_and_verify_structural_openscad_joins.md` - Mandatory structural-overlap and connectivity rules for CAD geometry.
+Small, read-only discovery does not require its own plan. A user's explicit
+approval of a clearly presented atomic strategy may authorize its matching plan
+items without a redundant approval prompt.
 
-## 5. Project Organization
+## 4. Journal and Downtime Policy
 
-Keep the repository layout documented in `README.md`.
+Repository-state changes must be recorded in today's `journal/YYYY-MM-DD.md`
+before commit. Journal work logs are append-only unless the user asks otherwise.
+`Today's Intentions` and `Notes / Reflections` are user-only; agents may insert
+only verbatim user-provided text and otherwise leave `-`.
 
-The intended source-of-truth structure is:
+Downtime tasks are optional and report-only. They may create one recommendation
+report under `downtime/reports/pending/` but may not directly implement findings.
+Implementation requires an approved active plan. Before the final summary, list
+any pending reports other than the directory README.
 
-- `scripts/` for automation
-- `designs/` for committed OpenSCAD source and configs
-- `output/` for scratch outputs (generated)
-- `revisions/` for numbered snapshots (generated)
-- `playbooks/` for repeatable workflows
+## 5. Git Checkpoints
+
+When working in Git:
+
+1. Check `git status -sb` before and after the task.
+2. Do not assume unrelated or untracked files belong to the task.
+3. Review the complete intended diff.
+4. Update the active plan, documentation, and journal before commit.
+5. Suggest a task-scoped imperative commit message.
+6. Request explicit approval before committing or pushing unless the user already
+   approved that exact action.
+7. Commit each approved completed checkpoint. Push only when requested or approved.
+
+## 6. Required Playbook Index
+
+- `playbooks/how_to_create_and_maintain_task_execution_plans.md` - Create, approve, execute, and archive atomic task plans.
+- `playbooks/how_to_bootstrap_framework_submodule_into_host_repo.md` - Bootstrap the upstream framework without overwriting host policy.
+- `playbooks/how_to_update_submodule_and_synthesize_host_overrides.md` - Update the submodule through three-way host synthesis.
+- `playbooks/how_to_commit_and_push_changes.md` - Review, approve, commit, and optionally push changes.
+- `playbooks/how_to_commit_and_push_journal_checkpoints.md` - Record and commit journal checkpoints.
+- `playbooks/how_to_create_a_new_playbook.md` - Create a repeatable operational playbook.
+- `playbooks/debugging_changes_that_lead_to_errors.md` - Diagnose failures through evidence and controlled experiments.
+- `playbooks/how_to_use_downtime_to_improve_the_framework.md` - Produce report-only maintenance recommendations.
+- `playbooks/how_to_iterate_openscad_designs.md` - Iterate, build, and revise OpenSCAD designs.
+- `playbooks/how_to_add_a_new_cad_design.md` - Add a design using shared folder conventions.
+- `playbooks/how_to_design_and_verify_structural_openscad_joins.md` - Verify structural overlap, connectivity, and material width.
+
+For any load-bearing, enclosure, mounting, rail, rim, lip, boss, or joined CAD
+geometry, the structural-joins playbook is mandatory.
+
+## 7. References and Templates Index
+
+Operational references:
+
+- `references/interaction_checkpoints_and_automation_boundaries.md` - Approval and automation boundaries.
+- `references/verification_patterns_for_docs_and_policy.md` - Usability checks for policy artifacts.
+
+Engineering domain references remain under `reference/` and are not upstream
+framework overrides.
+
+Templates:
+
+- `templates/task_execution_plan.md` - Required plan shape and checklist syntax.
+- `templates/change_plan.md` - Proposal and approval summary.
+- `templates/submodule_update_synthesis_report.md` - Three-way framework update decisions.
+- `templates/daily_journal_entry.md` - Journal ownership and checkpoint fields.
+- `templates/downtime_report.md` - Report-only maintenance findings.
+
+## 8. Project Organization
+
+Keep the documented repository layout synchronized with `README.md`:
+
+- `agents/`: pinned upstream agent-framework submodule.
+- `plans/future|current|past/`: host-owned task plans and indexes.
+- `journal/`: host-owned daily checkpoint records.
+- `downtime/reports/pending|reviewed/`: optional maintenance reports.
+- `playbooks/`, `references/`, `templates/`: host-managed agent workflows.
+- `reference/`: project engineering reference material.
+- `scripts/`: automation, including CAD tools.
+- `designs/`: committed OpenSCAD source and configs.
+- `output/`: generated current/scratch outputs.
+- `revisions/`: generated numbered snapshots.
+- `.tmp/scad/`: generated probes, sections, staging, and partial builds.
 
 Artifact directory names are fixed:
 
 - `output/<design>/` is the only current/scratch destination.
 - `revisions/<design>/rev_000N/` is the only numbered revision destination.
-- `.tmp/scad/<design>/` is the only location for probes, sections, partial builds, and staging.
+- `.tmp/scad/<design>/` is the only probe, section, partial-build, or staging destination.
 - Never create `output/<design>_rev_000N/` or another ad hoc artifact directory.
-- Never place `.scad` source/probe files in `output/` or `revisions/`.
+- Never place `.scad` source or probe files in `output/` or `revisions/`.
 - Generated `output/` and `revisions/` files must not be committed.
 
-For a multi-part design with `designs/<design>/parts.json`, use
-`scripts/scad_build_all.py`. A directory is not a complete or current build
-unless its `build_manifest.json` passes `--audit-only`.
+For multi-part designs with `designs/<design>/parts.json`, use
+`scripts/scad_build_all.py`. A directory is not a complete/current build unless
+its `build_manifest.json` passes `--audit-only`.
 
-## 6. Logging & Debugging Standards
+## 9. Logging and Debugging
 
-- Favor scripts that print explicit command paths, inputs, and outputs.
-- When adding new automation, include enough logging to diagnose path/config issues quickly.
+Favor scripts that print explicit executable paths, inputs, and outputs. New
+automation must emit enough context to diagnose path, config, and artifact issues.
 
-## 7. Structural CAD Governance
+## 10. Structural CAD Governance
 
-These rules apply to every design unless a design documents a stricter requirement:
+These rules apply unless a design documents stricter requirements:
 
 - Define `minimum_wall_thickness` explicitly.
-- Define `minimum_structural_overlap` explicitly. It must be at least `minimum_wall_thickness`.
-- Every intended structural join must have positive-volume intersection with at least `minimum_structural_overlap` of engagement.
-- Coplanar faces, shared edges, tangent contact, visual proximity, and tiny numerical epsilon overlaps are not structural joins.
-- Structural overlap must continue for the full intended seam and survive all later `difference()` operations.
-- The remaining load path or throat at a join must not be thinner than `minimum_wall_thickness`.
-- No internal edge, rim, rail, flange, web, bridge, land, or strip of material may be narrower than `minimum_wall_thickness` at any point.
-- Material between a void and an exterior edge, or between two voids, must be at least `minimum_wall_thickness`, measured by the shortest path through solid material.
-- Fastener holes, recesses, chamfers, and other subtractions must not leave an internal edge margin below `minimum_wall_thickness`.
-- For every wall, rail, flange, or web containing multiple cuts, inventory every pair of cuts whose projected bounds can overlap or approach each other. Assert the shortest post-subtraction ligament for each applicable pair; checking each cut only against the outer boundary is insufficient.
-- Use named dimensions and `assert()` statements to enforce the construction contract. Do not rely on coordinates that merely appear to meet.
-- A successful OpenSCAD render or manifold STL does not prove adequate structural overlap. Perform the sectional and connectivity checks required by the structural-joins playbook.
-- Intentionally separate parts and decorative disconnected geometry must be identified as such. Unexpected disconnected shells are failures.
-- Do not call a design print-ready or fabrication-ready until the structural verification gates are documented for the exact revision/config being printed.
-- Treat existing designs that predate these rules as structurally unverified until audited.
+- Define `minimum_structural_overlap` explicitly and require it to be at least
+  `minimum_wall_thickness`.
+- Every structural join needs positive-volume intersection with at least the
+  named minimum overlap. Coplanar faces, shared edges, tangent contact, visual
+  proximity, and numerical epsilon overlaps are not structural joins.
+- Structural overlap must continue across the full seam and survive subsequent
+  `difference()` operations.
+- The remaining load path or throat at a join must not be thinner than
+  `minimum_wall_thickness`.
+- No internal edge, rim, rail, flange, web, bridge, land, or material strip may
+  be narrower than `minimum_wall_thickness`.
+- Material between a void and an exterior edge, or between two voids, must meet
+  the minimum thickness by the shortest path through solid material.
+- Fastener holes, recesses, chamfers, and other subtractions must preserve the
+  minimum internal edge margin.
+- For multiple cuts in one structural member, inventory every pair whose projected
+  bounds approach or overlap and assert each post-subtraction ligament. Outer-edge
+  checks alone are insufficient.
+- Use named dimensions and `assert()` statements. Do not rely on coordinates that
+  merely appear to meet.
+- A successful render or manifold STL does not prove structural overlap. Perform
+  required sectional and connectivity checks.
+- Identify intentionally separate parts and decorative disconnected geometry.
+  Unexpected disconnected shells fail verification.
+- Do not call a design print-ready or fabrication-ready until verification is
+  documented for the exact revision/config.
+- Treat pre-governance designs as structurally unverified until audited.
 
-## 8. Artifact Governance
+## 11. Artifact Governance
 
-- A part manifest is authoritative for the complete set of exported parts and names.
-- Complete builds must render into `.tmp/scad/<design>/` first.
-- Validate the complete expected file set before replacing `output/<design>/`.
-- Installing a current build must replace the previous directory as one unit. Do not copy new files over old files.
+- A part manifest is authoritative for exported part names and completeness.
+- Complete builds render into `.tmp/scad/<design>/` first.
+- Validate the exact expected set before replacing `output/<design>/` as one unit.
 - Reject missing, unexpected, duplicate, stale, or hash-mismatched artifacts.
-- Record config, parts-manifest, OpenSCAD source-tree, Git, and artifact hashes in `build_manifest.json`.
-- Numbered revision directories are immutable. Geometry or config changes require a new revision.
-- A revision number in a filename is not provenance. Provenance requires a passing build-manifest audit.
-- Single-part builds are partial by definition and must not be represented as complete-design outputs.
+- Record config, parts-manifest, OpenSCAD source-tree, Git, and artifact hashes in
+  `build_manifest.json`.
+- Numbered revisions are immutable; geometry or config changes require a new one.
+- Revision-like filenames are not provenance. A passing manifest audit is.
+- Single-part builds are partial and must not be represented as complete outputs.
+
+## 12. Completion Summary Requirements
+
+Every final task summary must include:
+
+- Active plan path and checklist/lifecycle changes, or `not applicable`.
+- Structural joins: `passed`, `failed`, `unverified`, or `not applicable`.
+- Minimum internal edge/material width: the same status vocabulary.
+- Exact revision/config reviewed when CAD geometry changed.
+
+When CAD artifacts were built, also report:
+
+- Build scope: single part or complete manifest.
+- Exact destination.
+- Expected and actual STL/PNG counts.
+- Artifact audit result.
+- Config and source provenance result.
