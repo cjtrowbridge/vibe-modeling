@@ -136,6 +136,10 @@ Required diagnosis:
    into staging and replace the destination as one unit; do not copy selected
    files over the suspect directory.
 
+Follow `playbooks/how_to_recover_missing_stale_or_untrusted_cad_artifacts.md` for
+recovery. For executable, invocation, CGAL, render, or image-generation failures,
+follow `playbooks/troubleshooting_openscad_cli_render_and_export_failures.md`.
+
 ### 11) Git Hygiene
 
 Follow `playbooks/how_to_commit_and_push_changes.md`.

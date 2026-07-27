@@ -107,6 +107,26 @@ When working in Git:
 - `playbooks/how_to_iterate_openscad_designs.md` - Iterate, build, and revise OpenSCAD designs.
 - `playbooks/how_to_add_a_new_cad_design.md` - Add a design using shared folder conventions.
 - `playbooks/how_to_design_and_verify_structural_openscad_joins.md` - Verify structural overlap, connectivity, and material width.
+- `playbooks/how_to_create_verify_and_publish_immutable_openscad_revisions.md` - Develop mutable candidates and publish verified immutable revisions.
+- `playbooks/how_to_build_install_and_audit_manifest_driven_openscad_designs.md` - Build and audit complete manifest artifact sets.
+- `playbooks/how_to_add_change_or_remove_parts_from_a_design_manifest.md` - Safely change authoritative part identities and counts.
+- `playbooks/how_to_migrate_legacy_openscad_designs_to_current_governance.md` - Bring legacy designs into current layout and governance truthfully.
+- `playbooks/how_to_review_cad_changes_for_risk_and_regression.md` - Review CAD diffs and downstream consumers for regressions.
+- `playbooks/how_to_create_and_use_openscad_sections_probes_and_crops.md` - Produce governed temporary inspection geometry.
+- `playbooks/how_to_record_cad_verification_and_artifact_provenance.md` - Record reproducible structural and artifact evidence.
+- `playbooks/how_to_modify_and_regression_test_cad_build_automation.md` - Protect build-script CLI, safety, and provenance contracts.
+- `playbooks/how_to_model_real_world_interfaces_from_photos_and_measurements.md` - Convert incomplete physical references into explicit parametric assumptions.
+- `playbooks/how_to_design_and_validate_fit_clearances_and_tolerance_stacks.md` - Verify functional clearances independently from structure and epsilon.
+- `playbooks/how_to_create_fit_test_coupons_and_partial_prints.md` - Validate risky interfaces with production-derived test prints.
+- `playbooks/how_to_apply_physical_print_feedback_to_a_new_revision.md` - Turn measured print feedback into traceable new revisions.
+- `playbooks/how_to_design_split_print_parts_and_verify_reassembly.md` - Split oversized parts while preserving alignment and load paths.
+- `playbooks/how_to_design_and_verify_fasteners_mounting_bosses_and_recesses.md` - Verify complete hardware, boss, and tool envelopes.
+- `playbooks/how_to_design_and_verify_mating_sliding_and_moving_parts.md` - Verify installation and swept envelopes for moving assemblies.
+- `playbooks/how_to_verify_print_orientation_supports_and_build_volume.md` - Validate transformed bounds, orientation, supports, and layer behavior.
+- `playbooks/troubleshooting_openscad_cli_render_and_export_failures.md` - Diagnose toolchain, CGAL, render, and export failures.
+- `playbooks/how_to_recover_missing_stale_or_untrusted_cad_artifacts.md` - Rebuild governed outputs without mixing or rewriting revisions.
+- `playbooks/how_to_manage_reference_mockups_and_non_printable_geometry.md` - Classify printable, reference, preview, cutter, and probe geometry.
+- `playbooks/how_to_migrate_design_todos_and_revision_plans_into_host_plans.md` - Move unfinished design work into the host plan lifecycle.
 
 For any load-bearing, enclosure, mounting, rail, rim, lip, boss, or joined CAD
 geometry, the structural-joins playbook is mandatory.

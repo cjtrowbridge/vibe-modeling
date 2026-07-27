@@ -11,6 +11,8 @@ Provide a repeatable local workflow to iterate OpenSCAD prototypes, generate mul
 - Python 3.8+
 - OpenSCAD installed locally
 - Read and apply `playbooks/how_to_design_and_verify_structural_openscad_joins.md` for any structural geometry
+- Read `playbooks/how_to_create_verify_and_publish_immutable_openscad_revisions.md`
+- For manifest designs, read `playbooks/how_to_build_install_and_audit_manifest_driven_openscad_designs.md`
 - Either:
   - `openscad` available on `PATH`, or
   - provide `--openscad-path` to the build scripts
@@ -18,15 +20,11 @@ Provide a repeatable local workflow to iterate OpenSCAD prototypes, generate mul
 
 ## Step-by-Step Instructions
 
-1. **Create a new revision folder (checkpoint)**
-   - Start each chunk of work by snapshotting a new revision folder so you have a stable baseline.
-   - Example:
-     - `python scripts/scad_new_revision.py --design example_box --base-config designs/example_box/configs/rev_0001.json`
-   - Expected:
-     - `revisions/example_box/rev_0002/`
-     - `revisions/example_box/rev_0002/params.json`
-     - `designs/example_box/configs/rev_0002.json`
-     - (if OpenSCAD is available) STL + multi-view PNG artifacts in the revision folder
+1. **Prepare a mutable candidate revision**
+   - Identify the next unused revision number across committed configs and generated revisions.
+   - Copy the baseline config to `.tmp/scad/<design>/rev_000N.json` and make all candidate parameter changes there.
+   - Do not create `revisions/<design>/rev_000N/` yet. A numbered revision is the final immutable publication, not a mutable starting checkpoint.
+   - Record the baseline commit/config in the active host plan.
 
 2. **Establish the structural contract**
    - Define `minimum_wall_thickness`.
@@ -38,13 +36,13 @@ Provide a repeatable local workflow to iterate OpenSCAD prototypes, generate mul
    - Treat fit clearances and numerical tolerances separately. They do not count toward structural overlap.
 
 3. **Implement the requested design changes**
-   - Edit `.scad` files under `designs/<design>/src/` and/or the selected config JSON.
+   - Edit `.scad` files under `designs/<design>/src/` and/or the staged candidate config.
    - Build each intended structural connection with deliberate positive-volume intersection.
    - Do not rely on coincident endpoints, coplanar faces, tangent edges, or epsilon-sized overlaps.
 
 4. **Loop: build artifacts -> inspect -> revise**
    1. Build scratch outputs:
-      - `python scripts/scad_build.py --design example_box --config designs/example_box/configs/rev_0002.json`
+      - `python scripts/scad_build.py --design example_box --config .tmp/scad/example_box/rev_0002.json`
       - For a design with `parts.json`, build the authoritative complete set with:
         - `python scripts/scad_build_all.py --design <design> --config designs/<design>/configs/rev_000N.json`
    2. Inspect the generated outputs in `output/<design>/`.
@@ -58,7 +56,10 @@ Provide a repeatable local workflow to iterate OpenSCAD prototypes, generate mul
    10. For a complete multi-part build, run the artifact audit:
        - `python scripts/scad_build_all.py --design <design> --config designs/<design>/configs/rev_000N.json --audit-only`
 
-5. **Finalize and commit**
+5. **Publish, document, and commit**
+   - Follow `playbooks/how_to_create_verify_and_publish_immutable_openscad_revisions.md` only after the candidate passes all gates.
+   - Use `scripts/scad_new_revision.py` at publication time with the approved staged config as `--base-config`.
+   - Confirm the script selected the intended unused revision and copied the staged parameters exactly.
    - Record the structural verification result for the exact config/revision.
    - Include both the structural-join review and minimum-edge review in the final summary.
    - Do not describe the model as print-ready or fabrication-ready if any structural gate remains incomplete.
@@ -79,12 +80,13 @@ Provide a repeatable local workflow to iterate OpenSCAD prototypes, generate mul
 - `scad_build_all.py` stages every manifest part, validates exact artifact names/counts, writes hashes and provenance to `build_manifest.json`, and replaces the current output directory only after all parts succeed.
 - Never copy a complete build over an existing output directory. Complete-build installation must replace the directory as one validated unit.
 - Numbered revision directories are immutable. Create another revision instead of rebuilding changed geometry into an existing revision.
+- Do not call `scad_new_revision.py` before candidate geometry/config verification; doing so would publish an immutable snapshot before the work it is meant to represent.
 - OpenSCAD render success and STL manifoldness do not establish structural integrity. Structural parameter assertions, section inspection, and shell/connectivity inspection are separate required gates.
 
 ## Verification
 
 - Run a scratch build (or `--dry-run`) and confirm the script resolves paths and prints STL + multi-view PNG OpenSCAD commands.
-- Create a revision snapshot and confirm the next numbered config + revision folder are created.
+- Publish only after scratch verification, then confirm the next numbered config and revision folder were created exactly once.
 - Confirm structural assertions pass.
 - Confirm each intended join has the required positive-volume overlap for its full seam after all subtraction operations.
 - Confirm every internal edge and remaining material strip is at least `minimum_wall_thickness` wide.

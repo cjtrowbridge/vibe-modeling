@@ -25,13 +25,18 @@ Add a new OpenSCAD design under `designs/<design>/` with its own source tree and
      - `designs/<design>/configs/rev_0001.json`
    - Keep `main.scad` as the scripted export entrypoint that selects a part via numeric `part_id`.
 
-3. **Add at least one config**
+3. **Classify exports and decide manifest ownership**
+   - Inventory printable parts, assembly previews, cutters, and reference mockups using `playbooks/how_to_manage_reference_mockups_and_non_printable_geometry.md`.
+   - If the design has multiple authoritative printable/reference exports, create `parts.json` immediately.
+   - Use unique stable numeric IDs and names, and keep `main.scad` dispatch synchronized with the manifest.
+
+4. **Add at least one config**
    - Create `rev_0001.json` with:
      - `part_id` (numeric)
      - optional `part` string for output naming
      - any parameters used by the design
 
-4. **Establish structural design constants**
+5. **Establish structural design constants**
    - Read `playbooks/how_to_design_and_verify_structural_openscad_joins.md`.
    - Define `minimum_wall_thickness`.
    - Define `minimum_structural_overlap`.
@@ -39,25 +44,28 @@ Add a new OpenSCAD design under `designs/<design>/` with its own source tree and
    - Use named overlap parameters for every structural wall, floor, roof, rail, lip, rim, boss, web, or mounting feature.
    - Use named minimum-width parameters for internal edges and material strips around or between voids.
 
-5. **Document the design**
+6. **Document the design**
    - Update `README.md` if repository layout, commands, or examples changed.
    - Document the design's minimum wall thickness, minimum structural overlap, and minimum internal edge width in its design README.
    - If the workflow changed, update `playbooks/how_to_iterate_openscad_designs.md`.
    - If playbooks were added/removed/renamed, update `AGENTS.md`.
 
-6. **Verify**
+7. **Verify**
    - Dry-run build:
      - `python scripts/scad_build.py --design <design> --config designs/<design>/configs/rev_0001.json --dry-run`
    - Confirm `main.scad` resolves and STL + multi-view PNG commands are printed.
+   - For manifest designs, dry-run and then audit the complete set using `scripts/scad_build_all.py`.
    - Complete the structural section and connectivity checks from the structural-joins playbook.
 
-7. **Finalize**
+8. **Finalize**
+   - Follow `playbooks/how_to_create_verify_and_publish_immutable_openscad_revisions.md` for the first immutable publication.
    - Follow `playbooks/how_to_commit_and_push_changes.md`
    - Review status/diff, propose commit message, commit after approval
 
 ## Verification
 
 - `scad_build.py --dry-run` succeeds for `rev_0001.json`
+- Multi-part designs have a synchronized, passing `parts.json` complete build
 - Structural assertions pass and all intended joins meet the minimum overlap contract
 - Every internal edge and remaining material strip meets the minimum wall-thickness contract
 - No unexpected disconnected positive-volume shells remain

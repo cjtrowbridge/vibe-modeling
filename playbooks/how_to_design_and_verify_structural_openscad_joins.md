@@ -216,6 +216,9 @@ For expensive, long-duration, or difficult-to-replace prints, also use one or mo
 - A partial-height slice that exposes rails, rims, or wall intersections
 - A low-cost draft print in the final print orientation
 
+Create these through `playbooks/how_to_create_fit_test_coupons_and_partial_prints.md`
+and keep temporary source/artifacts under `.tmp/scad/<design>/`.
+
 Record structural verification in the design README or revision notes:
 
 ```text

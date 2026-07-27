@@ -68,7 +68,7 @@ If the agent follows the included playbooks, it should also document what it cha
 - `scripts/`
   - `scad_build.py` / `scad_build.sh`: build STL + the full required multi-view PNG set from a config
   - `scad_build_all.py`: stage, validate, install, and audit every part declared by a design
-  - `scad_new_revision.py` / `scad_new_revision.sh`: create next numbered revision and build it
+  - `scad_new_revision.py` / `scad_new_revision.sh`: publish the next numbered config and immutable revision after candidate verification
   - `regenerate_plan_indexes.py`: validate plans and deterministically refresh lifecycle indexes
 - `designs/<design>/`
   - `src/main.scad`: CLI entrypoint and part selection
@@ -166,13 +166,15 @@ python scripts/scad_build_all.py \
   --audit-only
 ```
 
-### 4. Create a new numbered revision
+### 4. Publish a verified numbered revision
+
+Develop and verify the candidate config under `.tmp/scad/<design>/` first. Run
+the revision command only when the candidate is ready to become immutable:
 
 ```bash
 python scripts/scad_new_revision.py \
   --design example_box \
-  --base-config designs/example_box/configs/rev_0001.json \
-  --dry-run
+  --base-config .tmp/scad/example_box/rev_0002.json
 ```
 
 By default this creates:
@@ -180,6 +182,11 @@ By default this creates:
 - `designs/example_box/configs/rev_0002.json`
 - `revisions/example_box/rev_0002/params.json`
 - (when not dry-run) STL + multi-view PNG artifacts in the revision folder
+
+The example assumes `.tmp/scad/example_box/rev_0002.json` is the already verified
+candidate and `rev_0002` is still unused. `--dry-run` skips OpenSCAD rendering
+but still creates the config and revision files. It is not a read-only preview.
+Never run this command against a revision number that has already been published.
 
 Default PNG outputs include:
 
@@ -231,14 +238,27 @@ See `playbooks/how_to_design_and_verify_structural_openscad_joins.md` for the ma
 
 ## Suggested workflow
 
-1. Start from a design config (`rev_000N.json`).
-2. Create a new revision checkpoint with `scad_new_revision.py`.
-3. Edit SCAD or config parameters.
-4. Rebuild a single part for focused inspection, or use `scad_build_all.py` to replace the authoritative complete output.
-5. Review artifacts, adjust, and repeat.
-6. Commit the source/config changes (not generated outputs).
+1. Select a committed baseline config and the next unused revision number.
+2. Copy the candidate config to `.tmp/scad/<design>/rev_000N.json`.
+3. Edit source and staged parameters while building mutable current output.
+4. Review targeted sections/coupons and run structural, fit, print-volume, and complete-manifest gates.
+5. Publish the verified immutable config/revision with `scad_new_revision.py`.
+6. Audit current and immutable artifacts, record provenance, and commit source/config/docs—not generated outputs.
 
 See `playbooks/how_to_iterate_openscad_designs.md` for the full workflow.
+
+## CAD playbook coverage
+
+The playbook set now separates the major CAD responsibilities that were formerly
+embedded in one-off design notes:
+
+- revision publication, complete-manifest builds, manifest editing, and legacy migration;
+- structural review, sections/probes, provenance records, and build-automation changes;
+- reference measurement, tolerance stacks, coupons, and physical-print feedback;
+- split printing, fasteners, moving assemblies, orientation, supports, and build volume;
+- OpenSCAD troubleshooting, artifact recovery, reference geometry, and design-plan migration.
+
+`AGENTS.md` contains the authoritative per-file playbook index.
 
 ## Included example designs
 
