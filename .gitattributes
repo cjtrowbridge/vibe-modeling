@@ -1,0 +1,5 @@
+# Preserve immutable imported rack-source companions byte-for-byte.
+references/engineering/ten_inch_rack/v*/10-inch-rack-agent-readable-design-spec.md -text
+references/engineering/ten_inch_rack/v*/10-inch-rack-parameters.json -text
+references/engineering/ten_inch_rack/v*/rack_constants_and_assertions.scad -text
+references/engineering/ten_inch_rack/v*/README.md -text

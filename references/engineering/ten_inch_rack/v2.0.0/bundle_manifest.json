@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "bundle_id": "ten-inch-rack-agent-spec-bundle",
+  "document_id": "ten-inch-rack-m3-printed-design-spec",
+  "document_version": "2.0.0",
+  "imported_at": "2026-07-26",
+  "import_source": "user-provided temp/ten-inch-rack-agent-spec-bundle",
+  "authority_file": "10-inch-rack-agent-readable-design-spec.md",
+  "source_files": {
+    "10-inch-rack-agent-readable-design-spec.md": {
+      "role": "normative_semantics",
+      "sha256": "8123a490a4342cc2a6af682e474b09387c416e13e4f968e7b4694a6127731650"
+    },
+    "10-inch-rack-parameters.json": {
+      "role": "machine_readable_companion",
+      "sha256": "7a214bd437d3ed0900ae82d1744eac7fed994c9f0fd6b79ceaf99834a01e5ca1"
+    },
+    "rack_constants_and_assertions.scad": {
+      "role": "openscad_reference_companion",
+      "sha256": "fbd770cf9ff0b4b39cff9cc1f045c57472f9d682cea32dad50e56e996ea3b3f5"
+    },
+    "README.md": {
+      "role": "source_bundle_index",
+      "sha256": "f93e55f347b4d3c14518ed1914919f6a275da95d903e6aa73adc9296ef0d4448"
+    }
+  },
+  "host_overrides": {
+    "minimum_primary_hole_radial_material": "max(2.5, minimum_wall_thickness)",
+    "artifact_layout": "host AGENTS.md paths",
+    "production_scad_integration": "vendor applicable helpers into designs/<design>/src/lib"
+  }
+}

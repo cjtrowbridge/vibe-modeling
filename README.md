@@ -62,14 +62,13 @@ If the agent follows the included playbooks, it should also document what it cha
 - `templates/`
   - Host plan, journal, synthesis, and report templates
 - `references/`
-  - Host operational guidance shared by agent workflows
-- `reference/`
-  - Project engineering reference material
+  - Host operational guidance plus domain packages under `references/engineering/`
 - `scripts/`
   - `scad_build.py` / `scad_build.sh`: build STL + the full required multi-view PNG set from a config
   - `scad_build_all.py`: stage, validate, install, and audit every part declared by a design
   - `scad_new_revision.py` / `scad_new_revision.sh`: publish the next numbered config and immutable revision after candidate verification
   - `regenerate_plan_indexes.py`: validate plans and deterministically refresh lifecycle indexes
+  - `validate_ten_inch_rack_reference.py`: verify the preserved rack bundle, requirement inventory, and companion synchronization
 - `designs/<design>/`
   - `src/main.scad`: CLI entrypoint and part selection
   - `src/*_base.scad` / `src/*_roof.scad` / `src/*_drawer.scad` (optional): direct per-part print entrypoints
@@ -102,6 +101,20 @@ python scripts/regenerate_plan_indexes.py --check --repo-root .
 Repository-changing checkpoints are recorded in `journal/YYYY-MM-DD.md` before
 commit. The complete policy, including approval boundaries and CAD verification
 requirements, is in `AGENTS.md`.
+
+## Engineering reference packages
+
+Engineering material uses the unified `references/engineering/` hierarchy. The
+current ten-inch-rack package is the immutable `v2.0.0` source bundle documented
+in `references/engineering/ten_inch_rack/README.md`. Validate it with:
+
+```bash
+python scripts/validate_ten_inch_rack_reference.py
+```
+
+When applying it to a design, follow
+`playbooks/working_with_ten_inch_racks.md`; host CAD, structural, provenance, and
+artifact rules take precedence over conflicting standalone bundle guidance.
 
 ## Prerequisites
 

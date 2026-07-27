@@ -6,8 +6,8 @@ The goal is a serviceable MG996R-based pan/tilt gimbal inside the existing dome 
 
 ## Source References
 
-- `reference/designing-for-servos.md`
-- `reference/working-with-servo-receivers.md`
+- `references/engineering/servo/designing-for-servos.md`
+- `references/engineering/servo/working-with-servo-receivers.md`
 
 Servo rules from those references are binding for this mechanism:
 

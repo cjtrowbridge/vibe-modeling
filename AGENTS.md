@@ -31,7 +31,7 @@ documentation in the same task. Review and update when relevant:
 1. `README.md`: project structure, commands, and user-facing workflow.
 2. `AGENTS.md`: canonical host rules and artifact indexes.
 3. `playbooks/*.md`: repeatable execution workflows.
-4. `references/*.md` and `templates/*.md`: shared operational guidance.
+4. `references/**` and `templates/*.md`: shared operational and engineering guidance.
 5. `journal/*.md`: approved repository-state checkpoints.
 6. `downtime/*` and `docs/*`: maintenance and supplemental artifacts.
 
@@ -127,6 +127,7 @@ When working in Git:
 - `playbooks/how_to_recover_missing_stale_or_untrusted_cad_artifacts.md` - Rebuild governed outputs without mixing or rewriting revisions.
 - `playbooks/how_to_manage_reference_mockups_and_non_printable_geometry.md` - Classify printable, reference, preview, cutter, and probe geometry.
 - `playbooks/how_to_migrate_design_todos_and_revision_plans_into_host_plans.md` - Move unfinished design work into the host plan lifecycle.
+- `playbooks/working_with_ten_inch_racks.md` - Apply versioned rack geometry, hardware, depth, conformance, and validation rules.
 
 For any load-bearing, enclosure, mounting, rail, rim, lip, boss, or joined CAD
 geometry, the structural-joins playbook is mandatory.
@@ -138,8 +139,14 @@ Operational references:
 - `references/interaction_checkpoints_and_automation_boundaries.md` - Approval and automation boundaries.
 - `references/verification_patterns_for_docs_and_policy.md` - Usability checks for policy artifacts.
 
-Engineering domain references remain under `reference/` and are not upstream
-framework overrides.
+Engineering references:
+
+- `references/engineering/servo/designing-for-servos.md` - Servo selection, geometry, mounting, and validation guidance.
+- `references/engineering/servo/working-with-servo-receivers.md` - Servo-receiver interfaces and integration guidance.
+- `references/engineering/ten_inch_rack/README.md` - Versioned ten-inch-rack specification package, host overrides, provenance, and validation entrypoint.
+
+All engineering references live under `references/engineering/`. Versioned source
+packages are immutable and remain subordinate to this host policy.
 
 Templates:
 
@@ -157,8 +164,8 @@ Keep the documented repository layout synchronized with `README.md`:
 - `plans/future|current|past/`: host-owned task plans and indexes.
 - `journal/`: host-owned daily checkpoint records.
 - `downtime/reports/pending|reviewed/`: optional maintenance reports.
-- `playbooks/`, `references/`, `templates/`: host-managed agent workflows.
-- `reference/`: project engineering reference material.
+- `playbooks/`, `templates/`: host-managed workflows and templates.
+- `references/`: operational guidance and engineering material namespaced under `references/engineering/`.
 - `scripts/`: automation, including CAD tools.
 - `designs/`: committed OpenSCAD source and configs.
 - `output/`: generated current/scratch outputs.

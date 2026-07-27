@@ -1,0 +1,162 @@
+{
+  "schema_version": "1.0.0",
+  "doc_id": "ten-inch-rack-m3-printed-design-spec",
+  "units": "mm",
+  "authority_labels": [
+    "NORMATIVE_EXTERNAL",
+    "DE_FACTO_ECOSYSTEM",
+    "PROJECT_CONSTRAINT",
+    "DESIGN_BASELINE",
+    "RECOMMENDATION",
+    "CALIBRATION_RESULT",
+    "MEASURED_COMPONENT",
+    "UNKNOWN",
+    "DERIVED"
+  ],
+  "rack_geometry": {
+    "u_pitch": {
+      "value": 44.45,
+      "authority": "NORMATIVE_EXTERNAL"
+    },
+    "u_hole_sequence": {
+      "value": [
+        15.875,
+        15.875,
+        12.7
+      ],
+      "authority": "NORMATIVE_EXTERNAL"
+    },
+    "rail_hole_spacing_x": {
+      "value": 236.525,
+      "authority": "DE_FACTO_ECOSYSTEM"
+    },
+    "rack_front_width_nominal": {
+      "value": 254.0,
+      "authority": "DE_FACTO_ECOSYSTEM"
+    },
+    "rack_clear_opening_nominal": {
+      "value": 222.25,
+      "authority": "DE_FACTO_ECOSYSTEM"
+    },
+    "equipment_width_max_baseline": {
+      "value": 220.0,
+      "authority": "DESIGN_BASELINE"
+    },
+    "rack_internal_depth": {
+      "value": null,
+      "authority": "UNKNOWN",
+      "required": true
+    }
+  },
+  "fastener": {
+    "thread": "M3x0.5",
+    "allowed_primary_screw_sizes": [
+      "M3x0.5"
+    ],
+    "washer": {
+      "standard": "ISO 7089",
+      "id": 3.2,
+      "od": 7.0,
+      "thickness": 0.5,
+      "required_for_primary_mounts": true
+    },
+    "finished_holes": {
+      "close": 3.2,
+      "default": 3.4,
+      "stackup": 3.6,
+      "tap_drill": 2.5
+    },
+    "washer_seat_diameter": {
+      "default": 8.25,
+      "range": [
+        8.0,
+        8.5
+      ],
+      "authority": "RECOMMENDATION"
+    },
+    "prohibited_primary_head_styles": [
+      "countersunk"
+    ]
+  },
+  "depth_model": {
+    "coordinate_axis": "Y",
+    "positive_direction": "front-to-rear",
+    "classes": [
+      "front_only",
+      "half_front",
+      "half_rear",
+      "partial",
+      "full",
+      "through_feature"
+    ],
+    "anchors": [
+      "front",
+      "rear",
+      "explicit"
+    ],
+    "support_modes": [
+      "front_ears",
+      "front_shelf",
+      "front_and_rear",
+      "side_rails",
+      "base",
+      "custom"
+    ],
+    "required_per_item": [
+      "item_id",
+      "depth_class",
+      "depth_anchor",
+      "support_mode",
+      "front_fit_clearance",
+      "rear_fit_clearance",
+      "front_service_clearance",
+      "rear_service_clearance"
+    ],
+    "rules": {
+      "declared_class_required": true,
+      "infer_class_from_depth": false,
+      "fit_clearance_changes_class": false,
+      "validate_solid_interval": true,
+      "validate_service_interval": true
+    }
+  },
+  "clearance_categories": {
+    "manufacturing_tolerance": {
+      "counts_as_structure": false
+    },
+    "fit_clearance": {
+      "counts_as_structure": false
+    },
+    "service_clearance": {
+      "counts_as_structure": false
+    },
+    "structural_overlap": {
+      "counts_as_structure": true
+    },
+    "boolean_epsilon": {
+      "counts_as_structure": false
+    }
+  },
+  "structural_baseline": {
+    "minimum_structural_overlap": 3.0,
+    "minimum_remaining_ligament": 3.0,
+    "minimum_primary_hole_radial_material": 2.5,
+    "boolean_epsilon": 0.02
+  },
+  "required_outputs": [
+    "source_cad",
+    "machine_readable_config",
+    "resolved_parameter_manifest",
+    "fabrication_meshes",
+    "assembly_render",
+    "orthographic_renders",
+    "section_views",
+    "keepout_inventory",
+    "seam_overlap_report",
+    "remaining_ligament_report",
+    "fastener_stackup_report",
+    "depth_class_report",
+    "validation_log",
+    "assembly_readme"
+  ]
+}
