@@ -66,6 +66,8 @@ If the agent follows the included playbooks, it should also document what it cha
 - `scripts/`
   - `scad_build.py` / `scad_build.sh`: build STL + the full required multi-view PNG set from a config
   - `scad_build_all.py`: stage, validate, install, and audit every part declared by a design
+  - `validate_cad_assembly_contract.py`: validate multipart hierarchy and printable-leaf coverage
+  - `scad_render_assembly_review.py`: render and audit provenance-bound assembled-design evidence
   - `scad_new_revision.py` / `scad_new_revision.sh`: publish the next numbered config and immutable revision after candidate verification
   - `regenerate_plan_indexes.py`: validate plans and deterministically refresh lifecycle indexes
   - `validate_ten_inch_rack_reference.py`: verify the preserved rack bundle, requirement inventory, and companion synchronization
@@ -75,6 +77,7 @@ If the agent follows the included playbooks, it should also document what it cha
   - `src/lib/defaults.scad`: design defaults
   - `src/parts/*.scad`: geometry modules
   - `parts.json` (multi-part designs): authoritative complete-build part IDs and names
+  - `assembly.json` (new or modified multi-part designs): authoritative product/subassembly hierarchy, transforms, interfaces, and review views
   - `configs/rev_000N.json`: committed parameter sets
   - Included designs: `example_box`, `helical`, `yagi`, `yagi_card`, `dtv_yagi`, `winegard_gm6000_logic_backplane`, `gigachad_xavier_void`, `cottage_pi6_plus`, `old_rca_display_baseplate`, `opi_zero_2w_carrier`, `cyberdeck`, `ac_redirectors`
 - `output/`
@@ -240,6 +243,14 @@ The build pipeline always renders this full PNG set on every run (plus `<part>.p
 - Treat designs as structurally unverified until these checks are recorded for the exact revision/config. Build success does not by itself make a model fabrication-ready.
 - Every post-change summary must report the structural-join review and minimum-edge review as `passed`, `failed`, `unverified`, or `not applicable`.
 - Multi-part designs must declare their authoritative export set in `parts.json`.
+- New or geometry-modified multi-part designs must also declare their primary
+  product assembly and nested logical subassemblies in `assembly.json`.
+- Multipart iteration requires a provenance-matched primary assembly artifact
+  reviewed with proxies hidden. Geometry, transform, interface, config, source,
+  or manifest changes invalidate the prior review.
+- Product assemblies, logical subassemblies, and printable leaf artifacts are
+  distinct. Printer constraints may split a subassembly into more leaves but may
+  not silently absorb it into another component.
 - Use only `output/<design>/`, `revisions/<design>/rev_000N/`, and `.tmp/scad/<design>/` for generated artifacts.
 - Do not create revision-named directories under `output/`.
 - Do not place `.scad` probes or source files under `output/` or `revisions/`.

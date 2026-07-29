@@ -18,9 +18,16 @@ source, config, manifest, artifacts, measurements, and known limitations.
 6. Intentional disconnected geometry and non-printable reference exports.
 7. Build destination and expected/actual STL, PNG, and total counts.
 8. `build_manifest.json` audit and config/source/artifact provenance results.
-9. Physical coupon or print evidence, including material, printer/profile, and
+9. For multipart designs, canonical hierarchy result, `assembly.json` hash,
+   `assembly_review_manifest.json` audit, expected/actual review artifacts,
+   agent findings, and exact assembly approval state.
+10. Physical coupon or print evidence, including material, printer/profile, and
    measured deviations when used.
-10. Residual risks and the exact scope not reviewed.
+11. Residual risks and the exact scope not reviewed.
+
+Record intent/assembly, interface, structural, printability, and artifact results
+independently. A passing later category cannot replace a failed or missing
+earlier category.
 
 Store design-wide facts in the design README and revision-specific evidence in a
 revision note under `designs/<design>/docs/`. Do not put source notes in generated

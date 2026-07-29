@@ -84,6 +84,22 @@ The following do not satisfy the contract:
 - An overlap that exists only along part of the intended seam
 - An overlap that is later removed by a subtraction
 
+## Structural Support and Span Contract
+
+Connectivity does not prove that a rail, web, flange, bridge, frame member, or
+panel has a valid load path. Inventory every spanning member with named support
+endpoints and connection types.
+
+- A spanning member requires two verified structural supports unless an explicit
+  cantilever load case, span, orientation, material, and verification are
+  documented.
+- A member crossing a printable-part seam requires a positive mechanical joint,
+  key, bridge, or fastened overlap. Coplanar ends and visual alignment fail.
+- Each support must satisfy the structural join contract after all subtractions.
+- Sections must cover both support endpoints, the span midpoint, the seam when
+  present, and every nearby opening or fastener.
+- The assembly review must expose the member without opaque proxy geometry.
+
 Fit clearance, Boolean-rendering epsilon, and structural overlap are different quantities. Never count fit tolerance or rendering epsilon toward structural engagement.
 
 ## Required Side Profile
@@ -166,6 +182,7 @@ Do not encode structural attachment as unexplained coordinate coincidences or ma
    - Lap joint
    - Boss or pad attachment
    - Rail or rim attachment
+   - Supported span or explicit cantilever
 3. Assign a named overlap dimension to every interface.
 4. Assert that each overlap is at least `minimum_structural_overlap`.
 5. Construct positive-volume overlap across the complete seam.
@@ -175,6 +192,8 @@ Do not encode structural attachment as unexplained coordinate coincidences or ma
 9. Inventory all internal edges and assert their narrowest remaining material width.
 10. Inspect sections through each seam and internal edge at its start, midpoint, end, corner, and any nearby cutout.
 11. Export the final STL and check for unexpected disconnected positive-volume shells.
+12. Verify every spanning member's support endpoints and complete assembled load
+    path; do not substitute a connected-shell result for this review.
 
 ## Verification Gates
 

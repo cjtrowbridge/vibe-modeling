@@ -30,6 +30,9 @@ traceable conformance evidence.
    - Measure or select rack depth, reserved zones, U count, fabrication process,
      calibration profile, component dimensions, support modes, and service zones.
    - Production geometry is blocked while a required input remains `UNKNOWN`.
+   - Distinguish a U-height envelope from a complete ten-inch-rack module. A
+     module claim requires the full mounting interface; `height_u` alone proves
+     only height.
 4. **Create design-owned parameters and helpers**
    - The nested reference JSON is not a build config. Flatten resolved scalar
      parameters into `designs/<design>/configs/rev_000N.json` and record
@@ -40,6 +43,11 @@ traceable conformance evidence.
    - Use the canonical X/Y/Z datums, U hole sequence, explicit depth class,
      explicit support mode, equipment interval, service interval, named keepouts,
      insertion/removal paths, airflow, cable bends, and tool access.
+   - Give every rack module, bay, and mounting plane a unique interface ID and a
+     local rack coordinate frame with an explicit assembly transform.
+   - For each complete module, require independent evidence of its nominal face
+     relationship, both mounting columns, U-hole sequence, mounting hardware,
+     support mode, insertion/removal path, and service envelope.
 6. **Apply mechanical contracts**
    - Use M3×0.5 primary hardware with ISO 7089 M3 washers.
    - Calculate screw stack-ups, washer support, hardware/tool envelopes, pairwise
@@ -48,6 +56,9 @@ traceable conformance evidence.
    - Store the resolved parameter manifest, applicable requirement matrix,
      keepout inventory, depth report, fastener stack-up, seam/ligament report, and
      validation log under `designs/<design>/docs/`.
+   - Record one requirement per row and one result per interface. Evidence from
+     one rack interface cannot pass another, and grouped `PASS` declarations for
+     independent interfaces are prohibited.
    - Mark each applicable requirement `PASS`, `FAIL`, `NOT_APPLICABLE`, or
      `BLOCKED_UNKNOWN`; reasons are mandatory for the latter two.
 8. **Map generated outputs to host governance**
@@ -68,6 +79,8 @@ traceable conformance evidence.
 - The reference validator passes and the selected bundle version is recorded.
 - All required unknowns are resolved or publication is blocked.
 - Host structural minima and rack-specific requirements pass simultaneously.
+- Every claimed rack module reaches both mounting columns and is verified in its
+  local rack frame and the assembled product.
 - Depth, service, keepout, hardware, assembly, and removal envelopes are verified.
 - Conformance evidence names the exact design revision/config and source bundle.
 

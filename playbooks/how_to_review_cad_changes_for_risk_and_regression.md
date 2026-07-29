@@ -10,19 +10,26 @@ regressions before accepting a revision.
 ## Review Procedure
 
 1. Read the active plan, baseline config, changed diff, and design README.
-2. Inventory affected modules, parameters, parts, configs, manifests, and derived
+2. Read the approved canonical product decomposition and current assembly review
+   manifest for a multipart design. Reject stale or absent assembly evidence.
+3. Inventory affected modules, parameters, parts, configs, manifests, and derived
    variants. Trace shared helpers to every consumer.
-3. Identify changed exterior bounds, cavities, interfaces, fastener envelopes,
+4. Identify changed exterior bounds, cavities, interfaces, fastener envelopes,
    moving envelopes, structural seams, and subtraction neighborhoods.
-4. Recalculate pairwise cut ligaments and outer-edge margins; do not rely only on
+5. Recalculate pairwise cut ligaments and outer-edge margins; do not rely only on
    assertions touched by the diff.
-5. Compare representative orthographic, isometric, underside, section, and crop
+6. Compare printable-only assembly, subassembly-isolation, representative
+   orthographic, isometric, underside, section, and crop
    views against the baseline.
-6. Verify print orientation and build-volume bounds for every affected part.
-7. Run targeted parts first, then the complete manifest when shared geometry or
+7. Verify product hierarchy, component count, transforms, interface reach,
+   unexplained holes, one-sided features, dangling members, and assembly order.
+8. Verify print orientation and build-volume bounds for every affected part.
+9. Run targeted parts first, then the complete manifest when shared geometry or
    authoritative outputs are affected.
-8. Audit final STL connectivity, artifact counts, and provenance.
-9. Report findings by severity with file/feature evidence. Separate pre-existing
+10. Independently measure exported geometry for machine-verifiable assembly and
+    interface claims rather than accepting source declarations as proof.
+11. Audit final STL connectivity, artifact counts, and provenance.
+12. Report findings by severity with file/feature evidence. Separate pre-existing
    unverified geometry from regressions introduced by the change.
 
 ## Verification

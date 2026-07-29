@@ -11,6 +11,8 @@ exact-set validation, atomic installation, and provenance audit.
 
 1. Validate `parts.json`: supported schema, unique numeric `part_id` values,
    unique stable names, and matching `main.scad` dispatch.
+   For a new or geometry-modified multipart design, also validate `assembly.json`
+   coverage and require a provenance-matched passing primary assembly review.
 2. Confirm the config identifies one `rev_000N` and the intended source state.
 3. Dry-run the complete build and review every generated part command.
 4. Build with `scripts/scad_build_all.py`; never loop over `scad_build.py`
@@ -24,6 +26,11 @@ exact-set validation, atomic installation, and provenance audit.
 9. For immutable publication, repeat with `--destination revision` only when the
    destination does not already exist.
 
+The printable complete-build manifest and assembly-review manifest have distinct
+artifact destinations and responsibilities. Do not place assembly-review files
+in `output/<design>/`, but do not accept a multipart build until both audits pass
+for identical inputs.
+
 ## Failure Response
 
 Reject the complete set if any artifact is missing, unexpected, duplicated,
@@ -35,6 +42,8 @@ stale, or hash-mismatched. Diagnose in staging and rebuild the entire set.
 - Both exact-name and hash audits pass.
 - Current installation contains no files from an older build.
 - The final report states scope, destination, counts, audit, and provenance.
+- Multipart completion also states assembly-review destination, expected/actual
+  review counts, audit result, and matching input hashes.
 
 ## Plan Binding
 

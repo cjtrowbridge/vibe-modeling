@@ -106,6 +106,8 @@ When working in Git:
 - `playbooks/how_to_use_downtime_to_improve_the_framework.md` - Produce report-only maintenance recommendations.
 - `playbooks/how_to_iterate_openscad_designs.md` - Iterate, build, and revise OpenSCAD designs.
 - `playbooks/how_to_add_a_new_cad_design.md` - Add a design using shared folder conventions.
+- `playbooks/how_to_define_and_verify_canonical_product_decomposition.md` - Lock product, subassembly, and printable-leaf ownership before modeling.
+- `playbooks/how_to_create_and_review_multipart_assembly_artifacts.md` - Render, audit, and review provenance-bound multipart assemblies throughout iteration.
 - `playbooks/how_to_design_and_verify_structural_openscad_joins.md` - Verify structural overlap, connectivity, and material width.
 - `playbooks/how_to_create_verify_and_publish_immutable_openscad_revisions.md` - Develop mutable candidates and publish verified immutable revisions.
 - `playbooks/how_to_build_install_and_audit_manifest_driven_openscad_designs.md` - Build and audit complete manifest artifact sets.
@@ -155,6 +157,8 @@ Templates:
 - `templates/submodule_update_synthesis_report.md` - Three-way framework update decisions.
 - `templates/daily_journal_entry.md` - Journal ownership and checkpoint fields.
 - `templates/downtime_report.md` - Report-only maintenance findings.
+- `templates/assembly_contract.json` - Starting hierarchy, interface, view, and geometry-export contract for multipart CAD.
+- `templates/assembly_review_record.md` - Findings-first, provenance-bound multipart review record.
 
 ## 8. Project Organization
 
@@ -185,6 +189,15 @@ For multi-part designs with `designs/<design>/parts.json`, use
 `scripts/scad_build_all.py`. A directory is not a complete/current build unless
 its `build_manifest.json` passes `--audit-only`.
 
+New or geometry-modified multipart designs must also declare
+`designs/<design>/assembly.json`, pass
+`scripts/validate_cad_assembly_contract.py`, and produce a reviewed
+`.tmp/scad/<design>/assembly-review/assembly_review_manifest.json`. The product
+assembly and its logical subassemblies are distinct from printable leaf parts.
+Every architecture-affecting change invalidates the prior assembly review.
+Untouched legacy multipart designs must be labeled `legacy_assembly_unverified`
+until migrated through an approved plan.
+
 ## 9. Logging and Debugging
 
 Favor scripts that print explicit executable paths, inputs, and outputs. New
@@ -213,6 +226,9 @@ These rules apply unless a design documents stricter requirements:
 - For multiple cuts in one structural member, inventory every pair whose projected
   bounds approach or overlap and assert each post-subtraction ligament. Outer-edge
   checks alone are insufficient.
+- Every spanning rail, web, flange, bridge, frame member, or panel must declare
+  support endpoints and connection types. Require two verified supports or an
+  explicit verified cantilever load case. Coplanar ends at a part seam fail.
 - Use named dimensions and `assert()` statements. Do not rely on coordinates that
   merely appear to meet.
 - A successful render or manifold STL does not prove structural overlap. Perform

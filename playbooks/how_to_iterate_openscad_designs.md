@@ -13,6 +13,8 @@ Provide a repeatable local workflow to iterate OpenSCAD prototypes, generate mul
 - Read and apply `playbooks/how_to_design_and_verify_structural_openscad_joins.md` for any structural geometry
 - Read `playbooks/how_to_create_verify_and_publish_immutable_openscad_revisions.md`
 - For manifest designs, read `playbooks/how_to_build_install_and_audit_manifest_driven_openscad_designs.md`
+- For multipart designs, read the canonical-product-decomposition and multipart
+  assembly-artifact playbooks and validate `assembly.json` before detailed work
 - Either:
   - `openscad` available on `PATH`, or
   - provide `--openscad-path` to the build scripts
@@ -41,6 +43,12 @@ Provide a repeatable local workflow to iterate OpenSCAD prototypes, generate mul
    - Do not rely on coincident endpoints, coplanar faces, tangent edges, or epsilon-sized overlaps.
 
 4. **Loop: build artifacts -> inspect -> revise**
+   - Apply gates in dependency order: intent/decomposition, assembly review,
+     interface conformance, structural/fit/printability, then
+     artifact/provenance. A later passing gate cannot override an earlier fail.
+   - Regenerate and review the compact assembly set after every
+     architecture-affecting change. Render the full set at blockout,
+     detailed-geometry, and release milestones.
    1. Build scratch outputs:
       - `python scripts/scad_build.py --design example_box --config .tmp/scad/example_box/rev_0002.json`
       - For a design with `parts.json`, build the authoritative complete set with:
@@ -93,6 +101,9 @@ Provide a repeatable local workflow to iterate OpenSCAD prototypes, generate mul
 - Confirm no unexpected disconnected positive-volume shells remain.
 - For manifest-driven builds, confirm `--audit-only` reports the expected part, STL, PNG, and total artifact counts with no unexpected files.
 - Confirm config, parts-manifest, source-tree, and artifact hashes match `build_manifest.json`.
+- For multipart designs, confirm the assembly-contract validator and
+  `assembly_review_manifest.json` audit match the same config, source,
+  `parts.json`, `assembly.json`, and Git state.
 - Confirm no `.scad` files exist in `output/` or `revisions/`.
 
 ## Lifecycle Compliance

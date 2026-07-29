@@ -29,6 +29,9 @@ Add a new OpenSCAD design under `designs/<design>/` with its own source tree and
    - Inventory printable parts, assembly previews, cutters, and reference mockups using `playbooks/how_to_manage_reference_mockups_and_non_printable_geometry.md`.
    - If the design has multiple authoritative printable/reference exports, create `parts.json` immediately.
    - Use unique stable numeric IDs and names, and keep `main.scad` dispatch synchronized with the manifest.
+   - For a multipart design, follow the canonical-product-decomposition and
+     multipart-assembly-artifact playbooks, create `assembly.json`, and pass a
+     low-detail primary assembly review before detailed geometry.
 
 4. **Add at least one config**
    - Create `rev_0001.json` with:
@@ -66,6 +69,8 @@ Add a new OpenSCAD design under `designs/<design>/` with its own source tree and
 
 - `scad_build.py --dry-run` succeeds for `rev_0001.json`
 - Multi-part designs have a synchronized, passing `parts.json` complete build
+- New or geometry-modified multipart designs also have a passing,
+  provenance-matched `assembly.json` contract and primary assembly-review audit
 - Structural assertions pass and all intended joins meet the minimum overlap contract
 - Every internal edge and remaining material strip meets the minimum wall-thickness contract
 - No unexpected disconnected positive-volume shells remain

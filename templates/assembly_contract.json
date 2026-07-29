@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "primary_assembly": "product_assembly",
+  "review_dispatch_id": 90,
+  "assemblies": [
+    {
+      "assembly_id": "product_assembly",
+      "role": "product",
+      "members": [
+        {
+          "assembly_id": "primary_subassembly",
+          "transform": {
+            "translate": [0, 0, 0],
+            "rotate": [0, 0, 0]
+          }
+        }
+      ]
+    },
+    {
+      "assembly_id": "primary_subassembly",
+      "role": "replace_with_role",
+      "members": [
+        {
+          "part_id": 1,
+          "transform": {
+            "translate": [0, 0, 0],
+            "rotate": [0, 0, 0]
+          }
+        }
+      ]
+    }
+  ],
+  "interfaces": [
+    {
+      "interface_id": "primary_interface",
+      "owner_assembly": "primary_subassembly",
+      "type": "structural_mount",
+      "split_policy": "intentionally_terminated",
+      "local_frame": {
+        "translate": [0, 0, 0],
+        "rotate": [0, 0, 0]
+      },
+      "engages_parts": ["replace_with_parts_manifest_name"]
+    }
+  ],
+  "views": [
+    {
+      "name": "front",
+      "projection": "o",
+      "camera": [0, 0, 0, 90, 0, 0, 800],
+      "assembly_view": "product",
+      "show_proxies": false
+    },
+    {
+      "name": "isometric",
+      "projection": "p",
+      "camera": [0, 0, 0, 55, 0, 25, 800],
+      "assembly_view": "product",
+      "show_proxies": false
+    }
+  ],
+  "view_sets": {
+    "compact": ["front", "isometric"],
+    "full": ["front", "isometric"]
+  },
+  "geometry_exports": []
+}
