@@ -237,6 +237,14 @@
       "assembly_view": "bottom_nut_openings",
       "assembly_view_id": 13,
       "show_proxies": false
+    },
+    {
+      "name": "front_fascia_section",
+      "projection": "o",
+      "camera": [0, -1, 0, 90, 0, 0, 320],
+      "assembly_view": "front_fascia_section",
+      "assembly_view_id": 14,
+      "show_proxies": false
     }
   ],
   "view_sets": {
@@ -263,14 +271,15 @@
       "top_head_openings",
       "top_nut_openings",
       "bottom_head_openings",
-      "bottom_nut_openings"
+      "bottom_nut_openings",
+      "front_fascia_section"
     ]
   },
   "geometry_exports": [
     {
       "name": "cyberdeck_2_assembled",
       "dispatch_id": 91,
-      "minimum_span": [254.0, 215.0, 121.3]
+      "minimum_span": [254.0, 215.0, 124.5]
     }
   ]
 }

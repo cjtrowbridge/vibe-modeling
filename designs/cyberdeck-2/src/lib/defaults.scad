@@ -41,11 +41,13 @@ seam_nut_across_flats = is_undef(seam_nut_across_flats) ? 5.9 : seam_nut_across_
 seam_nut_recess_depth = is_undef(seam_nut_recess_depth) ? 2.8 : seam_nut_recess_depth;
 seam_nut_thickness = is_undef(seam_nut_thickness) ? 2.4 : seam_nut_thickness;
 seam_screw_nominal_length = is_undef(seam_screw_nominal_length) ? 12.0 : seam_screw_nominal_length;
-seam_joint_layer_clearance = is_undef(seam_joint_layer_clearance) ? 0.3 : seam_joint_layer_clearance;
 seam_joint_cross_width = is_undef(seam_joint_cross_width) ? 7.8 : seam_joint_cross_width;
-seam_joint_compression_land_diameter = is_undef(seam_joint_compression_land_diameter) ? 9.6 : seam_joint_compression_land_diameter;
-seam_joint_root_web_width = is_undef(seam_joint_root_web_width) ? 3.0 : seam_joint_root_web_width;
-seam_joint_pocket_clearance = is_undef(seam_joint_pocket_clearance) ? 0.3 : seam_joint_pocket_clearance;
+seam_socket_wall_thickness = is_undef(seam_socket_wall_thickness) ? minimum_wall_thickness : seam_socket_wall_thickness;
+seam_socket_sliding_clearance = is_undef(seam_socket_sliding_clearance) ? 1.0 : seam_socket_sliding_clearance;
+seam_socket_tip_clearance = is_undef(seam_socket_tip_clearance) ? 1.0 : seam_socket_tip_clearance;
+seam_tongue_thickness = is_undef(seam_tongue_thickness) ? minimum_wall_thickness : seam_tongue_thickness;
+seam_tongue_depth = is_undef(seam_tongue_depth) ? 16.0 : seam_tongue_depth;
+front_fascia_depth = is_undef(front_fascia_depth) ? minimum_wall_thickness : front_fascia_depth;
 boolean_epsilon = is_undef(boolean_epsilon) ? 0.02 : boolean_epsilon;
 
 rack_clear_height = rack_u_pitch * rack_height_u;
@@ -57,25 +59,31 @@ generic_equipment_depth = rack_usable_depth - equipment_front_fit_clearance - eq
 
 equipment_bottom_z = -rack_clear_height / 2;
 equipment_top_z = rack_clear_height / 2;
-seam_service_zone_total_height = equipment_service_zone_height + minimum_wall_thickness;
+seam_pad_half_width = seam_pad_total_width / 2;
+seam_nut_circumscribed_diameter = seam_nut_across_flats / cos(30);
+seam_head_layer_thickness = seam_head_washer_recess_depth + minimum_internal_edge_width;
+seam_nut_layer_thickness = seam_nut_recess_depth + minimum_internal_edge_width
+                           + 0.2;
+seam_socket_cavity_height = seam_tongue_thickness + 2 * seam_socket_sliding_clearance;
+seam_socket_cavity_depth = seam_tongue_depth + 2 * seam_socket_sliding_clearance;
+seam_service_zone_total_height = seam_head_layer_thickness
+                               + seam_socket_cavity_height
+                               + seam_nut_layer_thickness;
+seam_pad_height = seam_service_zone_total_height;
 enclosure_height = rack_clear_height + 2 * seam_service_zone_total_height;
 enclosure_bottom_z = -enclosure_height / 2;
 enclosure_top_z = enclosure_height / 2;
+seam_required_screw_length = seam_service_zone_total_height
+                             - seam_head_washer_recess_depth
+                             - (seam_nut_recess_depth - seam_nut_thickness);
+seam_screw_tip_clearance_to_bay = seam_service_zone_total_height
+                                  - seam_head_washer_recess_depth
+                                  - seam_screw_nominal_length;
 
 device_support_rail_inner_x = rack_equipment_width_max / 2 - device_support_rail_inboard_overlap;
 device_support_rail_outer_x = rack_front_width / 2;
 device_support_rail_width = device_support_rail_outer_x - device_support_rail_inner_x;
 device_support_rail_bottom_z = equipment_bottom_z - device_support_rail_thickness;
-
-seam_pad_half_width = seam_pad_total_width / 2;
-seam_pad_height = seam_service_zone_total_height;
-seam_nut_circumscribed_diameter = seam_nut_across_flats / cos(30);
-seam_head_layer_thickness = seam_head_washer_recess_depth + minimum_internal_edge_width;
-seam_nut_layer_thickness = seam_pad_height - seam_joint_layer_clearance - seam_head_layer_thickness;
-seam_required_screw_length = seam_pad_height - seam_head_washer_recess_depth
-                             - (seam_nut_recess_depth - seam_nut_thickness);
-seam_screw_tip_clearance_to_bay = seam_pad_height - seam_head_washer_recess_depth
-                                  - seam_screw_nominal_length;
 
 module blockout_contract_assertions() {
   assert(minimum_wall_thickness >= 3.0,
@@ -120,23 +128,30 @@ module blockout_contract_assertions() {
              - equipment_bottom_z) < 0.001,
          "SUPPORT: rail top must define the 2U envelope floor");
 
-  assert(seam_pad_height == seam_service_zone_total_height,
-         "SEAM: internal joint must remain inside the service-zone envelope");
-  assert(seam_joint_cross_width - seam_head_washer_recess_diameter / 2
+  assert(abs(seam_service_zone_total_height
+             - (equipment_service_zone_height + minimum_wall_thickness)) < 0.001,
+         "SEAM: configured service zone must match the captured joint stack");
+  assert(seam_socket_wall_thickness >= minimum_structural_overlap,
+         "SEAM: socket walls are below the structural minimum");
+  assert(seam_tongue_thickness >= minimum_structural_overlap,
+         "SEAM: tongue thickness is below the structural minimum");
+  assert(seam_socket_sliding_clearance >= 1.0,
+         "FIT: socket clearance must provide the approved 1 mm sliding margin");
+  assert(seam_socket_tip_clearance >= 1.0,
+         "FIT: socket closed-end clearance must provide the approved 1 mm margin");
+  assert(seam_socket_cavity_depth + 2 * seam_socket_wall_thickness
+         <= seam_pad_depth,
+         "SEAM: socket lacks front/rear walls around the tongue");
+  assert(seam_pad_half_width - (seam_joint_cross_width + seam_socket_tip_clearance)
+         >= seam_socket_wall_thickness,
+         "SEAM: socket lacks a 3 mm closed end behind the tongue");
+  assert((seam_tongue_depth - seam_fastener_finished_diameter) / 2
          >= minimum_internal_edge_width,
-         "SEAM: head layer lacks edge width across the center seam");
-  assert(seam_joint_cross_width - seam_joint_compression_land_diameter / 2
-         >= minimum_internal_edge_width,
-         "SEAM: compression land lacks edge width across the center seam");
-  assert((seam_joint_compression_land_diameter
-          - seam_fastener_finished_diameter) / 2
-         >= minimum_internal_edge_width,
-         "SEAM: compression land lacks radial material around the through-hole");
-  assert(seam_pad_half_width - seam_joint_cross_width
-         >= seam_joint_root_web_width,
-         "SEAM: nut flange lacks room for its plate root web");
-  assert(seam_joint_root_web_width >= minimum_structural_overlap,
-         "SEAM: internal nut-flange root web is too narrow");
+         "SEAM: tongue lacks material around the through-passage");
+  assert(front_fascia_depth >= minimum_structural_overlap,
+         "FRONT: fascia depth is below the structural minimum");
+  assert(front_rail_depth >= front_fascia_depth + minimum_structural_overlap,
+         "FRONT: insert rails lack fascia overlap and rear material");
   assert(seam_head_layer_thickness - seam_head_washer_recess_depth
          >= minimum_internal_edge_width,
          "SEAM: recessed head lacks residual material");

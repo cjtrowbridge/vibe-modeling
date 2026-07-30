@@ -1,6 +1,7 @@
 function seam_pad_y0(rear) = rear
-  ? rack_internal_depth - seam_pad_depth - seam_joint_pocket_clearance
+  ? rack_internal_depth - seam_pad_depth
   : 0;
+function seam_fastener_x() = -seam_joint_cross_width / 2;
 function seam_fastener_y(rear) = seam_pad_y0(rear) + seam_pad_depth / 2;
 function seam_fastener_z(top) = top
   ? equipment_top_z + seam_pad_height / 2
@@ -11,6 +12,16 @@ function seam_head_layer_z0(top) = top
 function seam_nut_layer_z0(top) = top
   ? equipment_top_z
   : equipment_bottom_z - seam_nut_layer_thickness;
+function seam_socket_cavity_z0(top) = top
+  ? seam_nut_layer_z0(top) + seam_nut_layer_thickness
+  : seam_head_layer_z0(top) + seam_head_layer_thickness;
+function seam_tongue_z0(top) = seam_socket_cavity_z0(top)
+  + seam_socket_sliding_clearance;
+function seam_tongue_y0(rear) = seam_pad_y0(rear)
+  + seam_socket_wall_thickness + seam_socket_sliding_clearance;
+function seam_receiver_x0() = -seam_pad_half_width;
+function seam_socket_cavity_x0() = -(seam_joint_cross_width
+  + seam_socket_tip_clearance);
 
 module rack_insert_hole_cuts() {
   for (side = [-1, 1])
@@ -55,6 +66,15 @@ module shell_master_uncut() {
     translate([rack_clear_opening_width / 2, 0, enclosure_bottom_z])
       cube([rack_rail_face_width, front_rail_depth, enclosure_height]);
 
+    // Front fascia closes only the service zones, leaving the exact 2U opening
+    // completely unobstructed while tying both insert rails into the chassis.
+    translate([outer_x0, 0, enclosure_bottom_z])
+      cube([rack_front_width, front_fascia_depth,
+            seam_service_zone_total_height]);
+    translate([outer_x0, 0, equipment_top_z])
+      cube([rack_front_width, front_fascia_depth,
+            seam_service_zone_total_height]);
+
     // The integral rear remains fully closed at the enlarged rectangular height.
     translate([outer_x0, enclosure_depth - rear_wall_thickness,
                enclosure_bottom_z])
@@ -71,21 +91,10 @@ module shell_master() {
   }
 }
 
-module seam_head_cross_pocket_cut(rear, top) {
-  pocket_z0 = seam_head_layer_z0(top) - boolean_epsilon;
-  translate([-seam_joint_cross_width - seam_joint_pocket_clearance,
-             seam_pad_y0(rear) - seam_joint_pocket_clearance,
-             pocket_z0])
-    cube([seam_joint_cross_width + seam_joint_pocket_clearance
-          + boolean_epsilon,
-          seam_pad_depth + 2 * seam_joint_pocket_clearance,
-          seam_head_layer_thickness + 2 * boolean_epsilon]);
-}
-
 module seam_vertical_through_cut(rear, top) {
   cut_z0 = top ? equipment_top_z - boolean_epsilon
                : enclosure_bottom_z - boolean_epsilon;
-  translate([0, seam_fastener_y(rear), cut_z0])
+  translate([seam_fastener_x(), seam_fastener_y(rear), cut_z0])
     cylinder(h = seam_pad_height + 2 * boolean_epsilon,
              d = seam_fastener_finished_diameter, $fn = 48);
 }
@@ -93,7 +102,7 @@ module seam_vertical_through_cut(rear, top) {
 module seam_vertical_head_recess_cut(rear, top) {
   cut_z0 = top ? enclosure_top_z - seam_head_washer_recess_depth
                : enclosure_bottom_z - boolean_epsilon;
-  translate([0, seam_fastener_y(rear), cut_z0])
+  translate([seam_fastener_x(), seam_fastener_y(rear), cut_z0])
     cylinder(h = seam_head_washer_recess_depth + boolean_epsilon,
              d = seam_head_washer_recess_diameter, $fn = 64);
 }
@@ -101,45 +110,71 @@ module seam_vertical_head_recess_cut(rear, top) {
 module seam_vertical_nut_recess_cut(rear, top) {
   cut_z0 = top ? equipment_top_z - boolean_epsilon
                : equipment_bottom_z - seam_nut_recess_depth;
-  translate([0, seam_fastener_y(rear), cut_z0])
+  translate([seam_fastener_x(), seam_fastener_y(rear), cut_z0])
     cylinder(h = seam_nut_recess_depth + boolean_epsilon,
              d = seam_nut_circumscribed_diameter, $fn = 6);
 }
 
-module seam_head_flange(rear, top) {
+module seam_socket_cavity_cut(rear, top) {
+  translate([seam_socket_cavity_x0(),
+             seam_pad_y0(rear) + seam_socket_wall_thickness,
+             seam_socket_cavity_z0(top)])
+    cube([seam_joint_cross_width + seam_socket_tip_clearance + boolean_epsilon,
+          seam_socket_cavity_depth, seam_socket_cavity_height]);
+}
+
+module seam_receiver_socket(rear, top) {
+  service_z0 = top ? equipment_top_z : enclosure_bottom_z;
   difference() {
-    translate([-seam_joint_cross_width, seam_pad_y0(rear),
-               seam_head_layer_z0(top)])
-      cube([seam_pad_half_width + seam_joint_cross_width,
-            seam_pad_depth, seam_head_layer_thickness]);
+    union() {
+      // The exterior head wall and bay-facing nut wall close the socket in Z.
+      translate([seam_receiver_x0(), seam_pad_y0(rear),
+                 seam_head_layer_z0(top)])
+        cube([seam_pad_half_width, seam_pad_depth,
+              seam_head_layer_thickness]);
+      translate([seam_receiver_x0(), seam_pad_y0(rear),
+                 seam_nut_layer_z0(top)])
+        cube([seam_pad_half_width, seam_pad_depth,
+              seam_nut_layer_thickness]);
+
+      // Front, rear, and closed-end walls leave the center-seam mouth as the
+      // sole insertion path for the mating tongue.
+      translate([seam_receiver_x0(), seam_pad_y0(rear), service_z0])
+        cube([seam_pad_half_width, seam_socket_wall_thickness,
+              seam_service_zone_total_height]);
+      translate([seam_receiver_x0(),
+                 seam_pad_y0(rear) + seam_pad_depth - seam_socket_wall_thickness,
+                 service_z0])
+        cube([seam_pad_half_width, seam_socket_wall_thickness,
+              seam_service_zone_total_height]);
+      translate([seam_receiver_x0(), seam_pad_y0(rear), service_z0])
+        cube([seam_pad_half_width - (seam_joint_cross_width
+              + seam_socket_tip_clearance), seam_pad_depth,
+              seam_service_zone_total_height]);
+    }
+    seam_socket_cavity_cut(rear, top);
     seam_vertical_through_cut(rear, top);
     seam_vertical_head_recess_cut(rear, top);
+    seam_vertical_nut_recess_cut(rear, top);
   }
 }
 
-module seam_nut_flange(rear, top) {
-  root_web_z0 = top
-    ? seam_nut_layer_z0(top) + seam_nut_layer_thickness
-    : enclosure_bottom_z;
-  root_web_height = seam_head_layer_thickness + seam_joint_layer_clearance;
-  compression_land_z0 = top
-    ? seam_nut_layer_z0(top) + seam_nut_layer_thickness
-    : seam_nut_layer_z0(top) - seam_joint_layer_clearance;
-
+module seam_tongue(rear, top) {
+  service_z0 = top ? equipment_top_z : enclosure_bottom_z;
   difference() {
     union() {
-      translate([-seam_pad_half_width, seam_pad_y0(rear),
-                 seam_nut_layer_z0(top)])
-        cube([seam_pad_half_width + seam_joint_cross_width,
-              seam_pad_depth, seam_nut_layer_thickness]);
-      translate([-seam_pad_half_width, seam_pad_y0(rear), root_web_z0])
-        cube([seam_joint_root_web_width, seam_pad_depth, root_web_height]);
-      translate([0, seam_fastener_y(rear), compression_land_z0])
-        cylinder(h = seam_joint_layer_clearance,
-                 d = seam_joint_compression_land_diameter, $fn = 64);
+      translate([-seam_joint_cross_width, seam_tongue_y0(rear),
+                 seam_tongue_z0(top)])
+        cube([seam_joint_cross_width + seam_socket_wall_thickness,
+              seam_tongue_depth, seam_tongue_thickness]);
+      // A full-height root block positively joins the tongue into the right
+      // shell and front/rear service structure before the tongue enters the
+      // left receiver.
+      translate([0, seam_pad_y0(rear), service_z0])
+        cube([seam_socket_wall_thickness, seam_pad_depth,
+              seam_service_zone_total_height]);
     }
     seam_vertical_through_cut(rear, top);
-    seam_vertical_nut_recess_cut(rear, top);
   }
 }
 
@@ -156,21 +191,15 @@ module shell_half(side) {
 module prepared_shell_half(side) {
   difference() {
     shell_half(side);
-    for (rear = [false, true])
-      for (top = [false, true]) {
-        // Cut the owning shell as well as the crossing flange. Without these
-        // shell-level cuts, the union fills half of each nominal opening.
-        seam_vertical_through_cut(rear, top);
-        if (side < 0) {
-          seam_vertical_nut_recess_cut(rear, top);
-        } else {
-          seam_vertical_head_recess_cut(rear, top);
-        }
-      }
     if (side < 0)
       for (rear = [false, true])
-        for (top = [false, true])
-          seam_head_cross_pocket_cut(rear, top);
+        for (top = [false, true]) {
+          // The left shell owns the complete head and nut cuts. Cutting it as
+          // well as the socket prevents the shell union from filling recesses.
+          seam_vertical_through_cut(rear, top);
+          seam_vertical_nut_recess_cut(rear, top);
+          seam_vertical_head_recess_cut(rear, top);
+        }
   }
 }
 
@@ -180,9 +209,9 @@ module leaf_assembly_geometry(side) {
     for (rear = [false, true])
       for (top = [false, true]) {
         if (side < 0)
-          seam_nut_flange(rear, top);
+          seam_receiver_socket(rear, top);
         else
-          seam_head_flange(rear, top);
+          seam_tongue(rear, top);
       }
   }
 }
@@ -263,6 +292,17 @@ module rack_insert_section() {
   }
 }
 
+module front_fascia_section() {
+  section_thickness = 0.8;
+  intersection() {
+    assembled_enclosure();
+    translate([-rack_front_width / 2 - 1, -boolean_epsilon,
+               enclosure_bottom_z - 1])
+      cube([rack_front_width + 2, section_thickness,
+            enclosure_height + 2]);
+  }
+}
+
 module support_rail_section() {
   section_thickness = 0.8;
   intersection() {
@@ -323,6 +363,8 @@ module assembly_review(view_id = 0, proxies = false) {
     seam_opening_pair(top = true);
   } else if (view_id == 13) {
     seam_opening_pair(top = false);
+  } else if (view_id == 14) {
+    front_fascia_section();
   } else {
     assert(false, str("Unknown assembly_view_id: ", view_id));
   }
