@@ -49,6 +49,7 @@
       "projection": "o",
       "camera": [0, 0, 0, 90, 0, 0, 800],
       "assembly_view": "product",
+      "assembly_view_id": 0,
       "show_proxies": false
     },
     {
@@ -56,6 +57,7 @@
       "projection": "p",
       "camera": [0, 0, 0, 55, 0, 25, 800],
       "assembly_view": "product",
+      "assembly_view_id": 0,
       "show_proxies": false
     }
   ],

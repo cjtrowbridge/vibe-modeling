@@ -57,6 +57,7 @@ def valid_contract():
                 "projection": "o",
                 "camera": [0, 0, 0, 90, 0, 0, 800],
                 "assembly_view": "product",
+                "assembly_view_id": 0,
                 "show_proxies": False,
             }
         ],
@@ -99,6 +100,12 @@ class AssemblyContractTests(unittest.TestCase):
         with self.assertRaises(SystemExit):
             contract.validate_contract(data, parts)
 
+    def test_missing_numeric_view_dispatch_fails(self):
+        data, parts = valid_contract()
+        del data["views"][0]["assembly_view_id"]
+        with self.assertRaises(SystemExit):
+            contract.validate_contract(data, parts)
+
     def test_undeclared_fabrication_subpart_fails(self):
         data, parts = valid_contract()
         parts[6] = "undeclared_module_half"
@@ -138,6 +145,7 @@ class AssemblyContractTests(unittest.TestCase):
             "parts_manifest": {"sha256": "b"},
             "assembly_contract": {"sha256": "c"},
             "source": {"sha256": "d"},
+            "printable_build": {"sha256": "e"},
         }
         manifest = copy.deepcopy(current)
         manifest.update({"schema_version": 1, "view_set": "full"})

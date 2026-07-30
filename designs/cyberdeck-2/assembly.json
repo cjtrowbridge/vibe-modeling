@@ -1,0 +1,231 @@
+{
+  "schema_version": 1,
+  "primary_assembly": "cyberdeck_2_product",
+  "review_dispatch_id": 90,
+  "assemblies": [
+    {
+      "assembly_id": "cyberdeck_2_product",
+      "role": "product",
+      "members": [
+        {
+          "assembly_id": "split_2u_receiver_enclosure",
+          "transform": {
+            "translate": [0, 0, 0],
+            "rotate": [0, 0, 0]
+          }
+        }
+      ]
+    },
+    {
+      "assembly_id": "split_2u_receiver_enclosure",
+      "role": "generic_ten_inch_2u_receiver",
+      "members": [
+        {
+          "part_id": 1,
+          "transform": {
+            "translate": [-127, 0, 0],
+            "rotate": [0, 90, 0]
+          }
+        },
+        {
+          "part_id": 2,
+          "transform": {
+            "translate": [127, 0, 0],
+            "rotate": [0, -90, 0]
+          }
+        }
+      ]
+    }
+  ],
+  "interfaces": [
+    {
+      "interface_id": "rack_receiver_bay",
+      "owner_assembly": "split_2u_receiver_enclosure",
+      "type": "ten_inch_rack_receiver",
+      "split_policy": "continuous_across_seam",
+      "local_frame": {
+        "translate": [0, 0, 0],
+        "rotate": [0, 0, 0]
+      },
+      "engages_parts": ["enclosure_left", "enclosure_right"]
+    },
+    {
+      "interface_id": "longitudinal_center_joint",
+      "owner_assembly": "split_2u_receiver_enclosure",
+      "type": "structural_split_joint_blockout",
+      "split_policy": "continuous_across_seam",
+      "local_frame": {
+        "translate": [0, 0, 0],
+        "rotate": [0, 0, 0]
+      },
+      "engages_parts": ["enclosure_left", "enclosure_right"]
+    }
+  ],
+  "views": [
+    {
+      "name": "front",
+      "projection": "o",
+      "camera": [0, -107.5, 0, 90, 0, 0, 420],
+      "assembly_view": "product",
+      "assembly_view_id": 0,
+      "show_proxies": true
+    },
+    {
+      "name": "rear",
+      "projection": "o",
+      "camera": [0, -107.5, 0, 90, 0, 180, 420],
+      "assembly_view": "product",
+      "assembly_view_id": 0,
+      "show_proxies": false
+    },
+    {
+      "name": "left",
+      "projection": "o",
+      "camera": [0, -107.5, 0, 90, 0, 90, 420],
+      "assembly_view": "product",
+      "assembly_view_id": 0,
+      "show_proxies": false
+    },
+    {
+      "name": "right",
+      "projection": "o",
+      "camera": [0, -107.5, 0, 90, 0, -90, 420],
+      "assembly_view": "product",
+      "assembly_view_id": 0,
+      "show_proxies": false
+    },
+    {
+      "name": "top",
+      "projection": "o",
+      "camera": [0, -107.5, 0, 0, 0, 0, 420],
+      "assembly_view": "product",
+      "assembly_view_id": 0,
+      "show_proxies": true
+    },
+    {
+      "name": "bottom",
+      "projection": "o",
+      "camera": [0, -107.5, 0, -180, 0, 0, 420],
+      "assembly_view": "product",
+      "assembly_view_id": 0,
+      "show_proxies": false
+    },
+    {
+      "name": "isometric",
+      "projection": "p",
+      "camera": [0, -107.5, 0, 55, 0, 25, 440],
+      "assembly_view": "product",
+      "assembly_view_id": 0,
+      "show_proxies": true
+    },
+    {
+      "name": "exploded",
+      "projection": "p",
+      "camera": [0, -107.5, 0, 55, 0, 25, 500],
+      "assembly_view": "exploded",
+      "assembly_view_id": 1,
+      "show_proxies": false
+    },
+    {
+      "name": "left_leaf",
+      "projection": "p",
+      "camera": [0, -107.5, 0, 55, 0, 25, 400],
+      "assembly_view": "left_leaf",
+      "assembly_view_id": 2,
+      "show_proxies": false
+    },
+    {
+      "name": "right_leaf",
+      "projection": "p",
+      "camera": [0, -107.5, 0, 55, 0, 25, 400],
+      "assembly_view": "right_leaf",
+      "assembly_view_id": 3,
+      "show_proxies": false
+    },
+    {
+      "name": "top_seam",
+      "projection": "p",
+      "camera": [0, -107.5, 0, 35, 0, 25, 260],
+      "assembly_view": "top_seam",
+      "assembly_view_id": 4,
+      "show_proxies": false
+    },
+    {
+      "name": "bottom_seam",
+      "projection": "p",
+      "camera": [0, -107.5, 0, 145, 0, 25, 260],
+      "assembly_view": "bottom_seam",
+      "assembly_view_id": 5,
+      "show_proxies": false
+    },
+    {
+      "name": "rack_insert_section",
+      "projection": "o",
+      "camera": [118.2625, -5, 0, 90, 0, 90, 180],
+      "assembly_view": "rack_insert_section",
+      "assembly_view_id": 6,
+      "show_proxies": false
+    },
+    {
+      "name": "top_front_fastener_section",
+      "projection": "o",
+      "camera": [0, -9, -52.55, 90, 0, 0, 120],
+      "assembly_view": "top_front_fastener_section",
+      "assembly_view_id": 7,
+      "show_proxies": false
+    },
+    {
+      "name": "top_rear_fastener_section",
+      "projection": "o",
+      "camera": [0, -206, -52.55, 90, 0, 0, 120],
+      "assembly_view": "top_rear_fastener_section",
+      "assembly_view_id": 8,
+      "show_proxies": false
+    },
+    {
+      "name": "bottom_front_fastener_section",
+      "projection": "o",
+      "camera": [0, -9, 52.55, 90, 0, 0, 120],
+      "assembly_view": "bottom_front_fastener_section",
+      "assembly_view_id": 9,
+      "show_proxies": false
+    },
+    {
+      "name": "bottom_rear_fastener_section",
+      "projection": "o",
+      "camera": [0, -206, 52.55, 90, 0, 0, 120],
+      "assembly_view": "bottom_rear_fastener_section",
+      "assembly_view_id": 10,
+      "show_proxies": false
+    }
+  ],
+  "view_sets": {
+    "compact": ["front", "isometric", "exploded", "top_seam"],
+    "full": [
+      "front",
+      "rear",
+      "left",
+      "right",
+      "top",
+      "bottom",
+      "isometric",
+      "exploded",
+      "left_leaf",
+      "right_leaf",
+      "top_seam",
+      "bottom_seam",
+      "rack_insert_section",
+      "top_front_fastener_section",
+      "top_rear_fastener_section",
+      "bottom_front_fastener_section",
+      "bottom_rear_fastener_section"
+    ]
+  },
+  "geometry_exports": [
+    {
+      "name": "cyberdeck_2_assembled",
+      "dispatch_id": 91,
+      "minimum_span": [254.0, 215.0, 121.3]
+    }
+  ]
+}

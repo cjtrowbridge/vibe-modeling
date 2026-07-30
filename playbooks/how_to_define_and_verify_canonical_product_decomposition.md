@@ -34,7 +34,9 @@ silently change product ownership.
    `continuous_across_seam`, `left_owned`, `right_owned`, `separate_bridge`, or
    `intentionally_terminated` with a reason.
 6. Create a low-detail, color-distinct blockout of the complete hierarchy before
-   adding holes, bosses, retainers, controls, or cosmetic detail.
+   adding holes, bosses, retainers, controls, or cosmetic detail. Build and audit
+   its complete printable manifest and review those real artifacts before the
+   supplementary artifact-bound assembly review.
 7. Review product-only, exploded, subassembly-isolation, and printable-leaf
    isolation views. Confirm expected count, role, ownership, transforms, and
    interface reach.
@@ -77,5 +79,6 @@ gates.
 
 ## Lifecycle Compliance
 
-Prompt -> Plan -> Declare hierarchy -> Review blockout -> Request approval ->
-Implement -> Re-review assembly -> Verify -> Document -> Commit.
+Prompt -> Plan -> Declare hierarchy -> Build/audit blockout artifacts -> Review
+real artifacts -> Artifact-bound assembly review -> Request approval ->
+Implement -> Rebuild/re-review -> Verify -> Document -> Commit.

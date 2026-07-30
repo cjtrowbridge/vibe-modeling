@@ -198,6 +198,15 @@ Every architecture-affecting change invalidates the prior assembly review.
 Untouched legacy multipart designs must be labeled `legacy_assembly_unverified`
 until migrated through an approved plan.
 
+At every blockout, detail, or release review gate, run the normal complete
+manifest pipeline first: build and atomically install `output/<design>/`, pass
+`scad_build_all.py --audit-only`, and review the exact installed STL and PNG
+artifacts. Only then generate the supplementary assembly review, which must
+record and audit the current `build_manifest.json` hash and every authoritative
+STL hash. A source-only render, dry run, preview, or `.tmp` assembly created
+before the complete build is diagnostic evidence only and can never satisfy an
+artifact, assembly, approval, or completion gate.
+
 ## 9. Logging and Debugging
 
 Favor scripts that print explicit executable paths, inputs, and outputs. New
@@ -250,6 +259,8 @@ These rules apply unless a design documents stricter requirements:
 - Numbered revisions are immutable; geometry or config changes require a new one.
 - Revision-like filenames are not provenance. A passing manifest audit is.
 - Single-part builds are partial and must not be represented as complete outputs.
+- Artifact review order is mandatory: complete build, installed-output audit,
+  review of the installed artifacts, then artifact-bound assembly review.
 
 ## 12. Completion Summary Requirements
 

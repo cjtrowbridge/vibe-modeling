@@ -27,8 +27,27 @@ declare:
 - required review views and sections;
 - the OpenSCAD assembly-review dispatch.
 
+Each review view carries both a readable `assembly_view` name and a stable
+non-negative `assembly_view_id`. Pass the numeric ID to OpenSCAD for dispatch;
+do not depend on quoted command-line strings surviving every host shell.
+
 `parts.json` remains authoritative for printable exports. `assembly.json` is
 authoritative for product identity, hierarchy, and assembled review.
+
+## Mandatory Artifact-First Order
+
+An assembly review supplements the normal build pipeline; it does not replace
+it. At every blockout, detailed-geometry, and release milestone:
+
+1. Build the complete `parts.json` manifest with `scad_build_all.py`.
+2. Atomically install and audit `output/<design>/`.
+3. Review the exact installed STL and PNG artifacts.
+4. Generate the assembly review only after its manifest is bound to the current
+   `build_manifest.json` hash and every authoritative installed STL hash.
+5. Audit both manifests and then request milestone approval.
+
+A source-only render, dry run, or `.tmp` assembly made before step 1 is diagnostic
+only. It cannot pass a blockout, assembly, approval, or completion gate.
 
 ## Required Review Sets
 
@@ -52,19 +71,23 @@ Opaque proxies must never conceal printable geometry in the printable-only set.
 ## Iteration Procedure
 
 1. Validate `parts.json` and `assembly.json` coverage and hierarchy.
-2. Render the compact set before detailed work and after every affected change.
-3. Review with proxies disabled first; review translucent proxies separately.
-4. Record findings for component count, transforms, gaps, collisions, truncated
+2. Complete and audit the normal manifest build, then review its installed
+   artifact set.
+3. Render the artifact-bound compact assembly set before detailed work and after
+   every affected change.
+4. Review with proxies disabled first; review translucent proxies separately.
+5. Record findings for component count, transforms, gaps, collisions, truncated
    features, unexplained holes, one-sided features, unsupported or dangling
    members, seam discontinuities, interface reach, symmetry, and assembly order.
-5. Measure machine-verifiable claims from exported geometry independently of
+6. Measure machine-verifiable claims from the installed STL artifacts independently of
    source declarations.
-6. Render and review the full set at blockout, detailed-geometry, and mutable or
+7. Render and review the full set at blockout, detailed-geometry, and mutable or
    immutable release milestones.
-7. Write `assembly_review_manifest.json` with exact artifact names and hashes
-   plus config, parts-manifest, assembly-contract, source-tree, Git, and artifact
-   provenance.
-8. Audit the manifest and reject missing, unexpected, duplicate, stale, or
+8. Write `assembly_review_manifest.json` with the current complete-build
+   manifest hash, authoritative installed STL hashes, exact review artifact names
+   and hashes, plus config, parts-manifest, assembly-contract, source-tree, Git,
+   and artifact provenance.
+9. Audit the manifest and reject missing, unexpected, duplicate, stale, or
    hash-mismatched evidence.
 
 ## Invalidation
@@ -115,5 +138,6 @@ artifact destination under `.tmp/scad/<design>/assembly-review/`.
 
 ## Lifecycle Compliance
 
-Prompt -> Plan -> Blockout -> Render/review -> Request approval -> Iterate with
-compact reviews -> Full milestone review -> Verify -> Document -> Commit.
+Prompt -> Plan -> Blockout -> Complete build/audit -> Review real artifacts ->
+Artifact-bound assembly review -> Request approval -> Iterate with compact
+reviews -> Full milestone review -> Verify -> Document -> Commit.

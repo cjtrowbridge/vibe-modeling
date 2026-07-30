@@ -43,11 +43,12 @@ Provide a repeatable local workflow to iterate OpenSCAD prototypes, generate mul
    - Do not rely on coincident endpoints, coplanar faces, tangent edges, or epsilon-sized overlaps.
 
 4. **Loop: build artifacts -> inspect -> revise**
-   - Apply gates in dependency order: intent/decomposition, assembly review,
-     interface conformance, structural/fit/printability, then
-     artifact/provenance. A later passing gate cannot override an earlier fail.
-   - Regenerate and review the compact assembly set after every
-     architecture-affecting change. Render the full set at blockout,
+   - Apply gates in dependency order: intent/decomposition, complete manifest
+     build and installed-artifact audit/review, artifact-bound assembly review,
+     interface conformance, then structural/fit/printability. A later passing
+     gate cannot override an earlier fail.
+   - Rebuild/audit current output and then regenerate the compact assembly set
+     after every architecture-affecting change. Render the full set at blockout,
      detailed-geometry, and release milestones.
    1. Build scratch outputs:
       - `python scripts/scad_build.py --design example_box --config .tmp/scad/example_box/rev_0002.json`

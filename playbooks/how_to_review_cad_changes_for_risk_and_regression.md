@@ -10,8 +10,9 @@ regressions before accepting a revision.
 ## Review Procedure
 
 1. Read the active plan, baseline config, changed diff, and design README.
-2. Read the approved canonical product decomposition and current assembly review
-   manifest for a multipart design. Reject stale or absent assembly evidence.
+2. Read and audit the current complete output build before the approved canonical
+   product decomposition and artifact-bound assembly review manifest. Reject
+   absent, stale, source-only, or pre-build assembly evidence.
 3. Inventory affected modules, parameters, parts, configs, manifests, and derived
    variants. Trace shared helpers to every consumer.
 4. Identify changed exterior bounds, cavities, interfaces, fastener envelopes,

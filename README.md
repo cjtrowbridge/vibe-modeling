@@ -79,7 +79,8 @@ If the agent follows the included playbooks, it should also document what it cha
   - `parts.json` (multi-part designs): authoritative complete-build part IDs and names
   - `assembly.json` (new or modified multi-part designs): authoritative product/subassembly hierarchy, transforms, interfaces, and review views
   - `configs/rev_000N.json`: committed parameter sets
-  - Included designs: `example_box`, `helical`, `yagi`, `yagi_card`, `dtv_yagi`, `winegard_gm6000_logic_backplane`, `gigachad_xavier_void`, `cottage_pi6_plus`, `old_rca_display_baseplate`, `opi_zero_2w_carrier`, `cyberdeck`, `ac_redirectors`
+  - Included designs: `example_box`, `helical`, `yagi`, `yagi_card`, `dtv_yagi`, `winegard_gm6000_logic_backplane`, `gigachad_xavier_void`, `cottage_pi6_plus`, `old_rca_display_baseplate`, `opi_zero_2w_carrier`, `cyberdeck`, `cyberdeck-2`, `ac_redirectors`
+  - `cyberdeck-2`: two-leaf, maximum-depth 2U ten-inch-rack receiver with a closed rear, twelve front M3 insert positions, and four recessed M3 seam joints
 - `output/`
   - current scratch outputs only (`output/<design>/`; generated and ignored)
 - `revisions/`
@@ -215,8 +216,8 @@ Default PNG outputs include:
 - `<part>_iso_bottom_front_left.png`
 - `<part>_iso_bottom_back_right.png`
 - `<part>_iso_bottom_back_left.png`
-- `<part>_inspect_inside_bottom_iso.png` (debug framing into cavity from below)
-- `<part>_inspect_inside_bottom_ortho.png` (debug orthographic from below focused on cavity)
+- `<part>_inspect_inside_bottom_iso.png` (auto-framed angled inspection from below)
+- `<part>_inspect_inside_bottom_ortho.png` (auto-framed orthographic inspection from below)
 - `<part>_ortho_front.png`
 - `<part>_ortho_right.png`
 - `<part>_ortho_back.png`
@@ -248,6 +249,11 @@ The build pipeline always renders this full PNG set on every run (plus `<part>.p
 - Multipart iteration requires a provenance-matched primary assembly artifact
   reviewed with proxies hidden. Geometry, transform, interface, config, source,
   or manifest changes invalidate the prior review.
+- Every multipart milestone starts with the normal complete build into
+  `output/<design>/`. Audit and review those installed STL/PNG artifacts before
+  rendering the supplementary assembly-review set; its manifest must bind the
+  exact `build_manifest.json` and authoritative STL hashes. Source-only `.tmp`
+  renders never replace the real-artifact review.
 - Product assemblies, logical subassemblies, and printable leaf artifacts are
   distinct. Printer constraints may split a subassembly into more leaves but may
   not silently absorb it into another component.

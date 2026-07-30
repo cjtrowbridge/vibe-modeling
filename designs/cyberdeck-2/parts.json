@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "parts": [
+    {
+      "part_id": 1,
+      "name": "enclosure_left"
+    },
+    {
+      "part_id": 2,
+      "name": "enclosure_right"
+    }
+  ]
+}

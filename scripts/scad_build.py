@@ -31,9 +31,11 @@ PNG_VIEW_PRESETS: List[PngViewPreset] = [
     PngViewPreset("iso_bottom_front_left", "p", (125, 0, -25)),
     PngViewPreset("iso_bottom_back_right", "p", (125, 0, 155)),
     PngViewPreset("iso_bottom_back_left", "p", (125, 0, -155)),
-    # Debug-friendly below views focused on tower interior.
-    PngViewPreset("inspect_inside_bottom_iso", "p", (160, 0, 20), (0, 0, -80), 380.0, False, False),
-    PngViewPreset("inspect_inside_bottom_ortho", "o", (180, 0, 0), (0, 0, -90), 400.0, False, False),
+    # Reusable below/inside views. Keep normal auto-framing enabled: fixed
+    # design-specific targets can crop an otherwise valid part in the governed
+    # output set and make the installed artifacts impossible to review.
+    PngViewPreset("inspect_inside_bottom_iso", "p", (160, 0, 20)),
+    PngViewPreset("inspect_inside_bottom_ortho", "o", (180, 0, 0)),
     PngViewPreset("ortho_front", "o", (90, 0, 0)),
     PngViewPreset("ortho_right", "o", (90, 0, 90)),
     PngViewPreset("ortho_back", "o", (90, 0, 180)),

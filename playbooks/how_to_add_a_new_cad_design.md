@@ -30,8 +30,10 @@ Add a new OpenSCAD design under `designs/<design>/` with its own source tree and
    - If the design has multiple authoritative printable/reference exports, create `parts.json` immediately.
    - Use unique stable numeric IDs and names, and keep `main.scad` dispatch synchronized with the manifest.
    - For a multipart design, follow the canonical-product-decomposition and
-     multipart-assembly-artifact playbooks, create `assembly.json`, and pass a
-     low-detail primary assembly review before detailed geometry.
+     multipart-assembly-artifact playbooks, create `assembly.json`, build and
+     audit the complete low-detail manifest in `output/<design>/`, review those
+     real artifacts, and then pass the artifact-bound primary assembly review
+     before detailed geometry.
 
 4. **Add at least one config**
    - Create `rev_0001.json` with:

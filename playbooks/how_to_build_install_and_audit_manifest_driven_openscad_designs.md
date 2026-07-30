@@ -12,7 +12,8 @@ exact-set validation, atomic installation, and provenance audit.
 1. Validate `parts.json`: supported schema, unique numeric `part_id` values,
    unique stable names, and matching `main.scad` dispatch.
    For a new or geometry-modified multipart design, also validate `assembly.json`
-   coverage and require a provenance-matched passing primary assembly review.
+   coverage. Do not require or accept an assembly review before the complete
+   printable build exists.
 2. Confirm the config identifies one `rev_000N` and the intended source state.
 3. Dry-run the complete build and review every generated part command.
 4. Build with `scripts/scad_build_all.py`; never loop over `scad_build.py`
@@ -23,13 +24,21 @@ exact-set validation, atomic installation, and provenance audit.
 7. Run `--audit-only` against the installed destination.
 8. Inspect `build_manifest.json` for config, parts-manifest, source-tree, Git,
    artifact hashes, revision, and expected counts.
-9. For immutable publication, repeat with `--destination revision` only when the
+9. Review the exact installed STL and PNG artifacts, not source previews or a
+   pre-build `.tmp` render. A present but blank, clipped, stale, or otherwise
+   unusable view fails the artifact review; a replacement render elsewhere does
+   not cure that failure.
+10. For multipart designs, render and audit the supplementary assembly review
+   only after it is bound to this exact build-manifest hash and authoritative
+   STL hashes.
+11. For immutable publication, repeat with `--destination revision` only when the
    destination does not already exist.
 
 The printable complete-build manifest and assembly-review manifest have distinct
-artifact destinations and responsibilities. Do not place assembly-review files
-in `output/<design>/`, but do not accept a multipart build until both audits pass
-for identical inputs.
+artifact destinations and responsibilities. The complete build is authoritative
+and must exist first. Do not place assembly-review files in `output/<design>/`;
+do not accept a multipart milestone until the installed output audit, actual
+artifact review, and later artifact-bound assembly audit all pass.
 
 ## Failure Response
 

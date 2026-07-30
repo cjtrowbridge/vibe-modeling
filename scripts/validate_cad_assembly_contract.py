@@ -234,6 +234,8 @@ def validate_contract(contract: dict, part_ids: Dict[int, str]) -> dict:
         require_vector(view.get("camera"), 7, f"view '{name}'.camera")
         if not isinstance(view.get("assembly_view"), str):
             fail(f"View '{name}' requires assembly_view.")
+        if not isinstance(view.get("assembly_view_id"), int) or view["assembly_view_id"] < 0:
+            fail(f"View '{name}' requires a non-negative integer assembly_view_id.")
         if not isinstance(view.get("show_proxies"), bool):
             fail(f"View '{name}' requires Boolean show_proxies.")
 
