@@ -18,7 +18,7 @@
     },
     {
       "assembly_id": "angled_screen_receiver",
-      "role": "open_roof_45_degree_2u_screen_interface",
+      "role": "rear_enclosed_45_degree_2u_screen_interface",
       "members": [
         {
           "assembly_id": "split_2u_receiver_enclosure",
@@ -294,6 +294,22 @@
       "assembly_view": "angled_screen_rail_section",
       "assembly_view_id": 17,
       "show_proxies": false
+    },
+    {
+      "name": "screen_roof_rear_section",
+      "projection": "o",
+      "camera": [0, -2, 95, 90, 0, 0, 280],
+      "assembly_view": "screen_roof_rear_section",
+      "assembly_view_id": 18,
+      "show_proxies": false
+    },
+    {
+      "name": "lower_roof_opening_section",
+      "projection": "o",
+      "camera": [0, -62, 60, 90, 0, 0, 280],
+      "assembly_view": "lower_roof_opening_section",
+      "assembly_view_id": 19,
+      "show_proxies": false
     }
   ],
   "view_sets": {
@@ -324,7 +340,9 @@
       "front_fascia_section",
       "angled_screen",
       "angled_screen_side_section",
-      "angled_screen_rail_section"
+      "angled_screen_rail_section",
+      "screen_roof_rear_section",
+      "lower_roof_opening_section"
     ]
   },
   "geometry_exports": [

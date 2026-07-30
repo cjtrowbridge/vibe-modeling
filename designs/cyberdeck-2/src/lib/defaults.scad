@@ -53,6 +53,11 @@ screen_rack_rear_clearance = is_undef(screen_rack_rear_clearance) ? 50.8 : scree
 screen_rack_face_rail_depth = is_undef(screen_rack_face_rail_depth) ? rack_insert_hole_depth : screen_rack_face_rail_depth;
 screen_rack_side_wall_thickness = is_undef(screen_rack_side_wall_thickness) ? minimum_wall_thickness : screen_rack_side_wall_thickness;
 screen_rack_interface_height_u = is_undef(screen_rack_interface_height_u) ? 2 : screen_rack_interface_height_u;
+screen_rack_upper_roof_thickness = is_undef(screen_rack_upper_roof_thickness) ? minimum_wall_thickness : screen_rack_upper_roof_thickness;
+screen_rack_rear_wall_thickness = is_undef(screen_rack_rear_wall_thickness) ? minimum_wall_thickness : screen_rack_rear_wall_thickness;
+screen_rack_lower_roof_opening_start_y = is_undef(screen_rack_lower_roof_opening_start_y) ? seam_pad_depth : screen_rack_lower_roof_opening_start_y;
+screen_rack_lower_roof_opening_forward_rim = is_undef(screen_rack_lower_roof_opening_forward_rim) ? minimum_wall_thickness : screen_rack_lower_roof_opening_forward_rim;
+screen_rack_lower_roof_opening_side_margin = is_undef(screen_rack_lower_roof_opening_side_margin) ? minimum_wall_thickness : screen_rack_lower_roof_opening_side_margin;
 boolean_epsilon = is_undef(boolean_epsilon) ? 0.02 : boolean_epsilon;
 
 rack_clear_height = rack_u_pitch * rack_height_u;
@@ -102,6 +107,14 @@ screen_rack_base_y = screen_rack_face_run + screen_rack_rear_projection_y;
 screen_rack_top_z = enclosure_top_z + screen_rack_face_rise;
 screen_rack_lowest_support_z = enclosure_top_z - screen_rack_rear_projection_z;
 screen_rack_footprint_depth = screen_rack_base_y + screen_rack_face_rail_depth * cos(screen_rack_face_angle);
+screen_rack_upper_roof_front_y = screen_rack_base_y - screen_rack_face_run;
+screen_rack_rear_wall_bottom_z = enclosure_top_z;
+screen_rack_lower_roof_opening_end_y = screen_rack_footprint_depth
+                                      - screen_rack_lower_roof_opening_forward_rim;
+screen_rack_lower_roof_opening_width = rack_front_width
+                                     - 2 * screen_rack_lower_roof_opening_side_margin;
+screen_rack_lower_roof_opening_length = screen_rack_lower_roof_opening_end_y
+                                      - screen_rack_lower_roof_opening_start_y;
 function screen_rack_hole_z(index) = rack_hole_z(index) - equipment_bottom_z;
 
 module blockout_contract_assertions() {
@@ -198,6 +211,10 @@ module blockout_contract_assertions() {
          "SCREEN: face rails lack full blind-insert depth");
   assert(screen_rack_side_wall_thickness >= minimum_wall_thickness,
          "SCREEN: side support walls are below the structural minimum");
+  assert(screen_rack_upper_roof_thickness >= minimum_structural_overlap,
+         "SCREEN: upper roof is below the structural minimum");
+  assert(screen_rack_rear_wall_thickness >= minimum_structural_overlap,
+         "SCREEN: rear wall is below the structural minimum");
   assert(screen_rack_face_run >= minimum_structural_overlap
          && screen_rack_face_rise >= minimum_structural_overlap,
          "SCREEN: 45-degree face projections must be structural");
@@ -209,6 +226,19 @@ module blockout_contract_assertions() {
          "SCREEN: rear screen envelope must reach, but not project past, Y = 0");
   assert(screen_rack_footprint_depth <= enclosure_depth,
          "SCREEN: angled screen projects past the lower receiver footprint");
+  assert(screen_rack_upper_roof_front_y >= screen_rack_rear_wall_thickness,
+         "SCREEN: upper roof cannot engage the rear wall by 3 mm");
+  assert(screen_rack_lower_roof_opening_start_y >= seam_pad_depth,
+         "SCREEN: lower roof opening cuts into the rear seam screw-block zone");
+  assert(screen_rack_lower_roof_opening_end_y
+         <= screen_rack_footprint_depth - minimum_internal_edge_width,
+         "SCREEN: lower roof lacks the forward structural rim beneath the screen");
+  assert(screen_rack_lower_roof_opening_length >= minimum_internal_edge_width,
+         "SCREEN: lower roof opening is not a meaningful opening");
+  assert(screen_rack_lower_roof_opening_side_margin >= minimum_internal_edge_width,
+         "SCREEN: lower roof opening leaves insufficient side-wall material");
+  assert(screen_rack_lower_roof_opening_width > rack_clear_opening_width,
+         "SCREEN: lower roof opening must clear the screen aperture width");
   assert(screen_rack_top_z - enclosure_bottom_z <= printer_axis_limit,
          "PRINT: angled screen makes the rotated leaf exceed the printer axis");
   assert(max(enclosure_height, rack_front_width / 2 + seam_joint_cross_width,

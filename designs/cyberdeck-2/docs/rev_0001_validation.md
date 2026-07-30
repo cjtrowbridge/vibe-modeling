@@ -79,3 +79,12 @@ and combined STL SHA-256
 The physical screen, panel-mount stack, cable exit/bend, roof/lid, FDM fit, and
 load/cycle validation remain `BLOCKED_UNKNOWN`; a representative screen-frame
 and insert-fit coupon is required before fabrication release.
+
+## Screen Roof and Lower-Roof Opening Checkpoint
+
+The screen section now has a 3 mm horizontal roof and 3 mm `Y = 0` rear wall.
+The lower chassis roof is open beneath it from `Y = 24.0` to `100.732 mm`, across
+`X = -124 to +124 mm`; both 3 mm exterior side strips and the rear `Y = 0..24 mm`
+seam screw-block zone remain intact. Full review and unified audit passed as
+`3 STL + 62 PNG + 2 manifests = 67 files`; combined STL SHA-256 is
+`0132c39a33c7f7b1a863afda6feb49efc999a7381995c603ac8aa2c26d096bc4`.

@@ -75,7 +75,20 @@ module angled_screen_frame_uncut() {
                  -screen_rack_rear_clearance, 0])
         cube([screen_rack_side_wall_thickness, screen_rack_rear_clearance,
               screen_rack_face_height]);
+
     }
+}
+
+module angled_screen_enclosure_closure() {
+  // These surfaces remain in assembled coordinates, not the angled face-local
+  // frame: the roof is horizontally level and the rear is vertically at Y = 0.
+  translate([-rack_front_width / 2, 0,
+             screen_rack_top_z - screen_rack_upper_roof_thickness])
+    cube([rack_front_width, screen_rack_upper_roof_front_y,
+          screen_rack_upper_roof_thickness]);
+  translate([-rack_front_width / 2, 0, screen_rack_rear_wall_bottom_z])
+    cube([rack_front_width, screen_rack_rear_wall_thickness,
+          screen_rack_top_z - screen_rack_rear_wall_bottom_z]);
 }
 
 module angled_screen_insert_hole_cuts() {
@@ -135,6 +148,7 @@ module shell_master_uncut() {
 
     device_support_rails();
     angled_screen_frame_uncut();
+    angled_screen_enclosure_closure();
   }
 }
 
@@ -143,6 +157,14 @@ module shell_master() {
     shell_master_uncut();
     rack_insert_hole_cuts();
     angled_screen_insert_hole_cuts();
+    // Open the existing lower roof only under the new screen enclosure.  The
+    // completed rear seam block at Y = 0..seam_pad_depth remains uncut.
+    translate([-rack_front_width / 2 + screen_rack_lower_roof_opening_side_margin,
+               screen_rack_lower_roof_opening_start_y,
+               enclosure_top_z - minimum_wall_thickness - boolean_epsilon])
+      cube([screen_rack_lower_roof_opening_width,
+            screen_rack_lower_roof_opening_length,
+            minimum_wall_thickness + 2 * boolean_epsilon]);
   }
 }
 
@@ -388,6 +410,29 @@ module angled_screen_rail_section() {
   }
 }
 
+module screen_roof_rear_section() {
+  section_thickness = 0.8;
+  intersection() {
+    assembled_enclosure();
+    translate([-rack_front_width / 2 - 1, screen_rack_rear_wall_thickness / 2
+               - section_thickness / 2, enclosure_top_z - 1])
+      cube([rack_front_width + 2, section_thickness,
+            screen_rack_top_z - enclosure_top_z + 2]);
+  }
+}
+
+module lower_roof_opening_section() {
+  section_thickness = 0.8;
+  intersection() {
+    assembled_enclosure();
+    translate([-rack_front_width / 2 - 1,
+               screen_rack_lower_roof_opening_start_y + section_thickness,
+               enclosure_top_z - 8])
+      cube([rack_front_width + 2, screen_rack_lower_roof_opening_length
+            - 2 * section_thickness, 16]);
+  }
+}
+
 module support_rail_section() {
   section_thickness = 0.8;
   intersection() {
@@ -456,6 +501,10 @@ module assembly_review(view_id = 0, proxies = false) {
     angled_screen_side_section();
   } else if (view_id == 17) {
     angled_screen_rail_section();
+  } else if (view_id == 18) {
+    screen_roof_rear_section();
+  } else if (view_id == 19) {
+    lower_roof_opening_section();
   } else {
     assert(false, str("Unknown assembly_view_id: ", view_id));
   }

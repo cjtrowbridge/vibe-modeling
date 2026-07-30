@@ -2,7 +2,7 @@
 plan_id: 2026-07-29-22-15-00_enclose-cyberdeck-2-screen-and-open-lower-roof
 title: Enclose Cyberdeck-2 Screen Wedge and Open Its Lower Roof
 summary: Add the angled screen section's roof and rear closure while cutting the lower roof below it only outside the rear seam screw-block zone.
-status: future
+status: past
 created_at: 2026-07-29-22-15-00
 ---
 

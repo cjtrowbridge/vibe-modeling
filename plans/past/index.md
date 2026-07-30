@@ -2,6 +2,7 @@
 
 Format: `created_at | path | title | summary`
 
+2026-07-29-22-15-00 | plans/past/2026-07-29-22-15-00_enclose-cyberdeck-2-screen-and-open-lower-roof.md | Enclose Cyberdeck-2 Screen Wedge and Open Its Lower Roof | Add the angled screen section's roof and rear closure while cutting the lower roof below it only outside the rear seam screw-block zone.
 2026-07-29-21-32-31 | plans/past/2026-07-29-21-32-31_add-cyberdeck-2-angled-screen-rack.md | Add Cyberdeck-2 45-Degree Shallow 2U Screen Rack | Add an open-roof, shallow 2U screen receiver at 45 degrees on the rearward end of the current enclosure.
 2026-07-29-20-54-23 | plans/past/2026-07-29-20-54-23_enclose-cyberdeck-2-front-seam-and-insert-blocks.md | Enclose Cyberdeck-2 Front Seam and Insert Blocks | Add top and bottom front fascia outside the exact 2U clearance and replace exposed seam tongues with structurally enclosed sliding sockets.
 2026-07-29-20-32-37 | plans/past/2026-07-29-20-32-37_complete-cyberdeck-2-seam-fastener-cuts.md | Complete Cyberdeck-2 Seam Fastener Cuts | Remove shell material that occludes half of each seam fastener passage and verify all four installed holes as complete enclosed circles.

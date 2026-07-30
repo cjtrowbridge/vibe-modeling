@@ -54,5 +54,10 @@
   "screen_rack_face_rail_depth": 7.0,
   "screen_rack_side_wall_thickness": 3.0,
   "screen_rack_interface_height_u": 2,
+  "screen_rack_upper_roof_thickness": 3.0,
+  "screen_rack_rear_wall_thickness": 3.0,
+  "screen_rack_lower_roof_opening_start_y": 24.0,
+  "screen_rack_lower_roof_opening_forward_rim": 3.0,
+  "screen_rack_lower_roof_opening_side_margin": 3.0,
   "boolean_epsilon": 0.02
 }
