@@ -2,7 +2,7 @@
 plan_id: 2026-07-30-00-10-00_fill-cyberdeck-2-screen-side-walls
 title: Fill Cyberdeck-2 Screen Enclosure Side Walls
 summary: Replace the open triangular side gaps of the enclosed angled screen section with continuous structural side panels.
-status: future
+status: current
 created_at: 2026-07-30-00-10-00
 ---
 

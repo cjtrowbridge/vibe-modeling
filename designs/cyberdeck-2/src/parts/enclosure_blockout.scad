@@ -91,6 +91,31 @@ module angled_screen_enclosure_closure() {
           screen_rack_top_z - screen_rack_rear_wall_bottom_z]);
 }
 
+module angled_screen_side_infill(side) {
+  x0 = side < 0 ? -rack_front_width / 2
+                : rack_front_width / 2 - screen_rack_side_wall_thickness;
+  x1 = side < 0 ? -rack_front_width / 2 + screen_rack_side_wall_thickness
+                : rack_front_width / 2;
+  // Full exterior wedge face: it overlaps the side support, angled rail end,
+  // roof, rear wall, and retained lower-chassis roof/side-wall material.
+  polyhedron(
+    points = [
+      [x0, 0, enclosure_top_z],
+      [x0, 0, screen_rack_top_z],
+      [x0, screen_rack_upper_roof_front_y, screen_rack_top_z],
+      [x0, screen_rack_base_y, enclosure_top_z],
+      [x1, 0, enclosure_top_z],
+      [x1, 0, screen_rack_top_z],
+      [x1, screen_rack_upper_roof_front_y, screen_rack_top_z],
+      [x1, screen_rack_base_y, enclosure_top_z]
+    ],
+    faces = [
+      [0, 3, 2, 1], [4, 5, 6, 7], [0, 1, 5, 4], [1, 2, 6, 5],
+      [2, 3, 7, 6], [3, 0, 4, 7]
+    ]
+  );
+}
+
 module angled_screen_insert_hole_cuts() {
   angled_screen_frame_transform()
     for (side = [-1, 1])
@@ -149,6 +174,8 @@ module shell_master_uncut() {
     device_support_rails();
     angled_screen_frame_uncut();
     angled_screen_enclosure_closure();
+    angled_screen_side_infill(-1);
+    angled_screen_side_infill(1);
   }
 }
 
