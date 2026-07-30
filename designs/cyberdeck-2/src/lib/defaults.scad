@@ -48,6 +48,11 @@ seam_socket_tip_clearance = is_undef(seam_socket_tip_clearance) ? 1.0 : seam_soc
 seam_tongue_thickness = is_undef(seam_tongue_thickness) ? minimum_wall_thickness : seam_tongue_thickness;
 seam_tongue_depth = is_undef(seam_tongue_depth) ? 16.0 : seam_tongue_depth;
 front_fascia_depth = is_undef(front_fascia_depth) ? minimum_wall_thickness : front_fascia_depth;
+screen_rack_face_angle = is_undef(screen_rack_face_angle) ? 45.0 : screen_rack_face_angle;
+screen_rack_rear_clearance = is_undef(screen_rack_rear_clearance) ? 50.8 : screen_rack_rear_clearance;
+screen_rack_face_rail_depth = is_undef(screen_rack_face_rail_depth) ? rack_insert_hole_depth : screen_rack_face_rail_depth;
+screen_rack_side_wall_thickness = is_undef(screen_rack_side_wall_thickness) ? minimum_wall_thickness : screen_rack_side_wall_thickness;
+screen_rack_interface_height_u = is_undef(screen_rack_interface_height_u) ? 2 : screen_rack_interface_height_u;
 boolean_epsilon = is_undef(boolean_epsilon) ? 0.02 : boolean_epsilon;
 
 rack_clear_height = rack_u_pitch * rack_height_u;
@@ -84,6 +89,20 @@ device_support_rail_inner_x = rack_equipment_width_max / 2 - device_support_rail
 device_support_rail_outer_x = rack_front_width / 2;
 device_support_rail_width = device_support_rail_outer_x - device_support_rail_inner_x;
 device_support_rail_bottom_z = equipment_bottom_z - device_support_rail_thickness;
+
+// The existing closed wall at Y = enclosure_depth is the user-facing front for
+// the angled-screen assembly.  The screen is therefore rooted at the open Y = 0
+// end, faces +Y, and remains inside the lower receiver footprint.
+screen_rack_face_height = rack_u_pitch * screen_rack_interface_height_u;
+screen_rack_face_run = screen_rack_face_height * cos(screen_rack_face_angle);
+screen_rack_face_rise = screen_rack_face_height * sin(screen_rack_face_angle);
+screen_rack_rear_projection_y = screen_rack_rear_clearance * cos(screen_rack_face_angle);
+screen_rack_rear_projection_z = screen_rack_rear_clearance * sin(screen_rack_face_angle);
+screen_rack_base_y = screen_rack_face_run + screen_rack_rear_projection_y;
+screen_rack_top_z = enclosure_top_z + screen_rack_face_rise;
+screen_rack_lowest_support_z = enclosure_top_z - screen_rack_rear_projection_z;
+screen_rack_footprint_depth = screen_rack_base_y + screen_rack_face_rail_depth * cos(screen_rack_face_angle);
+function screen_rack_hole_z(index) = rack_hole_z(index) - equipment_bottom_z;
 
 module blockout_contract_assertions() {
   assert(minimum_wall_thickness >= 3.0,
@@ -168,6 +187,30 @@ module blockout_contract_assertions() {
          "FAST-M3: selected vertical seam screw is too short for the stack");
   assert(seam_screw_tip_clearance_to_bay >= 0,
          "FAST-M3: selected vertical seam screw protrudes into the 2U bay");
+  assert(screen_rack_interface_height_u == 2
+         && abs(screen_rack_face_height - rack_clear_height) < 0.001,
+         "SCREEN: angled screen interface must retain the exact 2U face height");
+  assert(abs(screen_rack_face_angle - 45.0) < 0.001,
+         "SCREEN: screen face must remain at 45 degrees");
+  assert(screen_rack_rear_clearance <= 50.8,
+         "SCREEN: behind-screen normal envelope exceeds the approved 50.8 mm");
+  assert(screen_rack_face_rail_depth >= rack_insert_hole_depth,
+         "SCREEN: face rails lack full blind-insert depth");
+  assert(screen_rack_side_wall_thickness >= minimum_wall_thickness,
+         "SCREEN: side support walls are below the structural minimum");
+  assert(screen_rack_face_run >= minimum_structural_overlap
+         && screen_rack_face_rise >= minimum_structural_overlap,
+         "SCREEN: 45-degree face projections must be structural");
+  assert(screen_rack_lowest_support_z <= enclosure_top_z - minimum_structural_overlap,
+         "SCREEN: side supports do not positively overlap the base side walls");
+  assert(screen_rack_base_y - screen_rack_face_run - screen_rack_rear_projection_y >= -0.001,
+         "SCREEN: rear screen envelope placement is inconsistent");
+  assert(screen_rack_base_y - screen_rack_face_run - screen_rack_rear_projection_y < 0.001,
+         "SCREEN: rear screen envelope must reach, but not project past, Y = 0");
+  assert(screen_rack_footprint_depth <= enclosure_depth,
+         "SCREEN: angled screen projects past the lower receiver footprint");
+  assert(screen_rack_top_z - enclosure_bottom_z <= printer_axis_limit,
+         "PRINT: angled screen makes the rotated leaf exceed the printer axis");
   assert(max(enclosure_height, rack_front_width / 2 + seam_joint_cross_width,
              enclosure_depth) <= printer_axis_limit,
          "PRINT: side-wall-down leaf exceeds the printer axis limit");

@@ -85,3 +85,31 @@ structural minima, and print bounds pass for this exact candidate. Slicer layers
 support behavior, calibrated insert/nut/joint fit, specific-device fit, and
 physical loading remain unverified. The candidate is not an immutable or
 fabrication-ready revision.
+
+## Angled Screen Interface Review (Latest Mutable Candidate)
+
+The installed, artifact-bound full review adds an open-roof 45-degree screen
+interface at the receiver's `Y = 0` end. The dedicated angled-screen isometric,
+outer-side section, and rail section show both M3 columns, continuous outer side
+support, the 50.8 mm rear normal envelope, and the intentionally absent roof,
+rear closure, and centre panel. The lower 2U receiver, its closed `Y = 215 mm`
+wall, the two printable leaves, and all four seam stations remain present.
+
+| Area | Result |
+|---|---|
+| 45-degree face and local 2U aperture | PASS geometrically |
+| two face-local six-hole M3 rail columns | PASS geometrically |
+| screen rail / side-support / chassis overlap | PASS geometrically; named minimum is 3 mm |
+| roof and upper rear closure | intentionally open |
+| specific screen, cable, mounting stack, and physical fit | BLOCKED_UNKNOWN |
+| complete printable manifest | PASS: 2 STL + 34 PNG |
+| artifact-bound assembly review | PASS: 1 STL + 26 PNG |
+
+Exact current inputs: config SHA-256
+`c253b18c6e5af89fe0f4b0c05b89ac8d741e5c7bb8c7891855fba78d5c336c30`,
+source SHA-256 `de223b2c8fb4a1e8adced2f855aef7d111eb1c333d95ab1b27d58d82d78afea4`,
+build-manifest SHA-256
+`6c3fae66263958d337a1ea63a2586d25b5fe5f8790abd613e67c89249ee882b2`,
+and combined STL SHA-256
+`54a8b88eb20e26bef7252ceb429a4f077344a4f96f7b42e41a08f8c90edd2709`.
+The combined geometry bounds are `[-127, 0, -62.25]` to `[127, 215, 125.112]`.

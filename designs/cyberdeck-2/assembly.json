@@ -8,6 +8,19 @@
       "role": "product",
       "members": [
         {
+          "assembly_id": "angled_screen_receiver",
+          "transform": {
+            "translate": [0, 0, 0],
+            "rotate": [0, 0, 0]
+          }
+        }
+      ]
+    },
+    {
+      "assembly_id": "angled_screen_receiver",
+      "role": "open_roof_45_degree_2u_screen_interface",
+      "members": [
+        {
           "assembly_id": "split_2u_receiver_enclosure",
           "transform": {
             "translate": [0, 0, 0],
@@ -38,6 +51,18 @@
     }
   ],
   "interfaces": [
+    {
+      "interface_id": "angled_screen_2u_interface",
+      "owner_assembly": "angled_screen_receiver",
+      "type": "ten_inch_rack_module",
+      "height_u": 2,
+      "split_policy": "continuous_across_seam",
+      "local_frame": {
+        "translate": [0, 98.782, 62.25],
+        "rotate": [45, 0, 0]
+      },
+      "engages_parts": ["enclosure_left", "enclosure_right"]
+    },
     {
       "interface_id": "rack_receiver_bay",
       "owner_assembly": "split_2u_receiver_enclosure",
@@ -245,10 +270,34 @@
       "assembly_view": "front_fascia_section",
       "assembly_view_id": 14,
       "show_proxies": false
+    },
+    {
+      "name": "angled_screen",
+      "projection": "p",
+      "camera": [0, -75, 85, 65, 0, 25, 360],
+      "assembly_view": "angled_screen",
+      "assembly_view_id": 15,
+      "show_proxies": false
+    },
+    {
+      "name": "angled_screen_side_section",
+      "projection": "o",
+      "camera": [-127, -50, 75, 90, 0, 90, 260],
+      "assembly_view": "angled_screen_side_section",
+      "assembly_view_id": 16,
+      "show_proxies": false
+    },
+    {
+      "name": "angled_screen_rail_section",
+      "projection": "o",
+      "camera": [-118.2625, -50, 75, 90, 0, 90, 260],
+      "assembly_view": "angled_screen_rail_section",
+      "assembly_view_id": 17,
+      "show_proxies": false
     }
   ],
   "view_sets": {
-    "compact": ["front", "isometric", "exploded", "top_seam"],
+    "compact": ["front", "isometric", "exploded", "top_seam", "angled_screen"],
     "full": [
       "front",
       "rear",
@@ -272,14 +321,17 @@
       "top_nut_openings",
       "bottom_head_openings",
       "bottom_nut_openings",
-      "front_fascia_section"
+      "front_fascia_section",
+      "angled_screen",
+      "angled_screen_side_section",
+      "angled_screen_rail_section"
     ]
   },
   "geometry_exports": [
     {
       "name": "cyberdeck_2_assembled",
       "dispatch_id": 91,
-      "minimum_span": [254.0, 215.0, 124.5]
+      "minimum_span": [254.0, 215.0, 187.35]
     }
   ]
 }

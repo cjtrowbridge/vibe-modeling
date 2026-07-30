@@ -51,3 +51,31 @@ print-time behavior are unverified. Insert fit, nut fit, joint fit, rail contact
 specific-device fit, load capacity, shock behavior, thermal behavior, and
 long-term creep require coupons or a physical candidate. This revision is a
 verified geometric candidate, not a fabrication-ready release.
+
+## Angled Screen Checkpoint (Latest Mutable Candidate)
+
+- Assembly contract: PASS; 3 logical assemblies, 2 printable leaves, 3
+  interfaces, and 26 governed review views.
+- Screen interface: PASS geometrically; 45 degrees, exact face-local 2U
+  `222.25 x 88.90 mm` aperture, and two six-hole M3 rail columns.
+- Rear envelope: PASS geometrically; the 50.8 mm normal clearance projects to
+  but does not exceed the existing `Y = 0` back datum.
+- Support joins and minimum internal material: PASS geometrically; all named
+  screen rail, side-wall, and chassis engagement dimensions are at least 3 mm.
+- Combined assembled STL: bounds `[-127, 0, -62.25]` to `[127, 215, 125.112]`;
+  span `254 x 215 x 187.362 mm`.
+- Print-oriented leaf spans: left `187.362 x 215.0 x 127.0 mm`; right
+  `187.362 x 215.0 x 134.8 mm`, each within the `220 mm - 5 mm` reserved axis.
+- Complete printable build: PASS; `2 STL + 34 PNG = 36` artifacts.
+- Full artifact-bound assembly review: PASS; `1 STL + 26 PNG = 27` artifacts.
+- Unified exact output: PASS; `3 STL + 60 PNG + 2 manifests = 65` files, with
+  no subdirectories or undeclared files.
+
+Current build provenance: config SHA-256
+`c253b18c6e5af89fe0f4b0c05b89ac8d741e5c7bb8c7891855fba78d5c336c30`,
+source SHA-256 `de223b2c8fb4a1e8adced2f855aef7d111eb1c333d95ab1b27d58d82d78afea4`,
+and combined STL SHA-256
+`54a8b88eb20e26bef7252ceb429a4f077344a4f96f7b42e41a08f8c90edd2709`.
+The physical screen, panel-mount stack, cable exit/bend, roof/lid, FDM fit, and
+load/cycle validation remain `BLOCKED_UNKNOWN`; a representative screen-frame
+and insert-fit coupon is required before fabrication release.

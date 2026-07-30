@@ -66,3 +66,18 @@ tongue root, closed-end clearance, head/nut margins, screw reach, bay keepout,
 and transformed print bounds. Physical nut/head fit, sliding clearance,
 tightening torque, material creep, shock loading, rail contact, and device load
 distribution remain unverified.
+
+## Angled Screen Rail and Support Load Paths
+
+The 45-degree screen interface has two 15.875 mm-wide face rails with the same
+six-position M3 insert pattern as the lower 2U receiver. Each rail is 7 mm deep
+behind its face, preserving the full blind-insert depth and at least 3 mm of
+residual material. The clear aperture between them is the full `222.25 x 88.90 mm`
+2U envelope.
+
+At each outer edge, a 3 mm side support wall runs from the face to the 50.8 mm
+rear envelope. It overlaps the corresponding 3 mm existing chassis side wall by
+more than 3 mm below the lower chassis top, and it overlaps the face rail by 3 mm
+across the full local 2U height. Thus every face rail has two continuous structural
+support paths: its outer support wall and the lower chassis side wall. No roof,
+upper rear panel, or centre web is claimed as structural support.

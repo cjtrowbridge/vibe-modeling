@@ -43,6 +43,59 @@ module device_support_rails() {
           device_support_rail_thickness]);
 }
 
+// Local screen-rack frame: X is shared with the receiver, +Y is the
+// user-facing face normal, and +Z is face-local 2U height.  The transform puts
+// its rear-most upper corner exactly at the open Y = 0 end while the face looks
+// toward the integral closed wall at +Y.
+module angled_screen_frame_transform() {
+  translate([0, screen_rack_base_y, enclosure_top_z])
+    rotate([screen_rack_face_angle, 0, 0])
+      children();
+}
+
+module angled_screen_frame_uncut() {
+  angled_screen_frame_transform()
+    union() {
+      // Two face-local 2U rails create a 222.25 x 88.90 mm clear screen
+      // aperture.  Their 7 mm rearward material retains the blind M3 inserts.
+      translate([-rack_front_width / 2, -screen_rack_face_rail_depth, 0])
+        cube([rack_rail_face_width, screen_rack_face_rail_depth,
+              screen_rack_face_height]);
+      translate([rack_clear_opening_width / 2, -screen_rack_face_rail_depth, 0])
+        cube([rack_rail_face_width, screen_rack_face_rail_depth,
+              screen_rack_face_height]);
+
+      // The outer side support walls carry each rail into the existing full
+      // height chassis wall.  They intentionally leave the entire top and
+      // center open: roof and rear closure are a later separate component.
+      translate([-rack_front_width / 2, -screen_rack_rear_clearance, 0])
+        cube([screen_rack_side_wall_thickness, screen_rack_rear_clearance,
+              screen_rack_face_height]);
+      translate([rack_front_width / 2 - screen_rack_side_wall_thickness,
+                 -screen_rack_rear_clearance, 0])
+        cube([screen_rack_side_wall_thickness, screen_rack_rear_clearance,
+              screen_rack_face_height]);
+    }
+}
+
+module angled_screen_insert_hole_cuts() {
+  angled_screen_frame_transform()
+    for (side = [-1, 1])
+      for (hole_index = [0 : screen_rack_interface_height_u * 3 - 1])
+        translate([rack_rail_column_x(side), boolean_epsilon,
+                   screen_rack_hole_z(hole_index)])
+          rotate([90, 0, 0])
+            cylinder(h = rack_insert_hole_depth + boolean_epsilon,
+                     d = rack_insert_finished_diameter, $fn = 48);
+}
+
+module angled_screen_frame() {
+  difference() {
+    angled_screen_frame_uncut();
+    angled_screen_insert_hole_cuts();
+  }
+}
+
 module shell_master_uncut() {
   outer_x0 = -rack_front_width / 2;
 
@@ -81,6 +134,7 @@ module shell_master_uncut() {
       cube([rack_front_width, rear_wall_thickness, enclosure_height]);
 
     device_support_rails();
+    angled_screen_frame_uncut();
   }
 }
 
@@ -88,6 +142,7 @@ module shell_master() {
   difference() {
     shell_master_uncut();
     rack_insert_hole_cuts();
+    angled_screen_insert_hole_cuts();
   }
 }
 
@@ -303,6 +358,36 @@ module front_fascia_section() {
   }
 }
 
+module angled_screen_crop() {
+  intersection() {
+    assembled_enclosure();
+    translate([-rack_front_width / 2 - 1, -1, screen_rack_lowest_support_z - 1])
+      cube([rack_front_width + 2, screen_rack_footprint_depth + 2,
+            screen_rack_top_z - screen_rack_lowest_support_z + 2]);
+  }
+}
+
+module angled_screen_side_section() {
+  section_thickness = 0.8;
+  intersection() {
+    assembled_enclosure();
+    translate([-rack_front_width / 2 - 0.1, -1, screen_rack_lowest_support_z - 1])
+      cube([section_thickness, screen_rack_footprint_depth + 2,
+            screen_rack_top_z - screen_rack_lowest_support_z + 2]);
+  }
+}
+
+module angled_screen_rail_section() {
+  section_thickness = 0.8;
+  intersection() {
+    assembled_enclosure();
+    translate([rack_rail_column_x(-1) - section_thickness / 2, -1,
+               screen_rack_lowest_support_z - 1])
+      cube([section_thickness, screen_rack_footprint_depth + 2,
+            screen_rack_top_z - screen_rack_lowest_support_z + 2]);
+  }
+}
+
 module support_rail_section() {
   section_thickness = 0.8;
   intersection() {
@@ -365,6 +450,12 @@ module assembly_review(view_id = 0, proxies = false) {
     seam_opening_pair(top = false);
   } else if (view_id == 14) {
     front_fascia_section();
+  } else if (view_id == 15) {
+    angled_screen_crop();
+  } else if (view_id == 16) {
+    angled_screen_side_section();
+  } else if (view_id == 17) {
+    angled_screen_rail_section();
   } else {
     assert(false, str("Unknown assembly_view_id: ", view_id));
   }

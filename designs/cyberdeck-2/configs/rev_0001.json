@@ -49,5 +49,10 @@
   "seam_tongue_thickness": 3.0,
   "seam_tongue_depth": 16.0,
   "front_fascia_depth": 3.0,
+  "screen_rack_face_angle": 45.0,
+  "screen_rack_rear_clearance": 50.8,
+  "screen_rack_face_rail_depth": 7.0,
+  "screen_rack_side_wall_thickness": 3.0,
+  "screen_rack_interface_height_u": 2,
   "boolean_epsilon": 0.02
 }

@@ -51,3 +51,22 @@ The enclosure uses the established 220 mm printer axis with 5 mm reserve. A
 specific device may require additional connector, cable-bend, airflow, or
 service depth; those inputs are `BLOCKED_UNKNOWN` and may reduce the 211 mm
 generic device allowance.
+
+## Angled 2U Screen Interface
+
+| Contract | Result |
+|---|---:|
+| user-facing closed-wall datum | `Y = 215.0 mm` |
+| screen/back-end datum | `Y = 0.0 mm` |
+| face angle | `45.0 degrees` |
+| local screen interface | `254.0 mm` outer width; `222.25 x 88.90 mm` clear aperture |
+| face run / rise | `62.862 / 62.862 mm` |
+| maximum rear face-normal envelope | `50.8 mm` |
+| rearward / downward envelope projection | `35.921 / 35.921 mm` |
+| screen-frame footprint in product Y | `0.0 to 103.732 mm` |
+| resulting assembled height | `187.362 mm` total span |
+
+The angled interface uses the canonical two-column, six-hole-per-column M3
+pattern in its own face-local frame. It is an open screen receiver rather than a
+sealed second equipment bay: a physical screen, cable/service envelope, and roof
+remain `BLOCKED_UNKNOWN`.
