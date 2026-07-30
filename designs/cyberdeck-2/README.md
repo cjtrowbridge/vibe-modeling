@@ -13,12 +13,16 @@ Cyberdeck-2 geometry.
 - a 254 x 215 mm enclosure with a 222.25 x 88.90 mm clear front bay;
 - a fully closed, integral 3 mm rear wall;
 - six canonical 2U M3 insert bores on each front rail;
-- four M3 seam joints with exterior head/washer counterbores, captive hex-nut
-  recesses, and clearance-fit lap registration; and
+- four vertically fastened M3 seam joints recessed flush into the top/bottom,
+  with captive nuts and overlapping internal flanges;
+- two continuous lower rails that support the generic device along its depth;
+  and
 - outer-side-wall-down print orientations within a 215 mm reserved axis limit.
 
 The generic rack device is a non-printable clearance proxy. The front remains
-open for insertion; the rear has no openings.
+open for insertion; the rear has no openings. The full 121.3 mm height is now a
+rectangular chassis: 13.2 mm service zones above and below the preserved 2U bay
+contain the joint flanges, while the exterior top and bottom remain planar.
 
 ## Build and Review
 

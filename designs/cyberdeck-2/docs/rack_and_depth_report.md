@@ -20,6 +20,7 @@
 | hole sequence | 15.875 / 15.875 / 12.700 mm | PASS |
 | M3 insert positions | 6 per rail, 12 total | PASS |
 | insert bore | 4.0 mm finished, 7.0 mm blind depth | PROVISIONAL |
+| equipment support | front ears plus two continuous lower rails | PASS geometrically |
 | minimum wall/material width | 3.0 mm | PASS analytically |
 
 Hole centers are at `X = +/-118.2625 mm` and
@@ -28,6 +29,12 @@ With a 4.0 mm bore, the minimum hole-to-hole ligament is 8.7 mm. Horizontal
 material from a bore to the rail edges is 5.1375 mm inward and 6.7375 mm
 outward. The minimum vertical bore-to-clear-opening material is 4.35 mm.
 The 10 mm rail depth leaves 3 mm behind each 7 mm blind bore.
+
+The lower device rails are 3 mm thick and 20 mm wide. They run the full 215 mm
+depth, overlap each 220 mm-wide device footprint edge by 3 mm, and overlap the
+exterior side walls by 3 mm. Their top surfaces are exactly at `Z = -44.45 mm`,
+the bottom datum of the 88.90 mm 2U envelope. Each rail intersects its side wall
+continuously and also intersects the front rail and rear wall.
 
 ## Depth Budget
 

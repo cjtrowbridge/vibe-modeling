@@ -52,7 +52,7 @@
     {
       "interface_id": "longitudinal_center_joint",
       "owner_assembly": "split_2u_receiver_enclosure",
-      "type": "structural_split_joint_blockout",
+      "type": "internal_vertical_fastener_lap_joint",
       "split_policy": "continuous_across_seam",
       "local_frame": {
         "translate": [0, 0, 0],
@@ -167,6 +167,14 @@
       "show_proxies": false
     },
     {
+      "name": "support_rail_section",
+      "projection": "o",
+      "camera": [0, -107.5, 52.55, 90, 0, 0, 220],
+      "assembly_view": "support_rail_section",
+      "assembly_view_id": 11,
+      "show_proxies": false
+    },
+    {
       "name": "top_front_fastener_section",
       "projection": "o",
       "camera": [0, -9, -52.55, 90, 0, 0, 120],
@@ -215,6 +223,7 @@
       "top_seam",
       "bottom_seam",
       "rack_insert_section",
+      "support_rail_section",
       "top_front_fastener_section",
       "top_rear_fastener_section",
       "bottom_front_fastener_section",

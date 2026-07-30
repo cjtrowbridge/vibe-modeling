@@ -1,9 +1,16 @@
-function seam_pad_y0(rear) = rear ? enclosure_depth - seam_pad_depth : 0;
-function seam_pad_z0(top) = top
-  ? rack_clear_height / 2
-  : -enclosure_height / 2 - seam_pad_external_height;
+function seam_pad_y0(rear) = rear
+  ? rack_internal_depth - seam_pad_depth - seam_joint_pocket_clearance
+  : 0;
 function seam_fastener_y(rear) = seam_pad_y0(rear) + seam_pad_depth / 2;
-function seam_fastener_z(top) = seam_pad_z0(top) + seam_pad_height / 2;
+function seam_fastener_z(top) = top
+  ? equipment_top_z + seam_pad_height / 2
+  : enclosure_bottom_z + seam_pad_height / 2;
+function seam_head_layer_z0(top) = top
+  ? enclosure_top_z - seam_head_layer_thickness
+  : enclosure_bottom_z;
+function seam_nut_layer_z0(top) = top
+  ? equipment_top_z
+  : equipment_bottom_z - seam_nut_layer_thickness;
 
 module rack_insert_hole_cuts() {
   for (side = [-1, 1])
@@ -15,32 +22,45 @@ module rack_insert_hole_cuts() {
                    d = rack_insert_finished_diameter, $fn = 48);
 }
 
+module device_support_rails() {
+  // Continuous shelves overlap each exterior wall and the device footprint.
+  translate([-device_support_rail_outer_x, 0, device_support_rail_bottom_z])
+    cube([device_support_rail_width, enclosure_depth,
+          device_support_rail_thickness]);
+  translate([device_support_rail_inner_x, 0, device_support_rail_bottom_z])
+    cube([device_support_rail_width, enclosure_depth,
+          device_support_rail_thickness]);
+}
+
 module shell_master_uncut() {
   outer_x0 = -rack_front_width / 2;
-  outer_z0 = -enclosure_height / 2;
 
   union() {
-    // Full-width horizontal plates overlap side, front-rail, and rear members.
-    translate([outer_x0, 0, outer_z0])
+    // Flush exterior plates replace the former projecting seam pads.
+    translate([outer_x0, 0, enclosure_bottom_z])
       cube([rack_front_width, enclosure_depth, minimum_wall_thickness]);
-    translate([outer_x0, 0, rack_clear_height / 2])
+    translate([outer_x0, 0, enclosure_top_z - minimum_wall_thickness])
       cube([rack_front_width, enclosure_depth, minimum_wall_thickness]);
 
-    // Full-depth exterior side walls.
-    translate([outer_x0, 0, outer_z0])
+    // Full-height side walls provide planar top/bottom and side-wall-down beds.
+    translate([outer_x0, 0, enclosure_bottom_z])
       cube([minimum_wall_thickness, enclosure_depth, enclosure_height]);
-    translate([rack_front_width / 2 - minimum_wall_thickness, 0, outer_z0])
+    translate([rack_front_width / 2 - minimum_wall_thickness, 0,
+               enclosure_bottom_z])
       cube([minimum_wall_thickness, enclosure_depth, enclosure_height]);
 
-    // Deep continuous front rails provide the blind M3 insert lands.
-    translate([outer_x0, 0, outer_z0])
+    // Full-height front rails retain the canonical twelve blind insert bores.
+    translate([outer_x0, 0, enclosure_bottom_z])
       cube([rack_rail_face_width, front_rail_depth, enclosure_height]);
-    translate([rack_clear_opening_width / 2, 0, outer_z0])
+    translate([rack_clear_opening_width / 2, 0, enclosure_bottom_z])
       cube([rack_rail_face_width, front_rail_depth, enclosure_height]);
 
-    // The rear is deliberately closed and integrated into both printable leaves.
-    translate([outer_x0, enclosure_depth - rear_wall_thickness, outer_z0])
+    // The integral rear remains fully closed at the enlarged rectangular height.
+    translate([outer_x0, enclosure_depth - rear_wall_thickness,
+               enclosure_bottom_z])
       cube([rack_front_width, rear_wall_thickness, enclosure_height]);
+
+    device_support_rails();
   }
 }
 
@@ -51,66 +71,75 @@ module shell_master() {
   }
 }
 
-module seam_lap_key(rear, top) {
-  translate([-seam_lap_root_overlap,
-             seam_fastener_y(rear) - seam_lap_key_depth / 2,
-             seam_fastener_z(top) - seam_lap_key_height / 2])
-    cube([seam_lap_root_overlap + seam_lap_engagement,
-          seam_lap_key_depth, seam_lap_key_height]);
-}
-
-module seam_lap_pocket_cut(rear, top) {
-  translate([-boolean_epsilon,
-             seam_fastener_y(rear) - seam_lap_pocket_depth / 2,
-             seam_fastener_z(top) - seam_lap_pocket_height / 2])
-    cube([seam_lap_engagement + seam_lap_fit_clearance_per_side
+module seam_head_cross_pocket_cut(rear, top) {
+  pocket_z0 = seam_head_layer_z0(top) - boolean_epsilon;
+  translate([-seam_joint_cross_width - seam_joint_pocket_clearance,
+             seam_pad_y0(rear) - seam_joint_pocket_clearance,
+             pocket_z0])
+    cube([seam_joint_cross_width + seam_joint_pocket_clearance
           + boolean_epsilon,
-          seam_lap_pocket_depth, seam_lap_pocket_height]);
+          seam_pad_depth + 2 * seam_joint_pocket_clearance,
+          seam_head_layer_thickness + 2 * boolean_epsilon]);
 }
 
-module seam_through_hole_cut(rear, top) {
-  translate([-seam_pad_half_width - boolean_epsilon,
-             seam_fastener_y(rear), seam_fastener_z(top)])
-    rotate([0, 90, 0])
-      cylinder(h = seam_pad_total_width + 2 * boolean_epsilon,
-               d = seam_fastener_finished_diameter, $fn = 48);
+module seam_vertical_through_cut(rear, top) {
+  cut_z0 = top ? equipment_top_z - boolean_epsilon
+               : enclosure_bottom_z - boolean_epsilon;
+  translate([0, seam_fastener_y(rear), cut_z0])
+    cylinder(h = seam_pad_height + 2 * boolean_epsilon,
+             d = seam_fastener_finished_diameter, $fn = 48);
 }
 
-module seam_head_washer_recess_cut(rear, top) {
-  translate([-seam_pad_half_width - boolean_epsilon,
-             seam_fastener_y(rear), seam_fastener_z(top)])
-    rotate([0, 90, 0])
-      cylinder(h = seam_head_washer_recess_depth + boolean_epsilon,
-               d = seam_head_washer_recess_diameter, $fn = 64);
+module seam_vertical_head_recess_cut(rear, top) {
+  cut_z0 = top ? enclosure_top_z - seam_head_washer_recess_depth
+               : enclosure_bottom_z - boolean_epsilon;
+  translate([0, seam_fastener_y(rear), cut_z0])
+    cylinder(h = seam_head_washer_recess_depth + boolean_epsilon,
+             d = seam_head_washer_recess_diameter, $fn = 64);
 }
 
-module seam_nut_recess_cut(rear, top) {
-  translate([seam_pad_half_width - seam_nut_recess_depth,
-             seam_fastener_y(rear), seam_fastener_z(top)])
-    rotate([0, 90, 0])
-      cylinder(h = seam_nut_recess_depth + boolean_epsilon,
-               d = seam_nut_circumscribed_diameter, $fn = 6);
+module seam_vertical_nut_recess_cut(rear, top) {
+  cut_z0 = top ? equipment_top_z - boolean_epsilon
+               : equipment_bottom_z - seam_nut_recess_depth;
+  translate([0, seam_fastener_y(rear), cut_z0])
+    cylinder(h = seam_nut_recess_depth + boolean_epsilon,
+             d = seam_nut_circumscribed_diameter, $fn = 6);
 }
 
-module seam_pad_half(side, rear, top) {
-  assert(side == -1 || side == 1, "SEAM: side must be -1 or 1");
-  pad_x0 = side < 0 ? -seam_pad_half_width : 0;
+module seam_head_flange(rear, top) {
+  difference() {
+    translate([-seam_joint_cross_width, seam_pad_y0(rear),
+               seam_head_layer_z0(top)])
+      cube([seam_pad_half_width + seam_joint_cross_width,
+            seam_pad_depth, seam_head_layer_thickness]);
+    seam_vertical_through_cut(rear, top);
+    seam_vertical_head_recess_cut(rear, top);
+  }
+}
+
+module seam_nut_flange(rear, top) {
+  root_web_z0 = top
+    ? seam_nut_layer_z0(top) + seam_nut_layer_thickness
+    : enclosure_bottom_z;
+  root_web_height = seam_head_layer_thickness + seam_joint_layer_clearance;
+  compression_land_z0 = top
+    ? seam_nut_layer_z0(top) + seam_nut_layer_thickness
+    : seam_nut_layer_z0(top) - seam_joint_layer_clearance;
 
   difference() {
     union() {
-      translate([pad_x0, seam_pad_y0(rear), seam_pad_z0(top)])
-        cube([seam_pad_half_width, seam_pad_depth, seam_pad_height]);
-      if (side < 0)
-        seam_lap_key(rear, top);
+      translate([-seam_pad_half_width, seam_pad_y0(rear),
+                 seam_nut_layer_z0(top)])
+        cube([seam_pad_half_width + seam_joint_cross_width,
+              seam_pad_depth, seam_nut_layer_thickness]);
+      translate([-seam_pad_half_width, seam_pad_y0(rear), root_web_z0])
+        cube([seam_joint_root_web_width, seam_pad_depth, root_web_height]);
+      translate([0, seam_fastener_y(rear), compression_land_z0])
+        cylinder(h = seam_joint_layer_clearance,
+                 d = seam_joint_compression_land_diameter, $fn = 64);
     }
-
-    seam_through_hole_cut(rear, top);
-    if (side < 0)
-      seam_head_washer_recess_cut(rear, top);
-    else {
-      seam_lap_pocket_cut(rear, top);
-      seam_nut_recess_cut(rear, top);
-    }
+    seam_vertical_through_cut(rear, top);
+    seam_vertical_nut_recess_cut(rear, top);
   }
 }
 
@@ -124,24 +153,39 @@ module shell_half(side) {
   }
 }
 
+module prepared_shell_half(side) {
+  if (side < 0) {
+    difference() {
+      shell_half(side);
+      for (rear = [false, true])
+        for (top = [false, true])
+          seam_head_cross_pocket_cut(rear, top);
+    }
+  } else {
+    shell_half(side);
+  }
+}
+
 module leaf_assembly_geometry(side) {
   union() {
-    shell_half(side);
+    prepared_shell_half(side);
     for (rear = [false, true])
-      for (top = [false, true])
-        seam_pad_half(side, rear, top);
+      for (top = [false, true]) {
+        if (side < 0)
+          seam_nut_flange(rear, top);
+        else
+          seam_head_flange(rear, top);
+      }
   }
 }
 
 module enclosure_left_print() {
-  // Outer left wall is the bed-contact face. The male lap keys point upward.
   translate([0, 0, rack_front_width / 2])
     rotate([0, -90, 0])
       leaf_assembly_geometry(-1);
 }
 
 module enclosure_right_print() {
-  // Outer right wall is the bed-contact face; pockets remain support-accessible.
   translate([0, 0, rack_front_width / 2])
     rotate([0, 90, 0])
       leaf_assembly_geometry(1);
@@ -159,9 +203,9 @@ module generic_device_clearance_proxy() {
   color([0.95, 0.25, 0.05, 0.35])
     translate([-rack_equipment_width_max / 2,
                rack_usable_depth_start + equipment_front_fit_clearance,
-               -rack_clear_height / 2 + 0.5])
+               equipment_bottom_z])
       cube([rack_equipment_width_max, generic_equipment_depth,
-            rack_clear_height - 1.0]);
+            rack_clear_height]);
 }
 
 module assembled_enclosure(explode = 0, proxies = false) {
@@ -178,23 +222,23 @@ module assembled_enclosure(explode = 0, proxies = false) {
 }
 
 module seam_crop(top = true) {
-  crop_z = top ? rack_clear_height / 2 - 3
-               : -enclosure_height / 2 - seam_pad_external_height;
+  crop_z = top ? equipment_top_z : enclosure_bottom_z;
   intersection() {
     assembled_enclosure();
     translate([-seam_pad_total_width, -boolean_epsilon, crop_z])
       cube([2 * seam_pad_total_width, enclosure_depth + 2 * boolean_epsilon,
-            seam_pad_external_height + minimum_wall_thickness + 3]);
+            seam_pad_height]);
   }
 }
 
 module seam_fastener_section(rear = false, top = true) {
   section_thickness = 0.8;
+  crop_z = top ? equipment_top_z - 1 : enclosure_bottom_z - 1;
   intersection() {
     assembled_enclosure();
     translate([-seam_pad_half_width - 1,
                seam_fastener_y(rear) - section_thickness / 2,
-               seam_pad_z0(top) - 1])
+               crop_z])
       cube([seam_pad_total_width + 2, section_thickness,
             seam_pad_height + 2]);
   }
@@ -205,9 +249,21 @@ module rack_insert_section() {
   intersection() {
     assembled_enclosure();
     translate([rack_rail_column_x(-1) - section_thickness / 2,
-               -1, -enclosure_height / 2 - 1])
+               -1, enclosure_bottom_z - 1])
       cube([section_thickness, front_rail_depth + 2,
             enclosure_height + 2]);
+  }
+}
+
+module support_rail_section() {
+  section_thickness = 0.8;
+  intersection() {
+    assembled_enclosure();
+    translate([-rack_front_width / 2 - 1,
+               enclosure_depth / 2 - section_thickness / 2,
+               enclosure_bottom_z - 1])
+      cube([rack_front_width + 2, section_thickness,
+            seam_pad_height + device_support_rail_thickness + 2]);
   }
 }
 
@@ -234,6 +290,8 @@ module assembly_review(view_id = 0, proxies = false) {
     seam_fastener_section(rear = false, top = false);
   } else if (view_id == 10) {
     seam_fastener_section(rear = true, top = false);
+  } else if (view_id == 11) {
+    support_rail_section();
   } else {
     assert(false, str("Unknown assembly_view_id: ", view_id));
   }

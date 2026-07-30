@@ -1,42 +1,48 @@
 # Rev 0001 Fastener and Structure Report
 
-## Four-Station Seam Joint
+## Flush Four-Station Seam Joint
 
-Stations are centered at `Y = 9 and 206 mm` and
-`Z = +/-52.55 mm`. Each uses a 24 x 18 x 16.2 mm pad split evenly between the
-two leaves. The pads overlap the top or bottom shell by 3 mm. Rear stations also
-meet the integral rear wall; front stations meet the continuous horizontal
-shell plate.
+The former external bumpouts are gone. The chassis now spans
+`Z = -60.65 to +60.65 mm` with planar top and bottom plates. Four vertical M3
+joints occupy only the 16.2 mm structural/service zones outside the preserved
+`Z = -44.45 to +44.45 mm` device envelope.
 
-The registration key is 9.6 x 9.6 mm, rooted 3 mm into the left pad and engaged
-3 mm across the seam. Its mating pocket is 10.2 x 10.2 mm, providing 0.3 mm
-clearance per side. The 3.6 mm through-hole leaves exactly 3.0 mm radial material
-inside the key, which is the governing minimum.
+Stations are centered at `X = 0`, at front/rear `Y = 9.0 and 202.7 mm`.
+Top fasteners install downward from the top exterior; bottom fasteners install
+upward from the bottom exterior. Every 8.25 mm head/washer recess is 3.8 mm deep,
+so installed hardware remains below the planar exterior. Captive 5.9 mm AF nut
+recesses open into the empty equipment bay for installation before the device.
 
-## M3 Stack
+## Layered Joint Stack
 
-| Feature | Value | Remaining material |
+| Feature | Value | Governing residual |
 |---|---:|---:|
-| through-hole | 3.6 mm | 3.0 mm minimum in key |
-| head/washer counterbore | 8.25 mm x 3.8 mm | 8.2 mm toward seam |
-| captive hex recess | 5.9 mm AF x 2.8 mm | 9.2 mm toward seam |
-| candidate nut thickness | 2.4 mm | 0.4 mm recess allowance |
-| derived grip to far nut face | 19.8 mm | — |
-| candidate screw | M3 x 20 mm | 0.2 mm before outer face |
+| total service/plate stack | 16.2 mm | outside 2U bay |
+| right-leaf head flange | 6.8 mm | 3.0 mm behind head recess |
+| inter-layer assembly clearance | 0.3 mm | bridged at screw by compression land |
+| left-leaf captive-nut flange | 9.1 mm | 6.3 mm behind nut recess |
+| through-hole | 3.6 mm | 3.0 mm at crossed head edge |
+| head/washer recess | 8.25 x 3.8 mm | 4.875 mm depthwise margin |
+| captive-nut recess | 5.9 mm AF x 2.8 mm | 5.594 mm depthwise margin |
+| candidate screw | M3 x 12 mm | 0.4 mm before 2U bay |
 
-The head recess leaves 3.975 mm vertically and 4.875 mm depthwise. The lap
-pocket leaves 3.0 mm vertically and 3.9 mm depthwise. All four stations use the
-same geometry, so these minima apply to each one.
+The right head flange crosses 7.8 mm into a left-plate clearance pocket. The
+left nut flange crosses the same distance in the opposite layer and is tied back
+to its exterior plate by a 3 mm vertical root web. A 9.6 mm-diameter, 0.3 mm-high
+annular compression land bridges the general layer clearance directly around
+the 3.6 mm through-hole. It retains exactly 3 mm radial material and gives the
+vertical screw a positive clamping contact without sacrificing fit clearance
+across the rest of the overlapping flanges.
 
-Head/washer and driver approach is straight from the left exterior. The captive
-nut inserts and is retained from the right exterior. Both openings remain fully
-outside the device bay and are accessible before, during, and after assembly.
-Physical nut fit, driver fit, tightening torque, creep, pull-out, and load testing
-remain unverified pending calibrated hardware and material.
+## Device Rails and Load Paths
 
-## Structural Result
+Each 3 x 20 mm lower shelf runs continuously from front to rear. Its outer 3 mm
+intersects the corresponding side wall; its front and rear ends also intersect
+the full-height front rail and integral rear wall. The shelf extends 3 mm under
+the maximum 220 mm device footprint. This supplies continuous side support plus
+positive-volume endpoint supports rather than relying only on the rack ears.
 
-Production assertions pass for 3 mm walls, pad roots, lap roots and engagement,
-recess residuals, pocket/head margins, screw reach, and transformed print bounds.
-Section views cover both seam levels, the front rail, and all four fastener
-stations. No seam recess intersects the generic equipment clearance envelope.
+Production assertions pass for walls, rail thickness/overlap, joint-layer
+residuals, root width, head/nut margins, screw reach, bay keepout, and transformed
+print bounds. Physical nut/head fit, tightening torque, material creep, shock
+loading, rail contact, and device load distribution remain unverified.
