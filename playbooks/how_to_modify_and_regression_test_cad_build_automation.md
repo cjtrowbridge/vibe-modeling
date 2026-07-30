@@ -14,10 +14,10 @@ completeness, immutability, provenance, or cross-platform behavior.
 2. Map the change across `scad_build.py`, `scad_build_all.py`,
    `scad_new_revision.py`, wrappers, README examples, and calling playbooks.
 3. Preserve explicit executable/input/output logging and non-zero failure exits.
-4. Keep all generated paths within `output/<design>/`,
-   `revisions/<design>/rev_000N/`, or `.tmp/scad/<design>/`.
-5. Preserve staging-before-install, exact-set rejection, atomic replacement,
-   immutable revision refusal, and provenance hashing.
+4. Keep all mutable generated paths, including managed staging, within
+   `output/<design>/`; immutable outputs use `revisions/<design>/rev_000N/`.
+5. Preserve staging-before-promotion, rollback, exact-set rejection, immutable
+   revision refusal, provenance hashing, and cleanup of all staging directories.
 6. Test paths containing spaces and both explicit OpenSCAD paths and PATH lookup.
 7. Exercise single-part dry-run, complete manifest dry-run, passing audit, and
    deliberately failing missing/unexpected/hash-mismatch cases.

@@ -205,7 +205,8 @@ shells touching at a boundary.
      manifest unless a real new printable part is introduced.
 
 3. **Capture failing probes before editing.**
-   - Store probes only under `.tmp/scad/cyberdeck/`.
+   - Store generated probes only under `output/cyberdeck/` and remove transient
+     staging before accepting the final exact set.
    - Capture orthographic and sectional evidence of:
      - both missing drawer-hole regions,
      - both left/right screen mount and hardware columns,

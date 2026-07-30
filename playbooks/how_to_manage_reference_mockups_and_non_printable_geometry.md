@@ -16,7 +16,8 @@ non-production geometry clearly separated from authoritative printable exports.
 - **Assembly preview:** multiple intended parts shown together; not one printable part.
 - **Cutter/void:** subtraction tool; never an authoritative positive export unless
   the design itself intentionally produces a positive tool.
-- **Probe/debug geometry:** temporary and restricted to `.tmp/scad/<design>/`.
+- **Probe/debug geometry:** generated only under `output/<design>/` and declared
+  or removed before the final exact-set audit.
 
 ## Procedure
 

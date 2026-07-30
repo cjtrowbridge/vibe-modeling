@@ -11,7 +11,7 @@ artifacts exactly once without modifying an existing numbered revision.
 
 1. Inventory committed configs and generated revision directories; select the
    next unused `rev_000N` across both locations.
-2. Put the proposed config at `.tmp/scad/<design>/rev_000N.json`. Do not create
+2. Put the proposed config at `designs/<design>/configs/rev_000N.json`. Do not create
    `revisions/<design>/rev_000N/` yet.
 3. Make source and staged-config changes, then build `output/<design>/` while the
    revision remains mutable.

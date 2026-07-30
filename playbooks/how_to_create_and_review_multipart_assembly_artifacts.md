@@ -46,7 +46,7 @@ it. At every blockout, detailed-geometry, and release milestone:
    `build_manifest.json` hash and every authoritative installed STL hash.
 5. Audit both manifests and then request milestone approval.
 
-A source-only render, dry run, or `.tmp` assembly made before step 1 is diagnostic
+A source-only render, dry run, or pre-build assembly made before step 1 is diagnostic
 only. It cannot pass a blockout, assembly, approval, or completion gate.
 
 ## Required Review Sets
@@ -83,7 +83,7 @@ Opaque proxies must never conceal printable geometry in the printable-only set.
    source declarations.
 7. Render and review the full set at blockout, detailed-geometry, and mutable or
    immutable release milestones.
-8. Write `assembly_review_manifest.json` with the current complete-build
+8. Write `output/<design>/assembly_review_manifest.json` with the current complete-build
    manifest hash, authoritative installed STL hashes, exact review artifact names
    and hashes, plus config, parts-manifest, assembly-contract, source-tree, Git,
    and artifact provenance.
@@ -134,7 +134,8 @@ readiness and immutable publication.
 
 The active plan must name the compact and full view sets, review invalidation
 events, interface sections, independent geometry checks, approval gates, and
-artifact destination under `.tmp/scad/<design>/assembly-review/`.
+artifact destination in the same flat `output/<design>/` directory as the
+printable artifacts.
 
 ## Lifecycle Compliance
 

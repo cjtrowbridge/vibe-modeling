@@ -3,7 +3,7 @@
 ## Geometry
 
 - Assembly contract: PASS; 2 assemblies, 2 printable leaves, 2 interfaces,
-  18 governed review views.
+  22 governed review views.
 - Rack-reference package: PASS for v2.0.0 source hashes, identity, 80
   requirements, and 20 synchronized constants.
 - OpenSCAD assertions: PASS for both printable leaves and assembled dispatch.
@@ -19,19 +19,25 @@
 - Rack openings: twelve present, six canonical blind bores per rail.
 - Seam joints: four vertical M3 stacks with recessed exterior heads, internal
   captive nuts, layered flanges, and compression lands.
+- Seam openings: PASS in four dedicated installed-artifact crops; all four
+  head recesses are complete circles and all four nut recesses are complete
+  hexagons with centered through-passages. No owning-shell material occludes
+  the openings.
 - Device support: two continuous 3 mm rails at the bay-bottom datum with 3 mm
   device-footprint and side-wall overlaps.
 
 ## Artifact Pipeline
 
-- Complete build: PASS and atomically installed at `output/cyberdeck-2/`.
+- Complete build: PASS and transactionally installed at `output/cyberdeck-2/`.
 - Printable exact set: 2 STL + 34 PNG = 36 modeled artifacts.
 - Printable audit: PASS; no missing, unexpected, stale, duplicate, or
   hash-mismatched artifact.
-- Assembly review: PASS; exact set is 18 PNG + 1 combined STL = 19 review
+- Assembly review: PASS; exact set is 22 PNG + 1 combined STL = 23 review
   artifacts, with no missing, unexpected, stale, or hash-mismatched artifact.
+- Unified output: PASS; exactly 3 STL + 56 PNG + 2 manifests = 61 files, with
+  no subdirectories or undeclared files.
 - Combined STL destination:
-  `.tmp/scad/cyberdeck-2/assembly-review/cyberdeck_2_assembled.stl`.
+  `output/cyberdeck-2/cyberdeck_2_assembled.stl`.
 
 Exact provenance and artifact hashes are recorded in
 `rev_0001_assembly_review.md`.

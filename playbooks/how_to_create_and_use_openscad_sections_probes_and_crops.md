@@ -11,7 +11,8 @@ clearances, shell connectivity, and high-risk print regions.
 
 1. State the question, exact source/config, coordinate frame, and target feature.
 2. Place all temporary `.scad`, configs, images, and STLs under
-   `.tmp/scad/<design>/`; never use `output/` or `revisions/`.
+   `output/<design>/`; never create an ad hoc artifact tree. Managed probe source
+   and staging must be removed before the completed output is accepted.
 3. Derive probes from production modules and parameters rather than duplicating
    geometry or substituting guessed dimensions.
 4. For a seam, inspect normal sections at the start, midpoint, end, corners, and
@@ -22,7 +23,8 @@ clearances, shell connectivity, and high-risk print regions.
    positive-volume connected components.
 7. Label view direction, section plane, crop bounds, and measured result.
 8. Treat probe success as evidence only for the region and configuration tested.
-9. Keep useful commands in revision notes; leave generated probe artifacts ignored.
+9. Keep useful commands in revision notes; declare retained probe artifacts in
+   the output contract or remove them before the final audit.
 
 ## Verification
 

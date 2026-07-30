@@ -154,15 +154,23 @@ module shell_half(side) {
 }
 
 module prepared_shell_half(side) {
-  if (side < 0) {
-    difference() {
-      shell_half(side);
+  difference() {
+    shell_half(side);
+    for (rear = [false, true])
+      for (top = [false, true]) {
+        // Cut the owning shell as well as the crossing flange. Without these
+        // shell-level cuts, the union fills half of each nominal opening.
+        seam_vertical_through_cut(rear, top);
+        if (side < 0) {
+          seam_vertical_nut_recess_cut(rear, top);
+        } else {
+          seam_vertical_head_recess_cut(rear, top);
+        }
+      }
+    if (side < 0)
       for (rear = [false, true])
         for (top = [false, true])
           seam_head_cross_pocket_cut(rear, top);
-    }
-  } else {
-    shell_half(side);
   }
 }
 
@@ -267,6 +275,25 @@ module support_rail_section() {
   }
 }
 
+module seam_station_opening_crop(rear = false, top = true) {
+  pair_y = rear ? 13 : -13;
+  crop_z0 = top ? equipment_top_z : enclosure_bottom_z;
+  translate([0, pair_y - seam_fastener_y(rear), -seam_fastener_z(top)])
+    intersection() {
+      assembled_enclosure();
+      translate([-seam_pad_half_width - 1,
+                 seam_pad_y0(rear) - 1,
+                 crop_z0])
+        cube([seam_pad_total_width + 2, seam_pad_depth + 2,
+              seam_pad_height]);
+    }
+}
+
+module seam_opening_pair(top = true) {
+  seam_station_opening_crop(rear = false, top = top);
+  seam_station_opening_crop(rear = true, top = top);
+}
+
 module assembly_review(view_id = 0, proxies = false) {
   if (view_id == 0) {
     assembled_enclosure(proxies = proxies);
@@ -292,6 +319,10 @@ module assembly_review(view_id = 0, proxies = false) {
     seam_fastener_section(rear = true, top = false);
   } else if (view_id == 11) {
     support_rail_section();
+  } else if (view_id == 12) {
+    seam_opening_pair(top = true);
+  } else if (view_id == 13) {
+    seam_opening_pair(top = false);
   } else {
     assert(false, str("Unknown assembly_view_id: ", view_id));
   }

@@ -13,6 +13,13 @@ upward from the bottom exterior. Every 8.25 mm head/washer recess is 3.8 mm deep
 so installed hardware remains below the planar exterior. Captive 5.9 mm AF nut
 recesses open into the empty equipment bay for installation before the device.
 
+Each passage and recess is subtracted from both geometry owners: the crossing
+joint flange and the corresponding main shell. This is required because the
+leaf assembly unions those solids; cutting only the flange allows the shell to
+fill roughly half of the intended opening. Dedicated installed-artifact crops
+now verify complete circular head recesses and complete hexagonal nut recesses
+at all four stations.
+
 ## Layered Joint Stack
 
 | Feature | Value | Governing residual |

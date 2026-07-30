@@ -82,11 +82,11 @@ If the agent follows the included playbooks, it should also document what it cha
   - Included designs: `example_box`, `helical`, `yagi`, `yagi_card`, `dtv_yagi`, `winegard_gm6000_logic_backplane`, `gigachad_xavier_void`, `cottage_pi6_plus`, `old_rca_display_baseplate`, `opi_zero_2w_carrier`, `cyberdeck`, `cyberdeck-2`, `ac_redirectors`
   - `cyberdeck-2`: two-leaf, maximum-depth 2U ten-inch-rack receiver with a closed rear, twelve front M3 insert positions, flush internalized seam joints, and continuous lower device rails
 - `output/`
-  - current scratch outputs only (`output/<design>/`; generated and ignored)
+  - the single mutable destination for printable parts, combined assemblies,
+    review views, probes, sections, manifests, and managed in-progress staging
+    (`output/<design>/`; generated and ignored)
 - `revisions/`
   - revision snapshots and artifact checkpoints (generated; ignored)
-- `.tmp/scad/`
-  - managed staging, probes, sections, and partial/debug artifacts (generated and ignored)
 - `playbooks/`
   - repeatable workflows for agents and humans
 
@@ -170,9 +170,9 @@ python scripts/scad_build_all.py \
   --config designs/cyberdeck/configs/rev_0003.json
 ```
 
-The command renders every part under `.tmp/scad/cyberdeck/`, verifies the exact
-expected file set, records hashes and provenance in `build_manifest.json`, and
-then replaces `output/cyberdeck/` as one unit.
+The command stages every part inside `output/cyberdeck/`, verifies the exact
+expected file set, records hashes and provenance in `build_manifest.json`,
+promotes the set, and removes staging before success.
 
 Audit an installed build without rendering:
 
@@ -185,13 +185,13 @@ python scripts/scad_build_all.py \
 
 ### 4. Publish a verified numbered revision
 
-Develop and verify the candidate config under `.tmp/scad/<design>/` first. Run
-the revision command only when the candidate is ready to become immutable:
+Develop and verify the candidate config under `designs/<design>/configs/` first.
+Run the revision command only when the candidate is ready to become immutable:
 
 ```bash
 python scripts/scad_new_revision.py \
   --design example_box \
-  --base-config .tmp/scad/example_box/rev_0002.json
+  --base-config designs/example_box/configs/rev_0002.json
 ```
 
 By default this creates:
@@ -200,7 +200,7 @@ By default this creates:
 - `revisions/example_box/rev_0002/params.json`
 - (when not dry-run) STL + multi-view PNG artifacts in the revision folder
 
-The example assumes `.tmp/scad/example_box/rev_0002.json` is the already verified
+The example assumes `designs/example_box/configs/rev_0002.json` is the already verified
 candidate and `rev_0002` is still unused. `--dry-run` skips OpenSCAD rendering
 but still creates the config and revision files. It is not a read-only preview.
 Never run this command against a revision number that has already been published.
@@ -252,14 +252,15 @@ The build pipeline always renders this full PNG set on every run (plus `<part>.p
 - Every multipart milestone starts with the normal complete build into
   `output/<design>/`. Audit and review those installed STL/PNG artifacts before
   rendering the supplementary assembly-review set; its manifest must bind the
-  exact `build_manifest.json` and authoritative STL hashes. Source-only `.tmp`
-  renders never replace the real-artifact review.
+  exact `build_manifest.json` and authoritative STL hashes. The assembly STL,
+  review PNGs, and assembly manifest live in that same output directory.
 - Product assemblies, logical subassemblies, and printable leaf artifacts are
   distinct. Printer constraints may split a subassembly into more leaves but may
   not silently absorb it into another component.
-- Use only `output/<design>/`, `revisions/<design>/rev_000N/`, and `.tmp/scad/<design>/` for generated artifacts.
+- Use only `output/<design>/` for mutable generated artifacts and
+  `revisions/<design>/rev_000N/` for immutable generated artifacts.
 - Do not create revision-named directories under `output/`.
-- Do not place `.scad` probes or source files under `output/` or `revisions/`.
+- Completed outputs must be flat and contain no staging directory or `.scad` file.
 - A complete/current build requires a passing `build_manifest.json` audit.
 - Revision directories are immutable. Create a new revision after geometry or config changes.
 - Generated outputs are not committed.
@@ -269,7 +270,7 @@ See `playbooks/how_to_design_and_verify_structural_openscad_joins.md` for the ma
 ## Suggested workflow
 
 1. Select a committed baseline config and the next unused revision number.
-2. Copy the candidate config to `.tmp/scad/<design>/rev_000N.json`.
+2. Create the candidate config at `designs/<design>/configs/rev_000N.json`.
 3. Edit source and staged parameters while building mutable current output.
 4. Review targeted sections/coupons and run structural, fit, print-volume, and complete-manifest gates.
 5. Publish the verified immutable config/revision with `scad_new_revision.py`.

@@ -205,6 +205,38 @@
       "assembly_view": "bottom_rear_fastener_section",
       "assembly_view_id": 10,
       "show_proxies": false
+    },
+    {
+      "name": "top_head_openings",
+      "projection": "o",
+      "camera": [0, 0, 0, 0, 0, 0, 100],
+      "assembly_view": "top_head_openings",
+      "assembly_view_id": 12,
+      "show_proxies": false
+    },
+    {
+      "name": "top_nut_openings",
+      "projection": "o",
+      "camera": [0, 0, 0, -180, 0, 0, 100],
+      "assembly_view": "top_nut_openings",
+      "assembly_view_id": 12,
+      "show_proxies": false
+    },
+    {
+      "name": "bottom_head_openings",
+      "projection": "o",
+      "camera": [0, 0, 0, -180, 0, 0, 100],
+      "assembly_view": "bottom_head_openings",
+      "assembly_view_id": 13,
+      "show_proxies": false
+    },
+    {
+      "name": "bottom_nut_openings",
+      "projection": "o",
+      "camera": [0, 0, 0, 0, 0, 0, 100],
+      "assembly_view": "bottom_nut_openings",
+      "assembly_view_id": 13,
+      "show_proxies": false
     }
   ],
   "view_sets": {
@@ -227,7 +259,11 @@
       "top_front_fastener_section",
       "top_rear_fastener_section",
       "bottom_front_fastener_section",
-      "bottom_rear_fastener_section"
+      "bottom_rear_fastener_section",
+      "top_head_openings",
+      "top_nut_openings",
+      "bottom_head_openings",
+      "bottom_nut_openings"
     ]
   },
   "geometry_exports": [

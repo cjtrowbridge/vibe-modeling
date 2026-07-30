@@ -62,7 +62,8 @@ traceable conformance evidence.
    - Mark each applicable requirement `PASS`, `FAIL`, `NOT_APPLICABLE`, or
      `BLOCKED_UNKNOWN`; reasons are mandatory for the latter two.
 8. **Map generated outputs to host governance**
-   - Use `.tmp/scad/<design>/` for sections, crops, coupons, and probes.
+   - Use `output/<design>/` for sections, crops, coupons, and probes; do not
+     create a second artifact tree.
    - Use governed current and immutable artifact destinations only.
    - Do not add validation reports to manifest-controlled output directories as
      unexpected artifacts.

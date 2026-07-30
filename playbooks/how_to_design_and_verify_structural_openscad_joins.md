@@ -236,7 +236,8 @@ For expensive, long-duration, or difficult-to-replace prints, also use one or mo
 - A low-cost draft print in the final print orientation
 
 Create these through `playbooks/how_to_create_fit_test_coupons_and_partial_prints.md`
-and keep temporary source/artifacts under `.tmp/scad/<design>/`.
+and keep generated inspection artifacts under `output/<design>/`; remove all
+managed staging and transient source before completion.
 
 Record structural verification in the design README or revision notes:
 

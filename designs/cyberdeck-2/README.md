@@ -37,9 +37,9 @@ python scripts/scad_render_assembly_review.py --design cyberdeck-2 --config desi
 python scripts/scad_render_assembly_review.py --design cyberdeck-2 --config designs/cyberdeck-2/configs/rev_0001.json --set full --audit-only
 ```
 
-Current printable artifacts are installed under `output/cyberdeck-2/`. The
-combined product STL is
-`.tmp/scad/cyberdeck-2/assembly-review/cyberdeck_2_assembled.stl`.
+All current artifacts are installed together under `output/cyberdeck-2/`,
+including `cyberdeck_2_assembled.stl`, the two printable leaf STLs, all printable
+and assembly PNGs, and both provenance manifests.
 
 ## Evidence and Limits
 

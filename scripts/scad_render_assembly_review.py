@@ -29,6 +29,17 @@ def info(message: str) -> None:
     print(f"[assembly-review] {message}")
 
 
+def validate_build_directory(path: Path, design: str) -> Path:
+    resolved = path.resolve()
+    canonical = (REPO_ROOT / "output" / design).resolve()
+    if resolved != canonical:
+        fail(
+            "Assembly artifacts must install into the canonical current output "
+            f"directory {canonical}; rejected: {path}"
+        )
+    return resolved
+
+
 def sha256_file(path: Path) -> str:
     digest = hashlib.sha256()
     with path.open("rb") as handle:
@@ -144,7 +155,6 @@ def printable_build_provenance(
     if not isinstance(records, list) or not records:
         fail(f"Printable build has no artifact records: {manifest_path}")
     by_path: Dict[str, dict] = {}
-    expected = {scad_build_all.BUILD_MANIFEST_NAME}
     for record in records:
         if not isinstance(record, dict) or not isinstance(record.get("path"), str):
             fail(f"Printable build has an invalid artifact record: {manifest_path}")
@@ -152,12 +162,12 @@ def printable_build_provenance(
         if name in by_path:
             fail(f"Printable build has a duplicate artifact record: {name}")
         by_path[name] = record
-        expected.add(name)
         path = build_dir / name
         if not path.exists():
             fail(f"Printable build artifact is missing: {path}")
         if path.stat().st_size != record.get("bytes") or sha256_file(path) != record.get("sha256"):
             fail(f"Printable build artifact hash or size mismatch: {path}")
+    expected = scad_build_all.unified_expected_names(build_dir, manifest)
     scad_build_all.validate_exact_artifacts(build_dir, expected)
 
     raw_parts = manifest.get("parts")
@@ -196,20 +206,44 @@ def run_command(command: List[str], dry_run: bool) -> None:
         subprocess.run(command, check=True)
 
 
-def safe_replace(staged: Path, final: Path, managed_root: Path) -> None:
-    staged_resolved = staged.resolve()
-    final_resolved = final.resolve()
-    root_resolved = managed_root.resolve()
-    for path in (staged_resolved, final_resolved):
-        try:
-            path.relative_to(root_resolved)
-        except ValueError:
-            fail(f"Refusing to manage path outside {root_resolved}: {path}")
-        if path == root_resolved:
-            fail(f"Refusing to replace managed root: {path}")
-    if final.exists():
-        shutil.rmtree(final)
-    staged.rename(final)
+def installed_review_names(final: Path) -> Set[str]:
+    manifest_path = final / MANIFEST_NAME
+    if not manifest_path.exists():
+        return set()
+    manifest = assembly_contract.load_json(manifest_path, "Assembly review manifest")
+    names = scad_build_all.recorded_artifact_names_and_validate(
+        final, manifest, "assembly review manifest"
+    )
+    return names | {MANIFEST_NAME}
+
+
+def install_review_set(stage: Path, final: Path, new_names: Set[str]) -> Path:
+    backup = stage / "previous_assembly"
+    backup.mkdir(parents=True, exist_ok=False)
+    old_names = installed_review_names(final)
+    for name in old_names:
+        (final / name).rename(backup / name)
+    try:
+        for name in new_names:
+            (stage / name).rename(final / name)
+    except Exception:
+        for name in new_names:
+            path = final / name
+            if path.exists():
+                path.unlink()
+        for child in list(backup.iterdir()):
+            child.rename(final / child.name)
+        raise
+    return backup
+
+
+def rollback_review_set(final: Path, backup: Path, new_names: Set[str]) -> None:
+    for name in new_names:
+        path = final / name
+        if path.exists():
+            path.unlink()
+    for child in list(backup.iterdir()):
+        child.rename(final / child.name)
 
 
 def main() -> int:
@@ -219,7 +253,7 @@ def main() -> int:
     parser.add_argument("--set", choices=("compact", "full"), default="full", dest="view_set")
     parser.add_argument(
         "--build-dir",
-        help="Complete audited printable artifact directory; defaults to output/<design>.",
+        help="Complete audited printable artifact directory; must be output/<design>.",
     )
     parser.add_argument("--openscad-path")
     parser.add_argument("--audit-only", action="store_true")
@@ -239,6 +273,7 @@ def main() -> int:
     build_dir = Path(args.build_dir) if args.build_dir else REPO_ROOT / "output" / args.design
     if not build_dir.is_absolute():
         build_dir = (REPO_ROOT / build_dir).resolve()
+    build_dir = validate_build_directory(build_dir, args.design)
 
     part_ids, _ = assembly_contract.load_parts(parts_path)
     raw_contract = assembly_contract.load_json(assembly_path, "Assembly contract")
@@ -250,19 +285,28 @@ def main() -> int:
     provenance = input_provenance(
         config_path, parts_path, assembly_path, source_root, printable_build
     )
-    review_root = REPO_ROOT / ".tmp" / "scad" / args.design
-    final = review_root / "assembly-review"
+    final = build_dir
     expected = expected_names(contract, args.view_set)
 
     if args.audit_only:
         manifest_path = final / MANIFEST_NAME
         manifest = assembly_contract.load_json(manifest_path, "Assembly review manifest")
         validate_manifest_inputs(manifest, provenance, args.view_set)
-        validate_exact_files(final, expected)
+        recorded_names = {
+            record.get("path") for record in manifest.get("artifacts", [])
+            if isinstance(record, dict)
+        }
+        if recorded_names != expected:
+            fail("Assembly-review manifest artifact names do not match the selected set.")
         records = artifact_records(final, expected)
         if records != manifest.get("artifacts"):
             fail("Assembly-review artifact hashes or byte sizes do not match the manifest.")
         assembly_contract.validate_geometry_exports(contract["geometry_exports"], final)
+        build_manifest = assembly_contract.load_json(
+            final / scad_build_all.BUILD_MANIFEST_NAME, "Complete build manifest"
+        )
+        unified = scad_build_all.unified_expected_names(final, build_manifest)
+        scad_build_all.validate_exact_artifacts(final, unified)
         info(
             f"PASS audit design={args.design} set={args.view_set} "
             f"png={sum(name.endswith('.png') for name in expected)} "
@@ -271,7 +315,7 @@ def main() -> int:
         return 0
 
     executable = scad_build.resolve_openscad_exe(args.openscad_path)
-    stage = review_root / f".assembly-review-stage-{uuid.uuid4().hex}"
+    stage = final / f".assembly-stage-{uuid.uuid4().hex}"
     if stage.exists():
         fail(f"Unexpected existing staging directory: {stage}")
     stage.mkdir(parents=True, exist_ok=False)
@@ -341,13 +385,29 @@ def main() -> int:
             "artifacts": artifact_records(stage, expected),
         }
         (stage / MANIFEST_NAME).write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
-        safe_replace(stage, final, review_root)
+        new_names = expected | {MANIFEST_NAME}
+        backup = install_review_set(stage, final, new_names)
+        try:
+            recorded_names = {
+                record.get("path") for record in manifest.get("artifacts", [])
+                if isinstance(record, dict)
+            }
+            if recorded_names != expected:
+                fail("Assembly-review manifest artifact names do not match the selected set.")
+            build_manifest = assembly_contract.load_json(
+                final / scad_build_all.BUILD_MANIFEST_NAME, "Complete build manifest"
+            )
+            unified = scad_build_all.unified_expected_names(final, build_manifest)
+            scad_build_all.validate_exact_artifacts(final, unified, {stage.name})
+            assembly_contract.validate_geometry_exports(contract["geometry_exports"], final)
+        except BaseException:
+            rollback_review_set(final, backup, new_names)
+            raise
         info(f"PASS rendered design={args.design} set={args.view_set} destination={final}")
         return 0
-    except Exception:
+    finally:
         if stage.exists():
             shutil.rmtree(stage)
-        raise
 
 
 if __name__ == "__main__":

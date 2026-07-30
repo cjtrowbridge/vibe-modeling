@@ -7,14 +7,14 @@
 - Parts SHA-256:
   `c2470a109124d57db0d4d0ad030a21eee9eeec9dcbe635554581ab225225aca8`
 - Assembly SHA-256:
-  `3c5de8a4dcec47203c8465056df3c846fe624c7d18b4d264b39317b0d08a1445`
+  `4936443d05871a063ae354005ae4453a4dcb5a21eface18336d3a1fcf0c1ced1`
 - Source SHA-256:
-  `98ef2b83c8e842cada4d42d8b97822a0d7b27d57723c8a8c0a7ef08744865067`
+  `6570ae5c13fcb337aa816b7688bd61fc0f5a924f1bd62fdbfcbefcfdc7cf66aa`
 - Installed build-manifest SHA-256:
-  `5eac2da460f547d7528b2bcabebf94633a377b280db30d7b5693e22e8c552a97`
+  `5faa0e62fb5e1620f3e79da673d7547beb4e36d8460625c304c2592b0dbddff7`
 - Assembly-review manifest SHA-256:
-  `888a4b28d10468dfa22663f7100100ec6d1c744aa160305a5783e7e4a99cc9ef`
-- Generated Git state: commit `92fda198085be649c2890aa7e39a2d6b63d16f75`, dirty candidate
+  `683469cdb01ce664d3b55980181ca0fbe1f7591bfee08d1a7954d59e50d1eed8`
+- Generated Git state: commit `e653631c37a620346af19f854f37c522b968d2bd`, dirty candidate
 
 ## Findings
 
@@ -26,7 +26,7 @@
 | rear closure | rear, side, isometric, and leaf views show an uninterrupted integral rear | PASS |
 | rack positions | front view and rack-insert section show six canonical blind bores per rail | PASS |
 | seam stations | top/bottom crops and four orthographic sections show one internal joint at every split corner | PASS |
-| head/nut recesses | four sections show exterior recessed heads, vertical passages, and internal captive-nut openings | PASS |
+| head/nut recesses | four dedicated installed-artifact crops show complete circular head recesses and complete hexagonal nut recesses at top/bottom and front/rear, each with a centered through-passage | PASS |
 | joint load path | sections show layered flanges, 3 mm root webs, and annular compression lands across the 0.3 mm general clearance | PASS |
 | device envelope | proxy and sections preserve the 222.25 x 88.90 mm opening and generic 220 mm body envelope | PASS geometrically |
 | lower supports | support-rail section and assembly views show two full-depth rails tied into side walls, front rails, and rear wall | PASS |
@@ -43,24 +43,35 @@ and their exterior side walls.
 
 - Exact set: `2 STL + 34 PNG = 36` modeled artifacts; audit PASS.
 - Left STL SHA-256:
-  `3d7812af32e995a8c157252ece9112aab8c05a6d1909bc6e3d2de775fe87c5b6`
+  `7cb0a5a0b116fa1ed35b996dffeff6d1fc48765e23f11f07b4abae0d1ca2e2c6`
 - Right STL SHA-256:
-  `b2a027a5fa5d7e8e78f4cf3019a70d1e8129e7e4487aaa6c93f08a283beffe3b`
+  `d4056d49e2ccdfa77209b5ae91f9f62a086d5489e23d3fca25a392209d1c4ffd`
 - Left and right print spans: `121.3 x 215.0 x 134.8 mm` each.
 - Both leaves are simple 3D objects and report one bounded connected solid plus
   exterior volume in the OpenSCAD CGAL report.
 
 ## Artifact-Bound Assembly Set
 
-- Exact set: `18 PNG + 1 STL = 19` review artifacts; audit PASS.
+- Exact set: `22 PNG + 1 STL = 23` review artifacts; audit PASS.
 - Manifest binds the exact installed build-manifest and both installed STL
   hashes above.
 - Combined product STL:
-  `.tmp/scad/cyberdeck-2/assembly-review/cyberdeck_2_assembled.stl`
+  `output/cyberdeck-2/cyberdeck_2_assembled.stl`
 - Combined STL SHA-256:
-  `1027f817901707df4f0af948ce9fbb3b99f100e8fb842e7269e878a1c6e5d1b7`
+  `e9157ae36bacea8718dca1bd4650aa7ffd6d4f1fa67e73302ffa0d05c70982c3`
 - Combined bounds: `[-127, 0, -60.65]` to `[127, 215, 60.65]`;
   span `254 x 215 x 121.3 mm`.
+
+The printable and assembly sets coexist in one flat governed directory. The
+unified exact set is `3 STL + 56 PNG + 2 manifests = 61 files`; both audits pass
+and no staging directory remains.
+
+The seam-opening regression evidence is
+`cyberdeck_2_product_top_head_openings.png`,
+`cyberdeck_2_product_top_nut_openings.png`,
+`cyberdeck_2_product_bottom_head_openings.png`, and
+`cyberdeck_2_product_bottom_nut_openings.png`. These installed renders were
+reviewed at original resolution; no crescent or shell-filled opening remains.
 
 ## Acceptance and Limits
 

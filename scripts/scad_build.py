@@ -165,10 +165,12 @@ def validate_output_directory(path: Path, design: str) -> Path:
     resolved = path.resolve()
     allowed_current = (REPO_ROOT / "output" / design).resolve()
     allowed_revisions = (REPO_ROOT / "revisions" / design).resolve()
-    allowed_tmp = (REPO_ROOT / ".tmp" / "scad" / design).resolve()
 
-    if resolved == allowed_current:
+    try:
+        resolved.relative_to(allowed_current)
         return resolved
+    except ValueError:
+        pass
     try:
         revision_relative = resolved.relative_to(allowed_revisions)
         if len(revision_relative.parts) == 1 and REVISION_DIR_RE.fullmatch(
@@ -177,16 +179,10 @@ def validate_output_directory(path: Path, design: str) -> Path:
             return resolved
     except ValueError:
         pass
-    try:
-        resolved.relative_to(allowed_tmp)
-        return resolved
-    except ValueError:
-        pass
-
     fail(
-        "Invalid artifact destination. Use output/<design> for current scratch "
-        "artifacts, revisions/<design>/rev_000N for a revision, or "
-        ".tmp/scad/<design>/... for managed debug/staging files. "
+        "Invalid artifact destination. Use output/<design>/ for all mutable "
+        "artifacts and managed staging, or revisions/<design>/rev_000N for "
+        "an immutable revision. "
         f"Rejected: {path}"
     )
 

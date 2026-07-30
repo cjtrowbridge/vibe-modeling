@@ -16,8 +16,8 @@ mixing files, trusting revision-like names, or rewriting immutable history.
 3. Reject authority if files are missing, unexpected, stale, duplicated,
    hash-mismatched, or lack required provenance.
 4. Confirm the committed config and source tree intended to produce the set.
-5. For current output, perform a complete staged rebuild and replace the directory
-   atomically through `scad_build_all.py`.
+5. For current output, perform a complete staged rebuild inside the design's
+   output directory and promote it transactionally through `scad_build_all.py`.
 6. Never patch selected artifacts into a complete set.
 7. Do not rebuild into an existing immutable revision. Preserve the suspect set
    as evidence and either restore an exact verified backup with explicit approval

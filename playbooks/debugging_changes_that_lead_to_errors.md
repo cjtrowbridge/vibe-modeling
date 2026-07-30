@@ -125,8 +125,8 @@ establish provenance.
 
 Required diagnosis:
 
-1. Accept only `output/<design>/`, `revisions/<design>/rev_000N/`, or
-   `.tmp/scad/<design>/`.
+1. Accept only `output/<design>/` for mutable artifacts and managed staging, or
+   `revisions/<design>/rev_000N/` for immutable artifacts.
 2. Reject `.scad` probes under `output/` and `revisions/`.
 3. For manifest-driven designs, run `scad_build_all.py --audit-only`.
 4. Compare exact artifact names and counts with `parts.json`.

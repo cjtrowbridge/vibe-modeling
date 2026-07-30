@@ -19,6 +19,7 @@ import scad_build
 REPO_ROOT = Path(__file__).resolve().parent.parent
 REVISION_RE = re.compile(r"^rev_\d{4}$")
 BUILD_MANIFEST_NAME = "build_manifest.json"
+ASSEMBLY_MANIFEST_NAME = "assembly_review_manifest.json"
 
 
 def info(message: str) -> None:
@@ -143,8 +144,18 @@ def artifact_records(directory: Path, names: Iterable[str]) -> List[dict]:
     return records
 
 
-def validate_exact_artifacts(directory: Path, expected: Set[str]) -> None:
-    actual_paths = [path for path in directory.rglob("*") if path.is_file()]
+def validate_exact_artifacts(
+    directory: Path,
+    expected: Set[str],
+    ignored_top_dirs: Optional[Set[str]] = None,
+) -> None:
+    ignored = ignored_top_dirs or set()
+    all_paths = list(directory.rglob("*"))
+    actual_paths = [
+        path for path in all_paths
+        if path.is_file()
+        and path.relative_to(directory).parts[0] not in ignored
+    ]
     scad_files = [path for path in actual_paths if path.suffix.lower() == ".scad"]
     if scad_files:
         fail(
@@ -152,15 +163,74 @@ def validate_exact_artifacts(directory: Path, expected: Set[str]) -> None:
             + "\n  ".join(str(path) for path in scad_files)
         )
     actual = {path.relative_to(directory).as_posix() for path in actual_paths}
+    unexpected_dirs = sorted(
+        path.relative_to(directory).as_posix()
+        for path in all_paths
+        if path.is_dir()
+        and path.relative_to(directory).parts[0] not in ignored
+    )
     missing = sorted(expected - actual)
     unexpected = sorted(actual - expected)
-    if missing or unexpected:
+    if missing or unexpected or unexpected_dirs:
         details: List[str] = []
         if missing:
             details.append("Missing:\n  " + "\n  ".join(missing))
         if unexpected:
             details.append("Unexpected:\n  " + "\n  ".join(unexpected))
-        fail("Artifact set does not match the parts manifest.\n" + "\n".join(details))
+        if unexpected_dirs:
+            details.append("Unexpected directories:\n  " + "\n  ".join(unexpected_dirs))
+        fail("Artifact set does not match the governed manifests.\n" + "\n".join(details))
+
+
+def recorded_artifact_names_and_validate(
+    directory: Path,
+    manifest: dict,
+    label: str,
+) -> Set[str]:
+    records = manifest.get("artifacts")
+    if not isinstance(records, list):
+        fail(f"{label} has no artifact records: {directory}")
+    names: Set[str] = set()
+    for record in records:
+        if not isinstance(record, dict) or not isinstance(record.get("path"), str):
+            fail(f"Invalid artifact record in {label}: {directory}")
+        name = record["path"]
+        if Path(name).name != name or name in names:
+            fail(f"Invalid or duplicate artifact path in {label}: {name!r}")
+        names.add(name)
+        artifact_path = directory / name
+        if not artifact_path.is_file():
+            fail(f"Artifact recorded by {label} is missing: {artifact_path}")
+        if artifact_path.stat().st_size != record.get("bytes"):
+            fail(f"Artifact size mismatch: {artifact_path}")
+        if sha256_file(artifact_path) != record.get("sha256"):
+            fail(f"Artifact hash mismatch: {artifact_path}")
+    return names
+
+
+def unified_expected_names(directory: Path, build_manifest: dict) -> Set[str]:
+    expected = {BUILD_MANIFEST_NAME}
+    printable_names = recorded_artifact_names_and_validate(
+        directory, build_manifest, "build manifest"
+    )
+    expected.update(printable_names)
+    assembly_manifest_path = directory / ASSEMBLY_MANIFEST_NAME
+    if assembly_manifest_path.exists():
+        assembly_manifest = load_json(assembly_manifest_path, "Assembly review manifest")
+        if assembly_manifest.get("schema_version") != 1:
+            fail(f"Unsupported assembly review manifest schema: {assembly_manifest_path}")
+        assembly_names = recorded_artifact_names_and_validate(
+            directory, assembly_manifest, "assembly review manifest"
+        )
+        overlap = sorted(printable_names & assembly_names)
+        if overlap:
+            fail(
+                "Printable and assembly manifests claim the same artifacts:\n  "
+                + "\n  ".join(overlap)
+            )
+        expected.add(ASSEMBLY_MANIFEST_NAME)
+        expected.update(assembly_names)
+    return expected
 
 
 def git_provenance() -> dict:
@@ -206,27 +276,40 @@ def safe_remove_tree(path: Path, required_parent: Path) -> None:
         shutil.rmtree(resolved_path)
 
 
-def install_artifacts(staged: Path, final: Path, destination: str, stage_root: Path) -> None:
-    final.parent.mkdir(parents=True, exist_ok=True)
-    if destination == "revision":
-        if final.exists():
-            fail(f"Revision outputs are immutable and already exist: {final}")
-        staged.rename(final)
-        return
-
+def install_artifacts(staged: Path, final: Path, stage_root: Path) -> Path:
+    """Promote a staged flat set while retaining an in-output rollback copy."""
+    final.mkdir(parents=True, exist_ok=True)
     backup = stage_root / "previous_output"
-    if backup.exists():
-        safe_remove_tree(backup, stage_root)
-    if final.exists():
-        final.rename(backup)
+    backup.mkdir(parents=True, exist_ok=False)
+    for child in list(final.iterdir()):
+        if child == stage_root:
+            continue
+        child.rename(backup / child.name)
     try:
-        staged.rename(final)
+        for child in list(staged.iterdir()):
+            child.rename(final / child.name)
     except Exception:
-        if backup.exists() and not final.exists():
-            backup.rename(final)
+        for child in list(final.iterdir()):
+            if child != stage_root:
+                if child.is_dir():
+                    shutil.rmtree(child)
+                else:
+                    child.unlink()
+        for child in list(backup.iterdir()):
+            child.rename(final / child.name)
         raise
-    if backup.exists():
-        safe_remove_tree(backup, stage_root)
+    return backup
+
+
+def rollback_install(final: Path, stage_root: Path, backup: Path) -> None:
+    for child in list(final.iterdir()):
+        if child != stage_root:
+            if child.is_dir():
+                shutil.rmtree(child)
+            else:
+                child.unlink()
+    for child in list(backup.iterdir()):
+        child.rename(final / child.name)
 
 
 def create_build_manifest(
@@ -293,6 +376,7 @@ def audit(
     config_path: Path,
     parts_path: Path,
     source_root: Path,
+    ignored_top_dirs: Optional[Set[str]] = None,
 ) -> None:
     directory = final_directory(design, revision, destination)
     manifest_path = directory / BUILD_MANIFEST_NAME
@@ -305,11 +389,7 @@ def audit(
     records = manifest.get("artifacts")
     if not isinstance(records, list):
         fail(f"Build manifest has no artifact records: {manifest_path}")
-    expected = {BUILD_MANIFEST_NAME}
-    for record in records:
-        if not isinstance(record, dict) or not isinstance(record.get("path"), str):
-            fail(f"Invalid artifact record in: {manifest_path}")
-        expected.add(record["path"])
+    expected = unified_expected_names(directory, manifest)
     if destination == "revision":
         params_path = directory / "params.json"
         if params_path.exists():
@@ -317,13 +397,7 @@ def audit(
             if sha256_file(params_path) != sha256_file(config_path):
                 fail(f"Revision params do not match the committed config: {params_path}")
 
-    validate_exact_artifacts(directory, expected)
-    for record in records:
-        artifact_path = directory / record["path"]
-        if artifact_path.stat().st_size != record.get("bytes"):
-            fail(f"Artifact size mismatch: {artifact_path}")
-        if sha256_file(artifact_path) != record.get("sha256"):
-            fail(f"Artifact hash mismatch: {artifact_path}")
+    validate_exact_artifacts(directory, expected, ignored_top_dirs)
 
     checks = [
         ("config", sha256_file(config_path)),
@@ -343,6 +417,14 @@ def audit(
         f"{counts.get('parts')} parts, {counts.get('stl')} STL, "
         f"{counts.get('png')} PNG, {counts.get('artifacts')} artifacts."
     )
+    if ASSEMBLY_MANIFEST_NAME in expected:
+        modeled = expected - {BUILD_MANIFEST_NAME, ASSEMBLY_MANIFEST_NAME}
+        info(
+            "Unified output passed: "
+            f"{sum(name.endswith('.stl') for name in modeled)} STL, "
+            f"{sum(name.endswith('.png') for name in modeled)} PNG, "
+            f"2 manifests, {len(expected)} files."
+        )
     info(f"Directory: {directory}")
 
 
@@ -400,9 +482,12 @@ def main() -> int:
         )
         return 0
 
+    final = final_directory(args.design, revision, args.destination)
+    if args.destination == "revision" and final.exists():
+        fail(f"Revision outputs are immutable and already exist: {final}")
+    final.mkdir(parents=True, exist_ok=True)
     build_id = f"{revision}_{uuid.uuid4().hex[:12]}"
-    managed_tmp_root = REPO_ROOT / ".tmp" / "scad" / args.design
-    stage_root = managed_tmp_root / build_id
+    stage_root = final / f".build-stage-{build_id}"
     artifacts_dir = stage_root / "artifacts"
     configs_dir = stage_root / "configs"
     artifacts_dir.mkdir(parents=True, exist_ok=False)
@@ -477,21 +562,27 @@ def main() -> int:
         )
         validate_exact_artifacts(artifacts_dir, expected | {BUILD_MANIFEST_NAME})
 
-        final = final_directory(args.design, revision, args.destination)
-        install_artifacts(artifacts_dir, final, args.destination, stage_root)
+        backup = install_artifacts(artifacts_dir, final, stage_root)
         info(f"Installed complete build: {final}")
-        audit(
-            args.design,
-            revision,
-            args.destination,
-            config_path,
-            parts_path,
-            source_root,
-        )
+        try:
+            audit(
+                args.design,
+                revision,
+                args.destination,
+                config_path,
+                parts_path,
+                source_root,
+                {stage_root.name},
+            )
+        except BaseException:
+            rollback_install(final, stage_root, backup)
+            raise
         return 0
     finally:
         if stage_root.exists():
-            safe_remove_tree(stage_root, managed_tmp_root)
+            safe_remove_tree(stage_root, final)
+        if final.exists() and not any(final.iterdir()):
+            final.rmdir()
 
 
 if __name__ == "__main__":

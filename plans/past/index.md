@@ -2,6 +2,8 @@
 
 Format: `created_at | path | title | summary`
 
+2026-07-29-20-32-37 | plans/past/2026-07-29-20-32-37_complete-cyberdeck-2-seam-fastener-cuts.md | Complete Cyberdeck-2 Seam Fastener Cuts | Remove shell material that occludes half of each seam fastener passage and verify all four installed holes as complete enclosed circles.
+2026-07-29-19-44-02 | plans/past/2026-07-29-19-44-02_unify-cad-artifacts-in-design-output.md | Unify CAD Artifacts in Each Design Output Directory | Remove temporary artifact destinations, install multipart assembly exports beside printable artifacts, and audit one complete output set per design.
 2026-07-29-19-11-14 | plans/past/2026-07-29-19-11-14_internalize-cyberdeck-2-seam-and-add-device-rails.md | Internalize Cyberdeck-2 Seam Hardware and Add Device Rails | Replace the exterior seam bumpouts with protected internal joints and add rails that support the 2U device while preserving its governed clearance envelope.
 2026-07-29-16-43-34 | plans/past/2026-07-29-16-43-34_create-cyberdeck-2-2u-receiver-enclosure.md | Create a Split 2U Ten-Inch Rack Receiver Enclosure | Build a maximum-depth two-piece enclosure that receives a generic 2U ten-inch-rack device and joins with four recessed M3 seam fasteners.
 2026-07-29-16-23-32 | plans/past/2026-07-29-16-23-32_reset-cyberdeck-2.md | Reset Cyberdeck-2 for a Clean Restart | Remove the rejected Cyberdeck-2 lineage and its generated artifacts while preserving reusable CAD governance and rack infrastructure.

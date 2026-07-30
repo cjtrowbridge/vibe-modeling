@@ -174,15 +174,17 @@ Keep the documented repository layout synchronized with `README.md`:
 - `designs/`: committed OpenSCAD source and configs.
 - `output/`: generated current/scratch outputs.
 - `revisions/`: generated numbered snapshots.
-- `.tmp/scad/`: generated probes, sections, staging, and partial builds.
 
 Artifact directory names are fixed:
 
-- `output/<design>/` is the only current/scratch destination.
+- `output/<design>/` is the only mutable artifact destination. It contains
+  printable parts, combined assemblies, review renders, sections, probes,
+  coupons, manifests, and managed staging while a command is active.
 - `revisions/<design>/rev_000N/` is the only numbered revision destination.
-- `.tmp/scad/<design>/` is the only probe, section, partial-build, or staging destination.
 - Never create `output/<design>_rev_000N/` or another ad hoc artifact directory.
-- Never place `.scad` source or probe files in `output/` or `revisions/`.
+- Managed staging or probe source must remain under `output/<design>/` and be
+  removed before success. A completed output must be flat and contain no
+  directories or `.scad` files.
 - Generated `output/` and `revisions/` files must not be committed.
 
 For multi-part designs with `designs/<design>/parts.json`, use
@@ -192,7 +194,7 @@ its `build_manifest.json` passes `--audit-only`.
 New or geometry-modified multipart designs must also declare
 `designs/<design>/assembly.json`, pass
 `scripts/validate_cad_assembly_contract.py`, and produce a reviewed
-`.tmp/scad/<design>/assembly-review/assembly_review_manifest.json`. The product
+`output/<design>/assembly_review_manifest.json`. The product
 assembly and its logical subassemblies are distinct from printable leaf parts.
 Every architecture-affecting change invalidates the prior assembly review.
 Untouched legacy multipart designs must be labeled `legacy_assembly_unverified`
@@ -201,10 +203,11 @@ until migrated through an approved plan.
 At every blockout, detail, or release review gate, run the normal complete
 manifest pipeline first: build and atomically install `output/<design>/`, pass
 `scad_build_all.py --audit-only`, and review the exact installed STL and PNG
-artifacts. Only then generate the supplementary assembly review, which must
+artifacts. Only then generate the supplementary assembly review into that same
+design output directory, which must
 record and audit the current `build_manifest.json` hash and every authoritative
-STL hash. A source-only render, dry run, preview, or `.tmp` assembly created
-before the complete build is diagnostic evidence only and can never satisfy an
+STL hash. A source-only render, dry run, or preview created before the complete
+build is diagnostic evidence only and can never satisfy an
 artifact, assembly, approval, or completion gate.
 
 ## 9. Logging and Debugging
@@ -251,8 +254,10 @@ These rules apply unless a design documents stricter requirements:
 ## 11. Artifact Governance
 
 - A part manifest is authoritative for exported part names and completeness.
-- Complete builds render into `.tmp/scad/<design>/` first.
-- Validate the exact expected set before replacing `output/<design>/` as one unit.
+- Complete builds stage only inside `output/<design>/`, validate before
+  promotion, and remove staging on success or failure.
+- The final flat output must equal the union of every declared printable and
+  assembly artifact plus their manifests; no other file or directory is allowed.
 - Reject missing, unexpected, duplicate, stale, or hash-mismatched artifacts.
 - Record config, parts-manifest, OpenSCAD source-tree, Git, and artifact hashes in
   `build_manifest.json`.

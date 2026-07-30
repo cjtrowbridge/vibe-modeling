@@ -24,7 +24,8 @@ artifact failures from reproducible evidence before changing geometry or scripts
    - staging, naming, count, hash, or installation failure.
 4. Compare the printed command with a known passing design/config.
 5. Test at least three plausible causes with the cheapest read-only or temporary
-   experiment under `.tmp/scad/<design>/`.
+   experiment only within the design's `output/<design>/` workspace and clean
+   transient staging before completion.
 6. If geometry is implicated, use sections/probes and the structural playbook.
 7. If automation is implicated, use the build-automation playbook and test failure
    paths before applying an approved fix.

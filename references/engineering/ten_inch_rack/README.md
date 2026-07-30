@@ -23,8 +23,8 @@ defaults. In particular:
 - The specification's `2.5 mm` minimum radial material around a primary M3 hole
   becomes `max(2.5 mm, minimum_wall_thickness)`; with the normal `3 mm` host
   minimum, at least `3 mm` is required.
-- Host-generated artifacts use only `output/<design>/`,
-  `revisions/<design>/rev_000N/`, and `.tmp/scad/<design>/`. The standalone
+- Host-generated artifacts use only `output/<design>/` for mutable work and
+  `revisions/<design>/rev_000N/` for immutable publication. The standalone
   layout suggested in specification section 8.1 is not used here.
 - Required conformance matrices, keepout inventories, stack-up reports, and
   revision validation records belong under `designs/<design>/docs/`.

@@ -18,27 +18,28 @@ exact-set validation, atomic installation, and provenance audit.
 3. Dry-run the complete build and review every generated part command.
 4. Build with `scripts/scad_build_all.py`; never loop over `scad_build.py`
    manually to represent a complete design.
-5. Require staging under `.tmp/scad/<design>/` and exact expected STL/PNG names.
+5. Require managed staging inside `output/<design>/` and exact expected
+   printable and assembly artifact names. Remove staging before success.
 6. Install only after all parts succeed. Replacement of `output/<design>/` must
    occur as one directory operation, never by overlay copy.
 7. Run `--audit-only` against the installed destination.
 8. Inspect `build_manifest.json` for config, parts-manifest, source-tree, Git,
    artifact hashes, revision, and expected counts.
 9. Review the exact installed STL and PNG artifacts, not source previews or a
-   pre-build `.tmp` render. A present but blank, clipped, stale, or otherwise
+   pre-build diagnostic render. A present but blank, clipped, stale, or otherwise
    unusable view fails the artifact review; a replacement render elsewhere does
    not cure that failure.
 10. For multipart designs, render and audit the supplementary assembly review
-   only after it is bound to this exact build-manifest hash and authoritative
-   STL hashes.
+   into the same `output/<design>/` directory only after it is bound to this
+   exact build-manifest hash and authoritative STL hashes.
 11. For immutable publication, repeat with `--destination revision` only when the
    destination does not already exist.
 
 The printable complete-build manifest and assembly-review manifest have distinct
-artifact destinations and responsibilities. The complete build is authoritative
-and must exist first. Do not place assembly-review files in `output/<design>/`;
-do not accept a multipart milestone until the installed output audit, actual
-artifact review, and later artifact-bound assembly audit all pass.
+responsibilities but one artifact destination. The complete printable build is
+authoritative and must exist first; the combined assembly STL, assembly views,
+and assembly manifest are then added to `output/<design>/`. The final exact-set
+audit covers the union declared by both manifests.
 
 ## Failure Response
 
@@ -51,8 +52,8 @@ stale, or hash-mismatched. Diagnose in staging and rebuild the entire set.
 - Both exact-name and hash audits pass.
 - Current installation contains no files from an older build.
 - The final report states scope, destination, counts, audit, and provenance.
-- Multipart completion also states assembly-review destination, expected/actual
-  review counts, audit result, and matching input hashes.
+- Multipart completion also states expected/actual assembly-review counts,
+  unified output audit result, and matching input hashes.
 
 ## Plan Binding
 
