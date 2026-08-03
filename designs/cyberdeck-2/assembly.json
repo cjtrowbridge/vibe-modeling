@@ -13,6 +13,13 @@
             "translate": [0, 0, 0],
             "rotate": [0, 0, 0]
           }
+        },
+        {
+          "assembly_id": "split_2u_port_plate",
+          "transform": {
+            "translate": [0, 0, 0],
+            "rotate": [0, 0, 0]
+          }
         }
       ]
     },
@@ -45,6 +52,26 @@
           "transform": {
             "translate": [127, 0, 0],
             "rotate": [0, -90, 0]
+          }
+        }
+      ]
+    },
+    {
+      "assembly_id": "split_2u_port_plate",
+      "role": "removable_blank_two_piece_2u_port_button_faceplate",
+      "members": [
+        {
+          "part_id": 3,
+          "transform": {
+            "translate": [0, 0, 0],
+            "rotate": [0, 0, 0]
+          }
+        },
+        {
+          "part_id": 4,
+          "transform": {
+            "translate": [0, 0, 0],
+            "rotate": [0, 0, 0]
           }
         }
       ]
@@ -84,6 +111,17 @@
         "rotate": [0, 0, 0]
       },
       "engages_parts": ["enclosure_left", "enclosure_right"]
+    },
+    {
+      "interface_id": "port_plate_roof_mount",
+      "owner_assembly": "split_2u_port_plate",
+      "type": "m3_removable_roof_panel_with_registration_seam",
+      "split_policy": "continuous_across_seam",
+      "local_frame": {
+        "translate": [0, 100.732, 62.25],
+        "rotate": [0, 0, 0]
+      },
+      "engages_parts": ["enclosure_left", "enclosure_right", "port_plate_left", "port_plate_right"]
     }
   ],
   "views": [
@@ -310,10 +348,34 @@
       "assembly_view": "lower_roof_opening_section",
       "assembly_view_id": 19,
       "show_proxies": false
+    },
+    {
+      "name": "port_plate_roof_opening",
+      "projection": "p",
+      "camera": [0, -145, 70, 30, 0, 25, 300],
+      "assembly_view": "port_plate_roof_opening",
+      "assembly_view_id": 20,
+      "show_proxies": false
+    },
+    {
+      "name": "port_plate_rear_seam_access",
+      "projection": "p",
+      "camera": [0, -195, 70, 40, 0, 20, 170],
+      "assembly_view": "port_plate_rear_seam_access",
+      "assembly_view_id": 21,
+      "show_proxies": false
+    },
+    {
+      "name": "port_plate_split",
+      "projection": "p",
+      "camera": [0, -145, 66, 20, 0, 0, 260],
+      "assembly_view": "port_plate_split",
+      "assembly_view_id": 22,
+      "show_proxies": false
     }
   ],
   "view_sets": {
-    "compact": ["front", "isometric", "exploded", "top_seam", "angled_screen"],
+    "compact": ["front", "isometric", "exploded", "top_seam", "angled_screen", "port_plate_roof_opening"],
     "full": [
       "front",
       "rear",
@@ -342,7 +404,10 @@
       "angled_screen_side_section",
       "angled_screen_rail_section",
       "screen_roof_rear_section",
-      "lower_roof_opening_section"
+      "lower_roof_opening_section",
+      "port_plate_roof_opening",
+      "port_plate_rear_seam_access",
+      "port_plate_split"
     ]
   },
   "geometry_exports": [

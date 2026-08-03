@@ -58,6 +58,16 @@ screen_rack_rear_wall_thickness = is_undef(screen_rack_rear_wall_thickness) ? mi
 screen_rack_lower_roof_opening_start_y = is_undef(screen_rack_lower_roof_opening_start_y) ? seam_pad_depth : screen_rack_lower_roof_opening_start_y;
 screen_rack_lower_roof_opening_forward_rim = is_undef(screen_rack_lower_roof_opening_forward_rim) ? minimum_wall_thickness : screen_rack_lower_roof_opening_forward_rim;
 screen_rack_lower_roof_opening_side_margin = is_undef(screen_rack_lower_roof_opening_side_margin) ? minimum_wall_thickness : screen_rack_lower_roof_opening_side_margin;
+port_plate_thickness = is_undef(port_plate_thickness) ? minimum_wall_thickness : port_plate_thickness;
+port_plate_mount_hole_diameter = is_undef(port_plate_mount_hole_diameter) ? 3.6 : port_plate_mount_hole_diameter;
+port_plate_mount_washer_diameter = is_undef(port_plate_mount_washer_diameter) ? 7.0 : port_plate_mount_washer_diameter;
+port_plate_opening_side_rail_width = is_undef(port_plate_opening_side_rail_width) ? 10.0 : port_plate_opening_side_rail_width;
+port_plate_opening_front_lip = is_undef(port_plate_opening_front_lip) ? minimum_wall_thickness : port_plate_opening_front_lip;
+port_plate_opening_seam_margin = is_undef(port_plate_opening_seam_margin) ? minimum_wall_thickness : port_plate_opening_seam_margin;
+port_plate_mount_edge_margin = is_undef(port_plate_mount_edge_margin) ? 8.0 : port_plate_mount_edge_margin;
+port_plate_seam_tongue_width = is_undef(port_plate_seam_tongue_width) ? minimum_structural_overlap : port_plate_seam_tongue_width;
+port_plate_seam_clearance = is_undef(port_plate_seam_clearance) ? 1.0 : port_plate_seam_clearance;
+port_plate_seam_end_margin = is_undef(port_plate_seam_end_margin) ? 8.0 : port_plate_seam_end_margin;
 boolean_epsilon = is_undef(boolean_epsilon) ? 0.02 : boolean_epsilon;
 
 rack_clear_height = rack_u_pitch * rack_height_u;
@@ -115,6 +125,29 @@ screen_rack_lower_roof_opening_width = rack_front_width
                                      - 2 * screen_rack_lower_roof_opening_side_margin;
 screen_rack_lower_roof_opening_length = screen_rack_lower_roof_opening_end_y
                                       - screen_rack_lower_roof_opening_start_y;
+
+// The removable blank 2U plate covers a deliberately smaller roof opening.
+// It is split at X=0 into two printable leaves; the left leaf's tongue enters
+// the right leaf's socket only for registration, while four M3 fasteners carry
+// the removable-panel retention load into retained roof rails.
+port_plate_width = rack_front_width;
+port_plate_height = rack_clear_height;
+port_plate_y0 = screen_rack_lower_roof_opening_end_y;
+port_plate_y1 = port_plate_y0 + port_plate_height;
+port_plate_opening_x0 = -rack_front_width / 2 + port_plate_opening_side_rail_width;
+port_plate_opening_x1 = rack_front_width / 2 - port_plate_opening_side_rail_width;
+port_plate_opening_y0 = port_plate_y0 + port_plate_opening_front_lip;
+port_plate_seam_block_y0 = rack_internal_depth - seam_pad_depth;
+port_plate_opening_y1 = port_plate_seam_block_y0 - port_plate_opening_seam_margin;
+port_plate_opening_width = port_plate_opening_x1 - port_plate_opening_x0;
+port_plate_opening_length = port_plate_opening_y1 - port_plate_opening_y0;
+port_plate_mount_x = rack_front_width / 2 - port_plate_mount_edge_margin;
+port_plate_mount_y_front = port_plate_y0 + port_plate_mount_edge_margin;
+port_plate_mount_y_rear = port_plate_y1 - port_plate_mount_edge_margin;
+port_plate_seam_y0 = port_plate_y0 + port_plate_seam_end_margin;
+port_plate_seam_y1 = port_plate_y1 - port_plate_seam_end_margin;
+port_plate_seam_length = port_plate_seam_y1 - port_plate_seam_y0;
+port_plate_socket_width = port_plate_seam_tongue_width + port_plate_seam_clearance;
 function screen_rack_hole_z(index) = rack_hole_z(index) - equipment_bottom_z;
 
 module blockout_contract_assertions() {
@@ -239,6 +272,39 @@ module blockout_contract_assertions() {
          "SCREEN: lower roof opening leaves insufficient side-wall material");
   assert(screen_rack_lower_roof_opening_width > rack_clear_opening_width,
          "SCREEN: lower roof opening must clear the screen aperture width");
+  assert(port_plate_thickness >= minimum_wall_thickness,
+         "PORT-PLATE: plate thickness is below the 3 mm minimum");
+  assert(abs(port_plate_width - rack_front_width) < 0.001
+         && abs(port_plate_height - rack_clear_height) < 0.001,
+         "PORT-PLATE: exterior must retain the exact 254 x 88.90 mm 2U envelope");
+  assert(port_plate_opening_side_rail_width >= minimum_internal_edge_width,
+         "PORT-PLATE: retained side rail is below minimum material width");
+  assert(port_plate_opening_front_lip >= minimum_internal_edge_width,
+         "PORT-PLATE: retained front lip is below minimum material width");
+  assert(port_plate_opening_seam_margin >= minimum_internal_edge_width,
+         "PORT-PLATE: opening-to-seam-block margin is below minimum material width");
+  assert(port_plate_opening_length >= minimum_internal_edge_width,
+         "PORT-PLATE: roof opening is not meaningful");
+  assert(port_plate_y1 < seam_fastener_y(true) - seam_head_washer_recess_diameter / 2,
+         "PORT-PLATE: plate covers the rear seam screw head/tool envelope");
+  assert(port_plate_opening_y1 <= port_plate_seam_block_y0 - minimum_internal_edge_width,
+         "PORT-PLATE: opening cuts into the protected rear seam block");
+  assert(port_plate_mount_hole_diameter == M3_STACKUP_HOLE_D_V2,
+         "PORT-PLATE: mounting clearance must use the selected M3 stack-up hole");
+  assert(port_plate_mount_washer_diameter >= M3_ISO_7089_WASHER_OD_V2,
+         "PORT-PLATE: washer support is below ISO 7089 M3 outside diameter");
+  assert(port_plate_mount_edge_margin - port_plate_mount_hole_diameter / 2
+         >= minimum_internal_edge_width,
+         "PORT-PLATE: M3 holes lack exterior-edge material");
+  assert(port_plate_opening_side_rail_width - (port_plate_mount_edge_margin
+         - port_plate_mount_hole_diameter / 2) >= minimum_internal_edge_width,
+         "PORT-PLATE: M3 holes lack material to the roof opening");
+  assert(port_plate_seam_tongue_width >= minimum_structural_overlap,
+         "PORT-PLATE: registration tongue overlap is below structural minimum");
+  assert(port_plate_seam_clearance >= 1.0,
+         "PORT-PLATE: registration socket requires 1 mm sliding clearance");
+  assert(port_plate_seam_length >= minimum_internal_edge_width,
+         "PORT-PLATE: registration seam is not meaningful");
   assert(screen_rack_top_z - enclosure_bottom_z <= printer_axis_limit,
          "PRINT: angled screen makes the rotated leaf exceed the printer axis");
   assert(max(enclosure_height, rack_front_width / 2 + seam_joint_cross_width,

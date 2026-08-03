@@ -192,8 +192,76 @@ module shell_master() {
       cube([screen_rack_lower_roof_opening_width,
             screen_rack_lower_roof_opening_length,
             minimum_wall_thickness + 2 * boolean_epsilon]);
+    // The protected port-plate opening leaves continuous 10 mm side rails,
+    // a 3 mm screen-side lip, and a 3 mm margin before the rear seam block.
+    translate([port_plate_opening_x0, port_plate_opening_y0,
+               enclosure_top_z - minimum_wall_thickness - boolean_epsilon])
+      cube([port_plate_opening_width, port_plate_opening_length,
+            minimum_wall_thickness + 2 * boolean_epsilon]);
+    port_plate_chassis_mount_hole_cuts();
   }
 }
+
+module port_plate_chassis_mount_hole_cuts() {
+  for (x = [-port_plate_mount_x, port_plate_mount_x])
+    for (y = [port_plate_mount_y_front, port_plate_mount_y_rear])
+      translate([x, y, enclosure_top_z - minimum_wall_thickness - boolean_epsilon])
+        cylinder(h = minimum_wall_thickness + 2 * boolean_epsilon,
+                 d = port_plate_mount_hole_diameter, $fn = 48);
+}
+
+module port_plate_mount_hole_cuts() {
+  for (x = [-port_plate_mount_x, port_plate_mount_x])
+    for (y = [port_plate_mount_y_front, port_plate_mount_y_rear])
+      translate([x, y, enclosure_top_z - boolean_epsilon])
+        cylinder(h = port_plate_thickness + 2 * boolean_epsilon,
+                 d = port_plate_mount_hole_diameter, $fn = 48);
+}
+
+module port_plate_master() {
+  translate([-port_plate_width / 2, port_plate_y0, enclosure_top_z])
+    cube([port_plate_width, port_plate_height, port_plate_thickness]);
+}
+
+module port_plate_left_assembled() {
+  difference() {
+    union() {
+      intersection() {
+        port_plate_master();
+        translate([-port_plate_width / 2 - boolean_epsilon, port_plate_y0 - boolean_epsilon,
+                   enclosure_top_z - boolean_epsilon])
+          cube([port_plate_width / 2 + boolean_epsilon, port_plate_height + 2 * boolean_epsilon,
+                port_plate_thickness + 2 * boolean_epsilon]);
+      }
+      // Positive 3 mm overlap into the left plate carries the registration tongue.
+      translate([-port_plate_seam_tongue_width, port_plate_seam_y0, enclosure_top_z])
+        cube([2 * port_plate_seam_tongue_width, port_plate_seam_length,
+              port_plate_thickness]);
+    }
+    port_plate_mount_hole_cuts();
+  }
+}
+
+module port_plate_right_assembled() {
+  difference() {
+    intersection() {
+      port_plate_master();
+      translate([0, port_plate_y0 - boolean_epsilon, enclosure_top_z - boolean_epsilon])
+        cube([port_plate_width / 2 + boolean_epsilon, port_plate_height + 2 * boolean_epsilon,
+              port_plate_thickness + 2 * boolean_epsilon]);
+    }
+    // The socket is intentionally 1 mm wider than the tongue for sliding assembly.
+    translate([-boolean_epsilon, port_plate_seam_y0 - boolean_epsilon,
+               enclosure_top_z - boolean_epsilon])
+      cube([port_plate_socket_width + boolean_epsilon,
+            port_plate_seam_length + 2 * boolean_epsilon,
+            port_plate_thickness + 2 * boolean_epsilon]);
+    port_plate_mount_hole_cuts();
+  }
+}
+
+module port_plate_left_print() { port_plate_left_assembled(); }
+module port_plate_right_print() { port_plate_right_assembled(); }
 
 module seam_vertical_through_cut(rear, top) {
   cut_z0 = top ? equipment_top_z - boolean_epsilon
@@ -356,9 +424,13 @@ module assembled_enclosure(explode = 0, proxies = false) {
       translate([ explode, 0, 0]) enclosure_right_assembled();
     }
     generic_device_clearance_proxy();
+    translate([-explode / 2, 0, 0]) port_plate_left_assembled();
+    translate([ explode / 2, 0, 0]) port_plate_right_assembled();
   } else {
     translate([-explode, 0, 0]) enclosure_left_assembled();
     translate([ explode, 0, 0]) enclosure_right_assembled();
+    translate([-explode / 2, 0, 0]) port_plate_left_assembled();
+    translate([ explode / 2, 0, 0]) port_plate_right_assembled();
   }
 }
 
@@ -460,6 +532,34 @@ module lower_roof_opening_section() {
   }
 }
 
+module port_plate_roof_opening_crop() {
+  intersection() {
+    assembled_enclosure();
+    translate([-rack_front_width / 2 - 1, port_plate_y0 - 1,
+               enclosure_top_z - minimum_wall_thickness - 1])
+      cube([rack_front_width + 2, port_plate_height + 2,
+            port_plate_thickness + minimum_wall_thickness + 2]);
+  }
+}
+
+module port_plate_rear_seam_access_crop() {
+  intersection() {
+    assembled_enclosure();
+    translate([-seam_pad_total_width, port_plate_opening_y1 - 2,
+               enclosure_top_z - minimum_wall_thickness - 1])
+      cube([2 * seam_pad_total_width, enclosure_depth - port_plate_opening_y1 + 3,
+            port_plate_thickness + minimum_wall_thickness + 2]);
+  }
+}
+
+module port_plate_split_crop() {
+  intersection() {
+    assembled_enclosure();
+    translate([-12, port_plate_y0 - 1, enclosure_top_z - 1])
+      cube([24, port_plate_height + 2, port_plate_thickness + 2]);
+  }
+}
+
 module support_rail_section() {
   section_thickness = 0.8;
   intersection() {
@@ -532,6 +632,12 @@ module assembly_review(view_id = 0, proxies = false) {
     screen_roof_rear_section();
   } else if (view_id == 19) {
     lower_roof_opening_section();
+  } else if (view_id == 20) {
+    port_plate_roof_opening_crop();
+  } else if (view_id == 21) {
+    port_plate_rear_seam_access_crop();
+  } else if (view_id == 22) {
+    port_plate_split_crop();
   } else {
     assert(false, str("Unknown assembly_view_id: ", view_id));
   }

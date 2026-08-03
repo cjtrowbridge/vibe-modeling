@@ -6,6 +6,24 @@ Cyberdeck-2 geometry.
 
 ## Current Candidate
 
+## Removable Top 2U Port/Button Plate
+
+The remaining flat roof accepts a standard external `254 x 88.90 mm` blank 2U
+port/button plate. The printer's 220 mm axis limit requires two printable
+`127 x 88.90 x 3 mm` leaves rather than an unprintable monolithic plate. The
+left leaf has a 3 mm registration tongue; the right leaf has its matching socket
+with 1 mm sliding clearance. Four M3 clearance holes (`3.6 mm`) retain the
+assembled plate through 10 mm-wide continuous roof rails, with ISO 7089 M3
+washer support on the plate surface. Install/remove hardware from above before
+occupying the receiver bay.
+
+The fixed roof opening is deliberately smaller than the plate: it retains a 3 mm
+screen-side lip, 10 mm side rails, and a 3 mm margin before the rear seam block.
+The plate spans `Y = 100.732..189.632 mm`; the rear seam screw is centered at
+`Y = 200 mm`, and its head recess/tool envelope remains uncovered. The plate is
+intentionally blank. Port/button cutouts, hardware, cable bends, service access,
+and physical FDM fit remain `BLOCKED_UNKNOWN` pending chosen components.
+
 `configs/rev_0001.json` defines a mutable detailed candidate with:
 
 - one product assembly and one split receiver subassembly;

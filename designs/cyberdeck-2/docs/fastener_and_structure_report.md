@@ -1,5 +1,17 @@
 # Rev 0001 Fastener and Structure Report
 
+## Removable Top Plate (Mutable Candidate)
+
+| Item | Resolved geometry | Status |
+| --- | --- | --- |
+| Plate exterior | 254 x 88.90 x 3 mm assembled, split into two 127 mm printable leaves | PASS geometrically |
+| Leaf registration | 3 mm positive tongue overlap, 1 mm socket sliding clearance | PASS geometrically |
+| Retention hardware | Four M3 3.6 mm clearance holes; ISO 7089 M3 washer support | PASS geometrically |
+| Roof rails | 10 mm continuous rails, each joined continuously into the 3 mm roof and exterior side walls | PASS geometrically |
+| Opening lips | 3 mm front lip and 3 mm margin before seam block | PASS geometrically |
+| Rear seam access | plate ends Y=189.632; head recess/tool envelope begins no earlier than Y=195.875 | PASS geometrically |
+| Port/button geometry and physical FDM hardware fit | No chosen component or print calibration | BLOCKED_UNKNOWN |
+
 ## Flush Four-Station Seam Joint
 
 The former external bumpouts are gone. The chassis now spans

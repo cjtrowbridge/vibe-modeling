@@ -12,6 +12,10 @@ resolved_rack_datum_assertions() {
     enclosure_left_print();
   } else if (part_id == 2) {
     enclosure_right_print();
+  } else if (part_id == 3) {
+    port_plate_left_print();
+  } else if (part_id == 4) {
+    port_plate_right_print();
   } else if (part_id == 90) {
     assembly_review(view_id = assembly_view_id, proxies = show_proxies);
   } else if (part_id == 91) {

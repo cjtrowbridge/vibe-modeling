@@ -8,6 +8,14 @@
     {
       "part_id": 2,
       "name": "enclosure_right"
+    },
+    {
+      "part_id": 3,
+      "name": "port_plate_left"
+    },
+    {
+      "part_id": 4,
+      "name": "port_plate_right"
     }
   ]
 }

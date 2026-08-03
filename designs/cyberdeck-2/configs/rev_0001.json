@@ -59,5 +59,15 @@
   "screen_rack_lower_roof_opening_start_y": 24.0,
   "screen_rack_lower_roof_opening_forward_rim": 3.0,
   "screen_rack_lower_roof_opening_side_margin": 3.0,
+  "port_plate_thickness": 3.0,
+  "port_plate_mount_hole_diameter": 3.6,
+  "port_plate_mount_washer_diameter": 7.0,
+  "port_plate_opening_side_rail_width": 10.0,
+  "port_plate_opening_front_lip": 3.0,
+  "port_plate_opening_seam_margin": 3.0,
+  "port_plate_mount_edge_margin": 8.0,
+  "port_plate_seam_tongue_width": 3.0,
+  "port_plate_seam_clearance": 1.0,
+  "port_plate_seam_end_margin": 8.0,
   "boolean_epsilon": 0.02
 }

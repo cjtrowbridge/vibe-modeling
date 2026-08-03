@@ -88,3 +88,19 @@ The lower chassis roof is open beneath it from `Y = 24.0` to `100.732 mm`, acros
 seam screw-block zone remain intact. Full review and unified audit passed as
 `3 STL + 62 PNG + 2 manifests = 67 files`; combined STL SHA-256 is
 `0132c39a33c7f7b1a863afda6feb49efc999a7381995c603ac8aa2c26d096bc4`.
+
+## Top 2U Port/Button Plate Checkpoint
+
+- Complete artifact build: PASS; four printable leaves (two enclosure and two
+  127 x 88.90 x 3 mm plate leaves), `4 STL + 68 PNG`.
+- Full artifact-bound assembly review: PASS; `1 STL + 31 PNG`.
+- Unified output audit: PASS; `5 STL + 99 PNG + 2 manifests = 106 files`.
+- Plate interface: 254 x 88.90 mm assembled external envelope, four 3.6 mm M3
+  clearances on retained 10 mm roof rails, 3 mm plate/lip material, 3 mm center
+  tongue overlap, and 1 mm registration socket clearance.
+- Rear seam: PASS geometrically; the plate ends at Y=189.632 while the rear
+  M3 head recess/tool envelope begins at Y=195.875.
+- Installed artifacts reviewed: `port_plate_roof_opening`,
+  `port_plate_split`, and `port_plate_rear_seam_access`.
+- Port/button cutouts, physical fastener/tool fit, and FDM clearance remain
+  `BLOCKED_UNKNOWN`; this mutable candidate is not fabrication-ready.
