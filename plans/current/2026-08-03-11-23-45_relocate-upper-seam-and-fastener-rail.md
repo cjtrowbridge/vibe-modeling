@@ -419,3 +419,94 @@ leaf, not the assembled product alone.
   - [x] N.2 Update the fastener/structure report, validation record, plan, and
     append-only journal with the exact new seam dimensions, installation order,
     artifact provenance, and physical-fit limits before committing.
+
+## Angled-Screen Rail Overlap and Through-Bolt Recovery
+
+The full triangular left/right angled-screen side infills currently occupy the
+rear-side M3 hardware envelope for the angled 2U screen rails. They are neither
+needed nor acceptable as a substitute for a rail-to-rail structural connection:
+the angled screen rail and the matching retained flat top-opening rail must
+directly overlap as positive-volume members. The flat top and main-chamber rails
+already use local chamber/open-side hex-nut lands; the angled rails currently
+have only 3.6 mm passages and therefore lack a defined usable rear fastener
+stack.
+
+- [ ] O. Replace the triangular wedge infills with direct, supported rail joints.
+  - [ ] O.1 Remove both `angled_screen_side_infill()` solids completely. Do not
+    retain a residual nub, coplanar contact, or replacement web in the rear-side
+    screen fastener/tool envelope.
+  - [ ] O.2 Extend/reposition only the matching angled-screen rail root and
+    flat top-opening rail endpoint until they have a named, positive-volume
+    overlap of at least 3 mm. The overlap must carry through the full local
+    3 mm rail thickness and connect each rail to two supported endpoints; do
+    not change the exact `222.25 x 88.90 mm` angled 2U aperture or its 45-degree
+    face angle.
+  - [ ] O.3 Define assertions for both left and right rail-joint bounds,
+    overlap depth, remaining throat, and the distances from every screen/flat
+    rail hole and pocket. Every remaining ligament must be at least 3 mm after
+    all cuts.
+- [ ] P. Make all angled-screen rail stations usable through-bolted M3 mounts.
+  - [ ] P.1 Replace the angled-screen rails' hole-only treatment with the same
+    explicit pattern used by the other rails: 3.6 mm passage, one local backing
+    land behind each of the six stations per rail following the 45-degree face
+    normal, and a rear-open 5.9 mm-AF hex M3 nut pocket in that land.
+  - [ ] P.2 Keep the lands local rather than creating a continuous thick wall.
+    Define the screen-face screw direction, rear/open-side nut insertion and
+    driver path, head and nut clearances, and a 3 mm minimum material margin to
+    the 2U aperture, rail edge, joint, roof opening, and any screen envelope.
+  - [ ] P.3 Add assertions that every nut/tool pocket is clear of the removed
+    wedge volume, direct rail joint, and the exact screen insertion envelope.
+- [ ] Q. Produce evidence before accepting geometry.
+  - [ ] Q.1 Add permanent sections/crops normal to the angled rail for the
+    lower, middle, and upper stations on each side. They must show complete
+    through-passages, complete rear-open hex pockets, usable tool approach, and
+    the direct rail overlap without a triangular obstruction.
+  - [ ] Q.2 Run rack-reference and assembly-contract validation, complete
+    four-leaf manifest build, current-output audit, full assembly review, and
+    review audit. Inspect both printable leaves, all angled-rail crops, and the
+    combined STL; reject an assembled-only visual pass.
+  - [ ] Q.3 Update the structure/fastener report, validation record, active
+    plan, and append-only journal with exact overlap, M3 land, clearance, and
+    artifact provenance evidence before committing the checkpoint.
+
+## High-Roof Seam Web Recovery
+
+The rear high-roof locking block has a real roof and rear-wall overlap, but the
+remaining triangular void between that block and the forward edge of the
+horizontal high roof leaves the centre roof seam supported only at one short
+station. The user requires this void to become a continuous seam web: a
+longitudinal wall below the high roof that joins the existing rear lock to the
+forward roof edge while remaining wholly above the angled screen's exact 2U
+clearance zone.
+
+- [ ] R. Add a continuous, load-bearing high-roof seam web.
+  - [ ] R.1 Define the web as paired printable-leaf geometry along the `X = 0`
+    roof seam, beginning with at least 3 mm positive overlap into the existing
+    rear lock block and ending with at least 3 mm positive overlap into the
+    forward high-roof edge/service band. It must not merely meet either member
+    at a face or edge.
+  - [ ] R.2 Shape the web to fill the currently open triangular transition under
+    the horizontal high roof, with a continuous 3 mm-or-greater wall thickness.
+    The assembled web may be visually continuous at the split, but its two
+    printable halves must retain an explicit tongue/receiver or equivalent
+    positive overlap; a zero-clearance coplanar wall at the leaf split is not a
+    structural joint.
+  - [ ] R.3 Keep the web above the face-local `222.25 x 88.90 mm` angled-screen
+    insertion envelope and outside every screen M3 nut/head/tool envelope. Do
+    not move the 45-degree screen plane, change the exact aperture, narrow its
+    rear clearance, or obstruct screen insertion to create the web.
+  - [ ] R.4 Add named assertions for roof-edge and lock-block overlap, web
+    thickness, seam engagement, screen-envelope clearance, and all nearby
+    high-roof-lock head/nut material margins. Each structural throat and void
+    margin must remain at least 3 mm after cuts.
+- [ ] S. Review the high-roof seam web as an installed and printable interface.
+  - [ ] S.1 Add a side section through the former triangular gap and a
+    printable-left/right seam crop. They must show a continuous filled web from
+    rear lock to forward roof edge, positive split engagement, and an unchanged
+    clear angled-screen envelope.
+  - [ ] S.2 Include the web evidence in the complete build, both manifest
+    audits, and full assembly review; inspect the individual leaves before
+    accepting the combined STL.
+  - [ ] S.3 Record exact geometry, remaining physical-fit limitations, and
+    artifact provenance in the structure report, validation record, plan, and
+    journal before committing.
