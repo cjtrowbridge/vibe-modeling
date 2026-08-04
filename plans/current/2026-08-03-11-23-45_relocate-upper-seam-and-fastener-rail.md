@@ -18,17 +18,25 @@ captive-nut seat, and tool path must be contained in that wall's inside service
 structure. This is a single wall-mounted station; two independent upper stations
 cannot occupy the same center-seam coordinates in the wall.
 
-The highest horizontal screen roof is split at `X = 0` and currently has only
-butt contact. Add a full-depth, in-plane tongue/socket joint to this roof: 3 mm
-positive lateral engagement, 1 mm assembly clearance, and no geometry below its
-existing underside. It must preserve the `222.25 x 88.90 mm` angled 2U aperture,
-the 50.8 mm behind-screen clearance, and the screen insertion/removal path.
+The highest horizontal screen roof and its adjoining vertical screen-wall seam
+are split at `X = 0`. A registration-only tongue/socket is insufficient. Replace
+the raw butt seam with one named, complete M3 locking interface: recessed head
+and washer seat, through-passage, engaged tongue/socket, captive nut or insert,
+and a usable driver path. The assembly must preserve the `222.25 x 88.90 mm`
+angled 2U aperture, the 50.8 mm behind-screen clearance, and the screen
+insertion/removal path.
 
 The narrow rail between the lower screen opening and the top port-plate opening
 is not a required load path in this design and shall be removed. Merge the two
 roof cutouts into one uninterrupted clearance opening while preserving the
 screen frame, the port-plate support rails, and the named minimum margins to the
 rear seam block. A dedicated M3 block there is deliberately de-scoped.
+
+The first merged-opening implementation is structurally unverified and must not
+be retained as-is: its 10 mm port-plate rails place a 3.6 mm mounting hole only
+0.2 mm from the inner cut edge, its stepped rail transition has zero positive
+overlap, and a legacy center-seam feature is visibly exposed as an unclassified
+nub. These are correction items, not cosmetic refinements.
 
 The current upper service zone is 17.8 mm. The target is the smallest safe upper
 zone, but no numeric reduction is approved until the relocated front station and
@@ -38,15 +46,20 @@ remain unchanged.
 
 ## Checklist
 
-- [ ] 1. Establish the high screen-roof center seam.
+- [ ] 1. Establish the high screen-roof M3 locking seam.
   - [x] 1.1 Define named roof tongue, socket, 1 mm fit clearance, 3 mm positive
     overlap, full engagement length, and every remaining roof-edge ligament.
-  - [x] 1.2 Model strict left/right roof ownership and the in-plane interlock;
-    do not add a block below the existing roof underside or into the screen
-    aperture/rear-clearance envelope.
-  - [?] 1.3 Add assertions and section/probe views demonstrating that the roof
-    joint has continuous positive engagement while its lowest surface, aperture,
-    50.8 mm rear clearance, and screen insertion envelope remain unchanged.
+  - [-] 1.2 Registration-only roof interlock. Superseded: it has no M3 hardware,
+    clamping force, captive receiver, or tool path.
+  - [ ] 1.3 Define the complete M3 hardware stack for the high roof/adjoining
+    wall: screw axis, 3.6 mm passage, head/washer seat, captive nut or insert,
+    installation direction, driver envelope, and every post-cut ligament.
+  - [ ] 1.4 Model strict left/right ownership of the M3 tongue/socket station
+    with at least 3 mm positive root/socket overlap. It must lock the high roof
+    and vertical wall together rather than merely touch at `X = 0`.
+  - [ ] 1.5 Add assertions and section/probe views proving the complete locking
+    stack, its tool access, and clearance from the roof underside, aperture,
+    50.8 mm rear screen clearance, and screen insertion envelope.
 
 - [ ] 2. Model the wall-mounted closed-front upper seam interface.
   - [ ] 2.1 Define named front-wall M3 hole, head/washer, nut, driver, tongue,
@@ -76,30 +89,48 @@ remain unchanged.
   - [?] 4.2 Assert and section-check screen-frame clearance, port-plate support,
     and all post-cut material widths; do not introduce a new unsupported bridge.
 
-- [ ] 5. Update the assembly contract and inspection evidence.
-  - [ ] 5.1 Update interfaces and add dedicated installed-artifact views for
+- [ ] 5. Correct the merged-opening support geometry.
+  - [ ] 5.1 Widen each port-plate side mounting rail from 10 mm to at least
+    14 mm, retaining the M3 holes only where both inside-cut and exterior-edge
+    ligaments are at least 3 mm after the 3.6 mm hole cut.
+  - [ ] 5.2 Replace the erroneous hole-margin assertion with explicit named
+    inside-cut, exterior-edge, and pairwise hole-to-hole ligament calculations.
+  - [ ] 5.3 Build the stepped screen-to-port support transition with at least
+    3 mm positive overlap along its full depth; do not join rail sections with
+    coplanar faces, a shared edge, or a zero-length Boolean boundary.
+  - [ ] 5.4 Inventory the exposed center-seam nub. Remove it if it has no
+    declared load path, or integrate it into a named tongue/socket connection
+    with at least 3 mm overlap and verified clearance from both openings.
+  - [ ] 5.5 Add below-side, above-side, and cross-sections at the transition,
+    every port-plate M3 hole, and the former nub location; review the exact
+    installed artifacts before accepting the repair.
+
+- [ ] 6. Update the assembly contract and inspection evidence.
+  - [ ] 6.1 Update interfaces and add dedicated installed-artifact views for
     the high-roof seam, the front-wall station, any necessary screen-rear-wall
     station, the shortened upper roof, and their tool/clearance sides.
-  - [ ] 5.2 Update README, structure/fastener report, validation record, and
+  - [ ] 6.2 Update README, structure/fastener report, validation record, and
     today's append-only journal with dimensions, hardware, installation order,
     intentional separate parts, and unresolved physical-fit limits.
 
-- [ ] 6. Validate the exact candidate.
-  - [ ] 6.1 Run rack-reference validation, assembly-contract validation, and
+- [ ] 7. Validate the exact candidate.
+  - [ ] 7.1 Run rack-reference validation, assembly-contract validation, and
     OpenSCAD assertions for every printable leaf and the assembled dispatch.
-  - [ ] 6.2 Complete the normal manifest build, audit installed output, review
+  - [ ] 7.2 Complete the normal manifest build, audit installed output, review
     the real STL/PNG artifacts and all new sections, then always create and
     audit the full artifact-bound assembly review in `output/cyberdeck-2/`.
-  - [ ] 6.3 Verify printable transformed bounds, unexpected-shell status,
+  - [ ] 7.3 Verify printable transformed bounds, unexpected-shell status,
     structural sections at each altered join, all post-cut ligaments, and exact
     artifact/provenance counts; archive the plan and commit the checkpoint.
 
 ## Acceptance
 
-The highest screen roof has a full, clearance-neutral positive-volume interlock
-across `X = 0`. The closed-front station fastens from the inside of the `Y = 215`
-wall. A chamber-height reduction occurs only if the complete remaining upper
-seam path is independently verified; the thin inter-opening rail does not gain
-hardware without a later approved structural need. All altered interfaces retain
-at least 3 mm wall/overlap/material width, retain screen and port-plate service
-access, and pass the complete current-output and assembly-review audits.
+The highest screen roof and its adjoining vertical wall have a complete,
+serviceable M3 tongue/socket locking interface across `X = 0`; no portion of
+this upper seam remains a merely touching wall. The closed-front station fastens
+from the inside of the `Y = 215` wall. A chamber-height reduction occurs only if
+the complete remaining upper seam path is independently verified; the thin
+inter-opening rail does not gain hardware without a later approved structural
+need. All altered interfaces retain at least 3 mm wall/overlap/material width,
+retain screen and port-plate service access, and pass the complete current-output
+and assembly-review audits.
