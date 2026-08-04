@@ -64,9 +64,11 @@ generic device allowance.
 | maximum rear face-normal envelope | `50.8 mm` |
 | rearward / downward envelope projection | `35.921 / 35.921 mm` |
 | screen-frame footprint in product Y | `0.0 to 103.732 mm` |
-| resulting assembled height | `187.362 mm` total span |
+| upper service band | `18.0 mm` above the unchanged 2U aperture |
+| resulting assembled height | `200.09 mm` total span |
 
 The angled interface uses the canonical two-column, six-hole-per-column M3
-pattern in its own face-local frame. It is an open screen receiver rather than a
-sealed second equipment bay: a physical screen, cable/service envelope, and roof
-remain `BLOCKED_UNKNOWN`.
+pattern in its own face-local frame. Its 3.6 mm holes are now through-bolted
+candidate passages rather than blind insert bores. It is an open screen receiver
+rather than a sealed second equipment bay: the chamber-side fastening hardware,
+physical screen, cable/service envelope, and FDM fit remain `BLOCKED_UNKNOWN`.

@@ -1,5 +1,5 @@
-include <lib/defaults.scad>;
 include <lib/rack_v2_0_0.scad>;
+include <lib/defaults.scad>;
 include <parts/enclosure_blockout.scad>;
 
 part_id = is_undef(part_id) ? 90 : part_id;

@@ -216,7 +216,7 @@ to the 14 mm port-plate M3 rail. Do not implement another overlay block.
     delete or relocate a seam feature based only on visual proximity.
 
 - [ ] B. Rebuild the opening as one continuous roof profile.
-  - [ ] B.1 Delete the paired rectangular roof-opening subtractions and the
+  - [x] B.1 Delete the paired rectangular roof-opening subtractions and the
     post-split `merged_opening_side_rail_bridges()` overlay. Build one named
     2D polygonal opening boundary in the pre-split chassis master instead.
   - [ ] B.2 Define the left and right retained-rail profiles by named outer and
@@ -260,11 +260,11 @@ Replace them as one coordinated interface revision; do not retain blind bores,
 partial hole patterns, or unsupported rail patches.
 
 - [ ] E. Convert the angled 2U screen interface to through-bolted hardware.
-  - [ ] E.1 Replace the `4.0 mm x 7.0 mm` blind insert bores with `3.6 mm` M3
+  - [x] E.1 Replace the `4.0 mm x 7.0 mm` blind insert bores with `3.6 mm` M3
     through-holes at the canonical six positions on each of the two screen rails.
     Retain the exact `222.25 x 88.90 mm` aperture, `45 degree` transform, and
     canonical two-column six-hole pattern.
-  - [ ] E.2 Remove the obsolete broad 7 mm blind-insert rail depth. Retain a
+  - [x] E.2 Remove the obsolete broad 7 mm blind-insert rail depth. Retain a
     continuous 3 mm screen-face flange and 3 mm side-wall support, adding only
     named local backing/nut lands where required for a washer, nut, tool, or
     load path.
@@ -279,7 +279,7 @@ partial hole patterns, or unsupported rail patches.
     Each value must be at least 3 mm.
 
 - [ ] F. Replace the flat top plate's four-corner retention with a full 2U pattern.
-  - [ ] F.1 Generate the canonical six-hole-per-side sequence in the top plate
+  - [x] F.1 Generate the canonical six-hole-per-side sequence in the top plate
     and its fixed roof rails: 12 aligned `3.6 mm` through-holes total, using the
     selected ten-inch rack datums rather than four corner coordinates.
   - [ ] F.2 Keep the 14 mm roof rails only if every resulting post-cut ligament
@@ -298,7 +298,7 @@ partial hole patterns, or unsupported rail patches.
     receiver bay.
 
 - [ ] G. Integrate the upper roof lock with these interfaces.
-  - [ ] G.1 Implement the 18 mm minimum upper screen service band from item
+  - [?] G.1 Implement the 18 mm minimum upper screen service band from item
     1.8 as one continuous extension of the 45-degree slope, side infills, rear
     closure, and roof. It must create usable service volume above the screen
     aperture, not a raised roof disconnected from the screen structure.

@@ -6,8 +6,8 @@
 | --- | --- | --- |
 | Plate exterior | 254 x 88.90 x 3 mm assembled, split into two 127 mm printable leaves | PASS geometrically |
 | Leaf registration | 3 mm positive tongue overlap, 1 mm socket sliding clearance | PASS geometrically |
-| Retention hardware | Four M3 3.6 mm clearance holes; ISO 7089 M3 washer support | PASS geometrically |
-| Roof rails | 10 mm continuous rails, each joined continuously into the 3 mm roof and exterior side walls | PASS geometrically |
+| Retention hardware | Twelve M3 3.6 mm clearance holes, six per side at canonical 2U stations | Candidate; hardware stack unverified |
+| Roof rails | 16 mm retained rails with local 8.9 mm-deep underside nut lands | Candidate; post-cut sections unverified |
 | Opening lips | 3 mm front lip and 3 mm margin before seam block | PASS geometrically |
 | Rear seam access | plate ends Y=189.632; head recess/tool envelope begins no earlier than Y=195.875 | PASS geometrically |
 | Port/button geometry and physical FDM hardware fit | No chosen component or print calibration | BLOCKED_UNKNOWN |
@@ -82,10 +82,11 @@ distribution remain unverified.
 ## Angled Screen Rail and Support Load Paths
 
 The 45-degree screen interface has two 15.875 mm-wide face rails with the same
-six-position M3 insert pattern as the lower 2U receiver. Each rail is 7 mm deep
-behind its face, preserving the full blind-insert depth and at least 3 mm of
-residual material. The clear aperture between them is the full `222.25 x 88.90 mm`
-2U envelope.
+six-position M3 pattern as the lower 2U receiver. The current candidate replaces
+the former 7 mm blind insert bores with 3.6 mm through-holes in a 3 mm face
+flange, preserving the full `222.25 x 88.90 mm` aperture. A chamber-side nut,
+washer, driver, and insertion stack has not yet been designed or verified, so
+this interface remains structurally and serviceability unverified.
 
 At each outer edge, a 3 mm side support wall runs from the face to the 50.8 mm
 rear envelope. It overlaps the corresponding 3 mm existing chassis side wall by

@@ -65,6 +65,14 @@ module angled_screen_frame_uncut() {
         cube([rack_rail_face_width, screen_rack_face_rail_depth,
               screen_rack_face_height]);
 
+      // This solid fascia is above the 2U aperture.  Together with the side
+      // infills and upper roof it forms the continuous 45-degree service band
+      // that contains the high-roof locking station.
+      translate([-rack_front_width / 2, -screen_rack_face_rail_depth,
+                 screen_rack_face_height])
+        cube([rack_front_width, screen_rack_face_rail_depth,
+              screen_rack_upper_service_band_height]);
+
       // The outer side support walls carry each rail into the existing full
       // height chassis wall.  They intentionally leave the entire top and
       // center open: roof and rear closure are a later separate component.
@@ -123,8 +131,8 @@ module angled_screen_insert_hole_cuts() {
         translate([rack_rail_column_x(side), boolean_epsilon,
                    screen_rack_hole_z(hole_index)])
           rotate([90, 0, 0])
-            cylinder(h = rack_insert_hole_depth + boolean_epsilon,
-                     d = rack_insert_finished_diameter, $fn = 48);
+          cylinder(h = screen_rack_face_rail_depth + 2 * boolean_epsilon,
+                   d = screen_mount_hole_diameter, $fn = 48);
 }
 
 module angled_screen_frame() {
@@ -176,6 +184,7 @@ module shell_master_uncut() {
     angled_screen_enclosure_closure();
     angled_screen_side_infill(-1);
     angled_screen_side_infill(1);
+    port_plate_chassis_nut_lands();
   }
 }
 
@@ -184,52 +193,64 @@ module shell_master() {
     shell_master_uncut();
     rack_insert_hole_cuts();
     angled_screen_insert_hole_cuts();
-    // A single stepped clearance opening now joins the lower screen opening to
-    // the port-plate opening. The former 3 mm divider rail was not structural.
-    // The narrower forward portion deliberately retains the 10 mm port-plate
-    // mounting rails; the completed rear seam block remains uncut.
-    translate([-rack_front_width / 2 + screen_rack_lower_roof_opening_side_margin,
-               screen_rack_lower_roof_opening_start_y,
-               enclosure_top_z - minimum_wall_thickness - boolean_epsilon])
-      cube([merged_top_clearance_first_width,
-            merged_top_clearance_first_length,
-            minimum_wall_thickness + 2 * boolean_epsilon]);
-    // The protected port-plate opening leaves continuous 10 mm side rails,
-    // a 3 mm screen-side lip, and a 3 mm margin before the rear seam block.
-    translate([port_plate_opening_x0, port_plate_opening_y0,
-               enclosure_top_z - minimum_wall_thickness - boolean_epsilon])
-      cube([port_plate_opening_width, port_plate_opening_length,
-            minimum_wall_thickness + 2 * boolean_epsilon]);
+    merged_roof_opening_cut();
     port_plate_chassis_mount_hole_cuts();
+    port_plate_chassis_nut_pocket_cuts();
   }
 }
 
-// Each bridge connects the outer roof side structure to the narrower 14 mm
-// port-plate rail.  It deliberately overlaps the port rail by 3 mm in Y;
-// it is not a coplanar rail end.
-module merged_opening_side_rail_bridges() {
-  bridge_y0 = port_plate_opening_y0 - merged_opening_transition_overlap;
-  bridge_y1 = port_plate_opening_y0 + merged_opening_transition_overlap;
-  for (side = [-1, 1]) {
-    bridge_x0 = side < 0 ? -rack_front_width / 2 : port_plate_opening_x1;
-    translate([bridge_x0, bridge_y0, enclosure_top_z - minimum_wall_thickness])
-      cube([port_plate_opening_side_rail_width,
-            bridge_y1 - bridge_y0, minimum_wall_thickness]);
-  }
+// One continuous polygonal opening replaces the former two rectangular cuts.
+// Its side boundary widens the retained roof material from the 3 mm screen
+// margin to the 16 mm port-plate mounting rail without a touching rail end.
+module merged_roof_opening_cut() {
+  translate([0, 0, enclosure_top_z - minimum_wall_thickness - boolean_epsilon])
+    linear_extrude(height = minimum_wall_thickness + 2 * boolean_epsilon)
+      polygon(points = [
+        [screen_opening_x0, screen_rack_lower_roof_opening_start_y],
+        [screen_opening_x1, screen_rack_lower_roof_opening_start_y],
+        [screen_opening_x1, opening_transition_y0],
+        [port_plate_opening_x1, port_plate_opening_y0],
+        [port_plate_opening_x1, port_plate_opening_y1],
+        [port_plate_opening_x0, port_plate_opening_y1],
+        [port_plate_opening_x0, port_plate_opening_y0],
+        [screen_opening_x0, opening_transition_y0]
+      ]);
 }
 
 module port_plate_chassis_mount_hole_cuts() {
   for (x = [-port_plate_mount_x, port_plate_mount_x])
-    for (y = [port_plate_mount_y_front, port_plate_mount_y_rear])
-      translate([x, y, enclosure_top_z - minimum_wall_thickness - boolean_epsilon])
+    for (index = [0 : rack_height_u * 3 - 1])
+      translate([x, port_plate_mount_y(index), enclosure_top_z - minimum_wall_thickness - boolean_epsilon])
         cylinder(h = minimum_wall_thickness + 2 * boolean_epsilon,
                  d = port_plate_mount_hole_diameter, $fn = 48);
 }
 
+// Local under-rail lands retain captive M3 nuts without restoring a thick
+// continuous wall below the removable top plate.
+module port_plate_chassis_nut_lands() {
+  for (x = [-port_plate_mount_x, port_plate_mount_x])
+    for (index = [0 : rack_height_u * 3 - 1])
+      translate([x < 0 ? -rack_front_width / 2 : port_plate_opening_x1,
+                 port_plate_mount_y(index) - seam_nut_across_flats / 2 - minimum_internal_edge_width,
+                 enclosure_top_z - port_plate_nut_land_depth])
+        cube([port_plate_opening_side_rail_width,
+              seam_nut_across_flats + 2 * minimum_internal_edge_width,
+              port_plate_nut_land_depth]);
+}
+
+module port_plate_chassis_nut_pocket_cuts() {
+  for (x = [-port_plate_mount_x, port_plate_mount_x])
+    for (index = [0 : rack_height_u * 3 - 1])
+      translate([x, port_plate_mount_y(index),
+                 enclosure_top_z - port_plate_nut_land_depth - boolean_epsilon])
+        cylinder(h = seam_nut_recess_depth + boolean_epsilon,
+                 d = seam_nut_circumscribed_diameter, $fn = 6);
+}
+
 module port_plate_mount_hole_cuts() {
   for (x = [-port_plate_mount_x, port_plate_mount_x])
-    for (y = [port_plate_mount_y_front, port_plate_mount_y_rear])
-      translate([x, y, enclosure_top_z - boolean_epsilon])
+    for (index = [0 : rack_height_u * 3 - 1])
+      translate([x, port_plate_mount_y(index), enclosure_top_z - boolean_epsilon])
         cylinder(h = port_plate_thickness + 2 * boolean_epsilon,
                  d = port_plate_mount_hole_diameter, $fn = 48);
 }
@@ -452,24 +473,12 @@ module screen_roof_lock_tongue() {
 module leaf_assembly_geometry(side) {
   union() {
     prepared_shell_half(side);
-    // Restore deliberate material after the merged cut: these bridges are
-    // owned by the chassis halves, not by the removable port plate.
-    intersection() {
-      merged_opening_side_rail_bridges();
-      translate([side < 0 ? -rack_front_width : 0, -boolean_epsilon, -printer_axis_limit])
-        cube([rack_front_width, enclosure_depth + 2 * boolean_epsilon,
-              2 * printer_axis_limit]);
-    }
     for (rear = [false, true])
       for (top = [false, true]) {
-        // The high roof/back-wall lock owns this location.  Leaving the
-        // generic station here created the unclassified vertical nub.
-        if (!(rear && top)) {
-          if (side < 0)
-            seam_receiver_socket(rear, top);
-          else
-            seam_tongue(rear, top);
-        }
+        if (side < 0)
+          seam_receiver_socket(rear, top);
+        else
+          seam_tongue(rear, top);
       }
     if (side < 0)
       screen_roof_lock_receiver();

@@ -118,3 +118,22 @@ seam screw-block zone remain intact. Full review and unified audit passed as
   checkpoint and is not a substitute for the remaining seam/height verification.
 - The closed-front wall seam relocation, screen-end upper load-path verification,
   and any main-chamber height reduction remain pending.
+
+## 2026-08-04 Interface-Recovery Execution (Unverified Candidate)
+
+- Complete manifest build and both current-output audits: PASS. The installed
+  current set is `4 STL + 68 PNG`, and the full review adds `1 STL + 31 PNG`,
+  for a unified exact set of `5 STL + 99 PNG + 2 manifests = 106 files`.
+- Assembly contract and full artifact-bound review: PASS. The combined STL span
+  is `254.0 x 215.0 x 200.09 mm`.
+- The screen face rails are now 3 mm deep with canonical six-per-side 3.6 mm
+  through-passages; the old 7 mm blind-insert treatment is removed.
+- The top plate and fixed roof rails now expose six 3.6 mm positions per side
+  (twelve total); rails are 16 mm wide and have local underside nut lands.
+- A named 18 mm upper screen service band and a single polygonal lower-to-top
+  roof opening are present in the candidate source.
+- These passes verify artifact completeness and renderability only. The
+  chamber-side screen hardware stack, all new top-plate nut/tool envelopes,
+  the high-roof lock, the opening-transition load path, unexpected-shell status,
+  and the residual-nub owner remain `UNVERIFIED`; no fabrication-ready claim is
+  made from this checkpoint.
