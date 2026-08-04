@@ -204,6 +204,20 @@ module shell_master() {
   }
 }
 
+// Each bridge connects the outer roof side structure to the narrower 14 mm
+// port-plate rail.  It deliberately overlaps the port rail by 3 mm in Y;
+// it is not a coplanar rail end.
+module merged_opening_side_rail_bridges() {
+  bridge_y0 = port_plate_opening_y0 - merged_opening_transition_overlap;
+  bridge_y1 = port_plate_opening_y0 + merged_opening_transition_overlap;
+  for (side = [-1, 1]) {
+    bridge_x0 = side < 0 ? -rack_front_width / 2 : port_plate_opening_x1;
+    translate([bridge_x0, bridge_y0, enclosure_top_z - minimum_wall_thickness])
+      cube([port_plate_opening_side_rail_width,
+            bridge_y1 - bridge_y0, minimum_wall_thickness]);
+  }
+}
+
 module port_plate_chassis_mount_hole_cuts() {
   for (x = [-port_plate_mount_x, port_plate_mount_x])
     for (y = [port_plate_mount_y_front, port_plate_mount_y_rear])
@@ -377,10 +391,11 @@ module prepared_shell_half(side) {
   }
 }
 
-// Complete M3 locking station below the highest horizontal screen roof. Its
-// root overlaps the roof by 3 mm; neither half projects above that roof. The
-// nut is inserted through the centre-seam mouth before the right tongue slides
-// over it, then the screw is driven through the flush roof-head seat.
+// Complete M3 locking station below the highest horizontal screen roof and
+// directly against the rear wall. Each half overlaps the roof and rear wall by
+// at least 3 mm; neither half projects above the roof. The nut is inserted
+// through the centre-seam mouth before the right tongue slides over it, then
+// the screw is driven through the flush roof-head seat.
 module screen_roof_lock_through_cut() {
   translate([screen_roof_lock_screw_x, screen_roof_lock_screw_y,
              screen_roof_lock_hardware_z0 - boolean_epsilon])
@@ -437,12 +452,24 @@ module screen_roof_lock_tongue() {
 module leaf_assembly_geometry(side) {
   union() {
     prepared_shell_half(side);
+    // Restore deliberate material after the merged cut: these bridges are
+    // owned by the chassis halves, not by the removable port plate.
+    intersection() {
+      merged_opening_side_rail_bridges();
+      translate([side < 0 ? -rack_front_width : 0, -boolean_epsilon, -printer_axis_limit])
+        cube([rack_front_width, enclosure_depth + 2 * boolean_epsilon,
+              2 * printer_axis_limit]);
+    }
     for (rear = [false, true])
       for (top = [false, true]) {
-        if (side < 0)
-          seam_receiver_socket(rear, top);
-        else
-          seam_tongue(rear, top);
+        // The high roof/back-wall lock owns this location.  Leaving the
+        // generic station here created the unclassified vertical nub.
+        if (!(rear && top)) {
+          if (side < 0)
+            seam_receiver_socket(rear, top);
+          else
+            seam_tongue(rear, top);
+        }
       }
     if (side < 0)
       screen_roof_lock_receiver();

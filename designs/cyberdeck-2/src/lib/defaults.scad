@@ -55,8 +55,9 @@ screen_rack_side_wall_thickness = is_undef(screen_rack_side_wall_thickness) ? mi
 screen_rack_interface_height_u = is_undef(screen_rack_interface_height_u) ? 2 : screen_rack_interface_height_u;
 screen_rack_upper_roof_thickness = is_undef(screen_rack_upper_roof_thickness) ? minimum_wall_thickness : screen_rack_upper_roof_thickness;
 screen_rack_rear_wall_thickness = is_undef(screen_rack_rear_wall_thickness) ? minimum_wall_thickness : screen_rack_rear_wall_thickness;
-// Vertical volume reserved above the 2U screen for the below-roof seam lock.
-screen_rack_upper_service_raise = is_undef(screen_rack_upper_service_raise) ? 18.0 : screen_rack_upper_service_raise;
+// The high roof remains on the 45-degree screen datum.  The seam lock occupies
+// the unused triangular volume directly against the rear wall below this roof.
+screen_rack_upper_service_raise = is_undef(screen_rack_upper_service_raise) ? 0.0 : screen_rack_upper_service_raise;
 screen_rack_lower_roof_opening_start_y = is_undef(screen_rack_lower_roof_opening_start_y) ? seam_pad_depth : screen_rack_lower_roof_opening_start_y;
 screen_rack_lower_roof_opening_forward_rim = is_undef(screen_rack_lower_roof_opening_forward_rim) ? minimum_wall_thickness : screen_rack_lower_roof_opening_forward_rim;
 screen_rack_lower_roof_opening_side_margin = is_undef(screen_rack_lower_roof_opening_side_margin) ? minimum_wall_thickness : screen_rack_lower_roof_opening_side_margin;
@@ -71,7 +72,7 @@ screen_roof_lock_roof_overlap = is_undef(screen_roof_lock_roof_overlap) ? minimu
 port_plate_thickness = is_undef(port_plate_thickness) ? minimum_wall_thickness : port_plate_thickness;
 port_plate_mount_hole_diameter = is_undef(port_plate_mount_hole_diameter) ? 3.6 : port_plate_mount_hole_diameter;
 port_plate_mount_washer_diameter = is_undef(port_plate_mount_washer_diameter) ? 7.0 : port_plate_mount_washer_diameter;
-port_plate_opening_side_rail_width = is_undef(port_plate_opening_side_rail_width) ? 10.0 : port_plate_opening_side_rail_width;
+port_plate_opening_side_rail_width = is_undef(port_plate_opening_side_rail_width) ? 14.0 : port_plate_opening_side_rail_width;
 port_plate_opening_front_lip = is_undef(port_plate_opening_front_lip) ? minimum_wall_thickness : port_plate_opening_front_lip;
 port_plate_opening_seam_margin = is_undef(port_plate_opening_seam_margin) ? minimum_wall_thickness : port_plate_opening_seam_margin;
 port_plate_mount_edge_margin = is_undef(port_plate_mount_edge_margin) ? 8.0 : port_plate_mount_edge_margin;
@@ -139,10 +140,10 @@ screen_roof_seam_y0 = screen_rack_rear_wall_thickness + screen_roof_seam_end_mar
 screen_roof_seam_y1 = screen_rack_upper_roof_front_y - screen_roof_seam_end_margin;
 screen_roof_seam_length = screen_roof_seam_y1 - screen_roof_seam_y0;
 screen_roof_seam_socket_width = screen_roof_seam_tongue_width + screen_roof_seam_clearance;
-// The high-roof M3 station is wholly beneath the continuous exterior roof.
-// Raising that roof by the lock height plus its 3 mm root overlap preserves the
-// original screen envelope below the connector.
-screen_roof_lock_y0 = screen_roof_seam_y0;
+// The high-roof M3 station is wholly beneath the continuous exterior roof and
+// begins at the rear plane.  Its 3 mm rear-wall engagement is real material,
+// not a touching face or a forward-floating block.
+screen_roof_lock_y0 = 0;
 screen_roof_lock_y1 = screen_roof_lock_y0 + screen_roof_lock_depth;
 screen_roof_lock_screw_x = -seam_nut_circumscribed_diameter / 2 + screen_roof_seam_clearance;
 screen_roof_lock_screw_y = (screen_roof_lock_y0 + screen_roof_lock_y1) / 2;
@@ -170,6 +171,7 @@ port_plate_opening_length = port_plate_opening_y1 - port_plate_opening_y0;
 merged_top_clearance_first_width = screen_rack_lower_roof_opening_width;
 merged_top_clearance_first_length = port_plate_opening_y0
                                       - screen_rack_lower_roof_opening_start_y;
+merged_opening_transition_overlap = minimum_structural_overlap;
 port_plate_mount_x = rack_front_width / 2 - port_plate_mount_edge_margin;
 port_plate_mount_y_front = port_plate_y0 + port_plate_mount_edge_margin;
 port_plate_mount_y_rear = port_plate_y1 - port_plate_mount_edge_margin;
@@ -292,9 +294,11 @@ module blockout_contract_assertions() {
          "SCREEN-ROOF: M3 lock lacks vertical material around washer seat");
   assert(screen_roof_lock_roof_overlap >= minimum_structural_overlap,
          "SCREEN-ROOF: M3 lock must overlap the high roof structurally");
-  assert(screen_rack_upper_service_raise >= screen_roof_lock_height
-         + screen_roof_lock_roof_overlap,
-         "SCREEN-ROOF: raised roof must preserve clearance below the lock");
+  assert(screen_rack_upper_service_raise == 0,
+         "SCREEN-ROOF: roof must remain on the fixed 45-degree screen datum");
+  assert(screen_roof_lock_y0 <= screen_rack_rear_wall_thickness
+         - minimum_structural_overlap,
+         "SCREEN-ROOF: lock must overlap the rear wall by at least 3 mm");
   assert(screen_roof_lock_y1 <= screen_rack_upper_roof_front_y
          - minimum_internal_edge_width,
          "SCREEN-ROOF: top lock cuts into the forward roof edge");
@@ -357,9 +361,11 @@ module blockout_contract_assertions() {
   assert(port_plate_mount_edge_margin - port_plate_mount_hole_diameter / 2
          >= minimum_internal_edge_width,
          "PORT-PLATE: M3 holes lack exterior-edge material");
-  assert(port_plate_opening_side_rail_width - (port_plate_mount_edge_margin
-         - port_plate_mount_hole_diameter / 2) >= minimum_internal_edge_width,
+  assert(port_plate_mount_x - port_plate_opening_x1
+         - port_plate_mount_hole_diameter / 2 >= minimum_internal_edge_width,
          "PORT-PLATE: M3 holes lack material to the roof opening");
+  assert(merged_opening_transition_overlap >= minimum_structural_overlap,
+         "ROOF: screen-to-port rail bridge lacks structural overlap");
   assert(port_plate_seam_tongue_width >= minimum_structural_overlap,
          "PORT-PLATE: registration tongue overlap is below structural minimum");
   assert(port_plate_seam_clearance >= 1.0,

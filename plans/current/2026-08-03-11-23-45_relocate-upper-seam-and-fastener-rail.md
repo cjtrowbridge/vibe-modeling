@@ -20,14 +20,14 @@ cannot occupy the same center-seam coordinates in the wall.
 
 The highest horizontal screen roof is split at `X = 0`. A registration-only
 tongue/socket is insufficient. Replace the raw butt seam with one named,
-complete M3 locking interface directly beneath the roof at the roof/back-wall
-junction. Both left and right connector halves must remain below the continuous
-exterior roof plane and positively overlap both the 3 mm roof and the 3 mm rear
-wall. The roof returns to its original datum: raising it without also moving the
-screen frame creates an unacceptable visible mismatch. The angled screen frame
-must retain its exact 45-degree transform and `222.25 x 88.90 mm`
-angled 2U aperture, the 50.8 mm behind-screen clearance, and the screen
-insertion/removal path.
+complete M3 locking interface housed in an integrated upper service band. Extend
+the 45-degree screen-side profile, its side infills, rear closure, and horizontal
+roof together above the unchanged screen rail, rather than raising only the roof.
+Both connector halves must remain inside this continuous raised structure and
+positively overlap the roof and supporting walls by at least 3 mm. The exact
+45-degree screen transform and `222.25 x 88.90 mm` angled 2U aperture, the
+50.8 mm behind-screen clearance, and the screen insertion/removal path remain
+unchanged.
 
 The narrow rail between the lower screen opening and the top port-plate opening
 is not a required load path in this design and shall be removed. Merge the two
@@ -67,10 +67,30 @@ remain unchanged.
     assert its roof overlap, rear-wall overlap, rear-wall root thickness,
     forward-edge clearance to the 45-degree screen envelope, and its complete
     fastening/load path; do not rely on a wall-touching block.
-  - [ ] 1.7 Restore the original roof/rear-closure datum and retain the exact
-    existing 45-degree screen transform. Remove the raised-roof transition,
-    exterior tower, and any residual registration-only roof key so the roof
-    exterior is continuous and the M3 station is the sole declared lock.
+  - [ ] 1.6.1 Correct the high-roof lock hardware envelope before retaining its
+    station. The current 15 mm depth with a 7.5 mm screw centre leaves only
+    `0.375 mm` between the 8.25 mm head/washer recess and the 3 mm rear wall;
+    it is not serviceable. Reposition and/or deepen the station so the head,
+    washer, nut, driver, and insertion path each retain at least 3 mm from the
+    rear wall, roof/opening edges, and all socket walls after every cut. Assert
+    these boundaries individually rather than asserting only total block depth.
+  - [-] 1.7 Restore the original roof/rear-closure datum. Superseded by the
+    integrated upper service-band approach in item 1.8.
+  - [ ] 1.8 Add an integrated upper service band above the screen 2U rail.
+    Extend the complete 45-degree screen-side profile, side infills, rear
+    closure, and horizontal roof together by a named band height; do not raise
+    only the roof or create a detached tower. Retain the exact existing 45-degree
+    screen transform and aperture. The band must be at least 18 mm, exceeding
+    the 14.25 mm minimum required by an 8.25 mm M3 head/washer seat plus two
+    3 mm material margins.
+  - [ ] 1.8.1 Relocate the high-roof tongue/socket M3 station wholly within the
+    new upper service band, above the 2U clearance envelope. Define and assert
+    independent 3 mm margins for head/washer, nut, driver access, rear wall,
+    roof exterior, screen opening, and every socket wall after all cuts.
+  - [ ] 1.8.2 Add side, roof, and center-seam sections proving that the raised
+    profile is continuous, both lock halves are contained within it, the screen
+    aperture remains clear, and no exterior roof/screen mismatch or residual
+    registration key remains.
 
 - [ ] 2. Model the wall-mounted closed-front upper seam interface.
   - [ ] 2.1 Define named front-wall M3 hole, head/washer, nut, driver, tongue,
@@ -93,10 +113,11 @@ remain unchanged.
     no M3 hardware will be added in this location.
 
 - [ ] 4. Remove the non-structural inter-opening rail.
-  - [x] 4.1 Replace the two adjacent roof-opening cuts and their retained 3 mm
+  - [?] 4.1 Replace the two adjacent roof-opening cuts and their retained 3 mm
     divider with one named continuous cutout, preserving the existing exterior
     side rails, the port-plate mounting rails, and at least 3 mm before the rear
-    seam block.
+    seam block. The first implementation used separate rectangular cuts and
+    did not create the required continuous transition profile.
   - [?] 4.2 Assert and section-check screen-frame clearance, port-plate support,
     and all post-cut material widths; do not introduce a new unsupported bridge.
 
@@ -119,10 +140,9 @@ remain unchanged.
     continuous support transition. The screen-side and port-plate-side members
     must deliberately overlap by at least 3 mm across the transition; a shared
     face, shared edge, visual continuity, or an epsilon Boolean join fails.
-  - [ ] 5.7 Delete the generic top/rear seam tongue root and socket geometry
-    that remains visible as a vertical nub beside this transition. It is not a
-    declared rail support or fastener station and must not survive as orphaned
-    geometry after the rail transition is rebuilt.
+  - [-] 5.7 Delete the generic top/rear seam tongue root and socket geometry.
+    This was an unproven attribution for the visible nub and must not be changed
+    again until feature-isolated inspection identifies its owner.
   - [ ] 5.8 Verify the rebuilt transition after all hole cuts: at least 3 mm
     material from every M3 hole to both opening and exterior edges, at least
     3 mm between relevant cuts, a continuous load path across the transition,
@@ -152,14 +172,14 @@ remain unchanged.
 
 ## Rear Roof/Wall Lock Correction Plan
 
-1. **Establish datums and keep the screen fixed.** Restore the high roof and
-   rear closure to the pre-raise datum. Keep `angled_screen_frame_transform()`
-   unchanged so the screen opening remains at 45 degrees; assert the roof and
-   screen-frame top relation rather than using a displaced roof to create room.
-2. **Put both connector halves below the rear roof.** Place the left receiver
-   and right tongue in the triangular clearance volume immediately forward of
-   the rear wall. Each root must penetrate the roof and rear wall by at least
-   3 mm, while the exterior roof remains flat with no raised block.
+1. **Keep the screen fixed and add a unified band.** Keep
+   `angled_screen_frame_transform()` unchanged so the screen aperture remains
+   at 45 degrees. Extend the slope, side infills, rear closure, and roof together
+   by an 18 mm minimum service band above—not inside—the 2U clearance envelope.
+2. **Put both connector halves within the raised profile.** Place the left
+   receiver and right tongue wholly in the new service band, where each root
+   penetrates its roof and supporting walls by at least 3 mm. The exterior must
+   be one continuous screen-to-roof profile with no detached tower.
 3. **Use one complete M3 station.** Define the 3.6 mm passage, recessed or
    internal service-side driver path, head/washer seat, captive-nut entry from
    the centre seam, tongue, socket, closure walls, and explicit assembly order.
@@ -178,6 +198,131 @@ remain unchanged.
    sequence in the design records, mark only evidenced plan items complete,
    append the journal, regenerate plan indexes, audit both manifests, then
    commit the verified checkpoint.
+
+## Opening-Transition Recovery Plan
+
+The previous repair attempts failed because they treated the visible discontinuity
+as a local bridge or a high-roof seam issue. The affected feature is instead the
+2D roof-opening boundary where the 3 mm screen-side retained rail transitions
+to the 14 mm port-plate M3 rail. Do not implement another overlay block.
+
+- [ ] A. Diagnose the exact owners before changing geometry.
+  - [ ] A.1 Add two temporary, governed assembly-review crops: one through each
+    outside opening transition and one through the center-seam nub. Render the
+    contributing chassis roof, screen frame, port rail, generic seam station,
+    and removable plate in separately selectable diagnostic colors.
+  - [ ] A.2 Inspect the installed crops and record the exact module and Boolean
+    operation that creates every visible terminating edge and the nub. Do not
+    delete or relocate a seam feature based only on visual proximity.
+
+- [ ] B. Rebuild the opening as one continuous roof profile.
+  - [ ] B.1 Delete the paired rectangular roof-opening subtractions and the
+    post-split `merged_opening_side_rail_bridges()` overlay. Build one named
+    2D polygonal opening boundary in the pre-split chassis master instead.
+  - [ ] B.2 Define the left and right retained-rail profiles by named outer and
+    inner boundaries. The 3 mm screen-side rail must widen into the 14 mm
+    port-plate mounting rail over a named finite transition length; construct
+    that material as one continuous polygon/extrusion, not as terminating
+    cubes that share a face or edge.
+  - [ ] B.3 Require the transition to overlap/engage both adjacent rail regions
+    by at least 3 mm along the complete supported depth. Keep the opening clear
+    of the screen frame and retain the required rear seam-block margin.
+  - [ ] B.4 Place each port-plate M3 mounting hole only in the uniform 14 mm
+    rail region. Assert the final post-cut exterior-edge, opening-edge, and
+    hole-to-hole ligaments independently; each must be at least 3 mm.
+
+- [ ] C. Resolve the nub from evidence.
+  - [ ] C.1 Once its exact owner is established, remove the nub if it is
+    unneeded geometry, or replace it with a named, serviceable tongue/socket
+    fastener interface. A residual projection, coplanar contact, or partial
+    feature is not acceptable.
+  - [ ] C.2 Verify the selected resolution leaves no collision with the opening,
+    port plate, screen frame, or required tool envelope.
+
+- [ ] D. Prove the final result before checkpointing.
+  - [ ] D.1 Add permanent installed-artifact views: left/right transition from
+    above and below, a section at each transition midpoint, a section through
+    each port-plate hole, and a center-nub ownership/clearance view.
+  - [ ] D.2 Run the assembly-contract validator, complete manifest build,
+    manifest audit, full artifact-bound assembly review, and review the exact
+    installed PNG/STL set. Reject a result with a visible rail mismatch,
+    isolated nub, missing material, or incomplete assembled lock.
+  - [ ] D.3 Update the plan, design records, and append-only journal with the
+    measured profile dimensions and verification evidence; commit only the
+    reviewed checkpoint.
+
+## Coordinated Screen and Top-Plate Interface Recovery Plan
+
+The current angled screen interface assumes 7 mm-deep blind M3 insert bores,
+and the top plate assumes four corner fasteners. Those assumptions do not provide
+the requested through-bolted screen attachment or a complete 2U mounting pattern.
+Replace them as one coordinated interface revision; do not retain blind bores,
+partial hole patterns, or unsupported rail patches.
+
+- [ ] E. Convert the angled 2U screen interface to through-bolted hardware.
+  - [ ] E.1 Replace the `4.0 mm x 7.0 mm` blind insert bores with `3.6 mm` M3
+    through-holes at the canonical six positions on each of the two screen rails.
+    Retain the exact `222.25 x 88.90 mm` aperture, `45 degree` transform, and
+    canonical two-column six-hole pattern.
+  - [ ] E.2 Remove the obsolete broad 7 mm blind-insert rail depth. Retain a
+    continuous 3 mm screen-face flange and 3 mm side-wall support, adding only
+    named local backing/nut lands where required for a washer, nut, tool, or
+    load path.
+  - [ ] E.3 Define a complete chamber-side fastening stack for every screen
+    bolt: exterior screw-head/washer choice, `3.6 mm` passage, M3 nut/washer
+    pocket or captive-nut feature, insertion order, and driver/wrench envelope.
+    Each pocket must be installable from the main chamber without blocking the
+    screen insertion/removal path.
+  - [ ] E.4 Assert all screen-rail post-cut ligaments: hole to aperture, hole
+    to exterior edge, hole to adjacent hole, nut/washer pocket to every exterior
+    edge and void, local backing-land thickness, and every rail/support overlap.
+    Each value must be at least 3 mm.
+
+- [ ] F. Replace the flat top plate's four-corner retention with a full 2U pattern.
+  - [ ] F.1 Generate the canonical six-hole-per-side sequence in the top plate
+    and its fixed roof rails: 12 aligned `3.6 mm` through-holes total, using the
+    selected ten-inch rack datums rather than four corner coordinates.
+  - [ ] F.2 Keep the 14 mm roof rails only if every resulting post-cut ligament
+    passes. The 6.812 mm M3 nut circumscribed diameter leaves approximately
+    3.59 mm across a 14 mm rail; assert the exact transformed result, including
+    every adjacent canonical hole.
+  - [ ] F.3 Use a specified low-profile M3 button-head or equivalently small
+    head at the end-hole stations; do not use the 8.25 mm washer recess where
+    the 6.35 mm canonical end margin would reduce the remaining exterior
+    material below 3 mm. Define head, washer if used, captive/accessible nut,
+    driver path, and install/remove order for all twelve stations.
+  - [ ] F.4 Add underside nut pockets or an equally serviceable retained-fastener
+    solution. Their orientation and depth must leave at least 3 mm to the plate
+    edge, roof opening, neighboring pockets, and structural members after all
+    cuts. The removable plate must remain removable without occupying the main
+    receiver bay.
+
+- [ ] G. Integrate the upper roof lock with these interfaces.
+  - [ ] G.1 Implement the 18 mm minimum upper screen service band from item
+    1.8 as one continuous extension of the 45-degree slope, side infills, rear
+    closure, and roof. It must create usable service volume above the screen
+    aperture, not a raised roof disconnected from the screen structure.
+  - [ ] G.2 Move the complete roof M3 tongue/socket station into that band. Keep
+    both halves below the exterior roof, wholly above the 2U clearance envelope,
+    and independently preserve 3 mm clearance for its head, washer, nut,
+    driver, roof, walls, screen opening, and socket closure surfaces.
+  - [ ] G.3 Verify that the new screen through-fastener pockets, the upper lock,
+    the roof-opening transition, and the top-plate hardware have no intersecting
+    swept, driver, nut-insertion, or screen-insertion envelopes.
+
+- [ ] H. Validate and document the combined revision.
+  - [ ] H.1 Add permanent installed-artifact views for each screen bolt's
+    chamber side, top-plate end and middle stations, the upper lock centreline,
+    the completed 3-to-14 mm opening transition, and the resolved former nub.
+  - [ ] H.2 Run rack-reference and assembly-contract validation, then the
+    complete manifest build, both audits, and full artifact-bound review.
+    Inspect the installed combined STL and every targeted view; reject blind
+    screen holes, missing 2U holes, inaccessible hardware, thin ligaments,
+    residual nubs, or visible rail discontinuities.
+  - [ ] H.3 Update the design README, rack/depth report, fastener/structure
+    report, validation record, plan, and append-only journal with the selected
+    M3 hardware, exact patterns, installation order, and all verification
+    results before committing the reviewed checkpoint.
 
 ## Acceptance
 
