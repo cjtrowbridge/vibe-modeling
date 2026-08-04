@@ -18,11 +18,11 @@ captive-nut seat, and tool path must be contained in that wall's inside service
 structure. This is a single wall-mounted station; two independent upper stations
 cannot occupy the same center-seam coordinates in the wall.
 
-The highest horizontal screen roof and its adjoining vertical screen-wall seam
-are split at `X = 0`. A registration-only tongue/socket is insufficient. Replace
-the raw butt seam with one named, complete M3 locking interface: recessed head
-and washer seat, through-passage, engaged tongue/socket, captive nut or insert,
-and a usable driver path. The assembly must preserve the `222.25 x 88.90 mm`
+The highest horizontal screen roof is split at `X = 0`. A registration-only
+tongue/socket is insufficient. Replace the raw butt seam with one named,
+complete M3 locking interface on the roof's upper surface: recessed head and
+washer seat, through-passage, engaged tongue/socket, captive nut or insert,
+and a usable vertical driver path. The assembly must preserve the `222.25 x 88.90 mm`
 angled 2U aperture, the 50.8 mm behind-screen clearance, and the screen
 insertion/removal path.
 
@@ -51,12 +51,12 @@ remain unchanged.
     overlap, full engagement length, and every remaining roof-edge ligament.
   - [-] 1.2 Registration-only roof interlock. Superseded: it has no M3 hardware,
     clamping force, captive receiver, or tool path.
-  - [ ] 1.3 Define the complete M3 hardware stack for the high roof/adjoining
-    wall: screw axis, 3.6 mm passage, head/washer seat, captive nut or insert,
+  - [x] 1.3 Define the complete M3 hardware stack on the high roof: vertical
+    screw axis, 3.6 mm passage, head/washer seat, captive nut or insert,
     installation direction, driver envelope, and every post-cut ligament.
-  - [ ] 1.4 Model strict left/right ownership of the M3 tongue/socket station
-    with at least 3 mm positive root/socket overlap. It must lock the high roof
-    and vertical wall together rather than merely touch at `X = 0`.
+  - [x] 1.4 Model strict left/right ownership of the M3 tongue/socket station
+    with at least 3 mm positive root/socket overlap. It must lock the split high
+    roof together rather than merely touch at `X = 0`.
   - [ ] 1.5 Add assertions and section/probe views proving the complete locking
     stack, its tool access, and clearance from the roof underside, aperture,
     50.8 mm rear screen clearance, and screen insertion envelope.
@@ -112,11 +112,14 @@ remain unchanged.
   - [ ] 6.2 Update README, structure/fastener report, validation record, and
     today's append-only journal with dimensions, hardware, installation order,
     intentional separate parts, and unresolved physical-fit limits.
+  - [x] 6.3 Correct the assembly-review staging path so transient render files
+    remain under `.tmp/scad/cyberdeck-2/` and the flat exact-set audit of
+    `output/cyberdeck-2/` can pass.
 
 - [ ] 7. Validate the exact candidate.
   - [ ] 7.1 Run rack-reference validation, assembly-contract validation, and
     OpenSCAD assertions for every printable leaf and the assembled dispatch.
-  - [ ] 7.2 Complete the normal manifest build, audit installed output, review
+  - [x] 7.2 Complete the normal manifest build, audit installed output, review
     the real STL/PNG artifacts and all new sections, then always create and
     audit the full artifact-bound assembly review in `output/cyberdeck-2/`.
   - [ ] 7.3 Verify printable transformed bounds, unexpected-shell status,

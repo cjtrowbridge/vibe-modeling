@@ -18,8 +18,9 @@ exact-set validation, atomic installation, and provenance audit.
 3. Dry-run the complete build and review every generated part command.
 4. Build with `scripts/scad_build_all.py`; never loop over `scad_build.py`
    manually to represent a complete design.
-5. Require managed staging inside `output/<design>/` and exact expected
-   printable and assembly artifact names. Remove staging before success.
+5. Require managed staging under `.tmp/scad/<design>/` and exact expected
+   printable and assembly artifact names. `output/<design>/` is the final,
+   flat artifact set only; remove staging before success.
 6. Install only after all parts succeed. Replacement of `output/<design>/` must
    occur as one directory operation, never by overlay copy.
 7. Run `--audit-only` against the installed destination.

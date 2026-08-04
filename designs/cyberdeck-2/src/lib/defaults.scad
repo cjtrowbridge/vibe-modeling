@@ -61,6 +61,11 @@ screen_rack_lower_roof_opening_side_margin = is_undef(screen_rack_lower_roof_ope
 screen_roof_seam_tongue_width = is_undef(screen_roof_seam_tongue_width) ? minimum_structural_overlap : screen_roof_seam_tongue_width;
 screen_roof_seam_clearance = is_undef(screen_roof_seam_clearance) ? 1.0 : screen_roof_seam_clearance;
 screen_roof_seam_end_margin = is_undef(screen_roof_seam_end_margin) ? minimum_wall_thickness : screen_roof_seam_end_margin;
+screen_roof_lock_depth = is_undef(screen_roof_lock_depth) ? 15.0 : screen_roof_lock_depth;
+screen_roof_lock_height = is_undef(screen_roof_lock_height) ? 18.0 : screen_roof_lock_height;
+// The fastener block deliberately penetrates the horizontal roof by this
+// structural amount.  The hardware zone remains below the roof underside.
+screen_roof_lock_roof_overlap = is_undef(screen_roof_lock_roof_overlap) ? minimum_structural_overlap : screen_roof_lock_roof_overlap;
 port_plate_thickness = is_undef(port_plate_thickness) ? minimum_wall_thickness : port_plate_thickness;
 port_plate_mount_hole_diameter = is_undef(port_plate_mount_hole_diameter) ? 3.6 : port_plate_mount_hole_diameter;
 port_plate_mount_washer_diameter = is_undef(port_plate_mount_washer_diameter) ? 7.0 : port_plate_mount_washer_diameter;
@@ -132,6 +137,17 @@ screen_roof_seam_y0 = screen_rack_rear_wall_thickness + screen_roof_seam_end_mar
 screen_roof_seam_y1 = screen_rack_upper_roof_front_y - screen_roof_seam_end_margin;
 screen_roof_seam_length = screen_roof_seam_y1 - screen_roof_seam_y0;
 screen_roof_seam_socket_width = screen_roof_seam_tongue_width + screen_roof_seam_clearance;
+// The high-roof M3 station is above the horizontal roof, not in the rear
+// vertical wall.  Its root overlaps the roof by 3 mm; all hardware remains
+// above the screen-clearance envelope.
+screen_roof_lock_y0 = screen_roof_seam_y0;
+screen_roof_lock_y1 = screen_roof_lock_y0 + screen_roof_lock_depth;
+screen_roof_lock_screw_x = -seam_nut_circumscribed_diameter / 2 + screen_roof_seam_clearance;
+screen_roof_lock_screw_y = (screen_roof_lock_y0 + screen_roof_lock_y1) / 2;
+screen_roof_lock_root_z0 = screen_rack_top_z - screen_roof_lock_roof_overlap;
+screen_roof_lock_hardware_z0 = screen_rack_top_z;
+screen_roof_lock_top_z = screen_roof_lock_hardware_z0 + screen_roof_lock_height;
+screen_roof_lock_total_height = screen_roof_lock_top_z - screen_roof_lock_root_z0;
 
 // The removable blank 2U plate covers a deliberately smaller roof opening.
 // It is split at X=0 into two printable leaves; the left leaf's tongue enters
@@ -262,6 +278,25 @@ module blockout_contract_assertions() {
          "SCREEN-ROOF: seam socket requires 1 mm assembly clearance");
   assert(screen_roof_seam_length >= minimum_internal_edge_width,
          "SCREEN-ROOF: seam engagement is not meaningful");
+  assert(screen_roof_lock_depth >= seam_head_washer_recess_depth
+         + seam_nut_recess_depth + 2 * minimum_wall_thickness,
+         "SCREEN-ROOF: M3 lock lacks head/nut closure walls");
+  assert(screen_roof_lock_depth - seam_head_washer_recess_diameter
+         >= 2 * minimum_internal_edge_width,
+         "SCREEN-ROOF: M3 head seat lacks side material on the top surface");
+  assert(screen_roof_lock_height - seam_head_washer_recess_diameter
+         >= 2 * minimum_internal_edge_width,
+         "SCREEN-ROOF: M3 lock lacks vertical material around washer seat");
+  assert(screen_roof_lock_roof_overlap >= minimum_structural_overlap,
+         "SCREEN-ROOF: M3 lock must overlap the high roof structurally");
+  assert(screen_roof_lock_y1 <= screen_rack_upper_roof_front_y
+         - minimum_internal_edge_width,
+         "SCREEN-ROOF: top lock cuts into the forward roof edge");
+  assert(screen_roof_lock_screw_x - seam_head_washer_recess_diameter / 2
+         >= -seam_pad_half_width + minimum_internal_edge_width,
+         "SCREEN-ROOF: top lock head seat lacks left exterior ligament");
+  assert(screen_roof_lock_screw_x + seam_nut_circumscribed_diameter / 2 >= 0,
+         "SCREEN-ROOF: captive nut needs an open centre-seam insertion path");
   assert(screen_rack_upper_roof_thickness >= minimum_wall_thickness,
          "SCREEN-ROOF: interlock must not reduce the roof underside clearance");
   assert(screen_rack_rear_wall_thickness >= minimum_structural_overlap,

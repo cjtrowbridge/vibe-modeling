@@ -81,8 +81,9 @@ Provide a repeatable local workflow to iterate OpenSCAD prototypes, generate mul
 - Prefer numeric `part_id` values in configs.
 - Scratch outputs go in `output/<design>/` (ignored by git).
 - Revision outputs go in `revisions/<design>/rev_000N/` (ignored by git).
-- Probes, sections, partial builds, and staging remain inside
-  `output/<design>/`; successful governed commands leave a flat exact set.
+- Probes, sections, partial builds, and staging remain under
+  `.tmp/scad/<design>/`; successful governed commands leave `output/<design>/`
+  as a flat exact set.
 - Do not invent artifact directories. In particular, `output/<design>_rev_000N/` is invalid.
 - Completed outputs contain no `.scad` source, probe file, or staging directory.
 - Only commit source (`.scad`) and config (`configs/*.json`) unless explicitly keeping generated examples.

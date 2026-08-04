@@ -397,6 +397,63 @@ module screen_roof_seam_tongue() {
           screen_rack_upper_roof_thickness]);
 }
 
+// Complete M3 locking station on the highest horizontal screen roof.  Its root
+// overlaps the roof by 3 mm; no part occupies the rear screen-clearance volume.
+// The nut is inserted through the centre-seam mouth before the right tongue
+// slides over it, then the screw is driven vertically from the top surface.
+module screen_roof_lock_through_cut() {
+  translate([screen_roof_lock_screw_x, screen_roof_lock_screw_y,
+             screen_roof_lock_hardware_z0 - boolean_epsilon])
+    cylinder(h = screen_roof_lock_height + 2 * boolean_epsilon,
+             d = seam_fastener_finished_diameter, $fn = 48);
+}
+
+module screen_roof_lock_head_cut() {
+  translate([screen_roof_lock_screw_x, screen_roof_lock_screw_y,
+             screen_roof_lock_top_z - seam_head_washer_recess_depth])
+    cylinder(h = seam_head_washer_recess_depth + boolean_epsilon,
+             d = seam_head_washer_recess_diameter, $fn = 64);
+}
+
+module screen_roof_lock_nut_cut() {
+  translate([screen_roof_lock_screw_x, screen_roof_lock_screw_y,
+             screen_roof_lock_hardware_z0 - boolean_epsilon])
+    cylinder(h = seam_nut_recess_depth + boolean_epsilon,
+             d = seam_nut_circumscribed_diameter, $fn = 6);
+}
+
+module screen_roof_lock_receiver() {
+  difference() {
+    translate([-seam_pad_half_width, screen_roof_lock_y0, screen_roof_lock_root_z0])
+      cube([seam_pad_half_width, screen_roof_lock_depth, screen_roof_lock_total_height]);
+    // Socket is open only at the centre-seam mouth; 3 mm side walls and the
+    // roof-overlap root remain after all hardware cuts.
+    translate([-seam_joint_cross_width, screen_roof_lock_y0 + minimum_wall_thickness,
+               screen_roof_lock_hardware_z0 + seam_nut_recess_depth])
+      cube([seam_joint_cross_width, screen_roof_lock_depth - 2 * minimum_wall_thickness,
+            screen_roof_lock_height - seam_nut_recess_depth - seam_head_washer_recess_depth]);
+    screen_roof_lock_through_cut();
+    screen_roof_lock_head_cut();
+    screen_roof_lock_nut_cut();
+  }
+}
+
+module screen_roof_lock_tongue() {
+  difference() {
+    union() {
+      translate([-seam_joint_cross_width, screen_roof_lock_y0 + minimum_wall_thickness + screen_roof_seam_clearance,
+                 screen_roof_lock_hardware_z0 + seam_nut_recess_depth + screen_roof_seam_clearance])
+        cube([seam_joint_cross_width + minimum_structural_overlap,
+              screen_roof_lock_depth - 2 * (minimum_wall_thickness + screen_roof_seam_clearance),
+              screen_roof_lock_height - seam_nut_recess_depth - seam_head_washer_recess_depth
+              - 2 * screen_roof_seam_clearance]);
+      translate([0, screen_roof_lock_y0, screen_roof_lock_root_z0])
+        cube([minimum_structural_overlap, screen_roof_lock_depth, screen_roof_lock_total_height]);
+    }
+    screen_roof_lock_through_cut();
+  }
+}
+
 module leaf_assembly_geometry(side) {
   union() {
     prepared_shell_half(side);
@@ -409,6 +466,10 @@ module leaf_assembly_geometry(side) {
         else
           seam_tongue(rear, top);
       }
+    if (side < 0)
+      screen_roof_lock_receiver();
+    else
+      screen_roof_lock_tongue();
   }
 }
 
