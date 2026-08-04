@@ -335,3 +335,41 @@ inter-opening rail does not gain hardware without a later approved structural
 need. All altered interfaces retain at least 3 mm wall/overlap/material width,
 retain screen and port-plate service access, and pass the complete current-output
 and assembly-review audits.
+
+## Main-Chamber 2U Rear-Rail Through-Bolt Recovery
+
+The main-chamber 2U rack rail currently uses the legacy 10 mm-deep blind-insert
+configuration: a 4.0 mm bore stops within the rail. That makes the wall
+unnecessarily thick and does not permit the requested through-bolt and
+chamber-side nut installation. This recovery changes only that rack interface;
+it does not alter the 222.25 x 88.90 mm aperture, the front/rear chassis datum,
+or the screen and top-plate rack interfaces.
+
+- [ ] I. Define the replacement rear-rail hardware contract.
+  - [ ] I.1 Replace the `10 mm` blind-insert rail with a named `3 mm`
+    face flange and six canonical `3.6 mm` M3 through-passages per side.
+    Preserve the exact 2U opening and the existing canonical rack coordinates.
+  - [ ] I.2 Model one local chamber-side nut land per hole, analogously to the
+    top-plate rails: each land must overlap the 3 mm face flange by at least
+    3 mm, retain a chamber-open hexagonal M3 nut pocket, and keep the screw
+    passage continuous from the exterior face to that pocket.
+  - [ ] I.3 Define the selected M3 screw head/washer, nut, installation
+    direction, wrench/driver path, and removal sequence. No blind insert,
+    inaccessible nut, or unmodeled tool envelope may remain.
+- [ ] J. Guard material and interface dimensions.
+  - [ ] J.1 Add named assertions for the 3 mm rail face, rail-to-land overlap,
+    local land root, nut-pocket depth, exterior and aperture margins, and every
+    hole-to-hole ligament after cuts. The governing edge/material width is
+    `>= 3 mm`; the ten-inch-rack host override also requires `>= 3 mm` radial
+    material around each primary M3 hole.
+  - [ ] J.2 Add a dedicated chamber-side cross-section/crop through an end and
+    middle station, showing an unbroken screw passage, complete nut pocket,
+    accessible tool side, and no intrusion into the 2U insertion envelope.
+- [ ] K. Implement and verify the exact candidate.
+  - [ ] K.1 Build the complete four-leaf manifest into `output/cyberdeck-2/`,
+    inspect the installed rear-rail views and the combined assembly, then run
+    both manifest audits and the full artifact-bound assembly review.
+  - [ ] K.2 Update the rack/depth, fastener/structure, validation, plan, and
+    append-only journal records with the changed hardware stack, exact output
+    provenance, and any remaining physical-fit limits before committing the
+    reviewed checkpoint.
