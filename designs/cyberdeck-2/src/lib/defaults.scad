@@ -34,6 +34,10 @@ device_support_rail_thickness = is_undef(device_support_rail_thickness) ? 3.0 : 
 device_support_rail_inboard_overlap = is_undef(device_support_rail_inboard_overlap) ? 3.0 : device_support_rail_inboard_overlap;
 
 seam_pad_total_width = is_undef(seam_pad_total_width) ? 24.0 : seam_pad_total_width;
+seam_receiver_width = is_undef(seam_receiver_width) ? 18.0 : seam_receiver_width;
+seam_tongue_insert_width = is_undef(seam_tongue_insert_width) ? 14.0 : seam_tongue_insert_width;
+seam_tongue_root_overlap = is_undef(seam_tongue_root_overlap) ? minimum_structural_overlap : seam_tongue_root_overlap;
+seam_fastener_axis_x = is_undef(seam_fastener_axis_x) ? -8.0 : seam_fastener_axis_x;
 seam_pad_depth = is_undef(seam_pad_depth) ? 18.0 : seam_pad_depth;
 seam_fastener_finished_diameter = is_undef(seam_fastener_finished_diameter) ? 3.6 : seam_fastener_finished_diameter;
 seam_head_washer_recess_diameter = is_undef(seam_head_washer_recess_diameter) ? 8.25 : seam_head_washer_recess_diameter;
@@ -94,8 +98,9 @@ generic_equipment_depth = rack_usable_depth - equipment_front_fit_clearance - eq
 
 equipment_bottom_z = -rack_clear_height / 2;
 equipment_top_z = rack_clear_height / 2;
-seam_pad_half_width = seam_pad_total_width / 2;
 seam_nut_circumscribed_diameter = seam_nut_across_flats / cos(30);
+// Retained only for the separately governed high screen-roof lock.
+seam_pad_half_width = seam_pad_total_width / 2;
 seam_head_layer_thickness = seam_head_washer_recess_depth + minimum_internal_edge_width;
 seam_nut_layer_thickness = seam_nut_recess_depth + minimum_internal_edge_width
                            + 0.2;
@@ -256,12 +261,29 @@ module blockout_contract_assertions() {
   assert(seam_socket_cavity_depth + 2 * seam_socket_wall_thickness
          <= seam_pad_depth,
          "SEAM: socket lacks front/rear walls around the tongue");
-  assert(seam_pad_half_width - (seam_joint_cross_width + seam_socket_tip_clearance)
+  assert(seam_receiver_width - (seam_tongue_insert_width + seam_socket_tip_clearance)
          >= seam_socket_wall_thickness,
          "SEAM: socket lacks a 3 mm closed end behind the tongue");
-  assert((seam_tongue_depth - seam_fastener_finished_diameter) / 2
-         >= minimum_internal_edge_width,
-         "SEAM: tongue lacks material around the through-passage");
+  assert(seam_tongue_root_overlap >= minimum_structural_overlap,
+         "SEAM: tongue lacks a 3 mm root in its owning leaf");
+  assert(seam_fastener_axis_x + seam_head_washer_recess_diameter / 2
+         <= -minimum_internal_edge_width,
+         "SEAM: head recess crosses the printable split edge");
+  assert(seam_fastener_axis_x - seam_head_washer_recess_diameter / 2
+         >= -seam_receiver_width + minimum_internal_edge_width,
+         "SEAM: head recess lacks left receiver exterior material");
+  assert(seam_fastener_axis_x + seam_nut_circumscribed_diameter / 2
+         <= -minimum_internal_edge_width,
+         "SEAM: nut recess crosses the printable split edge");
+  assert(seam_fastener_axis_x - seam_nut_circumscribed_diameter / 2
+         >= -seam_receiver_width + minimum_internal_edge_width,
+         "SEAM: nut recess lacks left receiver exterior material");
+  assert(seam_fastener_axis_x - seam_fastener_finished_diameter / 2
+         >= -seam_tongue_insert_width + minimum_internal_edge_width,
+         "SEAM: tongue through-passage lacks closed-end material");
+  assert(seam_fastener_axis_x + seam_fastener_finished_diameter / 2
+         <= -minimum_internal_edge_width,
+         "SEAM: tongue through-passage lacks split-edge material");
   assert(front_fascia_depth >= minimum_structural_overlap,
          "FRONT: fascia depth is below the structural minimum");
   assert(front_rail_depth >= minimum_structural_overlap,

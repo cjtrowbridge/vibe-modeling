@@ -19,17 +19,21 @@ The former external bumpouts are gone. The chassis now spans
 joints occupy only the 17.8 mm structural/service zones outside the preserved
 `Z = -44.45 to +44.45 mm` device envelope.
 
-Stations are centered at `X = -3.9`, at front/rear `Y = 12.0 and 200.0 mm`.
+Stations are centered at `X = -8.0`, at front/rear `Y = 12.0 and 200.0 mm`.
 Top fasteners install downward from the top exterior; bottom fasteners install
 upward from the bottom exterior. Every 8.25 mm head/washer recess is 3.8 mm deep,
 so installed hardware remains below the planar exterior. Captive 5.9 mm AF nut
 recesses open into the empty equipment bay for installation before the device.
 
-The left leaf owns each complete head recess, through-passage, and nut recess;
-the right tongue owns its complete through-passage. These cuts are also applied
-to the overlapping left shell so the later union cannot refill any portion of
-an opening. Dedicated installed-artifact crops verify complete circular head
-recesses and complete hexagonal nut recesses at all four stations.
+The left leaf has an 18 mm-wide enclosed receiver.  Its complete 8.25 mm head
+recess, through-passage, and nut recess remain in that printable leaf: the head
+recess has 3.875 mm material to the `X = 0` split and 5.875 mm to the receiver's
+outer edge.  The right leaf supplies a 14 mm tongue insertion plus a 3 mm
+root-overlap block, so the 3.6 mm passage clamps both leaves rather than merely
+passing through the receiver.  Dedicated left-leaf crops show complete circular
+head recesses at the front and rear top stations; all four stations are generated
+from the same named geometry. Physical hardware and driver access remain
+unverified.
 
 ## Captured Tongue-and-Socket Stack
 
@@ -38,23 +42,24 @@ recesses and complete hexagonal nut recesses at all four stations.
 | total service/plate stack | 17.8 mm | outside 2U bay |
 | exterior head wall | 6.8 mm | 3.0 mm behind head recess |
 | socket clearance above tongue | 1.0 mm | fit allowance, not structure |
-| right-leaf tongue | 3.0 mm | structural minimum |
+| left receiver width | 18.0 mm | 3.0 mm minimum outer/split edge assertions |
+| right-leaf tongue insertion | 14.0 mm | 3.0 mm root overlap in right leaf |
 | socket clearance below tongue | 1.0 mm | fit allowance, not structure |
 | bay-facing nut wall | 6.0 mm | 3.2 mm behind nut recess |
 | socket front/rear walls | 3.0 mm each | structural minimum |
-| socket closed end | 3.2 mm | structural minimum |
-| through-hole | 3.6 mm | 6.2 mm depthwise material in tongue |
-| head/washer recess | 8.25 x 3.8 mm | 7.875 mm front/rear margin |
-| captive-nut recess | 5.9 mm AF x 2.8 mm | 8.594 mm front/rear margin |
+| socket closed end | 3.0 mm | structural minimum |
+| through-hole | 3.6 mm | 4.2 mm to tongue closed end; 6.2 mm to split |
+| head/washer recess | 8.25 x 3.8 mm | 3.875 mm split; 5.875 mm outer receiver margin |
+| captive-nut recess | 5.9 mm AF x 2.8 mm | at least 3 mm split/outer receiver assertions |
 | candidate screw | M3 x 14 mm | flush with the service-zone bay boundary |
 
-At every station the right tongue enters 7.8 mm through the center seam into a
-left receiver cavity that is 8.8 mm deep, leaving 1 mm at the closed end. The
-tongue is 16 mm deep inside an 18 mm cavity, leaving 1 mm on each front/rear
-face. The left receiver is closed on the exterior, bay-facing, front, rear, and
-closed-end faces; only the center-seam mouth remains open for lengthwise
-assembly. The right tongue is rooted through a 3 mm full-height block that
-positively overlaps its leaf's service structure.
+At every station the right tongue enters 14 mm through the center seam into a
+15 mm-deep receiver cavity, leaving 1 mm fit clearance at the closed end. The
+tongue is 16 mm deep inside an 18 mm receiver cavity, leaving 1 mm on each
+front/rear face. The left receiver is closed on the exterior, bay-facing,
+front, rear, and closed-end faces; only the center-seam mouth remains open for
+lengthwise assembly. The right tongue is rooted through a 3 mm full-height block
+that positively overlaps its leaf's service structure.
 
 ## Main-Chamber 2U Through-Bolt Rails
 

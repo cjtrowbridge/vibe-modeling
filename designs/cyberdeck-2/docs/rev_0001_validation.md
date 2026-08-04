@@ -153,3 +153,20 @@ seam screw-block zone remain intact. Full review and unified audit passed as
   pocket exterior margin, and end-station opening margin. The modeled stack is
   an M3 x 8 low-profile button-head screw and captive M3 nut; physical hardware,
   tool access, and print calibration remain `BLOCKED_UNKNOWN`.
+
+## 2026-08-04 Contained Generic Seam Checkpoint
+
+- Replaced the generic seam's split-breaking `X = -3.9 mm` fastener layout with
+  a named 18 mm left receiver, 14 mm right tongue insertion, 3 mm right-root
+  overlap, and `X = -8.0 mm` M3 axis at every front/rear and top/bottom station.
+- OpenSCAD assertions require 3 mm or more of material to the split and receiver
+  outside edge for the head, nut, and passage, plus a 3 mm receiver closed end
+  and tongue root. The 8.25 mm head recess has 3.875 mm split-edge margin.
+- The permanent `left_seam_head_containment` review crop renders the printable
+  left leaf alone and shows complete circular head recesses at both top
+  stations; it cannot be visually repaired by the assembled union.
+- Complete manifest build, current-output audit, full assembly review, and review
+  audit: PASS. The installed exact set is `5 STL + 100 PNG + 2 manifests = 107`
+  files in `output/cyberdeck-2/`.
+- This checkpoint does not replace physical M3/nut/driver access, FDM tolerance,
+  torque, or load testing; those remain `UNVERIFIED`.

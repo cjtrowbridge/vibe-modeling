@@ -372,6 +372,14 @@
       "assembly_view": "port_plate_split",
       "assembly_view_id": 22,
       "show_proxies": false
+    },
+    {
+      "name": "left_seam_head_containment",
+      "projection": "o",
+      "camera": [-8, 0, 0, 0, 0, 0, 100],
+      "assembly_view": "left_seam_head_containment",
+      "assembly_view_id": 23,
+      "show_proxies": false
     }
   ],
   "view_sets": {
@@ -407,7 +415,8 @@
       "lower_roof_opening_section",
       "port_plate_roof_opening",
       "port_plate_rear_seam_access",
-      "port_plate_split"
+      "port_plate_split",
+      "left_seam_head_containment"
     ]
   },
   "geometry_exports": [

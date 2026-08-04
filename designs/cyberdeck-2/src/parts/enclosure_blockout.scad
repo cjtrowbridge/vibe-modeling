@@ -1,7 +1,7 @@
 function seam_pad_y0(rear) = rear
   ? rack_internal_depth - seam_pad_depth
   : 0;
-function seam_fastener_x() = -seam_joint_cross_width / 2;
+function seam_fastener_x() = seam_fastener_axis_x;
 function seam_fastener_y(rear) = seam_pad_y0(rear) + seam_pad_depth / 2;
 function seam_fastener_z(top) = top
   ? equipment_top_z + seam_pad_height / 2
@@ -19,8 +19,8 @@ function seam_tongue_z0(top) = seam_socket_cavity_z0(top)
   + seam_socket_sliding_clearance;
 function seam_tongue_y0(rear) = seam_pad_y0(rear)
   + seam_socket_wall_thickness + seam_socket_sliding_clearance;
-function seam_receiver_x0() = -seam_pad_half_width;
-function seam_socket_cavity_x0() = -(seam_joint_cross_width
+function seam_receiver_x0() = -seam_receiver_width;
+function seam_socket_cavity_x0() = -(seam_tongue_insert_width
   + seam_socket_tip_clearance);
 
 // Canonical main-chamber rack holes are through-bolted: 3 mm face rail,
@@ -354,7 +354,7 @@ module seam_socket_cavity_cut(rear, top) {
   translate([seam_socket_cavity_x0(),
              seam_pad_y0(rear) + seam_socket_wall_thickness,
              seam_socket_cavity_z0(top)])
-    cube([seam_joint_cross_width + seam_socket_tip_clearance + boolean_epsilon,
+    cube([seam_tongue_insert_width + seam_socket_tip_clearance + boolean_epsilon,
           seam_socket_cavity_depth, seam_socket_cavity_height]);
 }
 
@@ -365,25 +365,25 @@ module seam_receiver_socket(rear, top) {
       // The exterior head wall and bay-facing nut wall close the socket in Z.
       translate([seam_receiver_x0(), seam_pad_y0(rear),
                  seam_head_layer_z0(top)])
-        cube([seam_pad_half_width, seam_pad_depth,
+        cube([seam_receiver_width, seam_pad_depth,
               seam_head_layer_thickness]);
       translate([seam_receiver_x0(), seam_pad_y0(rear),
                  seam_nut_layer_z0(top)])
-        cube([seam_pad_half_width, seam_pad_depth,
+        cube([seam_receiver_width, seam_pad_depth,
               seam_nut_layer_thickness]);
 
       // Front, rear, and closed-end walls leave the center-seam mouth as the
       // sole insertion path for the mating tongue.
       translate([seam_receiver_x0(), seam_pad_y0(rear), service_z0])
-        cube([seam_pad_half_width, seam_socket_wall_thickness,
+        cube([seam_receiver_width, seam_socket_wall_thickness,
               seam_service_zone_total_height]);
       translate([seam_receiver_x0(),
                  seam_pad_y0(rear) + seam_pad_depth - seam_socket_wall_thickness,
                  service_z0])
-        cube([seam_pad_half_width, seam_socket_wall_thickness,
+        cube([seam_receiver_width, seam_socket_wall_thickness,
               seam_service_zone_total_height]);
       translate([seam_receiver_x0(), seam_pad_y0(rear), service_z0])
-        cube([seam_pad_half_width - (seam_joint_cross_width
+        cube([seam_receiver_width - (seam_tongue_insert_width
               + seam_socket_tip_clearance), seam_pad_depth,
               seam_service_zone_total_height]);
     }
@@ -398,15 +398,15 @@ module seam_tongue(rear, top) {
   service_z0 = top ? equipment_top_z : enclosure_bottom_z;
   difference() {
     union() {
-      translate([-seam_joint_cross_width, seam_tongue_y0(rear),
+      translate([-seam_tongue_insert_width, seam_tongue_y0(rear),
                  seam_tongue_z0(top)])
-        cube([seam_joint_cross_width + seam_socket_wall_thickness,
+        cube([seam_tongue_insert_width + seam_tongue_root_overlap,
               seam_tongue_depth, seam_tongue_thickness]);
       // A full-height root block positively joins the tongue into the right
       // shell and front/rear service structure before the tongue enters the
       // left receiver.
       translate([0, seam_pad_y0(rear), service_z0])
-        cube([seam_socket_wall_thickness, seam_pad_depth,
+        cube([seam_tongue_root_overlap, seam_pad_depth,
               seam_service_zone_total_height]);
     }
     seam_vertical_through_cut(rear, top);
@@ -716,6 +716,25 @@ module seam_opening_pair(top = true) {
   seam_station_opening_crop(rear = true, top = top);
 }
 
+// Printable-leaf-only evidence: excludes the right tongue so a recess crossing
+// X=0 cannot be visually hidden by the assembled union.
+module left_seam_opening_pair(top = true) {
+  pair_y = 13;
+  crop_z0 = top ? equipment_top_z : enclosure_bottom_z;
+  translate([0, pair_y - seam_fastener_y(false), -seam_fastener_z(top)])
+    intersection() {
+      enclosure_left_assembled();
+      translate([-seam_receiver_width - 1, seam_pad_y0(false) - 1, crop_z0])
+        cube([seam_receiver_width + 2, seam_pad_depth + 2, seam_pad_height]);
+    }
+  translate([0, -pair_y - seam_fastener_y(true), -seam_fastener_z(top)])
+    intersection() {
+      enclosure_left_assembled();
+      translate([-seam_receiver_width - 1, seam_pad_y0(true) - 1, crop_z0])
+        cube([seam_receiver_width + 2, seam_pad_depth + 2, seam_pad_height]);
+    }
+}
+
 module assembly_review(view_id = 0, proxies = false) {
   if (view_id == 0) {
     assembled_enclosure(proxies = proxies);
@@ -763,6 +782,8 @@ module assembly_review(view_id = 0, proxies = false) {
     port_plate_rear_seam_access_crop();
   } else if (view_id == 22) {
     port_plate_split_crop();
+  } else if (view_id == 23) {
+    left_seam_opening_pair(top = true);
   } else {
     assert(false, str("Unknown assembly_view_id: ", view_id));
   }
