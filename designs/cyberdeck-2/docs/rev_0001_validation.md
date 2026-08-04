@@ -104,3 +104,17 @@ seam screw-block zone remain intact. Full review and unified audit passed as
   `port_plate_split`, and `port_plate_rear_seam_access`.
 - Port/button cutouts, physical fastener/tool fit, and FDM clearance remain
   `BLOCKED_UNKNOWN`; this mutable candidate is not fabrication-ready.
+
+## High-Roof and Merged-Opening Checkpoint
+
+- Added a clearance-neutral, in-plane high-screen-roof center interlock: 3 mm
+  tongue engagement and 1 mm receiving-socket clearance, with no geometry below
+  the pre-existing roof underside.
+- Removed the non-structural 3 mm divider between the lower screen clearance
+  opening and the port-plate clearance opening. The resulting opening is stepped
+  only to retain the 10 mm port-plate side mounting rails.
+- Complete printable manifest build: PASS; `4 STL + 68 PNG` in the canonical
+  current output. The separate full assembly review is generated after this
+  checkpoint and is not a substitute for the remaining seam/height verification.
+- The closed-front wall seam relocation, screen-end upper load-path verification,
+  and any main-chamber height reduction remain pending.

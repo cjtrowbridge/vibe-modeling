@@ -184,13 +184,15 @@ module shell_master() {
     shell_master_uncut();
     rack_insert_hole_cuts();
     angled_screen_insert_hole_cuts();
-    // Open the existing lower roof only under the new screen enclosure.  The
-    // completed rear seam block at Y = 0..seam_pad_depth remains uncut.
+    // A single stepped clearance opening now joins the lower screen opening to
+    // the port-plate opening. The former 3 mm divider rail was not structural.
+    // The narrower forward portion deliberately retains the 10 mm port-plate
+    // mounting rails; the completed rear seam block remains uncut.
     translate([-rack_front_width / 2 + screen_rack_lower_roof_opening_side_margin,
                screen_rack_lower_roof_opening_start_y,
                enclosure_top_z - minimum_wall_thickness - boolean_epsilon])
-      cube([screen_rack_lower_roof_opening_width,
-            screen_rack_lower_roof_opening_length,
+      cube([merged_top_clearance_first_width,
+            merged_top_clearance_first_length,
             minimum_wall_thickness + 2 * boolean_epsilon]);
     // The protected port-plate opening leaves continuous 10 mm side rails,
     // a 3 mm screen-side lip, and a 3 mm margin before the rear seam block.
@@ -363,6 +365,8 @@ module shell_half(side) {
 module prepared_shell_half(side) {
   difference() {
     shell_half(side);
+    if (side > 0)
+      screen_roof_seam_socket_cut();
     if (side < 0)
       for (rear = [false, true])
         for (top = [false, true]) {
@@ -375,9 +379,29 @@ module prepared_shell_half(side) {
   }
 }
 
+module screen_roof_seam_socket_cut() {
+  // This is entirely within the existing roof thickness; it cannot project
+  // below the pre-existing roof underside into the screen insertion envelope.
+  translate([-boolean_epsilon, screen_roof_seam_y0 - boolean_epsilon,
+             screen_rack_top_z - screen_rack_upper_roof_thickness - boolean_epsilon])
+    cube([screen_roof_seam_socket_width + boolean_epsilon,
+          screen_roof_seam_length + 2 * boolean_epsilon,
+          screen_rack_upper_roof_thickness + 2 * boolean_epsilon]);
+}
+
+module screen_roof_seam_tongue() {
+  // The root overlaps the left roof by the named positive structural amount.
+  translate([-screen_roof_seam_tongue_width, screen_roof_seam_y0,
+             screen_rack_top_z - screen_rack_upper_roof_thickness])
+    cube([2 * screen_roof_seam_tongue_width, screen_roof_seam_length,
+          screen_rack_upper_roof_thickness]);
+}
+
 module leaf_assembly_geometry(side) {
   union() {
     prepared_shell_half(side);
+    if (side < 0)
+      screen_roof_seam_tongue();
     for (rear = [false, true])
       for (top = [false, true]) {
         if (side < 0)

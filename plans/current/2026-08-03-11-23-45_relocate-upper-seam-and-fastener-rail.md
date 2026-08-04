@@ -2,7 +2,7 @@
 plan_id: 2026-08-03-11-23-45_relocate-upper-seam-and-fastener-rail
 title: Connect the High Screen Roof and Relocate the Upper Front Seam
 summary: Add a clearance-neutral interlocking seam to the highest screen roof, move the closed-front upper seam into its inside wall, and reduce chamber height only if the full upper load path remains verified.
-status: future
+status: current
 created_at: 2026-08-03-11-23-45
 ---
 
@@ -25,9 +25,10 @@ existing underside. It must preserve the `222.25 x 88.90 mm` angled 2U aperture,
 the 50.8 mm behind-screen clearance, and the screen insertion/removal path.
 
 The narrow rail between the lower screen opening and the top port-plate opening
-is no longer presumed structural. A dedicated M3 block there is deliberately
-de-scoped unless the load-path review proves it is required after the high-roof
-joint is added.
+is not a required load path in this design and shall be removed. Merge the two
+roof cutouts into one uninterrupted clearance opening while preserving the
+screen frame, the port-plate support rails, and the named minimum margins to the
+rear seam block. A dedicated M3 block there is deliberately de-scoped.
 
 The current upper service zone is 17.8 mm. The target is the smallest safe upper
 zone, but no numeric reduction is approved until the relocated front station and
@@ -38,12 +39,12 @@ remain unchanged.
 ## Checklist
 
 - [ ] 1. Establish the high screen-roof center seam.
-  - [ ] 1.1 Define named roof tongue, socket, 1 mm fit clearance, 3 mm positive
+  - [x] 1.1 Define named roof tongue, socket, 1 mm fit clearance, 3 mm positive
     overlap, full engagement length, and every remaining roof-edge ligament.
-  - [ ] 1.2 Model strict left/right roof ownership and the in-plane interlock;
+  - [x] 1.2 Model strict left/right roof ownership and the in-plane interlock;
     do not add a block below the existing roof underside or into the screen
     aperture/rear-clearance envelope.
-  - [ ] 1.3 Add assertions and section/probe views demonstrating that the roof
+  - [?] 1.3 Add assertions and section/probe views demonstrating that the roof
     joint has continuous positive engagement while its lowest surface, aperture,
     50.8 mm rear clearance, and screen insertion envelope remain unchanged.
 
@@ -64,25 +65,32 @@ remain unchanged.
     update all dependent screen, plate, enclosure, and print-transform datums.
 
 - [-] 3. Add a dedicated inter-opening rail M3 station.
-  - [-] 3.1 The rail is not currently a claimed load path; preserve its existing
-    opening margins unless the structural review above proves a new station is
-    required and the plan is revised again.
+  - [-] 3.1 Superseded by explicit removal of the non-structural rail in item 4;
+    no M3 hardware will be added in this location.
 
-- [ ] 4. Update the assembly contract and inspection evidence.
-  - [ ] 4.1 Update interfaces and add dedicated installed-artifact views for
+- [ ] 4. Remove the non-structural inter-opening rail.
+  - [x] 4.1 Replace the two adjacent roof-opening cuts and their retained 3 mm
+    divider with one named continuous cutout, preserving the existing exterior
+    side rails, the port-plate mounting rails, and at least 3 mm before the rear
+    seam block.
+  - [?] 4.2 Assert and section-check screen-frame clearance, port-plate support,
+    and all post-cut material widths; do not introduce a new unsupported bridge.
+
+- [ ] 5. Update the assembly contract and inspection evidence.
+  - [ ] 5.1 Update interfaces and add dedicated installed-artifact views for
     the high-roof seam, the front-wall station, any necessary screen-rear-wall
     station, the shortened upper roof, and their tool/clearance sides.
-  - [ ] 4.2 Update README, structure/fastener report, validation record, and
+  - [ ] 5.2 Update README, structure/fastener report, validation record, and
     today's append-only journal with dimensions, hardware, installation order,
     intentional separate parts, and unresolved physical-fit limits.
 
-- [ ] 5. Validate the exact candidate.
-  - [ ] 5.1 Run rack-reference validation, assembly-contract validation, and
+- [ ] 6. Validate the exact candidate.
+  - [ ] 6.1 Run rack-reference validation, assembly-contract validation, and
     OpenSCAD assertions for every printable leaf and the assembled dispatch.
-  - [ ] 5.2 Complete the normal manifest build, audit installed output, review
-    the real STL/PNG artifacts and all new sections, then create and audit the
-    full artifact-bound assembly review in `output/cyberdeck-2/`.
-  - [ ] 5.3 Verify printable transformed bounds, unexpected-shell status,
+  - [ ] 6.2 Complete the normal manifest build, audit installed output, review
+    the real STL/PNG artifacts and all new sections, then always create and
+    audit the full artifact-bound assembly review in `output/cyberdeck-2/`.
+  - [ ] 6.3 Verify printable transformed bounds, unexpected-shell status,
     structural sections at each altered join, all post-cut ligaments, and exact
     artifact/provenance counts; archive the plan and commit the checkpoint.
 

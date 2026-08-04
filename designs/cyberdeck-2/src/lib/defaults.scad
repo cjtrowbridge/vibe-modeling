@@ -58,6 +58,9 @@ screen_rack_rear_wall_thickness = is_undef(screen_rack_rear_wall_thickness) ? mi
 screen_rack_lower_roof_opening_start_y = is_undef(screen_rack_lower_roof_opening_start_y) ? seam_pad_depth : screen_rack_lower_roof_opening_start_y;
 screen_rack_lower_roof_opening_forward_rim = is_undef(screen_rack_lower_roof_opening_forward_rim) ? minimum_wall_thickness : screen_rack_lower_roof_opening_forward_rim;
 screen_rack_lower_roof_opening_side_margin = is_undef(screen_rack_lower_roof_opening_side_margin) ? minimum_wall_thickness : screen_rack_lower_roof_opening_side_margin;
+screen_roof_seam_tongue_width = is_undef(screen_roof_seam_tongue_width) ? minimum_structural_overlap : screen_roof_seam_tongue_width;
+screen_roof_seam_clearance = is_undef(screen_roof_seam_clearance) ? 1.0 : screen_roof_seam_clearance;
+screen_roof_seam_end_margin = is_undef(screen_roof_seam_end_margin) ? minimum_wall_thickness : screen_roof_seam_end_margin;
 port_plate_thickness = is_undef(port_plate_thickness) ? minimum_wall_thickness : port_plate_thickness;
 port_plate_mount_hole_diameter = is_undef(port_plate_mount_hole_diameter) ? 3.6 : port_plate_mount_hole_diameter;
 port_plate_mount_washer_diameter = is_undef(port_plate_mount_washer_diameter) ? 7.0 : port_plate_mount_washer_diameter;
@@ -125,6 +128,10 @@ screen_rack_lower_roof_opening_width = rack_front_width
                                      - 2 * screen_rack_lower_roof_opening_side_margin;
 screen_rack_lower_roof_opening_length = screen_rack_lower_roof_opening_end_y
                                       - screen_rack_lower_roof_opening_start_y;
+screen_roof_seam_y0 = screen_rack_rear_wall_thickness + screen_roof_seam_end_margin;
+screen_roof_seam_y1 = screen_rack_upper_roof_front_y - screen_roof_seam_end_margin;
+screen_roof_seam_length = screen_roof_seam_y1 - screen_roof_seam_y0;
+screen_roof_seam_socket_width = screen_roof_seam_tongue_width + screen_roof_seam_clearance;
 
 // The removable blank 2U plate covers a deliberately smaller roof opening.
 // It is split at X=0 into two printable leaves; the left leaf's tongue enters
@@ -141,6 +148,9 @@ port_plate_seam_block_y0 = rack_internal_depth - seam_pad_depth;
 port_plate_opening_y1 = port_plate_seam_block_y0 - port_plate_opening_seam_margin;
 port_plate_opening_width = port_plate_opening_x1 - port_plate_opening_x0;
 port_plate_opening_length = port_plate_opening_y1 - port_plate_opening_y0;
+merged_top_clearance_first_width = screen_rack_lower_roof_opening_width;
+merged_top_clearance_first_length = port_plate_opening_y0
+                                      - screen_rack_lower_roof_opening_start_y;
 port_plate_mount_x = rack_front_width / 2 - port_plate_mount_edge_margin;
 port_plate_mount_y_front = port_plate_y0 + port_plate_mount_edge_margin;
 port_plate_mount_y_rear = port_plate_y1 - port_plate_mount_edge_margin;
@@ -246,6 +256,14 @@ module blockout_contract_assertions() {
          "SCREEN: side support walls are below the structural minimum");
   assert(screen_rack_upper_roof_thickness >= minimum_structural_overlap,
          "SCREEN: upper roof is below the structural minimum");
+  assert(screen_roof_seam_tongue_width >= minimum_structural_overlap,
+         "SCREEN-ROOF: seam tongue overlap is below the structural minimum");
+  assert(screen_roof_seam_clearance >= 1.0,
+         "SCREEN-ROOF: seam socket requires 1 mm assembly clearance");
+  assert(screen_roof_seam_length >= minimum_internal_edge_width,
+         "SCREEN-ROOF: seam engagement is not meaningful");
+  assert(screen_rack_upper_roof_thickness >= minimum_wall_thickness,
+         "SCREEN-ROOF: interlock must not reduce the roof underside clearance");
   assert(screen_rack_rear_wall_thickness >= minimum_structural_overlap,
          "SCREEN: rear wall is below the structural minimum");
   assert(screen_rack_face_run >= minimum_structural_overlap
@@ -268,6 +286,8 @@ module blockout_contract_assertions() {
          "SCREEN: lower roof lacks the forward structural rim beneath the screen");
   assert(screen_rack_lower_roof_opening_length >= minimum_internal_edge_width,
          "SCREEN: lower roof opening is not a meaningful opening");
+  assert(merged_top_clearance_first_length >= minimum_internal_edge_width,
+         "ROOF: merged screen-to-port clearance opening is not meaningful");
   assert(screen_rack_lower_roof_opening_side_margin >= minimum_internal_edge_width,
          "SCREEN: lower roof opening leaves insufficient side-wall material");
   assert(screen_rack_lower_roof_opening_width > rack_clear_opening_width,
