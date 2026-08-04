@@ -373,3 +373,49 @@ or the screen and top-plate rack interfaces.
     append-only journal records with the changed hardware stack, exact output
     provenance, and any remaining physical-fit limits before committing the
     reviewed checkpoint.
+
+## Generic Four-Station Seam Fastener Containment Recovery
+
+The left printable enclosure leaf has partially open generic seam head/nut
+recesses at the split edge. The exact cause is the current generic seam axis
+`X = -3.9 mm`: an `8.25 mm` head recess extends to `X = +0.225 mm`, across the
+`X = 0` printable-part boundary. Existing assertions measure only front/rear
+depth margins and therefore miss this failed split-edge ligament. The assembled
+union can visually mask the defect; acceptance must be based on each printable
+leaf, not the assembled product alone.
+
+- [ ] L. Replace the generic seam layout with a contained overlapping joint.
+  - [ ] L.1 Establish named left-receiver width, right-tongue insertion width,
+    screw-axis offset, head-seat radius, nut-pocket radius, and split-edge
+    margin. For every one of the four top/bottom and front/rear stations, the
+    complete head recess, through-passage, and nut pocket must be wholly inside
+    the owning printable leaf with at least 3 mm material to its outside edge
+    and to the `X = 0` split boundary.
+  - [ ] L.2 Replace the present 3 mm-wide right tongue with a deliberately
+    wider tongue that extends into a matching left receiver far enough to carry
+    the through-passage after assembly. It must retain 3 mm positive root,
+    receiver, and closed-end overlap on all load-bearing faces; a hole located
+    only in the left receiver cannot clamp the right leaf.
+  - [ ] L.3 Retain a single unambiguous M3 stack per station: exterior
+    head/driver seat, 3.6 mm passage through both mating members, captive and
+    accessible nut seat, insertion sequence, and tool path. Remove the old
+    generic cuts and socket geometry completely rather than leaving overlapping
+    legacy features.
+- [ ] M. Add split-aware structural and fastener verification.
+  - [ ] M.1 Assert separately for head, nut, passage, tongue, receiver, and
+    every station: outside-edge margin, split-edge margin, front/rear margin,
+    post-cut throat, tongue root, receiver wall, and full engagement length.
+    All structural and material values must be `>= 3 mm` after every cut.
+  - [ ] M.2 Add permanent printable-leaf (not assembled-only) crops of all four
+    stations from the head and nut sides, plus start/mid/end sections through
+    the new receiver/tongue. Reject any partial circle, partial hexagon, split
+    boundary breakthrough, or unreachable hardware envelope.
+- [ ] N. Rebuild and accept only evidence-bound artifacts.
+  - [ ] N.1 Run rack-reference and assembly-contract validation, the complete
+    four-leaf build, current-output audit, full assembly review, and review
+    audit. Inspect the exact left and right leaf STL/PNG views and the combined
+    STL; a correct assembly view cannot compensate for a defective printable
+    leaf.
+  - [ ] N.2 Update the fastener/structure report, validation record, plan, and
+    append-only journal with the exact new seam dimensions, installation order,
+    artifact provenance, and physical-fit limits before committing.
