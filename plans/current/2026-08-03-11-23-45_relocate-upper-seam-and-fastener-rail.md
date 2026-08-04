@@ -20,9 +20,12 @@ cannot occupy the same center-seam coordinates in the wall.
 
 The highest horizontal screen roof is split at `X = 0`. A registration-only
 tongue/socket is insufficient. Replace the raw butt seam with one named,
-complete M3 locking interface on the roof's upper surface: recessed head and
-washer seat, through-passage, engaged tongue/socket, captive nut or insert,
-and a usable vertical driver path. The assembly must preserve the `222.25 x 88.90 mm`
+complete M3 locking interface directly beneath the roof at the roof/back-wall
+junction. Both left and right connector halves must remain below the continuous
+exterior roof plane and positively overlap both the 3 mm roof and the 3 mm rear
+wall. The roof returns to its original datum: raising it without also moving the
+screen frame creates an unacceptable visible mismatch. The angled screen frame
+must retain its exact 45-degree transform and `222.25 x 88.90 mm`
 angled 2U aperture, the 50.8 mm behind-screen clearance, and the screen
 insertion/removal path.
 
@@ -51,15 +54,23 @@ remain unchanged.
     overlap, full engagement length, and every remaining roof-edge ligament.
   - [-] 1.2 Registration-only roof interlock. Superseded: it has no M3 hardware,
     clamping force, captive receiver, or tool path.
-  - [x] 1.3 Define the complete M3 hardware stack on the high roof: vertical
-    screw axis, 3.6 mm passage, head/washer seat, captive nut or insert,
+  - [ ] 1.3 Define the complete M3 hardware stack directly below the high roof:
+    vertical screw axis, flush head/washer seat, captive nut or insert,
     installation direction, driver envelope, and every post-cut ligament.
-  - [x] 1.4 Model strict left/right ownership of the M3 tongue/socket station
-    with at least 3 mm positive root/socket overlap. It must lock the split high
-    roof together rather than merely touch at `X = 0`.
+  - [ ] 1.4 Model strict left/right ownership of the below-roof tongue/socket
+    station with at least 3 mm positive root/socket overlap. Neither connector
+    half may project above the continuous exterior roof plane.
   - [ ] 1.5 Add assertions and section/probe views proving the complete locking
     stack, its tool access, and clearance from the roof underside, aperture,
     50.8 mm rear screen clearance, and screen insertion envelope.
+  - [ ] 1.6 Relocate the lock to the rear roof/back-wall junction. Define and
+    assert its roof overlap, rear-wall overlap, rear-wall root thickness,
+    forward-edge clearance to the 45-degree screen envelope, and its complete
+    fastening/load path; do not rely on a wall-touching block.
+  - [ ] 1.7 Restore the original roof/rear-closure datum and retain the exact
+    existing 45-degree screen transform. Remove the raised-roof transition,
+    exterior tower, and any residual registration-only roof key so the roof
+    exterior is continuous and the M3 station is the sole declared lock.
 
 - [ ] 2. Model the wall-mounted closed-front upper seam interface.
   - [ ] 2.1 Define named front-wall M3 hole, head/washer, nut, driver, tongue,
@@ -104,6 +115,19 @@ remain unchanged.
   - [ ] 5.5 Add below-side, above-side, and cross-sections at the transition,
     every port-plate M3 hole, and the former nub location; review the exact
     installed artifacts before accepting the repair.
+  - [ ] 5.6 Replace the two separately terminating rail ends with one named,
+    continuous support transition. The screen-side and port-plate-side members
+    must deliberately overlap by at least 3 mm across the transition; a shared
+    face, shared edge, visual continuity, or an epsilon Boolean join fails.
+  - [ ] 5.7 Delete the generic top/rear seam tongue root and socket geometry
+    that remains visible as a vertical nub beside this transition. It is not a
+    declared rail support or fastener station and must not survive as orphaned
+    geometry after the rail transition is rebuilt.
+  - [ ] 5.8 Verify the rebuilt transition after all hole cuts: at least 3 mm
+    material from every M3 hole to both opening and exterior edges, at least
+    3 mm between relevant cuts, a continuous load path across the transition,
+    and no unexpected disconnected shell or visual mismatch in the assembled
+    product.
 
 - [ ] 6. Update the assembly contract and inspection evidence.
   - [ ] 6.1 Update interfaces and add dedicated installed-artifact views for
@@ -125,6 +149,35 @@ remain unchanged.
   - [ ] 7.3 Verify printable transformed bounds, unexpected-shell status,
     structural sections at each altered join, all post-cut ligaments, and exact
     artifact/provenance counts; archive the plan and commit the checkpoint.
+
+## Rear Roof/Wall Lock Correction Plan
+
+1. **Establish datums and keep the screen fixed.** Restore the high roof and
+   rear closure to the pre-raise datum. Keep `angled_screen_frame_transform()`
+   unchanged so the screen opening remains at 45 degrees; assert the roof and
+   screen-frame top relation rather than using a displaced roof to create room.
+2. **Put both connector halves below the rear roof.** Place the left receiver
+   and right tongue in the triangular clearance volume immediately forward of
+   the rear wall. Each root must penetrate the roof and rear wall by at least
+   3 mm, while the exterior roof remains flat with no raised block.
+3. **Use one complete M3 station.** Define the 3.6 mm passage, recessed or
+   internal service-side driver path, head/washer seat, captive-nut entry from
+   the centre seam, tongue, socket, closure walls, and explicit assembly order.
+   Delete the old roof-only registration tongue/socket rather than retaining a
+   competing seam feature.
+4. **Prove fit and structure.** Add a section through the lock centreline and
+   sections at the lock's rear and forward ends. Assert the 45-degree screen
+   envelope clearance at the lock's forward-most point, 3 mm roof and rear-wall
+   overlaps, every post-cut ligament, and the continuous two-sided support path.
+5. **Build and inspect governed artifacts.** Run the complete four-part build,
+   then the full artifact-bound assembly review. Inspect the installed
+   isometric, top, lock section, screen section, and combined STL; reject any
+   exterior tower, roof/screen mismatch, residual roof key, screen collision,
+   incomplete hardware, or unexpected shell.
+6. **Document and checkpoint.** Update the lock dimensions and installation
+   sequence in the design records, mark only evidenced plan items complete,
+   append the journal, regenerate plan indexes, audit both manifests, then
+   commit the verified checkpoint.
 
 ## Acceptance
 

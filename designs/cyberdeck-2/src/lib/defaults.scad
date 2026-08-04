@@ -55,6 +55,8 @@ screen_rack_side_wall_thickness = is_undef(screen_rack_side_wall_thickness) ? mi
 screen_rack_interface_height_u = is_undef(screen_rack_interface_height_u) ? 2 : screen_rack_interface_height_u;
 screen_rack_upper_roof_thickness = is_undef(screen_rack_upper_roof_thickness) ? minimum_wall_thickness : screen_rack_upper_roof_thickness;
 screen_rack_rear_wall_thickness = is_undef(screen_rack_rear_wall_thickness) ? minimum_wall_thickness : screen_rack_rear_wall_thickness;
+// Vertical volume reserved above the 2U screen for the below-roof seam lock.
+screen_rack_upper_service_raise = is_undef(screen_rack_upper_service_raise) ? 18.0 : screen_rack_upper_service_raise;
 screen_rack_lower_roof_opening_start_y = is_undef(screen_rack_lower_roof_opening_start_y) ? seam_pad_depth : screen_rack_lower_roof_opening_start_y;
 screen_rack_lower_roof_opening_forward_rim = is_undef(screen_rack_lower_roof_opening_forward_rim) ? minimum_wall_thickness : screen_rack_lower_roof_opening_forward_rim;
 screen_rack_lower_roof_opening_side_margin = is_undef(screen_rack_lower_roof_opening_side_margin) ? minimum_wall_thickness : screen_rack_lower_roof_opening_side_margin;
@@ -62,7 +64,7 @@ screen_roof_seam_tongue_width = is_undef(screen_roof_seam_tongue_width) ? minimu
 screen_roof_seam_clearance = is_undef(screen_roof_seam_clearance) ? 1.0 : screen_roof_seam_clearance;
 screen_roof_seam_end_margin = is_undef(screen_roof_seam_end_margin) ? minimum_wall_thickness : screen_roof_seam_end_margin;
 screen_roof_lock_depth = is_undef(screen_roof_lock_depth) ? 15.0 : screen_roof_lock_depth;
-screen_roof_lock_height = is_undef(screen_roof_lock_height) ? 18.0 : screen_roof_lock_height;
+screen_roof_lock_height = is_undef(screen_roof_lock_height) ? 15.0 : screen_roof_lock_height;
 // The fastener block deliberately penetrates the horizontal roof by this
 // structural amount.  The hardware zone remains below the roof underside.
 screen_roof_lock_roof_overlap = is_undef(screen_roof_lock_roof_overlap) ? minimum_structural_overlap : screen_roof_lock_roof_overlap;
@@ -122,7 +124,7 @@ screen_rack_face_rise = screen_rack_face_height * sin(screen_rack_face_angle);
 screen_rack_rear_projection_y = screen_rack_rear_clearance * cos(screen_rack_face_angle);
 screen_rack_rear_projection_z = screen_rack_rear_clearance * sin(screen_rack_face_angle);
 screen_rack_base_y = screen_rack_face_run + screen_rack_rear_projection_y;
-screen_rack_top_z = enclosure_top_z + screen_rack_face_rise;
+screen_rack_top_z = enclosure_top_z + screen_rack_face_rise + screen_rack_upper_service_raise;
 screen_rack_lowest_support_z = enclosure_top_z - screen_rack_rear_projection_z;
 screen_rack_footprint_depth = screen_rack_base_y + screen_rack_face_rail_depth * cos(screen_rack_face_angle);
 screen_rack_upper_roof_front_y = screen_rack_base_y - screen_rack_face_run;
@@ -137,16 +139,17 @@ screen_roof_seam_y0 = screen_rack_rear_wall_thickness + screen_roof_seam_end_mar
 screen_roof_seam_y1 = screen_rack_upper_roof_front_y - screen_roof_seam_end_margin;
 screen_roof_seam_length = screen_roof_seam_y1 - screen_roof_seam_y0;
 screen_roof_seam_socket_width = screen_roof_seam_tongue_width + screen_roof_seam_clearance;
-// The high-roof M3 station is above the horizontal roof, not in the rear
-// vertical wall.  Its root overlaps the roof by 3 mm; all hardware remains
-// above the screen-clearance envelope.
+// The high-roof M3 station is wholly beneath the continuous exterior roof.
+// Raising that roof by the lock height plus its 3 mm root overlap preserves the
+// original screen envelope below the connector.
 screen_roof_lock_y0 = screen_roof_seam_y0;
 screen_roof_lock_y1 = screen_roof_lock_y0 + screen_roof_lock_depth;
 screen_roof_lock_screw_x = -seam_nut_circumscribed_diameter / 2 + screen_roof_seam_clearance;
 screen_roof_lock_screw_y = (screen_roof_lock_y0 + screen_roof_lock_y1) / 2;
-screen_roof_lock_root_z0 = screen_rack_top_z - screen_roof_lock_roof_overlap;
-screen_roof_lock_hardware_z0 = screen_rack_top_z;
-screen_roof_lock_top_z = screen_roof_lock_hardware_z0 + screen_roof_lock_height;
+screen_roof_lock_root_z0 = screen_rack_top_z - screen_rack_upper_roof_thickness
+                           - screen_roof_lock_height;
+screen_roof_lock_hardware_z0 = screen_roof_lock_root_z0;
+screen_roof_lock_top_z = screen_rack_top_z;
 screen_roof_lock_total_height = screen_roof_lock_top_z - screen_roof_lock_root_z0;
 
 // The removable blank 2U plate covers a deliberately smaller roof opening.
@@ -289,6 +292,9 @@ module blockout_contract_assertions() {
          "SCREEN-ROOF: M3 lock lacks vertical material around washer seat");
   assert(screen_roof_lock_roof_overlap >= minimum_structural_overlap,
          "SCREEN-ROOF: M3 lock must overlap the high roof structurally");
+  assert(screen_rack_upper_service_raise >= screen_roof_lock_height
+         + screen_roof_lock_roof_overlap,
+         "SCREEN-ROOF: raised roof must preserve clearance below the lock");
   assert(screen_roof_lock_y1 <= screen_rack_upper_roof_front_y
          - minimum_internal_edge_width,
          "SCREEN-ROOF: top lock cuts into the forward roof edge");

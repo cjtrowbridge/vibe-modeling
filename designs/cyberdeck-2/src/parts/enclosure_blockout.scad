@@ -365,8 +365,6 @@ module shell_half(side) {
 module prepared_shell_half(side) {
   difference() {
     shell_half(side);
-    if (side > 0)
-      screen_roof_seam_socket_cut();
     if (side < 0)
       for (rear = [false, true])
         for (top = [false, true]) {
@@ -379,28 +377,10 @@ module prepared_shell_half(side) {
   }
 }
 
-module screen_roof_seam_socket_cut() {
-  // This is entirely within the existing roof thickness; it cannot project
-  // below the pre-existing roof underside into the screen insertion envelope.
-  translate([-boolean_epsilon, screen_roof_seam_y0 - boolean_epsilon,
-             screen_rack_top_z - screen_rack_upper_roof_thickness - boolean_epsilon])
-    cube([screen_roof_seam_socket_width + boolean_epsilon,
-          screen_roof_seam_length + 2 * boolean_epsilon,
-          screen_rack_upper_roof_thickness + 2 * boolean_epsilon]);
-}
-
-module screen_roof_seam_tongue() {
-  // The root overlaps the left roof by the named positive structural amount.
-  translate([-screen_roof_seam_tongue_width, screen_roof_seam_y0,
-             screen_rack_top_z - screen_rack_upper_roof_thickness])
-    cube([2 * screen_roof_seam_tongue_width, screen_roof_seam_length,
-          screen_rack_upper_roof_thickness]);
-}
-
-// Complete M3 locking station on the highest horizontal screen roof.  Its root
-// overlaps the roof by 3 mm; no part occupies the rear screen-clearance volume.
-// The nut is inserted through the centre-seam mouth before the right tongue
-// slides over it, then the screw is driven vertically from the top surface.
+// Complete M3 locking station below the highest horizontal screen roof. Its
+// root overlaps the roof by 3 mm; neither half projects above that roof. The
+// nut is inserted through the centre-seam mouth before the right tongue slides
+// over it, then the screw is driven through the flush roof-head seat.
 module screen_roof_lock_through_cut() {
   translate([screen_roof_lock_screw_x, screen_roof_lock_screw_y,
              screen_roof_lock_hardware_z0 - boolean_epsilon])
@@ -457,8 +437,6 @@ module screen_roof_lock_tongue() {
 module leaf_assembly_geometry(side) {
   union() {
     prepared_shell_half(side);
-    if (side < 0)
-      screen_roof_seam_tongue();
     for (rear = [false, true])
       for (top = [false, true]) {
         if (side < 0)
