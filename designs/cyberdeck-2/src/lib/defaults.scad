@@ -23,6 +23,7 @@ rack_insert_finished_diameter = is_undef(rack_insert_finished_diameter) ? 4.0 : 
 rack_insert_nominal_length = is_undef(rack_insert_nominal_length) ? 5.7 : rack_insert_nominal_length;
 rack_insert_hole_depth = is_undef(rack_insert_hole_depth) ? 7.0 : rack_insert_hole_depth;
 rack_insert_washer_seat_diameter = is_undef(rack_insert_washer_seat_diameter) ? 8.25 : rack_insert_washer_seat_diameter;
+main_rack_mount_hole_diameter = is_undef(main_rack_mount_hole_diameter) ? M3_STACKUP_HOLE_D_V2 : main_rack_mount_hole_diameter;
 rack_hole_bottom_margin = is_undef(rack_hole_bottom_margin) ? 6.35 : rack_hole_bottom_margin;
 
 printer_axis_limit = is_undef(printer_axis_limit) ? 220.0 : printer_axis_limit;
@@ -40,6 +41,7 @@ seam_head_washer_recess_depth = is_undef(seam_head_washer_recess_depth) ? 3.8 : 
 seam_nut_across_flats = is_undef(seam_nut_across_flats) ? 5.9 : seam_nut_across_flats;
 seam_nut_recess_depth = is_undef(seam_nut_recess_depth) ? 2.8 : seam_nut_recess_depth;
 seam_nut_thickness = is_undef(seam_nut_thickness) ? 2.4 : seam_nut_thickness;
+main_rack_nut_land_depth = is_undef(main_rack_nut_land_depth) ? seam_nut_recess_depth + minimum_structural_overlap : main_rack_nut_land_depth;
 seam_screw_nominal_length = is_undef(seam_screw_nominal_length) ? 12.0 : seam_screw_nominal_length;
 seam_joint_cross_width = is_undef(seam_joint_cross_width) ? 7.8 : seam_joint_cross_width;
 seam_socket_wall_thickness = is_undef(seam_socket_wall_thickness) ? minimum_wall_thickness : seam_socket_wall_thickness;
@@ -207,16 +209,25 @@ module blockout_contract_assertions() {
          "PRINT: enclosure height exceeds the reserved printer axis");
   assert(rear_wall_thickness >= minimum_wall_thickness,
          "STRUCTURE: rear wall is below minimum thickness");
-  assert(front_rail_depth >= rack_insert_hole_depth + minimum_wall_thickness,
-         "FAST-M3: front rail lacks residual material behind rack inserts");
+  assert(main_rack_mount_hole_diameter == M3_STACKUP_HOLE_D_V2,
+         "FAST-M3: main rack mount must use the selected M3 clearance diameter");
+  assert(front_rail_depth >= minimum_wall_thickness,
+         "FAST-M3: main rack face rail is below the structural minimum");
+  assert(main_rack_nut_land_depth >= front_rail_depth + seam_nut_recess_depth,
+         "FAST-M3: main rack nut land lacks rail overlap or nut depth");
+  assert((rack_rail_face_width - seam_nut_circumscribed_diameter) / 2
+         >= minimum_internal_edge_width,
+         "FAST-M3: main rack nut pocket lacks exterior-edge material");
+  assert(rack_hole_bottom_margin - seam_nut_across_flats / 2
+         >= minimum_internal_edge_width,
+         "FAST-M3: lower main rack nut pocket lacks 2U aperture material");
+  assert(rack_hole_z(rack_height_u * 3 - 1) + rack_clear_height / 2
+         - seam_nut_across_flats / 2 >= minimum_internal_edge_width,
+         "FAST-M3: upper main rack nut pocket lacks 2U aperture material");
   assert(abs(rack_internal_depth - (enclosure_depth - rear_wall_thickness)) < 0.001,
          "DEPTH: rack internal depth must terminate at the rear wall");
   assert(rack_usable_depth > 0 && generic_equipment_depth > 0,
          "DEPTH: generic equipment interval must be positive");
-  assert(rack_insert_finished_diameter == 4.0,
-         "FAST-M3: candidate uses the selected provisional 4.0 mm insert hole");
-  assert(rack_insert_hole_depth >= rack_insert_nominal_length + 2 * 0.5,
-         "FAST-M3: insert hole depth must exceed insert length by two pitches");
 
   assert(device_support_rail_thickness >= minimum_wall_thickness,
          "SUPPORT: lower rail thickness is below the structural minimum");
@@ -253,8 +264,8 @@ module blockout_contract_assertions() {
          "SEAM: tongue lacks material around the through-passage");
   assert(front_fascia_depth >= minimum_structural_overlap,
          "FRONT: fascia depth is below the structural minimum");
-  assert(front_rail_depth >= front_fascia_depth + minimum_structural_overlap,
-         "FRONT: insert rails lack fascia overlap and rear material");
+  assert(front_rail_depth >= minimum_structural_overlap,
+         "FRONT: main rack rails lack full fascia overlap");
   assert(seam_head_layer_thickness - seam_head_washer_recess_depth
          >= minimum_internal_edge_width,
          "SEAM: recessed head lacks residual material");

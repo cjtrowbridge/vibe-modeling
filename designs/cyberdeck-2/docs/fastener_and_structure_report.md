@@ -56,14 +56,21 @@ closed-end faces; only the center-seam mouth remains open for lengthwise
 assembly. The right tongue is rooted through a 3 mm full-height block that
 positively overlaps its leaf's service structure.
 
-## Front Fascia and Insert-Rail Load Paths
+## Main-Chamber 2U Through-Bolt Rails
 
-The front face now contains continuous 3 mm-deep strips above and below the
-exact 222.25 x 88.90 mm opening. They span the center seam and overlap each
-full-height insert rail by 3 mm, while the rails retain their 7 mm-deep blind
-M3 insert bores and 3 mm material behind those bores. Together with the side
-walls and top/bottom plates, these strips give each six-hole rail multiple
-positive-volume load paths instead of leaving it attached only at its outer edge.
+The main-chamber face now uses two 3 mm-deep rails around the exact
+`222.25 x 88.90 mm` opening. Each canonical station is a 3.6 mm through-passage,
+not a blind insert bore. A local land extends 5.8 mm into the chamber at each
+hole: it overlaps the face rail through the full 3 mm wall and contains a
+chamber-open 2.8 mm-deep hex M3 nut pocket. Nuts insert from the open chamber;
+the screw is driven from the exterior.
+
+The proposed stack is an M3 x 8 low-profile button-head screw and captive M3
+nut, without an ISO 7089 washer at the canonical end stations. A 7 mm washer
+would leave only 2.85 mm to the 2U opening there, below the host's 3 mm minimum;
+the low-profile head keeps 3.5 mm at that location. Final head diameter,
+driver envelope, print calibration, and a physical nut-fit coupon remain
+`BLOCKED_UNKNOWN`.
 
 ## Device Rails and Load Paths
 

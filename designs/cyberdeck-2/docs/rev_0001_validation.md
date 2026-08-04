@@ -137,3 +137,19 @@ seam screw-block zone remain intact. Full review and unified audit passed as
   the high-roof lock, the opening-transition load path, unexpected-shell status,
   and the residual-nub owner remain `UNVERIFIED`; no fabrication-ready claim is
   made from this checkpoint.
+
+## 2026-08-04 Main-Chamber Through-Bolt Rail Checkpoint
+
+- Replaced the legacy 10 mm-deep main-chamber blind-insert rails with 3 mm
+  rails, twelve canonical 3.6 mm through-passages, and six local 5.8 mm
+  chamber-side nut lands per side.
+- Each land overlaps the face rail by 3 mm and carries a chamber-open 2.8 mm
+  hex M3 pocket. The exact 222.25 x 88.90 mm 2U opening and the canonical rack
+  coordinates are unchanged.
+- Complete manifest build, both current-output audits, and full artifact-bound
+  assembly review: PASS. The installed set remains `5 STL + 99 PNG +
+  2 manifests = 106 files` at `output/cyberdeck-2/`.
+- Assertions cover the M3 through-passage, face rail, local land overlap, nut
+  pocket exterior margin, and end-station opening margin. The modeled stack is
+  an M3 x 8 low-profile button-head screw and captive M3 nut; physical hardware,
+  tool access, and print calibration remain `BLOCKED_UNKNOWN`.

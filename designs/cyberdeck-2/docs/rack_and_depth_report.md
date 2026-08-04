@@ -18,17 +18,19 @@
 | 2U clear height | 88.90 mm | PASS |
 | rail-hole column spacing | 236.525 mm | PASS |
 | hole sequence | 15.875 / 15.875 / 12.700 mm | PASS |
-| M3 insert positions | 6 per rail, 12 total | PASS |
-| insert bore | 4.0 mm finished, 7.0 mm blind depth | PROVISIONAL |
+| M3 mounting positions | 6 per rail, 12 total | PASS |
+| main-chamber mounting stack | 3.6 mm through-passage; chamber-open M3 nut pocket | Candidate; physical fit unverified |
 | equipment support | front ears plus two continuous lower rails | PASS geometrically |
 | minimum wall/material width | 3.0 mm | PASS analytically |
 
 Hole centers are at `X = +/-118.2625 mm` and
 `Z = -38.100, -22.225, -6.350, 6.350, 22.225, 38.100 mm`.
-With a 4.0 mm bore, the minimum hole-to-hole ligament is 8.7 mm. Horizontal
-material from a bore to the rail edges is 5.1375 mm inward and 6.7375 mm
-outward. The minimum vertical bore-to-clear-opening material is 4.35 mm.
-The 10 mm rail depth leaves 3 mm behind each 7 mm blind bore.
+With the hex nut oriented flat-to-opening at the canonical end stations, its
+2.95 mm half-height leaves 3.40 mm from the 6.35 mm end datum to the 2U opening.
+The 6.812 mm circumscribed nut diameter leaves 4.53 mm to either side of the
+15.875 mm rail. Each 3 mm face rail is locally extended to 5.8 mm only at a nut
+station, preserving a full 3 mm rail-to-land overlap while leaving the rest of
+the chamber unobstructed.
 
 The lower device rails are 3 mm thick and 20 mm wide. They run the full 215 mm
 depth, overlap each 220 mm-wide device footprint edge by 3 mm, and overlap the

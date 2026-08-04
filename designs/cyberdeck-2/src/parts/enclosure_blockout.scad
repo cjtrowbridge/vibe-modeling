@@ -23,14 +23,36 @@ function seam_receiver_x0() = -seam_pad_half_width;
 function seam_socket_cavity_x0() = -(seam_joint_cross_width
   + seam_socket_tip_clearance);
 
-module rack_insert_hole_cuts() {
+// Canonical main-chamber rack holes are through-bolted: 3 mm face rail,
+// continuous 3.6 mm passage, and a chamber-open M3 nut pocket.
+module main_rack_mount_hole_cuts() {
   for (side = [-1, 1])
     for (hole_index = [0 : rack_height_u * 3 - 1])
       translate([rack_rail_column_x(side), -boolean_epsilon,
                  rack_hole_z(hole_index)])
         rotate([-90, 0, 0])
-          cylinder(h = rack_insert_hole_depth + boolean_epsilon,
-                   d = rack_insert_finished_diameter, $fn = 48);
+          cylinder(h = front_rail_depth + boolean_epsilon,
+                   d = main_rack_mount_hole_diameter, $fn = 48);
+}
+
+module main_rack_nut_lands() {
+  for (side = [-1, 1])
+    for (hole_index = [0 : rack_height_u * 3 - 1])
+      translate([side < 0 ? -rack_front_width / 2 : rack_clear_opening_width / 2,
+                 0, rack_hole_z(hole_index) - rack_rail_face_width / 2])
+        cube([rack_rail_face_width, main_rack_nut_land_depth,
+              rack_rail_face_width]);
+}
+
+module main_rack_nut_pocket_cuts() {
+  for (side = [-1, 1])
+    for (hole_index = [0 : rack_height_u * 3 - 1])
+      translate([rack_rail_column_x(side), front_rail_depth - boolean_epsilon,
+                 rack_hole_z(hole_index)])
+        rotate([-90, 0, 0])
+          cylinder(h = main_rack_nut_land_depth - front_rail_depth
+                       + 2 * boolean_epsilon,
+                   d = seam_nut_circumscribed_diameter, $fn = 6);
 }
 
 module device_support_rails() {
@@ -159,11 +181,14 @@ module shell_master_uncut() {
                enclosure_bottom_z])
       cube([minimum_wall_thickness, enclosure_depth, enclosure_height]);
 
-    // Full-height front rails retain the canonical twelve blind insert bores.
+    // 3 mm full-height main-chamber rails are locally thickened only at the
+    // twelve chamber-open M3 nut pockets.
     translate([outer_x0, 0, enclosure_bottom_z])
       cube([rack_rail_face_width, front_rail_depth, enclosure_height]);
     translate([rack_clear_opening_width / 2, 0, enclosure_bottom_z])
       cube([rack_rail_face_width, front_rail_depth, enclosure_height]);
+
+    main_rack_nut_lands();
 
     // Front fascia closes only the service zones, leaving the exact 2U opening
     // completely unobstructed while tying both insert rails into the chassis.
@@ -191,7 +216,8 @@ module shell_master_uncut() {
 module shell_master() {
   difference() {
     shell_master_uncut();
-    rack_insert_hole_cuts();
+    main_rack_mount_hole_cuts();
+    main_rack_nut_pocket_cuts();
     angled_screen_insert_hole_cuts();
     merged_roof_opening_cut();
     port_plate_chassis_mount_hole_cuts();
@@ -562,7 +588,7 @@ module rack_insert_section() {
     assembled_enclosure();
     translate([rack_rail_column_x(-1) - section_thickness / 2,
                -1, enclosure_bottom_z - 1])
-      cube([section_thickness, front_rail_depth + 2,
+      cube([section_thickness, main_rack_nut_land_depth + 2,
             enclosure_height + 2]);
   }
 }

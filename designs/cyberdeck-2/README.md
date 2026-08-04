@@ -31,7 +31,8 @@ and physical FDM fit remain `BLOCKED_UNKNOWN` pending chosen components.
 - exactly two printable leaves, split longitudinally at product `X = 0`;
 - a 254 x 215 mm enclosure with a 222.25 x 88.90 mm clear front bay;
 - a fully closed, integral 3 mm rear wall;
-- six canonical 2U M3 insert bores on each front rail;
+- six canonical 2U M3 through-bolt passages on each main-chamber rail, with
+  chamber-side captive-nut lands;
 - continuous top and bottom 3 mm front fascia outside the 2U opening, tying
   both insert rails into the front frame;
 - four vertically fastened M3 seam joints recessed flush into the top/bottom,
