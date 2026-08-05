@@ -58,6 +58,7 @@
   "screen_rack_face_angle": 45.0,
   "screen_rack_rear_clearance": 50.8,
   "screen_rack_face_rail_depth": 3.0,
+  "screen_rack_nut_land_depth": 5.8,
   "screen_rack_side_wall_thickness": 3.0,
   "screen_rack_interface_height_u": 2,
   "screen_rack_upper_roof_thickness": 3.0,

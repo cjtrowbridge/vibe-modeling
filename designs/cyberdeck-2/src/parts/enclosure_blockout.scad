@@ -106,7 +106,29 @@ module angled_screen_frame_uncut() {
         cube([screen_rack_side_wall_thickness, screen_rack_rear_clearance,
               screen_rack_face_height]);
 
+      // Local rear-side lands make every screen-rail M3 passage usable with a
+      // captive nut without recreating a continuous side wall.
+      for (side = [-1, 1])
+        for (hole_index = [0 : screen_rack_interface_height_u * 3 - 1])
+          translate([side < 0 ? -rack_front_width / 2 : rack_clear_opening_width / 2,
+                     -screen_rack_nut_land_depth,
+                     screen_rack_hole_z(hole_index) - rack_rail_face_width / 2])
+            cube([rack_rail_face_width, screen_rack_nut_land_depth,
+                  rack_rail_face_width]);
+
     }
+}
+
+module angled_screen_nut_pocket_cuts() {
+  angled_screen_frame_transform()
+    for (side = [-1, 1])
+      for (hole_index = [0 : screen_rack_interface_height_u * 3 - 1])
+        translate([rack_rail_column_x(side), -screen_rack_face_rail_depth + boolean_epsilon,
+                   screen_rack_hole_z(hole_index)])
+          rotate([90, 0, 0])
+            cylinder(h = screen_rack_nut_land_depth - screen_rack_face_rail_depth
+                         + 2 * boolean_epsilon,
+                     d = seam_nut_circumscribed_diameter, $fn = 6);
 }
 
 module angled_screen_enclosure_closure() {
@@ -207,8 +229,6 @@ module shell_master_uncut() {
     device_support_rails();
     angled_screen_frame_uncut();
     angled_screen_enclosure_closure();
-    angled_screen_side_infill(-1);
-    angled_screen_side_infill(1);
     port_plate_chassis_nut_lands();
   }
 }
@@ -219,6 +239,7 @@ module shell_master() {
     main_rack_mount_hole_cuts();
     main_rack_nut_pocket_cuts();
     angled_screen_insert_hole_cuts();
+    angled_screen_nut_pocket_cuts();
     merged_roof_opening_cut();
     port_plate_chassis_mount_hole_cuts();
     port_plate_chassis_nut_pocket_cuts();

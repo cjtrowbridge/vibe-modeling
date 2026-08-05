@@ -77,6 +77,7 @@ screen_roof_lock_height = is_undef(screen_roof_lock_height) ? 15.0 : screen_roof
 // structural amount.  The hardware zone remains below the roof underside.
 screen_roof_lock_roof_overlap = is_undef(screen_roof_lock_roof_overlap) ? minimum_structural_overlap : screen_roof_lock_roof_overlap;
 screen_mount_hole_diameter = is_undef(screen_mount_hole_diameter) ? M3_STACKUP_HOLE_D_V2 : screen_mount_hole_diameter;
+screen_rack_nut_land_depth = is_undef(screen_rack_nut_land_depth) ? main_rack_nut_land_depth : screen_rack_nut_land_depth;
 port_plate_thickness = is_undef(port_plate_thickness) ? minimum_wall_thickness : port_plate_thickness;
 port_plate_mount_hole_diameter = is_undef(port_plate_mount_hole_diameter) ? 3.6 : port_plate_mount_hole_diameter;
 port_plate_mount_washer_diameter = is_undef(port_plate_mount_washer_diameter) ? 7.0 : port_plate_mount_washer_diameter;
@@ -315,6 +316,8 @@ module blockout_contract_assertions() {
          "SCREEN: through-mount holes must use the selected M3 clearance diameter");
   assert(screen_rack_face_rail_depth >= minimum_wall_thickness,
          "SCREEN: face rails are below the structural minimum");
+  assert(screen_rack_nut_land_depth >= screen_rack_face_rail_depth + seam_nut_recess_depth,
+         "SCREEN: angled rail nut land cannot contain its rear-open M3 pocket");
   assert(screen_rack_upper_service_band_height >= 18.0,
          "SCREEN: upper service band must provide the approved 18 mm minimum");
   assert(screen_rack_side_wall_thickness >= minimum_wall_thickness,

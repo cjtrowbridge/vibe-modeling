@@ -510,3 +510,36 @@ clearance zone.
   - [ ] S.3 Record exact geometry, remaining physical-fit limitations, and
     artifact provenance in the structure report, validation record, plan, and
     journal before committing.
+
+## Upper-Wall and Triangle-Owner Regression Recovery
+
+The first execution attempt removed `angled_screen_side_infill()` wholesale.
+That was incorrect: the same geometry had been carrying both the upper exterior
+side-wall closure and the unwanted inward triangles. The build therefore lost
+the upper walls while retaining separate triangle/nub owners near the roof and
+screen transitions. This recovery must split those responsibilities before any
+rail or fastener change is accepted.
+
+- [ ] T. Restore exterior closure without restoring internal obstructions.
+  - [ ] T.1 Recreate the left and right upper exterior side walls as named,
+    continuous 3 mm enclosure faces. Each must positively overlap the roof,
+    rear wall, and its supported lower side structure by at least 3 mm; neither
+    wall may depend on a triangle/web inside the screen hardware volume.
+  - [ ] T.2 Identify every remaining triangle/nub by its producing module and
+    remove only that geometry. Do not use a broad deletion of a side-wall or
+    roof module to remove an obstruction. The rear side of each angled screen
+    M3 station, including its nut/driver envelope, must be clear.
+  - [ ] T.3 Implement the direct angled-to-flat rail joint as an explicit
+    overlap member outside the exact screen aperture, not as a triangular
+    filler. Preserve its named 3 mm minimum overlap and all 2U clearances.
+- [ ] U. Prove the repaired separation of wall, rail, and hardware spaces.
+  - [ ] U.1 Add dedicated side and underside assembly crops covering both
+    transition locations. They must show continuous upper exterior walls, no
+    internal triangular obstruction, a real rail-to-rail overlap, and each
+    rear-open M3 nut/tool pocket.
+  - [ ] U.2 Add assertions for upper-wall overlap/thickness, removed-triangle
+    keepout, rail overlap, and every nearby post-cut ligament. Require at least
+    3 mm for each structural throat or edge margin.
+  - [ ] U.3 Rebuild the complete manifest and run both audits plus full assembly
+    review. Inspect individual leaf artifacts before documenting evidence and
+    committing; do not accept a combined-assembly-only result.
