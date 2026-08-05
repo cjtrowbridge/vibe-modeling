@@ -6,8 +6,8 @@ This repo is an extraction of the modeling workflow originally developed across 
 
 ## Agent framework integration
 
-The reusable [`cjtrowbridge/agents`](https://github.com/cjtrowbridge/agents)
-framework is pinned as a Git submodule at `agents/`. The root `AGENTS.md` is a
+The reusable [`cjtrowbridge/agentic-pipelines`](https://github.com/cjtrowbridge/agentic-pipelines)
+framework is pinned as a Git submodule at `agentic-pipelines/`. The root `AGENTS.md` is a
 hybrid host policy: it adopts selected upstream plan-governance conventions while
 preserving this repository's CAD-specific structural and artifact rules. Host
 policy and host-managed workflow files take precedence over upstream defaults.
@@ -17,7 +17,7 @@ This repository intentionally does not use the upstream kanban subsystem.
 After cloning this repository, initialize the reference framework with:
 
 ```bash
-git submodule update --init --recursive agents
+git submodule update --init --recursive agentic-pipelines
 ```
 
 Submodule updates require a three-way synthesis of the old upstream version, new
@@ -51,8 +51,9 @@ If the agent follows the included playbooks, it should also document what it cha
 
 ## Repository layout
 
-- `agents/`
-  - Pinned upstream agent-framework baseline and fallback source
+- `agentic-pipelines/`
+  - Pinned upstream Agentic Pipelines baseline and fallback source. This host
+    intentionally uses `./agentic-pipelines`, not upstream's `./pipelines` path.
 - `plans/future/`, `plans/current/`, `plans/past/`
   - Host-owned task plans and generated lifecycle indexes
 - `journal/`
@@ -79,7 +80,7 @@ If the agent follows the included playbooks, it should also document what it cha
   - `parts.json` (multi-part designs): authoritative complete-build part IDs and names
   - `assembly.json` (new or modified multi-part designs): authoritative product/subassembly hierarchy, transforms, interfaces, and review views
   - `configs/rev_000N.json`: committed parameter sets
-  - Included designs: `example_box`, `helical`, `yagi`, `yagi_card`, `dtv_yagi`, `winegard_gm6000_logic_backplane`, `gigachad_xavier_void`, `cottage_pi6_plus`, `old_rca_display_baseplate`, `opi_zero_2w_carrier`, `cyberdeck`, `cyberdeck-2`, `ac_redirectors`
+  - Included designs: `example_box`, `helical`, `yagi`, `yagi_card`, `dtv_yagi`, `winegard_gm6000_logic_backplane`, `gigachad_xavier_void`, `cottage_pi6_plus`, `old_rca_display_baseplate`, `opi_zero_2w_carrier`, `comrade`, `cyberdeck`, `cyberdeck-2`, `ac_redirectors`
   - `cyberdeck-2`: two-leaf, maximum-depth 2U ten-inch-rack receiver with a closed rear, twelve front M3 insert positions, flush internalized seam joints, and continuous lower device rails
 - `output/`
   - the single mutable destination for printable parts, combined assemblies,
@@ -321,6 +322,8 @@ embedded in one-off design notes:
   - 4-tower row display baseplate sized for Kallax use (`325 x 210 mm`), with recessed locator outlines and split-left/split-right printable variants
 - `designs/opi_zero_2w_carrier/`
   - Parametric Orange Pi Zero 2W mounting plate with a `2 mm` base, 4 mounting-hole-aligned studs, M3 through-holes, and underside head recesses for flush screw seating
+- `designs/comrade/`
+  - Initial modular robot core base: a `111 x 79 x 7 mm` plate with an `81 x 49 mm` underside-recessed M3 electronics-stack pattern and four top-recessed M3 corner mounts for later modules
 - `designs/lovelace/`
   - Concept-first workspace for a modular mechanical computer using composable 3D-printed logic cubes, synchronized motor-chain expansion, and magnetic cube-to-cube attachment
 - `designs/cyberdeck/`

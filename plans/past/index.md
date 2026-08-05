@@ -2,6 +2,7 @@
 
 Format: `created_at | path | title | summary`
 
+2026-08-05-00-00-00 | plans/past/2026-08-05-00-00-00_create-comrade-core-base.md | Create the Comrade Core Base Plate | Add the first parametric, manifest-governed printable base plate for the Comrade robot electronics stack.
 2026-07-30-00-30-00 | plans/past/2026-07-30-00-30-00_add-cyberdeck-2-2u-port-button-faceplate.md | Add Cyberdeck-2 2U Port and Button Faceplate | Add a removable front-biased 2U cover plate and protected recessed opening in the remaining upper roof.
 2026-07-30-00-10-00 | plans/past/2026-07-30-00-10-00_fill-cyberdeck-2-screen-side-walls.md | Fill Cyberdeck-2 Screen Enclosure Side Walls | Replace the open triangular side gaps of the enclosed angled screen section with continuous structural side panels.
 2026-07-29-22-15-00 | plans/past/2026-07-29-22-15-00_enclose-cyberdeck-2-screen-and-open-lower-roof.md | Enclose Cyberdeck-2 Screen Wedge and Open Its Lower Roof | Add the angled screen section's roof and rear closure while cutting the lower roof below it only outside the rear seam screw-block zone.

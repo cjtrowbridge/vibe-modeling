@@ -7,20 +7,22 @@ and playbooks are executable workflow policy.
 
 This root `AGENTS.md` is the canonical host policy.
 
-The `agents/` submodule supplies the reusable upstream framework baseline. Read
-`agents/RULES.md` when working on agent workflow, but do not apply it blindly.
+The `agentic-pipelines/` submodule supplies the reusable upstream framework
+baseline. Read `agentic-pipelines/AGENTS.md` for pipeline-specific routing, but
+do not apply it blindly. This host deliberately mounts the framework at
+`./agentic-pipelines`, overriding upstream examples that use `./pipelines`.
 Resolve policy in this order:
 
 1. This root `AGENTS.md` and explicit user instructions.
 2. Host-managed `playbooks/`, `references/`, `templates/`, and `scripts/`.
-3. Matching files under `agents/` only when the host has no applicable artifact.
+3. Matching files under `agentic-pipelines/` only when the host has no applicable artifact.
 
 Host policy overrides upstream policy on conflict. In particular, this repository
 does not use kanban. Do not create kanban directories, files, templates,
 references, playbooks, startup steps, or completion requirements unless the user
 explicitly approves a future policy change.
 
-Never edit files inside `agents/` as part of host work. Update its Git pointer and
+Never edit files inside `agentic-pipelines/` as part of host work. Update its Git pointer and
 synthesize affected host files through the submodule-update playbook.
 
 ## 2. Documentation Integrity
@@ -42,7 +44,7 @@ Required cycle:
 Prompt -> Select/Create Plan -> Request Approval -> Execute Approved Plan Items ->
 Update Plan -> Update Docs -> Verify -> Journal Checkpoint -> Commit
 
-1. Seek a relevant host playbook first, falling back to `agents/` only when no
+1. Seek a relevant host playbook first, falling back to `agentic-pipelines/` only when no
    host artifact applies.
 2. Check `plans/current/index.md` for an active governing plan.
 3. Before substantial changes, create or refine an atomic plan, identify missing
@@ -164,7 +166,8 @@ Templates:
 
 Keep the documented repository layout synchronized with `README.md`:
 
-- `agents/`: pinned upstream agent-framework submodule.
+- `agentic-pipelines/`: pinned upstream Agentic Pipelines submodule at the
+  host-authoritative `./agentic-pipelines` path.
 - `plans/future|current|past/`: host-owned task plans and indexes.
 - `journal/`: host-owned daily checkpoint records.
 - `downtime/reports/pending|reviewed/`: optional maintenance reports.

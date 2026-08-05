@@ -12,7 +12,7 @@ Before writing a new playbook:
 
 1. Read `README.md` (project purpose + architecture)
 2. Read `AGENTS.md` (canonical host policy + playbook index) and consult
-   `agents/RULES.md` for applicable upstream patterns.
+   `agentic-pipelines/AGENTS.md` for applicable upstream patterns.
 3. Check `playbooks/` to avoid duplicating an existing workflow
 
 ## When to Create a Playbook

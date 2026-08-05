@@ -4,7 +4,7 @@
 
 ## Objective
 
-Update the `agents/` pin through an auditable three-way synthesis that retains
+Update the `agentic-pipelines/` pin through an auditable three-way synthesis that retains
 host-specific CAD policy.
 
 ## Procedure
@@ -18,6 +18,8 @@ host-specific CAD policy.
 6. Present unresolved merge decisions for user approval before writing them.
 7. Apply approved resolutions and update documentation.
 8. Validate paths, plan schema, script interfaces, indexes, and CAD workflow rules.
+9. Preserve the host `./agentic-pipelines` mount and translate upstream
+   `./pipelines` commands; do not silently change the host path.
 
 ## Verification and Rollback
 
