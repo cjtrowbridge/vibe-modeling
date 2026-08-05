@@ -168,6 +168,22 @@ module angled_screen_side_infill(side) {
   );
 }
 
+// Exterior-only upper closure. This deliberately replaces the former full
+// wedge: it connects the roof and rear wall at the outside skin but leaves the
+// screen-rail rear hardware volume open.
+module angled_screen_upper_side_wall(side) {
+  x0 = side < 0 ? -rack_front_width / 2 : rack_front_width / 2 - minimum_wall_thickness;
+  x1 = x0 + minimum_wall_thickness;
+  polyhedron(points=[
+    [x0,0,enclosure_top_z],[x0,0,screen_rack_top_z],
+    [x0,screen_rack_upper_roof_front_y,screen_rack_top_z],
+    [x0,screen_rack_upper_roof_front_y,enclosure_top_z],
+    [x1,0,enclosure_top_z],[x1,0,screen_rack_top_z],
+    [x1,screen_rack_upper_roof_front_y,screen_rack_top_z],
+    [x1,screen_rack_upper_roof_front_y,enclosure_top_z]
+  ], faces=[[0,3,2,1],[4,5,6,7],[0,1,5,4],[1,2,6,5],[2,3,7,6],[3,0,4,7]]);
+}
+
 module angled_screen_insert_hole_cuts() {
   angled_screen_frame_transform()
     for (side = [-1, 1])
@@ -229,6 +245,8 @@ module shell_master_uncut() {
     device_support_rails();
     angled_screen_frame_uncut();
     angled_screen_enclosure_closure();
+    angled_screen_upper_side_wall(-1);
+    angled_screen_upper_side_wall(1);
     port_plate_chassis_nut_lands();
   }
 }

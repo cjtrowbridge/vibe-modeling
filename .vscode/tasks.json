@@ -1,0 +1,11 @@
+{
+  "version": "2.0.0",
+  "tasks": [{
+    "label": "Rebuild stale CAD designs",
+    "type": "shell",
+    "command": "python",
+    "args": ["scripts/rebuild_stale_designs.py", "--all"],
+    "problemMatcher": [],
+    "presentation": {"reveal": "always", "panel": "dedicated"}
+  }]
+}

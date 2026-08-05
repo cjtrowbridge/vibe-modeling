@@ -4,7 +4,7 @@
   "design": "cyberdeck",
   "revision": "rev_0030",
   "destination": "current",
-  "generated_at_utc": "2026-07-15T02:49:24.249284+00:00",
+  "generated_at_utc": "2026-08-05T01:30:54.730815+00:00",
   "config": {
     "path": "designs/cyberdeck/configs/rev_0030.json",
     "sha256": "cd993c0b69797cf55dd5edaca19a48dbd5b1eec5377b8b815ddf7183b7abbccc"
@@ -19,7 +19,7 @@
     "main_scad": "designs/cyberdeck/src/main.scad"
   },
   "git": {
-    "commit": "f8d9445b6670d162fb8c8422afb901431aaf6d4b",
+    "commit": "3db3c083b0e3963e9f54ae041be3f2eb75a063d3",
     "dirty": true
   },
   "openscad": "C:\\Program Files (x86)\\OpenSCAD\\openscad.exe",
@@ -90,17 +90,17 @@
     {
       "path": "cyberdeck_center_left_lid_rev_0030.stl",
       "bytes": 914857,
-      "sha256": "cc7304b7c8f0b936f2c5fe1ca9c751184c5f163a542f9769376715cc53ae9ce8"
+      "sha256": "091d6c2b170ca2e648e40dc227c51aa8e59b35fffbc6e9e1fbb2c852f0b373a7"
     },
     {
       "path": "cyberdeck_center_left_lid_rev_0030_inspect_inside_bottom_iso.png",
-      "bytes": 16622,
-      "sha256": "b577536092f6be638fcfc7fdf433e5db5d4455ccbaf52f50f308595db871d630"
+      "bytes": 21809,
+      "sha256": "74c3f1bad91c9e30f5b40ae3357ab3aac2cf324f7505b567026a485b0735922e"
     },
     {
       "path": "cyberdeck_center_left_lid_rev_0030_inspect_inside_bottom_ortho.png",
-      "bytes": 8364,
-      "sha256": "c44d15642ea491bf16568171aa03ab77cce22fe8aa11e84c140f56a2fa05195c"
+      "bytes": 9193,
+      "sha256": "bf404383963ffbcb2c0f7fb4af109aa5dc4f0aa61948ed91604a1680857bb033"
     },
     {
       "path": "cyberdeck_center_left_lid_rev_0030_iso_back_left.png",
@@ -180,17 +180,17 @@
     {
       "path": "cyberdeck_left_battery_drawer_rev_0030.stl",
       "bytes": 51887,
-      "sha256": "415192e82f60d786094738952108ca9a20c8005fde73413629be6263b63d163e"
+      "sha256": "78aff136a140ee72d255ffb303d27810479c97e3f384bc8e291dceb1bb0ec618"
     },
     {
       "path": "cyberdeck_left_battery_drawer_rev_0030_inspect_inside_bottom_iso.png",
-      "bytes": 13119,
-      "sha256": "efe7ff147082a6574551aef93694c34cb4a724e6c79904e49024166ebb04b04c"
+      "bytes": 14057,
+      "sha256": "bbcc2e6c0a6040adff01429d681dd6e13e5b996528f58be04a63c106cc9b629b"
     },
     {
       "path": "cyberdeck_left_battery_drawer_rev_0030_inspect_inside_bottom_ortho.png",
-      "bytes": 5871,
-      "sha256": "d033439d482619ca2e6bccb0da0a7678650609aeac632f2b93e499a708f1affc"
+      "bytes": 5873,
+      "sha256": "50266c557357dbc7039caf4e1561a453d9a0dcd31b47e1887629345853df1279"
     },
     {
       "path": "cyberdeck_left_battery_drawer_rev_0030_iso_back_left.png",
@@ -270,17 +270,17 @@
     {
       "path": "cyberdeck_left_chamber_rev_0030.stl",
       "bytes": 1936064,
-      "sha256": "624163606d17907aa38c9c906ae8c8c821972e71aeb1d4030f23746222744fbf"
+      "sha256": "0a9034d7ba3d89b1e697d5e179238512e95a57fe258dda1aad1198149ff0a6d3"
     },
     {
       "path": "cyberdeck_left_chamber_rev_0030_inspect_inside_bottom_iso.png",
-      "bytes": 10941,
-      "sha256": "ae1ad3f00d7d3507ff6be942a71938336370ef8d09d8afd4b606345807d6b7ef"
+      "bytes": 16193,
+      "sha256": "ca012d8766b11c3af46f21710a08f826d12034d8324ed20e60340a8eb438c521"
     },
     {
       "path": "cyberdeck_left_chamber_rev_0030_inspect_inside_bottom_ortho.png",
-      "bytes": 5852,
-      "sha256": "bbcd31ee663d73003d02a949f0faaa065b5cdcc0042675902b2a823523af1714"
+      "bytes": 6116,
+      "sha256": "f8ccbe93863c0ccc1e69eff67db0bc22a44d233c3925e2c8876d5ea5083330fc"
     },
     {
       "path": "cyberdeck_left_chamber_rev_0030_iso_back_left.png",
@@ -360,17 +360,17 @@
     {
       "path": "cyberdeck_left_meshtastic_drawer_rev_0030.stl",
       "bytes": 49669,
-      "sha256": "f2a35344ca97bb9ab640fb1f381ee63a60ce436224c5fc30a6f3f2044128d1af"
+      "sha256": "b9d899f315fe87f2bb8ebc5fb6c54fbdce543e54db3f8b5b8eb7f0fa37f19c4f"
     },
     {
       "path": "cyberdeck_left_meshtastic_drawer_rev_0030_inspect_inside_bottom_iso.png",
-      "bytes": 10417,
-      "sha256": "166598b5ff0171f5322c7a55c3f8917372c62a6037aa4bcfc72345983b766786"
+      "bytes": 14985,
+      "sha256": "0fc567c0b0da6e32bbf27663cc18335aae8dbff3b5a53b29db6ea48f69264fea"
     },
     {
       "path": "cyberdeck_left_meshtastic_drawer_rev_0030_inspect_inside_bottom_ortho.png",
-      "bytes": 5877,
-      "sha256": "b4415e801f3fffaaa3fa17d158a17f86909ec180afbef43540d4a7f90fd1349e"
+      "bytes": 5876,
+      "sha256": "2cec3631e9a353490e7c76a0e617162ca9024ea1fa0638b3d05f7235a6078f31"
     },
     {
       "path": "cyberdeck_left_meshtastic_drawer_rev_0030_iso_back_left.png",
@@ -450,17 +450,17 @@
     {
       "path": "cyberdeck_removable_panel_set_rev_0030.stl",
       "bytes": 2911857,
-      "sha256": "6c52c9b3ee20240020726efb718bc75dda89ae6a516b8679b3137a734b4ee32f"
+      "sha256": "2b1df17b36aaf799a4e825714229ce7792c1cdb3aca08b36d609fa3629ba4df7"
     },
     {
       "path": "cyberdeck_removable_panel_set_rev_0030_inspect_inside_bottom_iso.png",
-      "bytes": 31742,
-      "sha256": "60f48c7f69ff6343ad8e179034f71f889a70729a1b72cef672fb26f34dceb009"
+      "bytes": 20226,
+      "sha256": "4d02cd477d51b3826a9d2a98550f80c2f477b718432c3e26f1d8da040169315e"
     },
     {
       "path": "cyberdeck_removable_panel_set_rev_0030_inspect_inside_bottom_ortho.png",
-      "bytes": 10860,
-      "sha256": "ed85ab921ecb31c56c9be2649f62b9be9d453d74995338ebfc12019a7880f2b0"
+      "bytes": 8052,
+      "sha256": "6993e31ee7552bc643228061d2f22d03d42d38a94e028c84d94ce25d8b349996"
     },
     {
       "path": "cyberdeck_removable_panel_set_rev_0030_iso_back_left.png",
@@ -540,17 +540,17 @@
     {
       "path": "cyberdeck_right_chamber_rev_0030.stl",
       "bytes": 1164961,
-      "sha256": "a549c48c73791bfc12ebb67e06ecab1b96b5315a8b72ddb93e8dcf87bea839d3"
+      "sha256": "18ce1c1d38cec15bf2743beb9d717d3cd86ecdb1404d6eb68ea753b8c1301f9f"
     },
     {
       "path": "cyberdeck_right_chamber_rev_0030_inspect_inside_bottom_iso.png",
-      "bytes": 10549,
-      "sha256": "82c2fcd01daa19e979ff2a861e88d803950ec09320a8d042786438285afe2926"
+      "bytes": 14686,
+      "sha256": "209ae325c7e6edeee4126435858f643e3005697cf6efe0e23da16676bea54e18"
     },
     {
       "path": "cyberdeck_right_chamber_rev_0030_inspect_inside_bottom_ortho.png",
-      "bytes": 5852,
-      "sha256": "5ee8c9a82bacd0abf67e332c6e985289197b1dc50dbaf000e1b0e5ea0c736c40"
+      "bytes": 5961,
+      "sha256": "1eecfa00ede3a5d74bcc0ac0a4ec2b66be219d34617cfd4ff55ba5c47bce0739"
     },
     {
       "path": "cyberdeck_right_chamber_rev_0030_iso_back_left.png",
@@ -630,17 +630,17 @@
     {
       "path": "cyberdeck_right_chamber_tray_rev_0030.stl",
       "bytes": 411667,
-      "sha256": "e328340fa9a57fdd5b88bc99d187f583c2433d6a2b04ba5dfc4ecb676b710c8b"
+      "sha256": "c6ea2626049de4fe6604bd5a439e6292d263cc408f94e26235fab5f89e5744ce"
     },
     {
       "path": "cyberdeck_right_chamber_tray_rev_0030_inspect_inside_bottom_iso.png",
-      "bytes": 16049,
-      "sha256": "1d11f53b8ce6d42687f13675bf70040540f81fc8ebfdd603e1dca0304e6c28ea"
+      "bytes": 17023,
+      "sha256": "39ef43c823302b226c54c6293314cd362e85633e444b2462eeb8a98feb7d2204"
     },
     {
       "path": "cyberdeck_right_chamber_tray_rev_0030_inspect_inside_bottom_ortho.png",
-      "bytes": 6324,
-      "sha256": "1fc0304e9248e1940302e9b0219847c687f397c8be24391131fd60bae1481f7c"
+      "bytes": 6812,
+      "sha256": "5fc99bac13584a2c963c3e4d30e0b53394c52adec8934eb58467ccc4f1dcf634"
     },
     {
       "path": "cyberdeck_right_chamber_tray_rev_0030_iso_back_left.png",
@@ -720,17 +720,17 @@
     {
       "path": "cyberdeck_right_front_lid_rev_0030.stl",
       "bytes": 389747,
-      "sha256": "d97103409143861d04d04ccdca09d75b4b53f5d2e76d8a3b6865e8938327b6d8"
+      "sha256": "f749433430fc80ded7acdce56a14f5ae3d0086a6b8fdc77dc3cadf3961c64804"
     },
     {
       "path": "cyberdeck_right_front_lid_rev_0030_inspect_inside_bottom_iso.png",
-      "bytes": 15381,
-      "sha256": "7a92ee5c299ec8d27b47ec36a829d30775ac555efcd51cb252c3a39a53516566"
+      "bytes": 14056,
+      "sha256": "858e9943bf699731a200d8cc961d15b467a938406a585221f2b0e17aa7dcaf6c"
     },
     {
       "path": "cyberdeck_right_front_lid_rev_0030_inspect_inside_bottom_ortho.png",
-      "bytes": 6455,
-      "sha256": "147af0a0ca229284b24fa30bfbebbc187030c0726c9233799dea7a2058277a8d"
+      "bytes": 6503,
+      "sha256": "c1d802a96b27e341e97e1d462bb55d595b6dc768520b281631f05d056cef24f1"
     },
     {
       "path": "cyberdeck_right_front_lid_rev_0030_iso_back_left.png",
@@ -810,17 +810,17 @@
     {
       "path": "cyberdeck_right_io_panel_rev_0030.stl",
       "bytes": 1648776,
-      "sha256": "dd9d031742292a10aefa51677d05448f930a3c44e922ac9447e11b1cfa5dd5d6"
+      "sha256": "f151dce8f6fe8a450b1498083203b3523c82bf0f8a94bc8e63a0fc1c6943825e"
     },
     {
       "path": "cyberdeck_right_io_panel_rev_0030_inspect_inside_bottom_iso.png",
-      "bytes": 34142,
-      "sha256": "12ecffd8f399122eeda094fe08255345e35b5bbd2814c4add4aa36cb0f401ee4"
+      "bytes": 22900,
+      "sha256": "4391e6452496dbb722451c75c1cfc5263186e6a0cf9d26be0a5b4e293c0ba77c"
     },
     {
       "path": "cyberdeck_right_io_panel_rev_0030_inspect_inside_bottom_ortho.png",
-      "bytes": 18741,
-      "sha256": "3293cc08235c3ab19c276870cf944281a672b765043cbf240fcd6ed44b13cc76"
+      "bytes": 13615,
+      "sha256": "2def4e947d70912840bf29aca451d9416b710f8f3b11374336831e11cba83ba1"
     },
     {
       "path": "cyberdeck_right_io_panel_rev_0030_iso_back_left.png",
@@ -900,17 +900,17 @@
     {
       "path": "cyberdeck_two_chamber_structure_rev_0030.stl",
       "bytes": 2849930,
-      "sha256": "cadaed841e7e0756d9c3c397b43a9a72f768858d38046abfc0a72377b6f020ab"
+      "sha256": "e48781c5f6a70a9dba254ed0d5e4251d321723dc881f23a46f84df82c60eaf8f"
     },
     {
       "path": "cyberdeck_two_chamber_structure_rev_0030_inspect_inside_bottom_iso.png",
-      "bytes": 10986,
-      "sha256": "263e10eda9ef6f691b1c582f6d982d761d9d6db0dfa295ade99cfd5a4aaa1f11"
+      "bytes": 17086,
+      "sha256": "6f7d6c3817bf811acf2037b32e57c6ffb66bf7ccce2e3dea4ef8cef99f038ce0"
     },
     {
       "path": "cyberdeck_two_chamber_structure_rev_0030_inspect_inside_bottom_ortho.png",
-      "bytes": 5851,
-      "sha256": "884a7642418dc6322b04080dad68f447b47cc023d83b00f82c4e142e524aa421"
+      "bytes": 6139,
+      "sha256": "b9df0ba307fd82fe005436a8e7e4453c6945a1265dac1392b62edb134b4bc254"
     },
     {
       "path": "cyberdeck_two_chamber_structure_rev_0030_iso_back_left.png",

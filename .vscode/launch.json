@@ -1,0 +1,12 @@
+{
+  "version": "0.2.0",
+  "configurations": [{
+    "name": "Rebuild stale CAD designs",
+    "type": "debugpy",
+    "request": "launch",
+    "program": "${workspaceFolder}/scripts/rebuild_stale_designs.py",
+    "args": ["--all"],
+    "console": "integratedTerminal",
+    "justMyCode": true
+  }]
+}
