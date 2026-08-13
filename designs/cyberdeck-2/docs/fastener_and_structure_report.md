@@ -158,15 +158,20 @@ depth remains 20 mm, because extending it to the normal 24 mm pad depth would
 cross the required 3 mm forward roof-edge margin. Its standard X geometry
 (receiver, tongue, clearance, and `X = -8 mm` screw axis) is unchanged.
 
-## 2026-08-13 Direct Angled-to-Flat Rail Transition
+## 2026-08-13 End-Wall, Flat-Rail, and Angled-Rail-Back Recovery
 
-The attempted replacement of the angled-rail side supports with local
-rectangular transition blocks was reversed after source-diff review. Those
-blocks did not meet the actual flat rail, while the removed structures were the
-continuous outer rail backs/supports. The original outer supports and separate
-upper exterior walls are restored. A direct rail-to-rail interface remains
-`UNVERIFIED` and requires a new, measured implementation.
+The two required exterior end-wall fills are restored as named 3 mm
+`angled_screen_end_wall_fill()` solids. They are separate from the roof-opening
+geometry and must not be confused with the former inboard obstructions.
 
-Every angled-screen M3 station has an 8.8 mm local rear nut land: 3 mm face
-rail, 2.8 mm hex recess, and a retained 3 mm nut back. The recess cutter is
-limited to the 2.8 mm nut depth, so it cannot consume that back material.
+`merged_roof_opening_cut()` now uses the constant 16 mm flat-rail boundary for
+its full length. It no longer tapers from the 3 mm screen margin, so neither
+flat-rail end leaves the triangular remnant that blocked a lower angled-screen
+M3 station.
+
+Each angled screen rail has its continuous 7 mm rear face restored. Its local
+nut lands are 12.8 mm deep: 7 mm continuous rail back, 2.8 mm hex recess, and
+3 mm retained material behind the recess. The recess cutter is limited to the
+2.8 mm nut depth. The complete printable manifest build and installed audit
+pass; rail-joint engagement and full artifact-bound assembly review remain
+`UNVERIFIED`.

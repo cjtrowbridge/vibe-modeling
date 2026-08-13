@@ -106,8 +106,8 @@ module angled_screen_frame_uncut() {
         cube([screen_rack_side_wall_thickness, screen_rack_rear_clearance,
               screen_rack_face_height]);
 
-      // Per-hole rear lands preserve the uninterrupted rail backing while
-      // retaining a 3 mm nut back at each M3 station.
+      // The continuous 7 mm face rail is the angled rail's back.  Per-hole
+      // lands extend only far enough beyond it to retain a 3 mm nut back.
       for (side = [-1, 1])
         for (hole_index = [0 : screen_rack_interface_height_u * 3 - 1])
           translate([side < 0 ? -rack_front_width / 2 : rack_clear_opening_width / 2,
@@ -155,6 +155,33 @@ module angled_screen_upper_side_wall(side) {
     [x1,screen_rack_upper_roof_front_y,screen_rack_top_z],
     [x1,screen_rack_upper_roof_front_y,enclosure_top_z]
   ], faces=[[0,3,2,1],[4,5,6,7],[0,1,5,4],[1,2,6,5],[2,3,7,6],[3,0,4,7]]);
+}
+
+// Exterior end-wall fill.  This is deliberately separate from the roof-opening
+// cut: it closes the outside end wall and overlaps the rail support, roof, and
+// rear wall, but it is not the source of the inboard flat-rail transition
+// wedges.
+module angled_screen_end_wall_fill(side) {
+  x0 = side < 0 ? -rack_front_width / 2
+                : rack_front_width / 2 - screen_rack_side_wall_thickness;
+  x1 = side < 0 ? -rack_front_width / 2 + screen_rack_side_wall_thickness
+                : rack_front_width / 2;
+  polyhedron(
+    points = [
+      [x0, 0, enclosure_top_z],
+      [x0, 0, screen_rack_top_z],
+      [x0, screen_rack_upper_roof_front_y, screen_rack_top_z],
+      [x0, screen_rack_base_y, enclosure_top_z],
+      [x1, 0, enclosure_top_z],
+      [x1, 0, screen_rack_top_z],
+      [x1, screen_rack_upper_roof_front_y, screen_rack_top_z],
+      [x1, screen_rack_base_y, enclosure_top_z]
+    ],
+    faces = [
+      [0, 3, 2, 1], [4, 5, 6, 7], [0, 1, 5, 4], [1, 2, 6, 5],
+      [2, 3, 7, 6], [3, 0, 4, 7]
+    ]
+  );
 }
 
 module angled_screen_insert_hole_cuts() {
@@ -220,6 +247,8 @@ module shell_master_uncut() {
     angled_screen_enclosure_closure();
     angled_screen_upper_side_wall(-1);
     angled_screen_upper_side_wall(1);
+    angled_screen_end_wall_fill(-1);
+    angled_screen_end_wall_fill(1);
     port_plate_chassis_nut_lands();
   }
 }
@@ -237,21 +266,22 @@ module shell_master() {
   }
 }
 
-// One continuous polygonal opening replaces the former two rectangular cuts.
-// Its side boundary widens the retained roof material from the 3 mm screen
-// margin to the 16 mm port-plate mounting rail without a touching rail end.
+// One continuous rectangular-width opening leaves a constant 16 mm flat rail
+// from the angled-rail interface through the removable-plate opening.  A
+// tapered transition here creates triangular roof remnants that obstruct the
+// two low angled-rail M3 stations, so it is intentionally not used.
 module merged_roof_opening_cut() {
   translate([0, 0, enclosure_top_z - minimum_wall_thickness - boolean_epsilon])
     linear_extrude(height = minimum_wall_thickness + 2 * boolean_epsilon)
       polygon(points = [
-        [screen_opening_x0, screen_rack_lower_roof_opening_start_y],
-        [screen_opening_x1, screen_rack_lower_roof_opening_start_y],
-        [screen_opening_x1, opening_transition_y0],
+        [port_plate_opening_x0, screen_rack_lower_roof_opening_start_y],
+        [port_plate_opening_x1, screen_rack_lower_roof_opening_start_y],
+        [port_plate_opening_x1, opening_transition_y0],
         [port_plate_opening_x1, port_plate_opening_y0],
         [port_plate_opening_x1, port_plate_opening_y1],
         [port_plate_opening_x0, port_plate_opening_y1],
         [port_plate_opening_x0, port_plate_opening_y0],
-        [screen_opening_x0, opening_transition_y0]
+        [port_plate_opening_x0, opening_transition_y0]
       ]);
 }
 

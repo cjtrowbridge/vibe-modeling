@@ -18,8 +18,11 @@ positions per side: twelve M3 clearance holes (`3.6 mm`) in total, through
 The final low-profile M3 head, nut-retention method, and tool path are still
 unverified; do not treat the current geometry as fabrication-ready.
 
-The fixed roof opening is deliberately smaller than the plate: it retains a 3 mm
-screen-side lip, 16 mm side rails, and a 3 mm margin before the rear seam block.
+The fixed roof opening is deliberately smaller than the plate: it retains
+constant 16 mm side rails from the angled-screen interface through the plate
+opening, and a 3 mm margin before the rear seam block. The former tapered
+screen-to-plate transition was removed because it left triangular rail-end
+remnants in the lower angled-screen M3 envelopes.
 The plate spans `Y = 100.732..189.632 mm`; the rear seam screw is centered at
 `Y = 200 mm`, and its head recess/tool envelope remains uncovered. The plate is
 intentionally blank. Port/button cutouts, hardware, cable bends, service access,

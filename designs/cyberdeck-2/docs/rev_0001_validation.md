@@ -224,15 +224,15 @@ seam screw-block zone remain intact. Full review and unified audit passed as
 - Structural-section and artifact-bound assembly review evidence remain
   `UNVERIFIED`; no combined STL is claimed for this checkpoint.
 
-## 2026-08-13 Direct Angled-to-Flat Rail Transition
+## 2026-08-13 End-Wall, Flat-Rail, and Angled-Rail-Back Recovery
 
-- The attempted local transition blocks were reversed after source-diff review:
-  they did not engage the actual flat rail, while the removed structures were
-  the required continuous angled-rail backs and exterior side walls. The
-  original support and wall owners are restored.
-- All six angled-screen nut lands are now 8.8 mm deep, retaining 3 mm of
-  material behind the 2.8 mm nut recess. Source assertions verify the required
-  depth.
+- Restored the required full exterior end-wall fills as independent 3 mm
+  geometry. They are not the removed flat-rail wedges.
+- Replaced the tapered merged roof-opening boundary with a constant 16 mm
+  rail boundary, removing the two triangular remnants in the lower
+  angled-screen M3 envelopes.
+- Restored the continuous 7 mm angled-screen rail back. Every local nut land
+  is 12.8 mm deep, retaining 3 mm of material behind the 2.8 mm nut recess.
 - Complete printable manifest build and installed audit: PASS; `4 STL + 68 PNG
   = 72` artifacts at `output/cyberdeck-2/`.
 - Structural-section and artifact-bound assembly review evidence remain

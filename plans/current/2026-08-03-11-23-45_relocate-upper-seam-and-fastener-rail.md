@@ -585,3 +585,37 @@ rail or fastener change is accepted.
     backs after every shell subtraction.
   - [?] X.3 Add source assertions and review crops for both lower stations;
     rebuild the complete printable manifest and audit the installed output.
+
+## 2026-08-13 End-Wall, Flat-Rail, and Angled-Rail-Back Recovery
+
+- [x] Y.1 Restore the two full exterior angled-screen end-wall fills as named
+  3 mm side-wall geometry, independent of all roof-opening and hardware forms.
+- [x] Y.2 Replace the tapered merged roof-opening boundary with a constant
+  16 mm flat-rail boundary so neither end leaves a triangular remnant in either
+  lower angled-screen M3 envelope.
+- [x] Y.3 Restore the continuous 7 mm angled-screen rail back and extend each
+  local nut land to retain its 3 mm post-pocket nut back.
+- [x] Y.4 Run the complete current-output build/audit and inspect both lower
+  angled-rail transitions plus the restored end-wall fills. Record the exact
+  config and remaining structural-review limits.
+
+## 2026-08-13 End-Wall Hardware-Envelope Separation
+
+The restored historical full end-wall wedge closes the visible exterior wall,
+but its rear volume masks the angled-rail through-holes and nut backs. This is
+an incompatible ownership overlap, not a build-artifact failure. Preserve the
+visible exterior end-wall shape while excluding every angled-rail hole, nut,
+and rear-back volume from the end-wall owner.
+
+- [ ] Z.1 Replace the full end-wall wedge with an exterior-only end-wall
+  profile whose inner boundary clears each six-station angled-rail hardware
+  envelope without moving the exact 2U aperture or canonical M3 centers.
+- [ ] Z.2 Keep a continuous 7 mm angled rail and model each rear nut land as
+  a local extension of that rail, with a complete 3.6 mm through-passage,
+  2.8 mm rear-open hex pocket, and 3 mm remaining nut back after all cuts.
+- [ ] Z.3 Add named source assertions for end-wall-to-hardware clearance,
+  rail-back depth, nut-land depth, and post-cut material margins. All
+  structural material and overlaps must remain at least 3 mm.
+- [ ] Z.4 Build and audit the complete manifest, inspect the two printable
+  rail faces and rear hardware sides, then render the provenance-bound assembly
+  review. Record any timed-out or otherwise blocked review gate truthfully.
