@@ -525,21 +525,63 @@ rail or fastener change is accepted.
     continuous 3 mm enclosure faces. Each must positively overlap the roof,
     rear wall, and its supported lower side structure by at least 3 mm; neither
     wall may depend on a triangle/web inside the screen hardware volume.
+  - [-] T.1.1 Extend the exterior-only wall profile from the roof-front datum
+      to the existing angled-support datum. Superseded: the user selected a
+      direct rail-to-rail transition with no triangular wall wedge.
   - [ ] T.2 Identify every remaining triangle/nub by its producing module and
     remove only that geometry. Do not use a broad deletion of a side-wall or
     roof module to remove an obstruction. The rear side of each angled screen
     M3 station, including its nut/driver envelope, must be clear.
-  - [ ] T.3 Implement the direct angled-to-flat rail joint as an explicit
+    - [-] T.2.1 Removed the long angled side-support wedges. Reversed after
+      diff review showed that they are the required rail backs/support walls.
+- [ ] T.3 Implement the direct angled-to-flat rail joint as an explicit
     overlap member outside the exact screen aperture, not as a triangular
     filler. Preserve its named 3 mm minimum overlap and all 2U clearances.
+  - [-] T.3.1 Replaced both side-support wedges with rectangular overlap
+    blocks. Reversed: the blocks did not engage the actual flat rail.
 - [ ] U. Prove the repaired separation of wall, rail, and hardware spaces.
-  - [ ] U.1 Add dedicated side and underside assembly crops covering both
+  - [?] U.1 Add dedicated side and underside assembly crops covering both
     transition locations. They must show continuous upper exterior walls, no
     internal triangular obstruction, a real rail-to-rail overlap, and each
     rear-open M3 nut/tool pocket.
-  - [ ] U.2 Add assertions for upper-wall overlap/thickness, removed-triangle
+  - [?] U.2 Add assertions for upper-wall overlap/thickness, removed-triangle
     keepout, rail overlap, and every nearby post-cut ligament. Require at least
     3 mm for each structural throat or edge margin.
-  - [ ] U.3 Rebuild the complete manifest and run both audits plus full assembly
+  - [?] U.3 Rebuild the complete manifest and run both audits plus full assembly
     review. Inspect individual leaf artifacts before documenting evidence and
     committing; do not accept a combined-assembly-only result.
+
+## 2026-08-12 Artifact-Regeneration Recovery
+
+- [x] V. Preserve required assembly review artifacts during stale-output rebuilds.
+  - [x] V.1 After the complete printable build and printable audit, invoke the
+    full assembly review, its audit, and a final unified-output audit.
+  - [x] V.2 Retain explicit executable logging and the existing non-zero failure
+    behavior; do not fold assembly-review artifacts into the printable manifest.
+
+## 2026-08-12 High-Roof Lock Clearance Recovery
+
+- [x] W. Restore a usable high-roof M3 head seat without changing the other
+  seam stations.
+  - [x] W.1 Cut the high-roof through passage and head seat through the master
+    roof shell, not only through the separate receiver lock block.
+  - [x] W.2 Increase the high-roof lock height from 15 mm to 18 mm and require
+    three 3 mm material bands in addition to the 8.25 mm head/washer seat.
+  - [x] W.3 Match the standard seam receiver width, tongue insertion/root,
+    closed-end clearance, and `X = -8 mm` screw axis exactly.
+  - [x] W.4 Match the standard 17.8 mm vertical seam stack; retain the 20 mm
+    roof-band depth required by the forward roof-edge clearance, and remove the
+    lower angled-screen clearance cut that perforated either exterior side wall.
+
+## 2026-08-12 Angled-Screen Lower-Hardware Recovery
+
+- [ ] X. Restore the two lowest angled-screen hardware interfaces without
+  reopening either exterior wall.
+  - [x] X.1 Split the exterior-wall closure from the lower M3 rear-approach
+    envelope, removing only the two interfering inboard triangle owners on
+    each side.
+  - [x] X.2 Make every angled-screen rear nut land an explicit, per-hole
+    structural feature and verify the two lowest stations retain their nut
+    backs after every shell subtraction.
+  - [?] X.3 Add source assertions and review crops for both lower stations;
+    rebuild the complete printable manifest and audit the installed output.

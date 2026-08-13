@@ -380,6 +380,22 @@
       "assembly_view": "left_seam_head_containment",
       "assembly_view_id": 23,
       "show_proxies": false
+    },
+    {
+      "name": "angled_left_rail_joint",
+      "projection": "o",
+      "camera": [-127, -50, 95, 90, 0, 90, 210],
+      "assembly_view": "angled_left_rail_joint",
+      "assembly_view_id": 24,
+      "show_proxies": false
+    },
+    {
+      "name": "angled_right_rail_joint",
+      "projection": "o",
+      "camera": [127, -50, 95, 90, 0, -90, 210],
+      "assembly_view": "angled_right_rail_joint",
+      "assembly_view_id": 25,
+      "show_proxies": false
     }
   ],
   "view_sets": {
@@ -416,7 +432,9 @@
       "port_plate_roof_opening",
       "port_plate_rear_seam_access",
       "port_plate_split",
-      "left_seam_head_containment"
+      "left_seam_head_containment",
+      "angled_left_rail_joint",
+      "angled_right_rail_joint"
     ]
   },
   "geometry_exports": [

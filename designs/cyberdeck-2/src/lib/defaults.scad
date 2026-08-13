@@ -158,15 +158,28 @@ screen_roof_seam_socket_width = screen_roof_seam_tongue_width + screen_roof_seam
 // not a touching face or a forward-floating block.
 screen_roof_lock_y0 = 0;
 screen_roof_lock_y1 = screen_roof_lock_y0 + screen_roof_lock_depth;
-screen_roof_lock_screw_x = -seam_nut_circumscribed_diameter / 2 + screen_roof_seam_clearance;
+// The high-roof lock uses the same longitudinal split-joint dimensions as
+// every other seam station.  Only its vertical roof-service-band placement is
+// different.
+screen_roof_lock_receiver_width = seam_receiver_width;
+screen_roof_lock_tongue_insert_width = seam_tongue_insert_width;
+screen_roof_lock_tongue_root_overlap = seam_tongue_root_overlap;
+screen_roof_lock_socket_tip_clearance = seam_socket_tip_clearance;
+screen_roof_lock_socket_x0 = -(screen_roof_lock_tongue_insert_width
+                              + screen_roof_lock_socket_tip_clearance);
+screen_roof_lock_screw_x = seam_fastener_axis_x;
 screen_roof_lock_screw_y = screen_roof_lock_y0 + screen_rack_rear_wall_thickness
                            + minimum_internal_edge_width
                            + seam_head_washer_recess_diameter / 2;
-screen_roof_lock_root_z0 = screen_rack_top_z - screen_rack_upper_roof_thickness
-                           - screen_roof_lock_height;
+// Keep the complete high-roof lock Y/Z stack identical to a normal seam
+// station.  The top roof replaces the normal upper enclosure panel.
+screen_roof_lock_root_z0 = screen_rack_top_z - screen_roof_lock_height;
 screen_roof_lock_hardware_z0 = screen_roof_lock_root_z0;
 screen_roof_lock_top_z = screen_rack_top_z;
 screen_roof_lock_total_height = screen_roof_lock_top_z - screen_roof_lock_root_z0;
+screen_roof_lock_socket_z0 = screen_roof_lock_root_z0 + seam_nut_layer_thickness;
+screen_roof_lock_tongue_z0 = screen_roof_lock_socket_z0
+                            + seam_socket_sliding_clearance;
 
 // The removable blank 2U plate covers a deliberately smaller roof opening.
 // It is split at X=0 into two printable leaves; the left leaf's tongue enters
@@ -316,8 +329,9 @@ module blockout_contract_assertions() {
          "SCREEN: through-mount holes must use the selected M3 clearance diameter");
   assert(screen_rack_face_rail_depth >= minimum_wall_thickness,
          "SCREEN: face rails are below the structural minimum");
-  assert(screen_rack_nut_land_depth >= screen_rack_face_rail_depth + seam_nut_recess_depth,
-         "SCREEN: angled rail nut land cannot contain its rear-open M3 pocket");
+  assert(screen_rack_nut_land_depth >= screen_rack_face_rail_depth
+         + seam_nut_recess_depth + minimum_internal_edge_width,
+         "SCREEN: angled rail nut land lacks the required 3 mm nut back");
   assert(screen_rack_upper_service_band_height >= 18.0,
          "SCREEN: upper service band must provide the approved 18 mm minimum");
   assert(screen_rack_side_wall_thickness >= minimum_wall_thickness,
@@ -339,9 +353,9 @@ module blockout_contract_assertions() {
   assert(screen_rack_upper_roof_front_y - (screen_roof_lock_screw_y
          + seam_head_washer_recess_diameter / 2) >= minimum_internal_edge_width,
          "SCREEN-ROOF: M3 head seat lacks forward roof clearance");
-  assert(screen_roof_lock_height - seam_head_washer_recess_diameter
-         >= 2 * minimum_internal_edge_width,
-         "SCREEN-ROOF: M3 lock lacks vertical material around washer seat");
+  assert(abs(screen_roof_lock_height - seam_service_zone_total_height) < 0.001
+         && abs(screen_roof_lock_total_height - seam_service_zone_total_height) < 0.001,
+         "SCREEN-ROOF: top lock must match the standard seam vertical stack");
   assert(screen_roof_lock_roof_overlap >= minimum_structural_overlap,
          "SCREEN-ROOF: M3 lock must overlap the high roof structurally");
   assert(screen_rack_upper_service_raise == 0,
@@ -352,11 +366,23 @@ module blockout_contract_assertions() {
   assert(screen_roof_lock_y1 <= screen_rack_upper_roof_front_y
          - minimum_internal_edge_width,
          "SCREEN-ROOF: top lock cuts into the forward roof edge");
+  assert(screen_roof_lock_receiver_width == seam_receiver_width
+         && screen_roof_lock_tongue_insert_width == seam_tongue_insert_width
+         && screen_roof_lock_tongue_root_overlap == seam_tongue_root_overlap
+         && screen_roof_lock_socket_tip_clearance == seam_socket_tip_clearance
+         && screen_roof_lock_screw_x == seam_fastener_axis_x,
+         "SCREEN-ROOF: top lock must match the standard seam X geometry");
   assert(screen_roof_lock_screw_x - seam_head_washer_recess_diameter / 2
-         >= -seam_pad_half_width + minimum_internal_edge_width,
+         >= -screen_roof_lock_receiver_width + minimum_internal_edge_width,
          "SCREEN-ROOF: top lock head seat lacks left exterior ligament");
-  assert(screen_roof_lock_screw_x + seam_nut_circumscribed_diameter / 2 >= 0,
-         "SCREEN-ROOF: captive nut needs an open centre-seam insertion path");
+  assert(screen_roof_lock_screw_x + seam_head_washer_recess_diameter / 2
+         <= -minimum_internal_edge_width,
+         "SCREEN-ROOF: top lock head seat lacks split-edge ligament");
+  assert(screen_roof_lock_screw_x >= -screen_roof_lock_tongue_insert_width
+         + seam_fastener_finished_diameter / 2
+         && screen_roof_lock_screw_x <= screen_roof_lock_tongue_root_overlap
+         - seam_fastener_finished_diameter / 2,
+         "SCREEN-ROOF: top lock passage misses the standard mating tongue");
   assert(screen_rack_upper_roof_thickness >= minimum_wall_thickness,
          "SCREEN-ROOF: interlock must not reduce the roof underside clearance");
   assert(screen_rack_rear_wall_thickness >= minimum_structural_overlap,

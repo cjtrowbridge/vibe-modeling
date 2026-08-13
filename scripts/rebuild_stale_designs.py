@@ -38,6 +38,18 @@ def audit(design: str, config: Path) -> int:
     result = subprocess.run(command, cwd=ROOT)
     if result.returncode:
         return result.returncode
+    result = subprocess.run([*command, "--audit-only"], cwd=ROOT)
+    if result.returncode:
+        return result.returncode
+    review = [sys.executable, "scripts/scad_render_assembly_review.py",
+              "--design", design, "--config", str(config.relative_to(ROOT)),
+              "--set", "full"]
+    result = subprocess.run(review, cwd=ROOT)
+    if result.returncode:
+        return result.returncode
+    result = subprocess.run([*review, "--audit-only"], cwd=ROOT)
+    if result.returncode:
+        return result.returncode
     return subprocess.run([*command, "--audit-only"], cwd=ROOT).returncode
 
 

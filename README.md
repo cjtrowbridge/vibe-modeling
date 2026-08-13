@@ -189,7 +189,9 @@ python scripts/scad_build_all.py \
 The `Rebuild stale CAD designs` launch configuration runs the hook directly, so
 the VS Code play button works even when no editor is active. The hook compares each multipart
 design tree with its installed `output/<design>/build_manifest.json`, rebuilds
-only stale designs through `scad_build_all.py`, and audits each rebuilt output.
+only stale designs through `scad_build_all.py`, renders the full artifact-bound
+assembly review (including required combined-STL geometry exports), and audits
+both the review and the unified output.
 For a design with several configs and no installed manifest, run one explicit
 complete build first so the hook can reuse its config.
 

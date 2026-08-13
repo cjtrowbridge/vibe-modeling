@@ -170,3 +170,70 @@ seam screw-block zone remain intact. Full review and unified audit passed as
   files in `output/cyberdeck-2/`.
 - This checkpoint does not replace physical M3/nut/driver access, FDM tolerance,
   torque, or load testing; those remain `UNVERIFIED`.
+
+## 2026-08-12 Upper-Wall and Assembly-Artifact Recovery (Unverified Candidate)
+
+- Assembly contract: PASS; four printable parts, four logical assemblies, and
+  34 governed review views, including `upper_left_side_wall` and
+  `upper_right_side_wall` crops.
+- Complete printable manifest build and installed printable audit: PASS;
+  `4 STL + 68 PNG = 72` artifacts at `output/cyberdeck-2/`.
+- The stale-design rebuild hook now runs the full assembly review and its audit
+  after the printable build, followed by a final unified-output audit.  This
+  restores the required `cyberdeck_2_assembled.stl` workflow instead of leaving
+  the output at the printable-only four-STL set.
+- Full assembly-review rendering was attempted from the installed printable
+  build but did not complete within the available command window: its first two
+  1200 x 900 CGAL views exceeded five minutes.  No review artifacts were
+  installed and no combined STL is claimed for this checkpoint.
+- Structural joins and minimum internal edge/material width for the changed
+  upper walls remain `UNVERIFIED` pending successful review of the new crops,
+  post-subtraction sections, and assembly-bound combined STL.
+
+## 2026-08-12 High-Roof and Lower Screen-Hardware Recovery (Unverified Candidate)
+
+- Configured high-roof lock height: `18.0 mm`, increased from `15.0 mm`; the
+  source assertion requires the 8.25 mm head seat plus three 3 mm material
+  bands.
+- The lock through-hole and top head recess are subtracted from the master roof
+  shell as well as the lock receiver, preventing the roof union from covering
+  the required screw opening.
+- Each lowest angled-screen M3 station now has a bounded rear keepout through
+  the interfering exterior-wall triangle. Source assertions pass for the
+  8.8 mm keepout depth and the remaining lower rail ligament.
+- The high-roof lock now asserts exact equality with the four standard seam
+  stations in receiver width, tongue insertion/root, closed-end clearance, and
+  `X = -8 mm` screw-axis placement. Only its vertical service-band placement
+  differs.
+- Complete printable manifest build and installed audit: PASS; `4 STL + 68 PNG
+  = 72` artifacts at `output/cyberdeck-2/`.
+- The artifact-bound assembly review and visual inspection of the changed
+  hardware sections remain `UNVERIFIED`; no combined STL is claimed for this
+  checkpoint.
+
+## 2026-08-12 Side-Wall Perforation and Lock-Thickness Correction
+
+- Removed the lower angled-screen rectangular keepout that perforated both
+  exterior side walls. The installed printable preview shows the exterior skin
+  continuous at the affected side transition.
+- The high-roof lock now has the exact standard `17.8 mm` vertical seam stack;
+  the `20 mm` roof-band depth is retained because a `24 mm` depth violates the
+  required forward roof-edge margin.
+- Complete printable manifest build and installed audit: PASS; `4 STL + 68 PNG
+  = 72` artifacts at `output/cyberdeck-2/`.
+- Structural-section and artifact-bound assembly review evidence remain
+  `UNVERIFIED`; no combined STL is claimed for this checkpoint.
+
+## 2026-08-13 Direct Angled-to-Flat Rail Transition
+
+- The attempted local transition blocks were reversed after source-diff review:
+  they did not engage the actual flat rail, while the removed structures were
+  the required continuous angled-rail backs and exterior side walls. The
+  original support and wall owners are restored.
+- All six angled-screen nut lands are now 8.8 mm deep, retaining 3 mm of
+  material behind the 2.8 mm nut recess. Source assertions verify the required
+  depth.
+- Complete printable manifest build and installed audit: PASS; `4 STL + 68 PNG
+  = 72` artifacts at `output/cyberdeck-2/`.
+- Structural-section and artifact-bound assembly review evidence remain
+  `UNVERIFIED`; no combined STL is claimed for this checkpoint.

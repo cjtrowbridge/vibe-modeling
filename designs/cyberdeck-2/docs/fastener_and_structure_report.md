@@ -106,3 +106,67 @@ more than 3 mm below the lower chassis top, and it overlaps the face rail by 3 m
 across the full local 2U height. Thus every face rail has two continuous structural
 support paths: its outer support wall and the lower chassis side wall. No roof,
 upper rear panel, or centre web is claimed as structural support.
+
+## 2026-08-12 Upper Exterior Wall Recovery (Mutable Candidate)
+
+The left and right upper exterior side-wall profiles now continue from the
+horizontal roof-front datum to `screen_rack_base_y`, closing the triangular
+outside-wall gaps left by the prior rectangular-only replacement.  Each profile
+is a named 3 mm exterior skin; it is not the removed full wedge/infill, and the
+screen-rail rear hardware remains independently modeled inboard.
+
+Assertions require the 3 mm wall thickness, rear-wall engagement at the
+roof-front datum, and a meaningful (at least 3 mm) forward transition.  The
+complete printable build passes, but the new left/right wall crops and full
+artifact-bound assembly review have not yet completed in this environment.
+Accordingly, roof/lower-support overlap after every subtraction, screen
+nut/driver clearance, and the changed wall's complete structural verification
+remain `UNVERIFIED`; this candidate is not fabrication-ready.
+
+## 2026-08-12 High-Roof Lock and Lower Screen-Hardware Recovery
+
+The high-roof lock's M3 through passage and 8.25 mm head/washer seat are now
+also cut from the master roof shell.  Previously, those cuts existed only in
+the separate lock receiver, allowing the continuous roof solid to cover the
+hole after union.  The lock height is now 18 mm, leaving the 8.25 mm head seat
+plus three independent 3 mm material bands by assertion; the other four seam
+stations are unchanged.
+
+Its longitudinal seam geometry now deliberately matches all four standard
+stations: an 18 mm receiver from `X = -18..0`, a 14 mm tongue insertion from
+`X = -14`, a 3 mm tongue root across the seam, 1 mm closed-end clearance, and
+the M3 axis at `X = -8 mm`. The high roof changes only the lock's vertical
+placement and 18 mm service-band height. Its captive-nut pocket is inserted
+from the lower screen-service cavity, not through the closed-end receiver.
+
+At the lower station on each angled-screen rail, a bounded rear hardware
+keepout removes the exterior-wall triangle that obstructed nut/tool approach.
+The cut spans only the lowest M3 station's rear approach and preserves the
+remaining outer support.  Its depth includes the 5.8 mm local nut land plus a
+3 mm tool clearance, and its lower rail ligament is asserted at 3 mm or more.
+
+## 2026-08-12 Side-Wall Perforation and Lock-Thickness Correction
+
+The rectangular lower-hardware keepout was removed after it was shown to cut
+through both exterior side skins. The existing rear-open hexagonal M3 nut
+pockets remain; no broad rectangular subtraction crosses either 3 mm outer
+wall.
+
+The high-roof lock now uses the standard seam's complete 17.8 mm vertical
+stack: 6.8 mm head layer, 5 mm socket cavity, and 6 mm nut layer. Its roof-band
+depth remains 20 mm, because extending it to the normal 24 mm pad depth would
+cross the required 3 mm forward roof-edge margin. Its standard X geometry
+(receiver, tongue, clearance, and `X = -8 mm` screw axis) is unchanged.
+
+## 2026-08-13 Direct Angled-to-Flat Rail Transition
+
+The attempted replacement of the angled-rail side supports with local
+rectangular transition blocks was reversed after source-diff review. Those
+blocks did not meet the actual flat rail, while the removed structures were the
+continuous outer rail backs/supports. The original outer supports and separate
+upper exterior walls are restored. A direct rail-to-rail interface remains
+`UNVERIFIED` and requires a new, measured implementation.
+
+Every angled-screen M3 station has an 8.8 mm local rear nut land: 3 mm face
+rail, 2.8 mm hex recess, and a retained 3 mm nut back. The recess cutter is
+limited to the 2.8 mm nut depth, so it cannot consume that back material.

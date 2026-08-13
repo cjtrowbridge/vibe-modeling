@@ -106,8 +106,8 @@ module angled_screen_frame_uncut() {
         cube([screen_rack_side_wall_thickness, screen_rack_rear_clearance,
               screen_rack_face_height]);
 
-      // Local rear-side lands make every screen-rail M3 passage usable with a
-      // captive nut without recreating a continuous side wall.
+      // Per-hole rear lands preserve the uninterrupted rail backing while
+      // retaining a 3 mm nut back at each M3 station.
       for (side = [-1, 1])
         for (hole_index = [0 : screen_rack_interface_height_u * 3 - 1])
           translate([side < 0 ? -rack_front_width / 2 : rack_clear_opening_width / 2,
@@ -126,8 +126,7 @@ module angled_screen_nut_pocket_cuts() {
         translate([rack_rail_column_x(side), -screen_rack_face_rail_depth + boolean_epsilon,
                    screen_rack_hole_z(hole_index)])
           rotate([90, 0, 0])
-            cylinder(h = screen_rack_nut_land_depth - screen_rack_face_rail_depth
-                         + 2 * boolean_epsilon,
+            cylinder(h = seam_nut_recess_depth + boolean_epsilon,
                      d = seam_nut_circumscribed_diameter, $fn = 6);
 }
 
@@ -143,34 +142,8 @@ module angled_screen_enclosure_closure() {
           screen_rack_top_z - screen_rack_rear_wall_bottom_z]);
 }
 
-module angled_screen_side_infill(side) {
-  x0 = side < 0 ? -rack_front_width / 2
-                : rack_front_width / 2 - screen_rack_side_wall_thickness;
-  x1 = side < 0 ? -rack_front_width / 2 + screen_rack_side_wall_thickness
-                : rack_front_width / 2;
-  // Full exterior wedge face: it overlaps the side support, angled rail end,
-  // roof, rear wall, and retained lower-chassis roof/side-wall material.
-  polyhedron(
-    points = [
-      [x0, 0, enclosure_top_z],
-      [x0, 0, screen_rack_top_z],
-      [x0, screen_rack_upper_roof_front_y, screen_rack_top_z],
-      [x0, screen_rack_base_y, enclosure_top_z],
-      [x1, 0, enclosure_top_z],
-      [x1, 0, screen_rack_top_z],
-      [x1, screen_rack_upper_roof_front_y, screen_rack_top_z],
-      [x1, screen_rack_base_y, enclosure_top_z]
-    ],
-    faces = [
-      [0, 3, 2, 1], [4, 5, 6, 7], [0, 1, 5, 4], [1, 2, 6, 5],
-      [2, 3, 7, 6], [3, 0, 4, 7]
-    ]
-  );
-}
-
-// Exterior-only upper closure. This deliberately replaces the former full
-// wedge: it connects the roof and rear wall at the outside skin but leaves the
-// screen-rail rear hardware volume open.
+// Exterior-only upper closure. It joins the roof and rear wall while leaving
+// the screen-rail rear hardware volume open.
 module angled_screen_upper_side_wall(side) {
   x0 = side < 0 ? -rack_front_width / 2 : rack_front_width / 2 - minimum_wall_thickness;
   x1 = x0 + minimum_wall_thickness;
@@ -465,6 +438,10 @@ module shell_half(side) {
 module prepared_shell_half(side) {
   difference() {
     shell_half(side);
+    // The roof is part of shell_master(), so its head/through passage must be
+    // cut there as well as in the separate lock halves.
+    screen_roof_lock_through_cut();
+    screen_roof_lock_head_cut();
     if (side < 0)
       for (rear = [false, true])
         for (top = [false, true]) {
@@ -479,9 +456,9 @@ module prepared_shell_half(side) {
 
 // Complete M3 locking station below the highest horizontal screen roof and
 // directly against the rear wall. Each half overlaps the roof and rear wall by
-// at least 3 mm; neither half projects above the roof. The nut is inserted
-// through the centre-seam mouth before the right tongue slides over it, then
-// the screw is driven through the flush roof-head seat.
+// at least 3 mm; neither half projects above the roof. The nut pocket opens
+// into the lower screen-service cavity for insertion, then the screw is driven
+// through the flush roof-head seat.
 module screen_roof_lock_through_cut() {
   translate([screen_roof_lock_screw_x, screen_roof_lock_screw_y,
              screen_roof_lock_hardware_z0 - boolean_epsilon])
@@ -505,14 +482,20 @@ module screen_roof_lock_nut_cut() {
 
 module screen_roof_lock_receiver() {
   difference() {
-    translate([-seam_pad_half_width, screen_roof_lock_y0, screen_roof_lock_root_z0])
-      cube([seam_pad_half_width, screen_roof_lock_depth, screen_roof_lock_total_height]);
-    // Socket is open only at the centre-seam mouth; 3 mm side walls and the
-    // roof-overlap root remain after all hardware cuts.
-    translate([-seam_joint_cross_width, screen_roof_lock_y0 + minimum_wall_thickness,
-               screen_roof_lock_hardware_z0 + seam_nut_recess_depth])
-      cube([seam_joint_cross_width, screen_roof_lock_depth - 2 * minimum_wall_thickness,
-            screen_roof_lock_height - seam_nut_recess_depth - seam_head_washer_recess_depth]);
+    translate([-screen_roof_lock_receiver_width, screen_roof_lock_y0,
+               screen_roof_lock_root_z0])
+      cube([screen_roof_lock_receiver_width, screen_roof_lock_depth,
+            screen_roof_lock_total_height]);
+    // The tongue socket opens only at the centre-seam mouth; its separate
+    // lower nut pocket opens into the screen-service cavity. 3 mm side walls
+    // and the roof-overlap root remain after all hardware cuts.
+    translate([screen_roof_lock_socket_x0,
+               screen_roof_lock_y0 + minimum_wall_thickness,
+               screen_roof_lock_socket_z0])
+      cube([screen_roof_lock_tongue_insert_width
+            + screen_roof_lock_socket_tip_clearance + boolean_epsilon,
+            screen_roof_lock_depth - 2 * minimum_wall_thickness,
+            seam_socket_cavity_height]);
     screen_roof_lock_through_cut();
     screen_roof_lock_head_cut();
     screen_roof_lock_nut_cut();
@@ -522,14 +505,16 @@ module screen_roof_lock_receiver() {
 module screen_roof_lock_tongue() {
   difference() {
     union() {
-      translate([-seam_joint_cross_width, screen_roof_lock_y0 + minimum_wall_thickness + screen_roof_seam_clearance,
-                 screen_roof_lock_hardware_z0 + seam_nut_recess_depth + screen_roof_seam_clearance])
-        cube([seam_joint_cross_width + minimum_structural_overlap,
+      translate([-screen_roof_lock_tongue_insert_width,
+                 screen_roof_lock_y0 + minimum_wall_thickness + screen_roof_seam_clearance,
+                 screen_roof_lock_tongue_z0])
+        cube([screen_roof_lock_tongue_insert_width
+              + screen_roof_lock_tongue_root_overlap,
               screen_roof_lock_depth - 2 * (minimum_wall_thickness + screen_roof_seam_clearance),
-              screen_roof_lock_height - seam_nut_recess_depth - seam_head_washer_recess_depth
-              - 2 * screen_roof_seam_clearance]);
+              seam_tongue_thickness]);
       translate([0, screen_roof_lock_y0, screen_roof_lock_root_z0])
-        cube([minimum_structural_overlap, screen_roof_lock_depth, screen_roof_lock_total_height]);
+        cube([screen_roof_lock_tongue_root_overlap, screen_roof_lock_depth,
+              screen_roof_lock_total_height]);
     }
     screen_roof_lock_through_cut();
   }
@@ -696,6 +681,20 @@ module lower_roof_opening_section() {
   }
 }
 
+// Printable evidence for each direct angled-to-flat rail transition.
+module angled_screen_rail_joint_crop(side) {
+  joint_x0 = side < 0 ? -rack_front_width / 2 - boolean_epsilon
+                      : rack_clear_opening_width / 2;
+  intersection() {
+    assembled_enclosure();
+    translate([joint_x0, screen_rack_base_y - screen_rack_rail_backer_depth - 2,
+               enclosure_top_z - screen_rack_rail_backer_depth - 2])
+      cube([rack_rail_face_width + 2 * boolean_epsilon,
+            screen_rack_rail_backer_depth + 4,
+            screen_rack_rail_backer_depth + 4]);
+  }
+}
+
 module port_plate_roof_opening_crop() {
   intersection() {
     assembled_enclosure();
@@ -823,6 +822,10 @@ module assembly_review(view_id = 0, proxies = false) {
     port_plate_split_crop();
   } else if (view_id == 23) {
     left_seam_opening_pair(top = true);
+  } else if (view_id == 24) {
+    angled_screen_rail_joint_crop(side = -1);
+  } else if (view_id == 25) {
+    angled_screen_rail_joint_crop(side = 1);
   } else {
     assert(false, str("Unknown assembly_view_id: ", view_id));
   }
