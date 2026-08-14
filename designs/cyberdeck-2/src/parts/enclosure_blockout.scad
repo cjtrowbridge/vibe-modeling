@@ -95,18 +95,16 @@ module angled_screen_frame_uncut() {
         cube([rack_front_width, screen_rack_face_rail_depth,
               screen_rack_upper_service_band_height]);
 
-      // Two thin rearward tabs, at each endpoint of each rail, carry the rail
-      // into the existing chassis side wall.  Do not use a full-height side
-      // wall here: it makes the 2U rails render as solid blocks.
-      for (side = [-1, 1])
-        for (rail_z = [0, screen_rack_face_height - minimum_wall_thickness])
-          translate([side < 0 ? -rack_front_width / 2
-                              : rack_clear_opening_width / 2,
-                     -screen_rack_rear_clearance, rail_z])
-            cube([rack_rail_face_width,
-                  screen_rack_rear_clearance - screen_rack_face_rail_depth
-                    + minimum_structural_overlap,
-                  minimum_wall_thickness]);
+      // Continuous outer support walls carry each rail into the existing
+      // chassis side wall. They are intentionally separate from the rail face
+      // and rear nut-land geometry.
+      translate([-rack_front_width / 2, -screen_rack_rear_clearance, 0])
+        cube([screen_rack_side_wall_thickness, screen_rack_rear_clearance,
+              screen_rack_face_height]);
+      translate([rack_front_width / 2 - screen_rack_side_wall_thickness,
+                 -screen_rack_rear_clearance, 0])
+        cube([screen_rack_side_wall_thickness, screen_rack_rear_clearance,
+              screen_rack_face_height]);
 
       // The continuous 7 mm face rail is the angled rail's back.  Per-hole
       // lands extend only far enough beyond it to retain a 3 mm nut back.

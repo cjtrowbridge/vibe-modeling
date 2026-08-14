@@ -335,15 +335,10 @@ module blockout_contract_assertions() {
   screen_rail_nut_back = screen_rack_nut_land_depth
                           - screen_rack_face_rail_depth
                           - seam_nut_recess_depth;
-  screen_rail_tab_overlap = minimum_structural_overlap;
-  screen_rail_tab_thickness = minimum_wall_thickness;
   assert(screen_rail_support_overlap >= minimum_structural_overlap,
          "SCREEN: rail-to-side-support overlap is below the structural minimum");
   assert(screen_rail_nut_back >= minimum_internal_edge_width,
          "SCREEN: local rear nut land lacks the required post-cut nut back");
-  assert(screen_rail_tab_overlap >= minimum_structural_overlap
-         && screen_rail_tab_thickness >= minimum_wall_thickness,
-         "SCREEN: rail attachment tabs lack required structural engagement");
   assert(screen_rack_nut_land_depth >= screen_rack_face_rail_depth
          + seam_nut_recess_depth + minimum_internal_edge_width,
          "SCREEN: angled rail nut land lacks the required 3 mm nut back");
@@ -477,3 +472,5 @@ module blockout_contract_assertions() {
          "PRINT: side-wall-down leaf exceeds the printer axis limit");
   children();
 }
+  assert(screen_rack_side_wall_thickness >= minimum_wall_thickness,
+         "SCREEN: side support walls are below the structural minimum");

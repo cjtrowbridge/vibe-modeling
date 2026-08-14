@@ -35,10 +35,12 @@ Key: `[ ]` pending task, `[x]` completed task, `[?]` needs validation, `[-]` clo
   - [x] 1.3 Retain or refine only a bounded upper exterior side-wall profile
     that joins the roof and rear wall without entering the 2U face, rail rear,
     nut pocket, or driver envelope.
-  - [x] 1.4 Replace each full-height rear side-support wall with two 3 mm-high
+  - [-] 1.4 Replace each full-height rear side-support wall with two 3 mm-high
     rearward attachment tabs—one at each rail endpoint. Each tab must overlap
     its rail and the existing chassis side wall by at least 3 mm while leaving
-    the 2U face visually equivalent to the other rail sets.
+    the 2U face visually equivalent to the other rail sets. Reversed: the tabs
+    produced the unsupported protrusion shown in review and the original side
+    walls are required structure.
   - [x] 1.5 Restore the canonical 3 mm angled rail face depth and the 8.8 mm
     local nut land (`3 mm` rail + `2.8 mm` pocket + `3 mm` nut back); do not
     retain the 7 mm continuous face/back or 12.8 mm lands introduced by
