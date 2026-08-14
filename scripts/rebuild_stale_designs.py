@@ -1,6 +1,8 @@
 """Rebuild governed multipart CAD outputs whose design tree is newer than its build.
 
-Designed for VS Code's preLaunchTask.  Only complete manifest builds are used.
+Designed for VS Code's preLaunchTask. Only complete printable-manifest builds
+and their installed-output audits run automatically; the expensive, supplementary
+assembly review remains an explicit release-checkpoint command.
 """
 from __future__ import annotations
 
@@ -41,16 +43,7 @@ def audit(design: str, config: Path) -> int:
     result = subprocess.run([*command, "--audit-only"], cwd=ROOT)
     if result.returncode:
         return result.returncode
-    review = [sys.executable, "scripts/scad_render_assembly_review.py",
-              "--design", design, "--config", str(config.relative_to(ROOT)),
-              "--set", "full"]
-    result = subprocess.run(review, cwd=ROOT)
-    if result.returncode:
-        return result.returncode
-    result = subprocess.run([*review, "--audit-only"], cwd=ROOT)
-    if result.returncode:
-        return result.returncode
-    return subprocess.run([*command, "--audit-only"], cwd=ROOT).returncode
+    return 0
 
 
 def main() -> int:

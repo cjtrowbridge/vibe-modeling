@@ -175,3 +175,13 @@ nut lands are 12.8 mm deep: 7 mm continuous rail back, 2.8 mm hex recess, and
 2.8 mm nut depth. The complete printable manifest build and installed audit
 pass; rail-joint engagement and full artifact-bound assembly review remain
 `UNVERIFIED`.
+
+## 2026-08-13 Rail-Back Owner Restoration
+
+The prior end-wall clearance Boolean was removed. It was a costly second
+subtraction of all stations and did not restore the original rail support. The
+original `angled_screen_side_infill()` full wedge again owns the continuous
+outer rail-end back/support; the shell-level angled rail passage and nut-pocket
+cuts run after the complete shell union, including that wedge. The separate
+constant-width flat-roof opening remains responsible for eliminating only the
+small inboard transition wedges.

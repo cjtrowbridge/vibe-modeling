@@ -224,6 +224,20 @@ seam screw-block zone remain intact. Full review and unified audit passed as
 - Structural-section and artifact-bound assembly review evidence remain
   `UNVERIFIED`; no combined STL is claimed for this checkpoint.
 
+## 2026-08-13 Rail-Back Owner Restoration
+
+- Removed the uncommitted all-station end-wall clearance Boolean and restored
+  the historical `angled_screen_side_infill()` as the full continuous rail-end
+  support/back owner. The shell-level angled-rail passages and nut-pocket cuts
+  remain the only final hardware cuts through that owner.
+- Assembly contract and complete printable manifest audit: PASS; `4 STL + 68
+  PNG = 72` artifacts at `output/cyberdeck-2/`. The normal manifest build
+  completed in approximately 126 seconds without invoking the full assembly
+  review.
+- Full assembly review remains `BLOCKED_UNKNOWN`; the local image viewer could
+  not access the installed PNGs in this session, so visual confirmation of the
+  rail-back result remains pending user inspection.
+
 ## 2026-08-13 End-Wall, Flat-Rail, and Angled-Rail-Back Recovery
 
 - Restored the required full exterior end-wall fills as independent 3 mm

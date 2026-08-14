@@ -187,13 +187,23 @@ python scripts/scad_build_all.py \
 ### VS Code stale-build hook
 
 The `Rebuild stale CAD designs` launch configuration runs the hook directly, so
-the VS Code play button works even when no editor is active. The hook compares each multipart
-design tree with its installed `output/<design>/build_manifest.json`, rebuilds
-only stale designs through `scad_build_all.py`, renders the full artifact-bound
-assembly review (including required combined-STL geometry exports), and audits
-both the review and the unified output.
+the VS Code play button works even when no editor is active. The hook compares
+each multipart design tree with its installed `output/<design>/build_manifest.json`,
+then rebuilds and audits only stale designs through `scad_build_all.py`. The
+default VS Code rebuild therefore installs and audits the complete printable
+manifest only; it does not run the costly CGAL assembly-review set.
 For a design with several configs and no installed manifest, run one explicit
 complete build first so the hook can reuse its config.
+
+Run the supplementary full assembly review deliberately at a release/review
+checkpoint, after the printable build and audit pass:
+
+```bash
+python scripts/scad_render_assembly_review.py --design cyberdeck-2 \
+  --config designs/cyberdeck-2/configs/rev_0001.json --set full
+python scripts/scad_render_assembly_review.py --design cyberdeck-2 \
+  --config designs/cyberdeck-2/configs/rev_0001.json --set full --audit-only
+```
 
 ### 4. Publish a verified numbered revision
 

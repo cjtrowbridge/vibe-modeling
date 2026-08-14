@@ -157,11 +157,10 @@ module angled_screen_upper_side_wall(side) {
   ], faces=[[0,3,2,1],[4,5,6,7],[0,1,5,4],[1,2,6,5],[2,3,7,6],[3,0,4,7]]);
 }
 
-// Exterior end-wall fill.  This is deliberately separate from the roof-opening
-// cut: it closes the outside end wall and overlaps the rail support, roof, and
-// rear wall, but it is not the source of the inboard flat-rail transition
-// wedges.
-module angled_screen_end_wall_fill(side) {
+// This historical full wedge is the actual outer rail-end support and back.
+// Keep it as one continuous solid: the shell-level rail passage and nut-pocket
+// cuts are applied after every union, so they remain open in the final leaf.
+module angled_screen_side_infill(side) {
   x0 = side < 0 ? -rack_front_width / 2
                 : rack_front_width / 2 - screen_rack_side_wall_thickness;
   x1 = side < 0 ? -rack_front_width / 2 + screen_rack_side_wall_thickness
@@ -247,8 +246,8 @@ module shell_master_uncut() {
     angled_screen_enclosure_closure();
     angled_screen_upper_side_wall(-1);
     angled_screen_upper_side_wall(1);
-    angled_screen_end_wall_fill(-1);
-    angled_screen_end_wall_fill(1);
+    angled_screen_side_infill(-1);
+    angled_screen_side_infill(1);
     port_plate_chassis_nut_lands();
   }
 }
