@@ -184,8 +184,9 @@ intended rail columns as solid blocks.
 
 ## 2026-08-13 Distinct Angled-Screen Rail Recovery
 
-The full-height end-wall wedge was removed from the shell. The two face-local
-rails now exclusively own the `222.25 x 88.90 mm` screen aperture, six M3
+The exterior side skin is a named 3 mm owner, separate from the rail face and
+local rear hardware stack. The two face-local rails own the `222.25 x 88.90 mm`
+screen aperture and six M3
 passages per side, their 3 mm face depth, and their 8.8 mm local nut lands
 (`3 mm` face + `2.8 mm` pocket + `3 mm` nut back). The bounded upper side wall
 closes only the roof/rear service region.

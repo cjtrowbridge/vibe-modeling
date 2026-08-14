@@ -226,10 +226,9 @@ seam screw-block zone remain intact. Full review and unified audit passed as
 
 ## 2026-08-13 Distinct Angled-Screen Rail Recovery
 
-- Removed the full-height end-wall wedge after installed leaf images confirmed
-  that it fused with the face-local 2U rail columns and rendered solid blocks.
-  The bounded upper side wall remains; rail face, rear nut lands, and closure
-  no longer share a full-height owner.
+- Restored the missing 3 mm exterior angled-screen side skin after the earlier
+  wedge removal left visible holes. The bounded upper side wall remains; the
+  rail face, rear nut lands, and closure are documented as separate owners.
 - Removed the remaining full-height, 50.8 mm-deep rail side-support walls and
   restored the pre-regression `3 mm` rail face and `8.8 mm` local nut-land
   stack. Each rail now uses only hidden 3 mm endpoint attachment tabs behind

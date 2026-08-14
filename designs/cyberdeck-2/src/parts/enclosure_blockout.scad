@@ -157,6 +157,33 @@ module angled_screen_upper_side_wall(side) {
   ], faces=[[0,3,2,1],[4,5,6,7],[0,1,5,4],[1,2,6,5],[2,3,7,6],[3,0,4,7]]);
 }
 
+// Exterior-only side skin. This closes the missing angled-screen end profile;
+// the face rails and their local rear nut lands remain independently owned by
+// angled_screen_frame_uncut(). Final M3 passages and nut pockets are cut from
+// the complete shell after this wall is unioned.
+module angled_screen_exterior_side_wall(side) {
+  x0 = side < 0 ? -rack_front_width / 2
+                : rack_front_width / 2 - screen_rack_side_wall_thickness;
+  x1 = side < 0 ? -rack_front_width / 2 + screen_rack_side_wall_thickness
+                : rack_front_width / 2;
+  polyhedron(
+    points = [
+      [x0, 0, enclosure_top_z],
+      [x0, 0, screen_rack_top_z],
+      [x0, screen_rack_upper_roof_front_y, screen_rack_top_z],
+      [x0, screen_rack_base_y, enclosure_top_z],
+      [x1, 0, enclosure_top_z],
+      [x1, 0, screen_rack_top_z],
+      [x1, screen_rack_upper_roof_front_y, screen_rack_top_z],
+      [x1, screen_rack_base_y, enclosure_top_z]
+    ],
+    faces = [
+      [0, 3, 2, 1], [4, 5, 6, 7], [0, 1, 5, 4], [1, 2, 6, 5],
+      [2, 3, 7, 6], [3, 0, 4, 7]
+    ]
+  );
+}
+
 module angled_screen_insert_hole_cuts() {
   angled_screen_frame_transform()
     for (side = [-1, 1])
@@ -220,6 +247,8 @@ module shell_master_uncut() {
     angled_screen_enclosure_closure();
     angled_screen_upper_side_wall(-1);
     angled_screen_upper_side_wall(1);
+    angled_screen_exterior_side_wall(-1);
+    angled_screen_exterior_side_wall(1);
     port_plate_chassis_nut_lands();
   }
 }

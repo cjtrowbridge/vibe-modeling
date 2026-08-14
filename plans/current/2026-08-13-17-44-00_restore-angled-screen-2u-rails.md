@@ -45,6 +45,9 @@ Key: `[ ]` pending task, `[x]` completed task, `[?]` needs validation, `[-]` clo
     local nut land (`3 mm` rail + `2.8 mm` pocket + `3 mm` nut back); do not
     retain the 7 mm continuous face/back or 12.8 mm lands introduced by
     `a3af066`.
+  - [x] 1.6 Restore the missing outer enclosure skin as a named 3 mm exterior
+    side-wall owner. It must close the visible angled-screen side profile while
+    leaving the canonical rail-face depth and per-hole hardware stack unchanged.
 
 - [ ] 2. Prove structure and feature separation.
   - [x] 2.1 Add named assertions for each rail's support overlap, lower-chassis
@@ -74,5 +77,5 @@ Key: `[ ]` pending task, `[x]` completed task, `[?]` needs validation, `[-]` clo
     from the installed artifacts. The prior compact review is invalidated by
     the subsequent rail topology and dimension correction; a fresh review is
     deliberately deferred until targeted rail-face acceptance.
-  - [ ] 4.3 Record actual results, remaining physical-fit limits, and structural
+  - [x] 4.3 Record actual results, remaining physical-fit limits, and structural
     status in the plan, design records, and journal before the final commit.
