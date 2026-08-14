@@ -64,9 +64,10 @@ python scripts/scad_render_assembly_review.py --design cyberdeck-2 --config desi
 python scripts/scad_render_assembly_review.py --design cyberdeck-2 --config designs/cyberdeck-2/configs/rev_0001.json --set full --audit-only
 ```
 
-All current artifacts are installed together under `output/cyberdeck-2/`,
-including `cyberdeck_2_assembled.stl`, the two printable leaf STLs, all printable
-and assembly PNGs, and both provenance manifests.
+The complete printable manifest is installed under `output/cyberdeck-2/` first.
+After the explicit assembly-review command and audit pass, that same directory
+also contains `cyberdeck_2_assembled.stl`, assembly PNGs, and the assembly
+review provenance manifest.
 
 ## Evidence and Limits
 

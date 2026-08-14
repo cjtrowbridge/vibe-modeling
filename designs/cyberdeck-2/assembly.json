@@ -318,6 +318,14 @@
       "show_proxies": false
     },
     {
+      "name": "angled_screen_face",
+      "projection": "p",
+      "camera": [0, -75, 85, -115, 0, 25, 360],
+      "assembly_view": "angled_screen_face",
+      "assembly_view_id": 15,
+      "show_proxies": false
+    },
+    {
       "name": "angled_screen_side_section",
       "projection": "o",
       "camera": [-127, -50, 75, 90, 0, 90, 260],
@@ -399,7 +407,7 @@
     }
   ],
   "view_sets": {
-    "compact": ["front", "isometric", "exploded", "top_seam", "angled_screen", "port_plate_roof_opening"],
+    "compact": ["front", "isometric", "exploded", "top_seam", "angled_screen", "angled_screen_face", "port_plate_roof_opening"],
     "full": [
       "front",
       "rear",
@@ -425,6 +433,7 @@
       "bottom_nut_openings",
       "front_fascia_section",
       "angled_screen",
+      "angled_screen_face",
       "angled_screen_side_section",
       "angled_screen_rail_section",
       "screen_roof_rear_section",

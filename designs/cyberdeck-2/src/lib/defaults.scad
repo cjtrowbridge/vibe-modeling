@@ -329,13 +329,26 @@ module blockout_contract_assertions() {
          "SCREEN: through-mount holes must use the selected M3 clearance diameter");
   assert(screen_rack_face_rail_depth >= minimum_wall_thickness,
          "SCREEN: face rails are below the structural minimum");
+  screen_rail_support_overlap = min(screen_rack_side_wall_thickness,
+                                    rack_rail_face_width,
+                                    screen_rack_face_rail_depth);
+  screen_rail_nut_back = screen_rack_nut_land_depth
+                          - screen_rack_face_rail_depth
+                          - seam_nut_recess_depth;
+  screen_rail_tab_overlap = minimum_structural_overlap;
+  screen_rail_tab_thickness = minimum_wall_thickness;
+  assert(screen_rail_support_overlap >= minimum_structural_overlap,
+         "SCREEN: rail-to-side-support overlap is below the structural minimum");
+  assert(screen_rail_nut_back >= minimum_internal_edge_width,
+         "SCREEN: local rear nut land lacks the required post-cut nut back");
+  assert(screen_rail_tab_overlap >= minimum_structural_overlap
+         && screen_rail_tab_thickness >= minimum_wall_thickness,
+         "SCREEN: rail attachment tabs lack required structural engagement");
   assert(screen_rack_nut_land_depth >= screen_rack_face_rail_depth
          + seam_nut_recess_depth + minimum_internal_edge_width,
          "SCREEN: angled rail nut land lacks the required 3 mm nut back");
   assert(screen_rack_upper_service_band_height >= 18.0,
          "SCREEN: upper service band must provide the approved 18 mm minimum");
-  assert(screen_rack_side_wall_thickness >= minimum_wall_thickness,
-         "SCREEN: side support walls are below the structural minimum");
   assert(screen_rack_upper_roof_thickness >= minimum_structural_overlap,
          "SCREEN: upper roof is below the structural minimum");
   assert(screen_roof_seam_tongue_width >= minimum_structural_overlap,

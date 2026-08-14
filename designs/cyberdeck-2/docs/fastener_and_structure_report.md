@@ -160,9 +160,9 @@ cross the required 3 mm forward roof-edge margin. Its standard X geometry
 
 ## 2026-08-13 End-Wall, Flat-Rail, and Angled-Rail-Back Recovery
 
-The two required exterior end-wall fills are restored as named 3 mm
-`angled_screen_end_wall_fill()` solids. They are separate from the roof-opening
-geometry and must not be confused with the former inboard obstructions.
+The attempted full exterior end-wall fills were separate from the roof-opening
+geometry, but not from the angled-screen rail envelope. They were superseded
+because their full-height wedge volume fused with the face-local 2U rails.
 
 `merged_roof_opening_cut()` now uses the constant 16 mm flat-rail boundary for
 its full length. It no longer tapers from the 3 mm screen margin, so neither
@@ -178,10 +178,16 @@ pass; rail-joint engagement and full artifact-bound assembly review remain
 
 ## 2026-08-13 Rail-Back Owner Restoration
 
-The prior end-wall clearance Boolean was removed. It was a costly second
-subtraction of all stations and did not restore the original rail support. The
-original `angled_screen_side_infill()` full wedge again owns the continuous
-outer rail-end back/support; the shell-level angled rail passage and nut-pocket
-cuts run after the complete shell union, including that wedge. The separate
-constant-width flat-roof opening remains responsible for eliminating only the
-small inboard transition wedges.
+The prior end-wall clearance Boolean was removed. Restoring the full wedge was
+also superseded after installed leaf images confirmed that it renders the
+intended rail columns as solid blocks.
+
+## 2026-08-13 Distinct Angled-Screen Rail Recovery
+
+The full-height end-wall wedge was removed from the shell. The two face-local
+rails now exclusively own the `222.25 x 88.90 mm` screen aperture, six M3
+passages per side, their 3 mm face depth, and their 8.8 mm local nut lands
+(`3 mm` face + `2.8 mm` pocket + `3 mm` nut back). The bounded upper side wall
+closes only the roof/rear service region.
+Source assertions require a 3 mm rail-support overlap and 3 mm post-pocket nut
+back; artifact-bound visual and structural review remain pending.

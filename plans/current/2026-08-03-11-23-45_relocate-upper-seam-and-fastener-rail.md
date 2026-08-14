@@ -553,10 +553,12 @@ rail or fastener change is accepted.
 
 ## 2026-08-12 Artifact-Regeneration Recovery
 
-- [x] V. Preserve required assembly review artifacts during stale-output rebuilds.
-  - [x] V.1 After the complete printable build and printable audit, invoke the
+- [-] V. Preserve required assembly review artifacts during stale-output rebuilds.
+  Superseded by the printable-only default workflow in AB.1-AB.3; full review
+  remains mandatory at an explicit review or release checkpoint.
+  - [-] V.1 After the complete printable build and printable audit, invoke the
     full assembly review, its audit, and a final unified-output audit.
-  - [x] V.2 Retain explicit executable logging and the existing non-zero failure
+  - [-] V.2 Retain explicit executable logging and the existing non-zero failure
     behavior; do not fold assembly-review artifacts into the printable manifest.
 
 ## 2026-08-12 High-Roof Lock Clearance Recovery
@@ -607,13 +609,13 @@ an incompatible ownership overlap, not a build-artifact failure. Preserve the
 visible exterior end-wall shape while excluding every angled-rail hole, nut,
 and rear-back volume from the end-wall owner.
 
-- [x] Z.1 Replace the full end-wall wedge with an exterior-only end-wall
+- [-] Z.1 Replace the full end-wall wedge with an exterior-only end-wall
   profile whose inner boundary clears each six-station angled-rail hardware
   envelope without moving the exact 2U aperture or canonical M3 centers.
-- [x] Z.2 Keep a continuous 7 mm angled rail and model each rear nut land as
+- [-] Z.2 Keep a continuous 7 mm angled rail and model each rear nut land as
   a local extension of that rail, with a complete 3.6 mm through-passage,
   2.8 mm rear-open hex pocket, and 3 mm remaining nut back after all cuts.
-- [x] Z.3 Add named source assertions for end-wall-to-hardware clearance,
+- [-] Z.3 Add named source assertions for end-wall-to-hardware clearance,
   rail-back depth, nut-land depth, and post-cut material margins. All
   structural material and overlaps must remain at least 3 mm.
 - [?] Z.4 Build and audit the complete manifest, inspect the two printable
@@ -623,10 +625,11 @@ and rear-back volume from the end-wall owner.
 
 ## 2026-08-13 Rail-Back Owner Restoration
 
-- [x] AA.1 Remove the uncommitted all-station end-wall hardware subtraction.
+- [-] AA.1 Remove the uncommitted all-station end-wall hardware subtraction.
   Restore the pre-removal `angled_screen_side_infill()` as the continuous
   rail-end support/back owner; retain the shell-level passage and nut-pocket
-  cuts, which apply after its union.
+  cuts, which apply after its union. Superseded by the distinct face-rail,
+  nut-land, and upper-closure ownership recovery plan.
 - [?] AA.2 Run the complete manifest build/audit and inspect the two printable
   rail faces and backs. The normal build completed in approximately 126 seconds
   and its audit passed; local PNG inspection is blocked by a sandbox read error.

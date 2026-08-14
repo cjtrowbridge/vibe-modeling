@@ -95,16 +95,18 @@ module angled_screen_frame_uncut() {
         cube([rack_front_width, screen_rack_face_rail_depth,
               screen_rack_upper_service_band_height]);
 
-      // The outer side support walls carry each rail into the existing full
-      // height chassis wall.  They intentionally leave the entire top and
-      // center open: roof and rear closure are a later separate component.
-      translate([-rack_front_width / 2, -screen_rack_rear_clearance, 0])
-        cube([screen_rack_side_wall_thickness, screen_rack_rear_clearance,
-              screen_rack_face_height]);
-      translate([rack_front_width / 2 - screen_rack_side_wall_thickness,
-                 -screen_rack_rear_clearance, 0])
-        cube([screen_rack_side_wall_thickness, screen_rack_rear_clearance,
-              screen_rack_face_height]);
+      // Two thin rearward tabs, at each endpoint of each rail, carry the rail
+      // into the existing chassis side wall.  Do not use a full-height side
+      // wall here: it makes the 2U rails render as solid blocks.
+      for (side = [-1, 1])
+        for (rail_z = [0, screen_rack_face_height - minimum_wall_thickness])
+          translate([side < 0 ? -rack_front_width / 2
+                              : rack_clear_opening_width / 2,
+                     -screen_rack_rear_clearance, rail_z])
+            cube([rack_rail_face_width,
+                  screen_rack_rear_clearance - screen_rack_face_rail_depth
+                    + minimum_structural_overlap,
+                  minimum_wall_thickness]);
 
       // The continuous 7 mm face rail is the angled rail's back.  Per-hole
       // lands extend only far enough beyond it to retain a 3 mm nut back.
@@ -155,32 +157,6 @@ module angled_screen_upper_side_wall(side) {
     [x1,screen_rack_upper_roof_front_y,screen_rack_top_z],
     [x1,screen_rack_upper_roof_front_y,enclosure_top_z]
   ], faces=[[0,3,2,1],[4,5,6,7],[0,1,5,4],[1,2,6,5],[2,3,7,6],[3,0,4,7]]);
-}
-
-// This historical full wedge is the actual outer rail-end support and back.
-// Keep it as one continuous solid: the shell-level rail passage and nut-pocket
-// cuts are applied after every union, so they remain open in the final leaf.
-module angled_screen_side_infill(side) {
-  x0 = side < 0 ? -rack_front_width / 2
-                : rack_front_width / 2 - screen_rack_side_wall_thickness;
-  x1 = side < 0 ? -rack_front_width / 2 + screen_rack_side_wall_thickness
-                : rack_front_width / 2;
-  polyhedron(
-    points = [
-      [x0, 0, enclosure_top_z],
-      [x0, 0, screen_rack_top_z],
-      [x0, screen_rack_upper_roof_front_y, screen_rack_top_z],
-      [x0, screen_rack_base_y, enclosure_top_z],
-      [x1, 0, enclosure_top_z],
-      [x1, 0, screen_rack_top_z],
-      [x1, screen_rack_upper_roof_front_y, screen_rack_top_z],
-      [x1, screen_rack_base_y, enclosure_top_z]
-    ],
-    faces = [
-      [0, 3, 2, 1], [4, 5, 6, 7], [0, 1, 5, 4], [1, 2, 6, 5],
-      [2, 3, 7, 6], [3, 0, 4, 7]
-    ]
-  );
 }
 
 module angled_screen_insert_hole_cuts() {
@@ -246,8 +222,6 @@ module shell_master_uncut() {
     angled_screen_enclosure_closure();
     angled_screen_upper_side_wall(-1);
     angled_screen_upper_side_wall(1);
-    angled_screen_side_infill(-1);
-    angled_screen_side_infill(1);
     port_plate_chassis_nut_lands();
   }
 }

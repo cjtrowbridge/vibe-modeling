@@ -178,10 +178,10 @@ seam screw-block zone remain intact. Full review and unified audit passed as
   `upper_right_side_wall` crops.
 - Complete printable manifest build and installed printable audit: PASS;
   `4 STL + 68 PNG = 72` artifacts at `output/cyberdeck-2/`.
-- The stale-design rebuild hook now runs the full assembly review and its audit
-  after the printable build, followed by a final unified-output audit.  This
-  restores the required `cyberdeck_2_assembled.stl` workflow instead of leaving
-  the output at the printable-only four-STL set.
+- At that historical checkpoint the stale-design rebuild hook ran the full
+  assembly review after the printable build. This was later superseded: the
+  default hook now rebuilds and audits the printable manifest only, while the
+  full review remains an explicit release-checkpoint command.
 - Full assembly-review rendering was attempted from the installed printable
   build but did not complete within the available command window: its first two
   1200 x 900 CGAL views exceeded five minutes.  No review artifacts were
@@ -223,6 +223,24 @@ seam screw-block zone remain intact. Full review and unified audit passed as
   = 72` artifacts at `output/cyberdeck-2/`.
 - Structural-section and artifact-bound assembly review evidence remain
   `UNVERIFIED`; no combined STL is claimed for this checkpoint.
+
+## 2026-08-13 Distinct Angled-Screen Rail Recovery
+
+- Removed the full-height end-wall wedge after installed leaf images confirmed
+  that it fused with the face-local 2U rail columns and rendered solid blocks.
+  The bounded upper side wall remains; rail face, rear nut lands, and closure
+  no longer share a full-height owner.
+- Removed the remaining full-height, 50.8 mm-deep rail side-support walls and
+  restored the pre-regression `3 mm` rail face and `8.8 mm` local nut-land
+  stack. Each rail now uses only hidden 3 mm endpoint attachment tabs behind
+  the face rails.
+- Assembly contract and complete printable manifest audit: PASS; `4 STL + 68
+  PNG = 72` artifacts at `output/cyberdeck-2/`.
+- A prior compact provenance-bound review passed for the earlier candidate;
+  it is invalidated by this geometry correction. The new complete printable
+  manifest audit passes (`4 STL + 68 PNG = 72`); a fresh assembly review,
+  dedicated left/right rear-hardware sections, unexpected-shell inspection,
+  and final structural section evidence remain `UNVERIFIED`.
 
 ## 2026-08-13 Rail-Back Owner Restoration
 
