@@ -191,7 +191,7 @@ module angled_screen_insert_hole_cuts() {
         translate([rack_rail_column_x(side), boolean_epsilon,
                    screen_rack_hole_z(hole_index)])
           rotate([90, 0, 0])
-          cylinder(h = screen_rack_face_rail_depth + 2 * boolean_epsilon,
+          cylinder(h = screen_rack_face_rail_depth + 5.0,
                    d = screen_mount_hole_diameter, $fn = 48);
 }
 
@@ -243,7 +243,7 @@ module shell_master_uncut() {
       cube([rack_front_width, rear_wall_thickness, enclosure_height]);
 
     device_support_rails();
-    angled_screen_frame_uncut();
+    angled_screen_frame();
     angled_screen_enclosure_closure();
     angled_screen_upper_side_wall(-1);
     angled_screen_upper_side_wall(1);
@@ -258,7 +258,6 @@ module shell_master() {
     shell_master_uncut();
     main_rack_mount_hole_cuts();
     main_rack_nut_pocket_cuts();
-    angled_screen_insert_hole_cuts();
     angled_screen_nut_pocket_cuts();
     merged_roof_opening_cut();
     port_plate_chassis_mount_hole_cuts();

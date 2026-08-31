@@ -51,6 +51,87 @@ preserved 2U bay. Each right-leaf 3 mm tongue slides into a left-leaf socket
 with 1 mm clearance on every non-insertion face and at its closed end, while
 the exterior top and bottom remain planar.
 
+## Angled-Screen Rail Regression and Recovery
+
+### What Happened
+
+The 45-degree angled screen rails were rendered as **solid opaque blocks** with
+no visible M3 holes, replacing the previously working 2U rail columns. This
+regression was introduced when a full-height `angled_screen_side_infill()`
+wedge (a `screen_rack_rear_clearance`-deep × 88.90 mm side-support wall on
+each side) was reintroduced into the shell union. The wedge fused with the two
+face-local rail columns, making the entire side appear solid and masking all
+six M3 passages per side.
+
+### Attempts Made (2026-08-13, before the root-cause diagnosis)
+
+| Attempt | Result |
+|---|---|
+| Replaced side-support wedges with direct 3 mm rectangular overlaps to the flat chassis side rails | Source-diff review showed the replacement removed the required rail backs/support walls without engaging the actual flat rail. Reverted. |
+| Restored end-wall fills; removed only the tapered flat-roof remnants obstructing the two lower M3 stations | User reported the full end-wall fill masked the angled-rail holes and backs again. |
+| Removed the full-height `angled_screen_side_infill()` wedge from the shell union | Complete build/audit passed; face-side view showed open aperture. |
+| Replaced the two 50.8 mm-deep screen side-support walls with four 3 mm endpoint tabs behind the rails | Visual review showed unsupported protrusions. Reversed. |
+| Restored `angled_screen_exterior_side_wall()` as a named 3 mm outer skin | Closed the visible side-profile holes while retaining corrected 3 mm rail-face depth and 8.8 mm nut lands. |
+
+Each attempt passed the complete printable manifest build and installed-output
+audit (`4 STL + 68 PNG = 72`), but the rails continued to render as solid
+blocks. The circular pattern—build passes, user reports solid, next attempt—repeated
+across multiple commits without the holes appearing.
+
+### Root Cause (diagnosed 2026-08-28)
+
+**CGAL boolean precision failure.** The 3.6 mm M3 hole cylinders (r = 1.8 mm)
+were being subtracted from a complex polyhedron union that contained 45-degree
+rotated faces (the angled screen frame). CGAL's CGAL kernel silently failed to
+perform the `difference()` operation on these small cylindrical cutters against
+the rotated polyhedral surface—the holes vanished from the rendered STL without
+any error or warning from OpenSCAD.
+
+This was confirmed by controlled experimentation: the same cylinder cuts from
+a plain axis-aligned box before the 45-degree rotation, and the holes appear
+correctly. The failure is specific to the combination of small-cylinder cutters
+and non-axis-aligned polyhedral faces in a single boolean operation.
+
+### Resolution: Pre-Cut Approach
+
+The fix moves the M3 hole subtraction to **before** the angled frame is unioned
+into the shell:
+
+1. `angled_screen_frame_uncut()` builds the raw frame geometry (rails, side
+   walls, nut lands) without any hole cuts.
+2. `angled_screen_insert_hole_cuts()` defines the twelve 3.6 mm cylinders in
+   the **local coordinate system** of the unrotated frame, where they are
+   axis-aligned.
+3. `angled_screen_frame()` performs the `difference(frame_uncut, hole_cuts)`
+   on the simple, unrotated box-based geometry—where CGAL reliably subtracts
+   the cylinders.
+4. `shell_master_uncut()` calls `angled_screen_frame()` (already hole-cut)
+   rather than `angled_screen_frame_uncut()`, so the holes are preserved
+   through the subsequent 45-degree rotation and shell union.
+5. `shell_master()` no longer includes the duplicate `angled_screen_insert_hole_cuts()`
+   in its difference, since the holes are already present.
+
+User-verified: holes now appear in the rendered STL.
+
+### Known Open Issues (as of 2026-08-28 pause)
+
+| Issue | Status |
+|---|---|
+| Holes do not pass fully through the 8.8 mm nut lands | Cylinder is `screen_rack_face_rail_depth + 5.0` = 8.0 mm, but nut lands are 8.8 mm deep. Correct fix is `screen_rack_nut_land_depth + 5.0` = 13.8 mm. **Not yet applied** — code still has the old value. |
+| Rail front-to-back depth is too thick (50.8 mm) | `screen_rack_rear_clearance` in `rev_0001.json` constrains the side-wall depth to 50.8 mm. User confirmed "too thick" means front-to-back. Candidate reduction to ~25.4 mm is blocked by the active plan constraint and requires plan revision. |
+| Full provenance-bound assembly review | Deferred (plan item 4.2 `[?]`) pending targeted rail-face acceptance. |
+
+### References
+
+- **Active plan:** `plans/current/2026-08-13-17-44-00_restore-angled-screen-2u-rails.md`
+- **Journal 2026-08-13:** `journal/2026-08-13.md` — full attempt history for the
+  solid-rail regression (endpoint tabs, end-wall fills, side-support wedges).
+- **Journal 2026-08-28:** `journal/2026-08-28.md` — CGAL root-cause diagnosis,
+  pre-cut fix, build/audit, open issues, and pause checkpoint.
+- **Governing config:** `configs/rev_0001.json` (overrides `src/lib/defaults.scad`)
+- **Geometry source:** `src/parts/enclosure_blockout.scad`
+- **Rack standard:** `src/lib/rack_v2_0_0.scad` (19-inch Rack Standard v2.0.0)
+
 ## Build and Review
 
 Use the complete manifest pipeline before the supplementary assembly review:
