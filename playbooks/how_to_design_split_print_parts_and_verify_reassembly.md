@@ -21,6 +21,11 @@ repeatable alignment, adequate attachment, and verified assembled load paths.
    coplanar slivers, or accidental missing layers.
 6. Design registration, keys, sleeves, harnesses, fasteners, or adhesive lands
    with separate assembly clearance and structural engagement dimensions.
+   - For a keyed, recessed M3 clamping station with a captive nut, use
+     `references/engineering/fasteners/m3_captive_nut_registration_seam_stations.md`.
+     Select it only when its declared hardware, material, insertion, and tool
+     envelopes fit the seam; it does not replace this playbook's split-ownership
+     or reassembly verification requirements.
 7. Verify every printable piece independently for bounds, connectivity, minimum
    walls, overhangs, and stable bed contact.
 8. Verify the assembled model for alignment, exterior continuity, internal access,

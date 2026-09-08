@@ -121,6 +121,12 @@ When applying it to a design, follow
 `playbooks/working_with_ten_inch_racks.md`; host CAD, structural, provenance, and
 artifact rules take precedence over conflicting standalone bundle guidance.
 
+For oversized-print seams, the M3 captive-nut registration seam-station
+reference defines a reusable keyed tongue-and-receiver option with recessed
+hardware: `references/engineering/fasteners/m3_captive_nut_registration_seam_stations.md`.
+Choose and verify split seams through
+`playbooks/how_to_design_split_print_parts_and_verify_reassembly.md`.
+
 ## Prerequisites
 
 - Python 3.8+

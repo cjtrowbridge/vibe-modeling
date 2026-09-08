@@ -145,6 +145,7 @@ Operational references:
 
 Engineering references:
 
+- `references/engineering/fasteners/m3_captive_nut_registration_seam_stations.md` - Captive-nut M3 tongue-and-receiver seam standard for split printable parts.
 - `references/engineering/servo/designing-for-servos.md` - Servo selection, geometry, mounting, and validation guidance.
 - `references/engineering/servo/working-with-servo-receivers.md` - Servo-receiver interfaces and integration guidance.
 - `references/engineering/ten_inch_rack/README.md` - Versioned ten-inch-rack specification package, host overrides, provenance, and validation entrypoint.
