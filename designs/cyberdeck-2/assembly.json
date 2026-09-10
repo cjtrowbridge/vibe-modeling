@@ -121,7 +121,7 @@
       "show_proxies": true
     },
     {
-      "name": "station_top_section",
+      "name": "station_top_front_section",
       "projection": "p",
       "camera": [0, 0, 0, 55, 0, 25, 1000],
       "assembly_view": "station_section",
@@ -129,7 +129,7 @@
       "show_proxies": false
     },
     {
-      "name": "station_bottom_section",
+      "name": "station_bottom_front_section",
       "projection": "p",
       "camera": [0, 0, 0, 55, 0, 25, 1000],
       "assembly_view": "station_section",
@@ -137,7 +137,7 @@
       "show_proxies": false
     },
     {
-      "name": "station_left_section",
+      "name": "station_left_front_section",
       "projection": "p",
       "camera": [0, 0, 0, 55, 0, 25, 1000],
       "assembly_view": "station_section",
@@ -145,7 +145,7 @@
       "show_proxies": false
     },
     {
-      "name": "station_right_section",
+      "name": "station_right_front_section",
       "projection": "p",
       "camera": [0, 0, 0, 55, 0, 25, 1000],
       "assembly_view": "station_section",
@@ -153,11 +153,43 @@
       "show_proxies": false
     },
     {
+      "name": "station_top_rear_section",
+      "projection": "p",
+      "camera": [0, 0, 0, 55, 0, 25, 1000],
+      "assembly_view": "station_section",
+      "assembly_view_id": 10,
+      "show_proxies": false
+    },
+    {
+      "name": "station_bottom_rear_section",
+      "projection": "p",
+      "camera": [0, 0, 0, 55, 0, 25, 1000],
+      "assembly_view": "station_section",
+      "assembly_view_id": 11,
+      "show_proxies": false
+    },
+    {
+      "name": "station_left_rear_section",
+      "projection": "p",
+      "camera": [0, 0, 0, 55, 0, 25, 1000],
+      "assembly_view": "station_section",
+      "assembly_view_id": 12,
+      "show_proxies": false
+    },
+    {
+      "name": "station_right_rear_section",
+      "projection": "p",
+      "camera": [0, 0, 0, 55, 0, 25, 1000],
+      "assembly_view": "station_section",
+      "assembly_view_id": 13,
+      "show_proxies": false
+    },
+    {
       "name": "rack_section",
       "projection": "p",
       "camera": [0, 0, 0, 55, 0, 25, 1000],
       "assembly_view": "rack_section",
-      "assembly_view_id": 10,
+      "assembly_view_id": 14,
       "show_proxies": false
     },
     {
@@ -165,7 +197,7 @@
       "projection": "p",
       "camera": [0, 0, 0, 55, 0, 25, 1000],
       "assembly_view": "shelf_section",
-      "assembly_view_id": 11,
+      "assembly_view_id": 15,
       "show_proxies": false
     }
   ],
@@ -179,10 +211,14 @@
       "leaf_bottom_right",
       "leaf_top_right",
       "leaf_top_left",
-      "station_top_section",
-      "station_bottom_section",
-      "station_left_section",
-      "station_right_section",
+      "station_top_front_section",
+      "station_bottom_front_section",
+      "station_left_front_section",
+      "station_right_front_section",
+      "station_top_rear_section",
+      "station_bottom_rear_section",
+      "station_left_rear_section",
+      "station_right_rear_section",
       "rack_section",
       "shelf_section"
     ]

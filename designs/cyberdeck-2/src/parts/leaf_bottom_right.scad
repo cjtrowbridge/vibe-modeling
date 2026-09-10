@@ -8,16 +8,30 @@ module leaf_bottom_right_quadrant() {
     cube([case_width / 2.0, case_depth_exterior, case_width / 2.0], center = false);
 }
 
+// This leaf owns 2 tongue slabs (plan 1.3): the right-front and
+// right-rear slabs of the right ribbon (seam Z = 0). Each slab crosses the
+// Z = 0 split plane (z -3..11), so it is unioned IN AFTER the quadrant
+// intersection and its 3.6 bore then cut, keeping this leaf one manifold
+// piece (plan 3.2/4.1c; same pattern as leaf_bottom_left).
 module leaf_bottom_right_body() {
-  intersection() {
-    enclosure_final();
-    leaf_bottom_right_quadrant();
+  difference() {
+    union() {
+      intersection() {
+        enclosure_final();
+        leaf_bottom_right_quadrant();
+      }
+      seam_station_slabs_bottom_right();
+    }
+    seam_station_slab_cuts_bottom_right();
   }
 }
 
 module leaf_bottom_right_print_assertions() {
-  assert(case_width / 2.0 <= print_bed - print_reserve, "leaf print footprint within usable bed");
-  assert(case_depth_exterior <= print_bed - print_reserve, "leaf print height within usable bed");
+  // Bed X: the right ribbons cross the Z = 0 split plane, not the X = 0
+  // one, so the plain 127 bound holds. Bed Y: 127 quadrant + up to 11.0
+  // slab reach -> 138, asserted at the 141 bound.
+  assert(case_width / 2.0 <= print_bed - print_reserve, "leaf print footprint X within usable bed (127 <= 215)");
+  assert(case_half + tongue_slab_len <= print_bed - print_reserve, "leaf print footprint Y within usable bed (141 <= 215)");
 }
 
 module leaf_bottom_right_print() {

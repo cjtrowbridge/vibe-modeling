@@ -1,7 +1,7 @@
 {
   "part": "cyberdeck_leaf",
   "revision": "rev_0001",
-  "design_state": "shell_blockout",
+  "design_state": "stations",
   "rack_spec_version": "ten-inch-rack-m3-printed-design-spec v2.0.0",
 
   "case_width": 254.0,
@@ -54,9 +54,15 @@
   "station_tb_y0": 0.0,
   "station_tb_y1": 18.0,
   "station_tb_y_center": 9.0,
+  "station_tb_y0_rear": 62.0,
+  "station_tb_y1_rear": 80.0,
+  "station_tb_y_center_rear": 71.0,
   "station_lr_y0": 10.0,
   "station_lr_y1": 28.0,
   "station_lr_y_center": 19.0,
+  "station_lr_y0_rear": 52.0,
+  "station_lr_y1_rear": 70.0,
+  "station_lr_y_center_rear": 61.0,
 
   "minimum_wall_thickness": 3.0,
   "minimum_structural_overlap": 3.0,

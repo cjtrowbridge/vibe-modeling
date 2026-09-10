@@ -11,6 +11,7 @@
 // defines U_HOLE_OFFSET_WITHIN used by the spec formula cross-check.
 include <lib/rack_v2_0_0.scad>
 include <lib/defaults.scad>
+include <lib/seam_station.scad>
 include <parts/shell.scad>
 include <parts/leaf_bottom_left.scad>
 include <parts/leaf_bottom_right.scad>

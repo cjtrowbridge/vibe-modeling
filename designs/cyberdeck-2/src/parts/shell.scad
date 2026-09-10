@@ -101,8 +101,20 @@ module shell_body() {
   }
 }
 
-// Unsplit product entry point. Section 3 routes the seam-station pads
-// (union) and hardware cuts (difference) through this module.
+// Unsplit product entry point. Ownership of the seam-station geometry
+// (plan 3.2): this master union is the 8 pad blocks (root zone + receiver
+// zone, both sides of each seam) minus the 8 receiver-side cut stacks
+// (socket, head recess, through passage, nut pocket). The tongue slabs are
+// NOT in the master: they are unioned into their owner leaves AFTER the
+// leaf quadrant intersection, and the 8 slab bore cuts are subtracted
+// per-owner inside the leaf bodies, so each printed part is one manifold
+// piece and every structural join survives the split (see seam_station.scad).
 module enclosure_final() {
-  shell_body();
+  difference() {
+    union() {
+      shell_body();
+      seam_station_pads_all();
+    }
+    seam_station_cuts_all();
+  }
 }

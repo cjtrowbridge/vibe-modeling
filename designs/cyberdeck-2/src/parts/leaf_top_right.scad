@@ -8,6 +8,9 @@ module leaf_top_right_quadrant() {
     cube([case_width / 2.0, case_depth_exterior, case_width / 2.0], center = false);
 }
 
+// This leaf owns NO tongue slabs: all four of its stations (top and right
+// ribbons) are the RECEIVER side, so it carries only the master's pads,
+// sockets, and hardware cuts via the quadrant intersection (plan 1.3).
 module leaf_top_right_body() {
   intersection() {
     enclosure_final();
@@ -16,6 +19,8 @@ module leaf_top_right_body() {
 }
 
 module leaf_top_right_print_assertions() {
+  // No slab reach in either footprint axis -> plain 127 x 127 footprint,
+  // height 80 (product exterior depth).
   assert(case_width / 2.0 <= print_bed - print_reserve, "leaf print footprint within usable bed");
   assert(case_depth_exterior <= print_bed - print_reserve, "leaf print height within usable bed");
 }

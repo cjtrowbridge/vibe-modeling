@@ -1,7 +1,7 @@
 // Design configuration with -D overrides (every key in configs/rev_0001.json).
 part = is_undef(part) ? "cyberdeck_leaf" : part;
 revision = is_undef(revision) ? "rev_0001" : revision;
-design_state = is_undef(design_state) ? "shell_blockout" : design_state;
+design_state = is_undef(design_state) ? "stations" : design_state;
 rack_spec_version = is_undef(rack_spec_version) ? "ten-inch-rack-m3-printed-design-spec v2.0.0" : rack_spec_version;
 
 case_width = is_undef(case_width) ? 254.0 : case_width;
@@ -54,9 +54,15 @@ m3_screw_rejected_len = is_undef(m3_screw_rejected_len) ? 14.0 : m3_screw_reject
 station_tb_y0 = is_undef(station_tb_y0) ? 0.0 : station_tb_y0;
 station_tb_y1 = is_undef(station_tb_y1) ? 18.0 : station_tb_y1;
 station_tb_y_center = is_undef(station_tb_y_center) ? 9.0 : station_tb_y_center;
+station_tb_y0_rear = is_undef(station_tb_y0_rear) ? 62.0 : station_tb_y0_rear;
+station_tb_y1_rear = is_undef(station_tb_y1_rear) ? 80.0 : station_tb_y1_rear;
+station_tb_y_center_rear = is_undef(station_tb_y_center_rear) ? 71.0 : station_tb_y_center_rear;
 station_lr_y0 = is_undef(station_lr_y0) ? 10.0 : station_lr_y0;
 station_lr_y1 = is_undef(station_lr_y1) ? 28.0 : station_lr_y1;
 station_lr_y_center = is_undef(station_lr_y_center) ? 19.0 : station_lr_y_center;
+station_lr_y0_rear = is_undef(station_lr_y0_rear) ? 52.0 : station_lr_y0_rear;
+station_lr_y1_rear = is_undef(station_lr_y1_rear) ? 70.0 : station_lr_y1_rear;
+station_lr_y_center_rear = is_undef(station_lr_y_center_rear) ? 61.0 : station_lr_y_center_rear;
 
 minimum_wall_thickness = is_undef(minimum_wall_thickness) ? 3.0 : minimum_wall_thickness;
 minimum_structural_overlap = is_undef(minimum_structural_overlap) ? 3.0 : minimum_structural_overlap;
@@ -107,9 +113,12 @@ module blockout_contract_assertions() {
          + station_receiver_wall + nut_pocket_depth))) < 1e-9,
          "station radial stack exactly fills the 15.875 band");
 
-  // Split leaves and print bounds (220 mm bed with 5 mm reserve).
+  // Split leaves and print bounds (220 mm bed with 5 mm reserve). The slab
+  // feet stick out 14.0 past the seam faces they ride: worst-case leaf
+  // footprint corner = 127.0 + 14.0 = 141.0 (bottom_left, both axes).
   assert(abs(case_half - 127.0) < 1e-9, "leaf footprint edge 127.0");
-  assert(127.0 <= print_bed - print_reserve, "leaf footprint within usable bed");
+  assert(case_half + tongue_slab_len <= print_bed - print_reserve,
+         "slab-aware leaf footprint within usable bed (141.0 <= 215.0)");
   assert(case_depth_exterior <= print_bed - print_reserve, "leaf depth within usable bed");
 
   // M3 hardware fit at the seam stations (head recess 8.25 dia).

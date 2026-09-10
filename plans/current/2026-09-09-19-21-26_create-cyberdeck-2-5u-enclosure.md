@@ -1,7 +1,7 @@
 ---
 plan_id: 2026-09-09-19-21-26_create-cyberdeck-2-5u-enclosure
 title: Create cyberdeck-2 5U fully-enclosed rack case
-summary: Build a new 5U ten-inch-rack case (254 x 254 x 80 mm), fully enclosed except the 222.25 x 222.25 mm rack opening, split into four printable quadrant leaves joined by four M3 captive-nut registration seam stations located in the ring band between the rack clear opening and the case edge.
+summary: Build a new 5U ten-inch-rack case (254 x 254 x 80 mm), fully enclosed except the 222.25 x 222.25 mm rack opening, split into four printable quadrant leaves joined by eight M3 captive-nut registration seam stations (two per seam ribbon) located in the ring band between the rack clear opening and the case edge.
 status: current
 created_at: 2026-09-09-19-21-26
 ---
@@ -81,7 +81,19 @@ split pieces, in-band joins, 80 mm depth).
   - Prohibited: no removable front port plate, no top plate, no second
     subassembly, unless added by a future approved plan.
 
-### 1.3 Seam station layout (lock: 4 stations, one per seam, all in-band)
+### 1.3 Seam station layout (lock: 8 stations, two per seam ribbon, all in-band)
+
+- RE-LOCKED 2026-09-09 at gate 2.4 (user: "All of the seams should have m3 joins at the
+  top and bottom on the sides, and then across the four corners at the center where
+  the four pieces meet" + "also yes across the four corners on the rear where they
+  meet"): eight stations, two per seam ribbon (a seam ribbon = the 21.0 x 18.0 x
+  15.875 station pad at one seam face). Rationale recorded: mid-side-face stations
+  are mechanically impossible with the captive-nut reference profile (the fastener
+  axis must run radially through the 15.875 band; the head needs an exterior face
+  and the nut pocket must open into the chamber). The confirmed placement is the
+  two band midpoints per ribbon: one at the front where the seams flank the rack
+  opening (the "four corners at the center where the four pieces meet" set) and
+  one mirrored at the rear where the leaves meet the rear wall.
 
 - Requirement mapping: "the joins should fit in between the rack clearances and
   the edge of the case" = every station lies radially INSIDE the 15.875 mm ring
@@ -187,28 +199,58 @@ split pieces, in-band joins, 80 mm depth).
     zone (reference "receiver width"; slot 15.0 = insertion 14.0 + tip
     clearance 1.0, then closed end 3.0).
   - Pad depth (the other in-plane axis), 18.0, fastener axis at its center:
-    - top/bottom stations: `Y in [0.0, 18.0]` (flush at the case front face).
-    - left/right stations: `Y in [10.0, 28.0]` (see rationale below).
-  - Four stations (receiver-side deep in WHICH leaf is finalized at 4.1;
-    below assumes receiver in the +half, tongue in the -half):
-    - `station_top` (seam plane X = 0, top band Z in [111.125, 127.0];
-      fastener axis Z, head in face Z = +127.0): pad
-      `X in [-3.0, +18.0]` or `X in [-18.0, +3.0]` per 4.1
-      (3.0 root zone in the tongue leaf + 18.0 receiver zone in the
-      receiver leaf), `Y in [0.0, 18.0]`, `Z in [111.125, 127.0]`.
-    - `station_bottom` (seam plane X = 0, bottom band Z in
+    - top/bottom FRONT stations: `Y in [0.0, 18.0]` (flush at the case front
+      face; `station_tb_y0..y_center` = 0.0/18.0/9.0).
+    - top/bottom REAR stations: `Y in [62.0, 80.0]` (flush at the rear exterior
+      face, exact mirror of the front pair about the case center Y = 40.0;
+      `station_tb_y0_rear..y_center_rear` = 62.0/80.0/71.0; the head/washer
+      recess is in the rear exterior face Z = +/-127.0, the pocket aperture
+      opens into the chamber through the band's opening-edge face).
+    - left/right FRONT stations: `Y in [10.0, 28.0]` (`station_lr_y0..y_center`
+      = 10.0/28.0/19.0; see rationale below).
+    - left/right REAR stations: `Y in [52.0, 70.0]` (`station_lr_y0_rear..
+      y_center_rear` = 52.0/70.0/61.0; exact mirror of the front pair about
+      Y = 40.0, per the user-confirmed table). These are NOT flush with the
+      rear wall: the 8.0-deep axial recess at the pad face spans
+      Y 62.0..70.0 (rear wall 77..80 unchanged), and the rear wall keeps its
+      plain 3.0 thickness with no pocket in it.
+  - Eight stations (receiver side LOCKED by the 4.1 rule "the receiver is the
+    leaf at the + side of the station's own seam plane" -- top/bottom: +X;
+    left/right: +Z; the tongue is the other leaf; every pad is fully consistent
+    with the lock, see leaf-ownership table below):
+    - `station_top_front` (seam plane X = 0, top band Z in [111.125, 127.0];
+      fastener axis Z, head in face Z = +127.0): pad `X in [-3.0, +18.0]`,
+      `Y in [0.0, 18.0]` (axis Y = 9.0). Receiver: top_right leaf; tongue:
+      top_left leaf (slab spans X 0..14 into top_right).
+    - `station_top_rear` (same band/mouth as top_front): pad
+      `X in [-3.0, +18.0]`, `Y in [62.0, 80.0]` (axis Y = 71.0); receiver
+      top_right, tongue top_left.
+    - `station_bottom_front` (seam plane X = 0, bottom band Z in
       [-127.0, -111.125]; fastener axis Z, head in face Z = -127.0): pad
-      `X in [-3.0, +18.0]` or `X in [-18.0, +3.0]` per 4.1,
-      `Y in [0.0, 18.0]`, mirrored in Z.
-    - `station_left` (seam plane Z = 0, left band X in [-127.0, -111.125];
-      fastener axis X, head in face X = -127.0): pad
-      `Z in [-3.0, +18.0]` or `Z in [-18.0, +3.0]` per 4.1,
-      `Y in [10.0, 28.0]`, `X in [-127.0, -111.125]`.
-    - `station_right` (seam plane Z = 0, right band X in [111.125, 127.0];
-      fastener axis X, head in face X = +127.0): pad
-      `Z in [-3.0, +18.0]` or `Z in [-18.0, +3.0]` per 4.1,
-      `Y in [10.0, 28.0]`, `X in [111.125, 127.0]`.
-- Why the left/right pads are at `Y in [10.0, 28.0]`, not at the front face:
+      `X in [-3.0, +18.0]`, `Y in [0.0, 18.0]` (axis Y = 9.0). Receiver:
+      bottom_right leaf; tongue: bottom_left leaf.
+    - `station_bottom_rear`: same X band as bottom_front, `Y in [62.0, 80.0]`
+      (axis Y = 71.0); receiver bottom_right, tongue bottom_left.
+    - `station_left_front` (seam plane Z = 0, left band X in [-127.0,
+      -111.125]; fastener axis X, head in face X = -127.0): pad
+      `Z in [-3.0, +18.0]` (3.0 root zone in the -Z leaf + 18.0 receiver
+      zone in the +Z leaf), `Y in [10.0, 28.0]` (axis Y = 19.0). Receiver:
+      top_left leaf; tongue: bottom_left leaf (slab spans Z 0..14 into
+      top_left).
+    - `station_left_rear`: same X band, `Z in [-3.0, +18.0]`,
+      `Y in [52.0, 70.0]` (axis Y = 61.0); receiver top_left, tongue
+      bottom_left.
+    - `station_right_front` (seam plane Z = 0, right band X in
+      [111.125, 127.0]; fastener axis X, head in face X = +127.0): pad
+      `Z in [-3.0, +18.0]`, `Y in [10.0, 28.0]` (axis Y = 19.0). Receiver:
+      top_right leaf; tongue: bottom_right leaf.
+    - `station_right_rear`: same X band, `Z in [-3.0, +18.0]`,
+      `Y in [52.0, 70.0]` (axis Y = 61.0); receiver top_right, tongue
+      bottom_right.
+  - Per-leaf station count: bottom_left 2 tongues; bottom_right 2 receivers +
+    2 tongues = 4; top_right 4 receivers; top_left 2 receivers + 2 tongues = 4.
+- Front-face rationale for the left/right FRONT pads -- why at `Y in
+  [10.0, 28.0]`, not at the front face:
   the left/right bands at `Y 0..10` carry the rack rail columns -- 30 holes
   (15 per column at `X = +/-118.2625` on the face, 3.6 dia passages) including
   the hole centered at `Z = 0.0` on the seam plane and holes at
@@ -303,20 +345,33 @@ split pieces, in-band joins, 80 mm depth).
     220.0 equipment envelope (left/right pad inner face at |X| = 111.125
     vs equipment half-width 110.0 -> 1.125 mm clear; top/bottom pads are
     outside the equipment's |Z| / |X| extent).
-- Leaf ownership (locked): each station is split on its OWN seam plane only
-  (X = 0 for top/bottom, Z = 0 for left/right). One leaf owns the receiver
-  half (socket, head recess, nut pocket, receiver passage) and the other leaf
-  owns the tongue (slab + root + tongue passage). The tongue insertion path
-  is LATERAL: it lies in the station's own seam plane (e.g. the Z = 0 plane
-  for left/right stations, along the Z axis, with the slab sliding from its
-  tongue-leaf side through the open slot mouth into the receiver leaf). It
-  crosses the station's own seam plane BY DESIGN (that is the insertion) and
-  no other seam plane -- never X = 0 for left/right stations, never Z = 0 for
-  top/bottom stations, never the Y = 0 front face -- so no leaf must hand a
-  socket mouth to a non-mate leaf. The exact receiver/tongue quadrant pairing
-  (which side of the seam receives) is finalized at section 4.1 with the
-  rule: the tongue root zone must stay in its owning leaf (root does not
-  cross the seam plane; only the slab crosses, with clearance).
+- Leaf ownership (locked, FINAL -- 4.1 rule: "the receiver is the leaf at the
+  + side of the station's own seam plane", i.e. top/bottom receive in +X, left/
+  right receive in +Z; every receiver zone therefore lies inside a single
+  leaf, so no hardware cut straddles any split plane): each station is split
+  on its OWN seam plane only (X = 0 for top/bottom, Z = 0 for left/right).
+  One leaf owns the receiver half (socket, head recess, nut pocket, receiver
+  passage) and the other leaf owns the tongue (slab + root + tongue passage).
+  The tongue insertion path is LATERAL: it lies in the station's own seam
+  plane (e.g. the Z = 0 plane for left/right stations, along the Z axis, with
+  the slab sliding from its tongue-leaf side through the open slot mouth into
+  the receiver leaf). It crosses the station's own seam plane BY DESIGN (that
+  is the insertion) and no other seam plane -- never X = 0 for left/right
+  stations, never Z = 0 for top/bottom stations, never the Y = 0/80 faces --
+  so no leaf must hand a socket mouth to a non-mate leaf. The tongue root
+  zone stays in its owning leaf (root does not cross the seam plane; only the
+  slab crosses, with clearance).
+- Print consequence of the locked ownership (asserted per leaf at 4.3): a
+  tongue slab protrudes 14.0 past its leaf's quadrant boundary only in the
+  + direction of its own seam plane, which is already the leaf's print-
+  offset direction for every leaf, so no leaf translate changes from the
+  1.2 blockout layout. Per-leaf print footprints (bed X = product X, bed Y =
+  -product Z, bed Z = 80 - product Y): bottom_left 141 x 141 x 80 (slab
+  extends to bed X 141, bed Y 141); top_left 141 x 127 x 80; bottom_right
+  127 x 141 x 80; top_right 127 x 127 x 80. All axis extents <= 215.0
+  (220 bed - 5 reserve). Slab top/bottom faces are perpendicular to bed Z
+  (the 3.0-thick slab prints as a horizontal wall) -- no overhangs beyond
+  the shell geometry already declared at the 2.4 gate.
 - Structural floor: the 3.0 mm baseline (AGENTS.md section 10) holds for
   ALL shell and station geometry with NO exceptions -- every material
   layer in the 15.875 stack is >= 3.0, and every in-plane ligament
@@ -330,18 +385,19 @@ split pieces, in-band joins, 80 mm depth).
 - Leaf-ownership table (locked after 4.1 finalizes which side of each seam
   plane receives the socket -- this table is the rule, exact quadrants per
   4.1):
-  - `station_top`: receiver in the leaf at `-X` OR `+X` side of X = 0 in the
-    top band (top-left OR top-right leaf); tongue in the other top leaf.
-    The pad spans 21.0 in the insertion direction: 3.0 root zone in the
-    tongue leaf + 18.0 receiver zone in the receiver leaf, e.g.
-    `X in [-3.0, +18.0]` for receiver in the `+X` leaf (2.1). The closed
-    end of the slot (pad rear, 15.0..18.0 from the seam face) is in the
-    receiver leaf.
-  - `station_bottom`: same rule, bottom band, X = 0 seam.
-  - `station_left`: receiver in the `-Z` OR `+Z` half at Z = 0 in the left
-    band (bottom-left OR top-left leaf); tongue in the other left leaf.
-    Pad `Z in [-3.0, +18.0]` or `Z in [-18.0, +3.0]` per the 4.1 choice.
-  - `station_right`: same rule, right band, Z = 0.
+  - `station_top_front` / `station_top_rear` (top band, X = 0 seam):
+    receiver = top_right leaf (X > 0); tongue = top_left leaf. Pad
+    `X in [-3.0, +18.0]` (3.0 root zone in top_left + 18.0 receiver zone in
+    top_right). The closed end of the slot (15.0..18.0 from the seam face)
+    is in the receiver leaf.
+  - `station_bottom_front` / `station_bottom_rear` (bottom band, X = 0):**
+    receiver = bottom_right; tongue = bottom_left; same X extents.
+  - `station_left_front` / `station_left_rear` (left band, Z = 0 seam):**
+    receiver = top_left (Z > 0); tongue = bottom_left. Pad
+    `Z in [-3.0, +18.0]` (3.0 root zone in bottom_left + 18.0 receiver zone
+    in top_left).
+  - `station_right_front` / `station_right_rear` (right band, Z = 0):**
+    receiver = top_right; tongue = bottom_right; same Z extents.
 
 ### 1.4 Fastener hardware declaration (starting profile, physically UNVERIFIED)
 
@@ -488,10 +544,11 @@ split pieces, in-band joins, 80 mm depth).
     (`rack_spec_version: "ten-inch-rack-m3-printed-design-spec v2.0.0"`,
     geometry, station, hardware, print limits).
   - [ ] 1.3 Write `designs/cyberdeck-2/parts.json` (4 leaves, schema_version 1).
-  - [ ] 1.4 Write `designs/cyberdeck-2/assembly.json` (product_assembly ->
-    enclosure_assembly -> 4 leaves; 2 seam interfaces with their 2 stations
-    each; views for assembly/exploded/leaf isolation/station sections/rack
-    section/shelf section; geometry_exports with one entry: name
+  - [x] 1.4 Write `designs/cyberdeck-2/assembly.json` (product_assembly ->
+    enclosure_assembly -> 4 leaves; 2 seam interfaces with their 4 stations
+    each (two per ribbon, re-locked 2026-09-09); 17 views: assembly/
+    exploded/leaf isolations/8 station sections (front + rear per ribbon)/
+    rack section/shelf section; geometry_exports with one entry: name
     "product_assembly", integer dispatch_id whose `main.scad` case prints
     the in-place union of the four leaves, minimum_span [254, 80, 254],
     producing the assembled STL artifact).
@@ -514,15 +571,21 @@ split pieces, in-band joins, 80 mm depth).
     complete manifest pipeline, review the installed blockout artifacts, and
     pause for user confirmation of the decomposition before station
     (section 3) work. Any user change to the split or envelope re-locks
-    section 1/3.
+    section 1/3. GATE PASSED 2026-09-09: user confirmed the decomposition and
+    re-locked the station layout to 8 stations (two per seam ribbon, front +
+    rear per the user-confirmed table); section 1.3 is the re-locked truth and
+    the leaf-ownership lock follows it.
 - [ ] 3. Implement seam stations (shared module family).
   - [ ] 3.1 `src/lib/seam_station.scad`: `registration_tongue`,
     `receiver_socket`, `m3_through_passage`, `m3_head_recess`,
     `m3_captive_hex_nut_pocket`, `seam_station_coupon` per the reference
     implementation outline, parameterized by fastener axis + band position.
-  - [ ] 3.2 Instantiate 4 stations (§1.3) with strict leaf ownership; pads
-    unioned into the owning leaf, hardware cuts applied post-union in the
-    unrotated leaf frame.
+  - [ ] 3.2 Instantiate the 8 stations (section 1.3 re-locked layout) with the
+    locked leaf ownership; master = shell_body union 8 pads, difference 8 x
+    {socket, recess, 3.6 passage, nut pocket}; the tongue root + slab and the
+    tongue 3.6 passage are NOT in the master (they exist only on the tongue
+    leaf), so each leaf = (master quad-intersect) union (own root+slab boxes)
+    difference (own 3.6 slab passages).
   - [ ] 3.3 `assert()` guards per reference: ligament from every fastener cut
     to opening edge / exterior edge / neighbor cut >= 3.0; tongue root
     overlap >= 3.0; socket closed end >= 3.0; socket side/tip clearance 1.0;
@@ -533,14 +596,22 @@ split pieces, in-band joins, 80 mm depth).
     leaves; each leaf = (shell half) union (owned station geometry) minus
     (owned hardware cuts); no leaf may own an open socket mouth facing wrong,
     and no cut may straddle a split plane except: (a) its own station
-    passage, and (b) the two Z = 0.0 front-face rack holes that straddle
+    station passage, (b) the two Z = 0.0 front-face rack holes that straddle
     the Z = 0 plane by design (1.8 half-passage + half-land + half-seat per
-    leaf; complete when assembled).
+    leaf; complete when assembled), and (c) each tongue slab crossing its own
+    station's seam plane (the deliberate lateral insertion; the slab is the
+    only station geometry on the tongue side of the seam, and the socket mouth
+    starts exactly at the seam face so the root front face and slab rear face
+    stay in full planar contact).
   - [ ] 4.2 `src/main.scad` part dispatch (1..4 leaves, review dispatch id)
-    plus per-leaf print transform (flat 127 x 127 footprint, seam face
-    vertical) applied only at export, after all Boolean work.
-  - [ ] 4.3 `assert()` per-leaf print bounds <= 215.0 mm on all axes and
-    footprint stability check (lowest face planar).
+    plus per-leaf print transform (slab-aware footprints: bottom_left
+    141 x 141, top_left 141 x 127, bottom_right 127 x 141, top_right
+    127 x 127, all x 80 tall; seam faces vertical) applied only at export,
+    after all Boolean work; no leaf translate changes from the blockout
+    layout (locked 1.3 print consequence).
+  - [ ] 4.3 `assert()` per-leaf print bounds (exact per-leaf footprints
+    listed at 1.3, all axes <= 215.0) and footprint stability check (lowest
+    face planar).
 - [ ] 5. Build, audit, and review artifacts.
   - [ ] 5.1 Complete build: `scripts/scad_build_all.py --design cyberdeck-2
     --config configs/rev_0001.json --destination current` (4 leaf STLs +
@@ -548,7 +619,8 @@ split pieces, in-band joins, 80 mm depth).
   - [ ] 5.2 `--audit-only` pass on installed output; output flat (no
     directories/staging).
   - [ ] 5.3 Review installed STL/PNG artifacts (assembled, exploded, 4 leaf
-    isolations, 4 station sections, rack section, shelf section).
+    isolations, 8 station sections (front + rear per ribbon), rack section,
+    shelf section).
   - [ ] 5.4 Generated assembly review into `output/cyberdeck-2/` bound to the
     installed `build_manifest.json` + STL hashes; the assembled
     `product_assembly.stl` and `assembly_review_manifest.json` appear in the

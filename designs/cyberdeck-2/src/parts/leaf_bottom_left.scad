@@ -18,18 +18,33 @@ module leaf_bottom_left_quadrant() {
     cube([case_width / 2.0, case_depth_exterior, case_width / 2.0], center = false);
 }
 
+// This leaf owns 4 tongue slabs (plan 1.3): the bottom-front and
+// bottom-rear slabs of the top/bottom ribbons plus the left-front and
+// left-rear slabs of the left ribbon. Each slab is unioned IN AFTER the
+// quadrant intersection (its 3.0 root fuse at u -3..0 would otherwise be
+// subtracted by the split) and its 3.6 bore is then cut, so the printed
+// part is one manifold piece with the slab registered in its pad root and
+// reaching into the receiver leaf's socket void (plan 3.2/4.1c).
 module leaf_bottom_left_body() {
-  intersection() {
-    enclosure_final();
-    leaf_bottom_left_quadrant();
+  difference() {
+    union() {
+      intersection() {
+        enclosure_final();
+        leaf_bottom_left_quadrant();
+      }
+      seam_station_slabs_bottom_left();
+    }
+    seam_station_slab_cuts_bottom_left();
   }
 }
 
 module leaf_bottom_left_print_assertions() {
-  // Print envelope: footprint 127 x 127 (product half-width/half-height),
-  // height 80 (product exterior depth) - all within the 220 mm bed with the
-  // 5 mm reserve, and the footprint is planar-flat on the bed.
-  assert(case_width / 2.0 <= print_bed - print_reserve, "leaf print footprint within usable bed");
+  // Print envelope: footprint 138 x 138 (127 quadrant + 11.0 max slab
+  // reach past the split plane on both the tongue- and receiver-side
+  // slabs; asserted at the conservative 141 bound), height 80 (product
+  // exterior depth) - all within the 220 mm bed with the 5 mm reserve,
+  // and the footprint is planar-flat on the bed.
+  assert(case_half + tongue_slab_len <= print_bed - print_reserve, "leaf print footprint within usable bed (141 <= 215)");
   assert(case_depth_exterior <= print_bed - print_reserve, "leaf print height within usable bed");
 }
 
