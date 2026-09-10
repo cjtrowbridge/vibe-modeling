@@ -2,6 +2,7 @@
 
 Format: `created_at | path | title | summary`
 
+2026-09-07-19-58-16 | plans/past/2026-09-07-19-58-16_remove-cyberdeck-2.md | Remove Failed Cyberdeck-2 Design and Current Outputs | Remove the Cyberdeck-2 tracked design tree and its mutable generated output after preserving its reusable M3 seam pattern in engineering guidance.
 2026-09-07-19-52-29 | plans/past/2026-09-07-19-52-29_m3-captive-nut-seam-reference.md | Document M3 Captive-Nut Registration Seam Stations | Establish a reusable engineering reference for the retained cyberdeck-2 M3 tongue-and-receiver seam pattern and link it from split-print guidance.
 2026-08-29-00-00-00 | plans/past/2026-08-29-00-00-00_scaffold-triple-thor-enclosure.md | Scaffold Triple Thor Enclosure Design | Create the triple_thor_enclosure design folder layout and a starting design README for mockup-first development.
 2026-08-05-00-00-00 | plans/past/2026-08-05-00-00-00_create-comrade-core-base.md | Create the Comrade Core Base Plate | Add the first parametric, manifest-governed printable base plate for the Comrade robot electronics stack.

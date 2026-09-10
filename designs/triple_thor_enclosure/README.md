@@ -149,14 +149,27 @@ level of the **top of the Thors**.
 - The central void is bounded by the three center-facing `113 mm` faces
   of the Thors and **extends out to the edges** of the Thors at each
   corner.
-- **The inter-thor gap is a first-class airflow dimension:** the gap
-  between adjacent Thors should be **as close to `2 x` the Thor
-  thickness** (`2 x 57 mm` = `114 mm`) as practical, so both adjacent
-  Thors draw as much fresh air as possible from the central void. The
-  binding constraint is keeping the **outward-facing exhaust faces clear
-  of the `290 mm` internal cylinder wall by a minimum of one Thor
-  thickness (`57 mm`)**. The final outward offset must satisfy both and
-  be verified numerically.
+- **The inter-thor gap is a first-class airflow dimension.** The original
+  targets — gap as close to `2 x` Thor thickness (`114 mm`) as possible,
+  and the exhaust faces at least `1 x` Thor thickness (`57 mm`) clear of
+  the `290 mm` wall — are **mutually exclusive** for a `290 mm` ID
+  cylinder (verified numerically):
+  - At the minimum inradius `R = 32.6 mm` (Thors' inner corners just
+    touching), the exhaust-face clearance is `55.4 mm` (near the `57 mm`
+    target) but the inter-thor gap is `0 mm`.
+  - The inradius that gives a `114 mm` gap is `R ≈ 88 mm`, which pushes
+    the outer corners to `155.6 mm` — past the `145 mm` cylinder radius.
+  - The maximum `R` that still fits inside the `290 mm` ID is `R ≈ 75
+    mm`, giving a gap of `82 mm` but only `13 mm` exhaust-face clearance.
+  No single `R` satisfies both targets; the `114 mm` gap target is the
+  binding one and is unachievable inside this shroud.
+- **Layout decision (balanced):** the **inradius is locked at `R = 57 mm`**
+  (one Thor thickness). This gives an **inter-thor gap of `42.2 mm`**, an
+  **exhaust-face clearance of `31.0 mm`** to the `290 mm` wall, and an
+  **outer extent of `127.2 mm`** (fits the `145 mm` radius with a
+  `17.8 mm` margin). Both original targets are relaxed to reach this
+  balanced point; if either becomes critical later, the levers are a
+  larger shroud OD or a reduced Thor footprint.
 - The goal is maximum central airflow to the intake edges while keeping
   the outward exhaust faces clear of the cylinder.
 - Column diameter, height, and the intake/exhaust tie-in geometry are
@@ -269,13 +282,12 @@ Resolved (recorded for context, no longer open):
 - **Thor top clearance = `10 mm` minimum** above the `244 mm` Thor tops,
   so the top cap / exhaust stack does not press the Thor buttons. This
   sets the top-cap standoff / mounting-hardware height.
-- **Inter-thor gap target = as close to `2 x` the Thor thickness**
-  (`2 x 57 mm` = `114 mm`) as practical, so both adjacent Thors draw as
-  much fresh air as possible from the central void. The binding
-  constraint is keeping the **outward-facing exhaust faces clear of the
-  `290 mm` internal cylinder wall by a minimum of one Thor thickness
-  (`57 mm`)**. The final outward offset must satisfy both and be
-  verified numerically.
+- **Layout inradius locked at `R = 57 mm`** (one Thor thickness), the
+  balanced point between central airflow and exhaust clearance. The
+  original `114 mm` gap target and `57 mm` exhaust-clearance target are
+  mutually exclusive inside the `290 mm` ID shroud (see Central Airflow
+  Column for the full derivation). At `R = 57 mm`: inter-thor gap
+  `42.2 mm`, exhaust-face clearance `31.0 mm`, outer extent `127.2 mm`.
 - **Minimum wall thickness = `3 mm`** for all printed parts (structural
   overlap must be >= `3 mm` per `AGENTS.md` §10).
 - **Recess depth = `50 mm`** (tentative — "we will have to see how this

@@ -2,6 +2,8 @@
 
 Format: `created_at | path | title | summary`
 
+2026-09-09-19-21-26 | plans/current/2026-09-09-19-21-26_create-cyberdeck-2-5u-enclosure.md | Create cyberdeck-2 5U fully-enclosed rack case | Build a new 5U ten-inch-rack case (254 x 254 x 80 mm), fully enclosed except the 222.25 x 222.25 mm rack opening, split into four printable quadrant leaves joined by four M3 captive-nut registration seam stations located in the ring band between the rack clear opening and the case edge.
+2026-08-31-12-58-00 | plans/current/2026-08-31-12-58-00_triple-thor-geometry-blockout.md | Triple Thor Enclosure Geometry Blockout | Scaffold parametric OpenSCAD blockout geometry, parts manifest, assembly contract, and config for the triple_thor_enclosure at locked R=57mm layout.
 2026-08-13-17-44-00 | plans/current/2026-08-13-17-44-00_restore-angled-screen-2u-rails.md | Restore Distinct Angled-Screen 2U Rails | Separate the angled-screen rail, hardware-back, and exterior-closure owners so the screen presents two clear 2U rail columns rather than solid end-wall blocks.
 2026-08-04-19-34-43 | plans/current/2026-08-04-19-34-43_migrate-agents-to-agentic-pipelines.md | Migrate the Agent Framework to Agentic Pipelines | Replace the agents submodule with agentic-pipelines at ./agentic-pipelines while preserving and validating host-owned CAD governance.
 2026-08-03-11-23-45 | plans/current/2026-08-03-11-23-45_relocate-upper-seam-and-fastener-rail.md | Connect the High Screen Roof and Relocate the Upper Front Seam | Add a clearance-neutral interlocking seam to the highest screen roof, move the closed-front upper seam into its inside wall, and reduce chamber height only if the full upper load path remains verified.

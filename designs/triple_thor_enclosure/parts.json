@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "parts": [
+    { "part_id": 1, "name": "base_sector" },
+    { "part_id": 2, "name": "column" },
+    { "part_id": 3, "name": "cap_sector" },
+    { "part_id": 4, "name": "exhaust_ring" }
+  ]
+}
