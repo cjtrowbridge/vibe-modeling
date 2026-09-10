@@ -90,9 +90,9 @@ split pieces, in-band joins, 80 mm depth).
   pads protruding from any exterior face).
 - Radial (fastener-axis) stack per station, exterior face -> opening edge,
   total EXACTLY 15.875 (asserted in 2.1): head/washer recess 3.8 (button
-  head 3.0 + ISO 7089 washer 0.5 + 0.3 spare to the exterior face; the
-  head top sits 0.3 proud of the recess floor, so the washer bottom bears
-  on the recess floor at 3.8) + tongue slab 3.0 (the reference slab
+  head 3.0 + ISO 7089 washer 0.5, head top 0.3 below the exterior face --
+  the 0.3 spare; the washer bottom bears on the slab top face, which is
+  flush with the recess floor at 3.8) + tongue slab 3.0 (the reference slab
   cross section, RETAINED), top face FLUSH with the recess floor at 3.8
   (washer annulus bears directly on the slab around the 3.6 passage -- the
   slab is FIXED here, not floating) + axial fit void 0.7 below the slab
@@ -131,8 +131,9 @@ split pieces, in-band joins, 80 mm depth).
     recess floor at 3.8 through the slab's own 3.6 passage, the 0.7 axial
     void, and the 5.575 receiver wall, into the 2.8 nut pocket (6.816
     aperture). Screw engagement is derived from the head seat (section 1.4):
-    head base at 3.3 (button head 3.0 + washer 0.5, top 0.3 proud of the
-    recess floor), so an M3 x 12 tip lands at 15.3 -- inside the pocket
+    head base at 3.3 = 0.3 (head-top spare below the exterior face)
+    + 3.0 (button head) + 0.5 (washer), so an M3 x 12 tip lands at
+    15.3 -- inside the pocket
     (pocket spans 13.075..15.875), 0.575 short of the opening-edge face,
     no protrusion into the rack opening; the seated nut (t 2.4 in the 2.8
     pocket) engages ~1.8 mm of thread (~1.8 turns). An M3 x 14 would run to
@@ -284,8 +285,8 @@ split pieces, in-band joins, 80 mm depth).
     the closed-end side in the insertion direction (8.0 + 3.408 = 11.408
     edge vs 18.0); 5.592 to each pad-depth face (9.0 - 3.408). All >= 3.0.
   - Socket slot: 3.0 closed end (18.0 - 15.0), 1.0 tip (15.0 - 14.0), 1.0
-    pad-depth side each way (12.0 in 18.0), 3.0 pad-depth margin to each
-    pad face (radial), radial void 0.7 below the slab (fit).
+    pad-depth side each way (12.0 in 18.0), 3.0 margin to each
+    pad-depth pad face, radial void 0.7 below the slab (fit).
   - Every structural material layer in the station >= 3.0 mm (slab 3.0,
     receiver wall 5.575, all in-plane ligaments above); the only sub-3.0
     quantities in the whole station are the declared fit clearances
@@ -293,16 +294,15 @@ split pieces, in-band joins, 80 mm depth).
   - M3 x 12 tip at 15.3 < 15.875 (0.575 clear of the opening-edge face;
     M3 x 14 rejected).
   - Pad footprints are disjoint from: the 222.25 x 222.25 clear opening
-    (pad radial zone is inside [111.125, 127.0]... CORRECTION: the pad
-    radial zone IS the band [111.125, 127.0], which is OUTSIDE the opening
-    edge by definition; pads do not intrude into the opening plane region),
-    the rack columns at +/-118.2625 (left/right pads sit at Y in [10.0,
-    28.0], behind the front rail, so the column hole passages at the front
-    face are untouched; top/bottom pads span Y in [0.0, 18.0] in the bands
-    |Z| > 111.125 / |X| > 111.125 where the columns' holes do not pierce),
-    and the 220.0 equipment envelope (left/right pad inner face at
-    |X| = 111.125 vs equipment half-width 110.0 -> 1.125 mm clear;
-    top/bottom pads are outside the equipment's |Z| / |X| height extent).
+    (the pad radial zone IS the band [111.125, 127.0], outside the opening
+    edge by definition; no pad intrudes into the opening), the rack
+    columns at +/-118.2625 (left/right pads sit at Y in [10.0, 28.0],
+    behind the 10.0-deep front rail, so the column hole passages at the
+    front face are untouched; top/bottom pads span Y in [0.0, 18.0] in
+    the |Z|/|X| bands past 111.125 where no column hole pierces), and the
+    220.0 equipment envelope (left/right pad inner face at |X| = 111.125
+    vs equipment half-width 110.0 -> 1.125 mm clear; top/bottom pads are
+    outside the equipment's |Z| / |X| extent).
 - Leaf ownership (locked): each station is split on its OWN seam plane only
   (X = 0 for top/bottom, Z = 0 for left/right). One leaf owns the receiver
   half (socket, head recess, nut pocket, receiver passage) and the other leaf
@@ -345,9 +345,10 @@ split pieces, in-band joins, 80 mm depth).
 
 ### 1.4 Fastener hardware declaration (starting profile, physically UNVERIFIED)
 
-- Seam screws: M3 x 0.5 button head x 12 mm (head top 0.3 mm proud of the
-  8.25 dia recess floor; ISO 7089 M3 washer, OD 7.0 x 0.5, seats in the
-  same 3.8-deep recess, annulus bearing on the tongue slab). Tip check:
+- Seam screws: M3 x 0.5 button head x 12 mm (head top 0.3 mm below the
+  exterior face; the 3.0 head + 0.5 washer + 0.3 spare fill the 8.25 dia
+  x 3.8-deep recess; ISO 7089 washer OD 7.0 x 0.5, annulus bearing on
+  the tongue slab top face). Tip check:
   head base at 3.3 -> tip 3.3 + 12 = 15.3 < 15.875 (0.575 short of the
   opening-edge face, no protrusion); M3 x 14 would reach 17.3 = 1.425 into
   the chamber -> REJECTED (asserted in section 2.1).
@@ -384,22 +385,19 @@ split pieces, in-band joins, 80 mm depth).
   - shallow printed washer seat: 8.25 dia x 0.3 deep recess in the EXTERIOR
     front face per the v2.0.0 allowance ("a shallow 0.2-0.4 mm printed
     recess MAY be used to create a flat seat"), hole-centered; the ISO 7089
-    washer bears flat on the seat floor, the seat is fully inside the land
-    (seat edge 118.2625 + 4.125 = 122.3875 < land edge 121.6703... CORRECTION,
-    seat edge 122.3875 vs land edge 121.6703: the seat (8.25 dia) is WIDER
-    than the land (6.816 dia), so the seat floor extends 2.86 mm onto the
-    plain 3.0 face wall -- this is fine: the seat is a 0.3-deep flat on the
-    wall face, all 360 deg of the washer annulus bears on flat material
-    (seat floor 0.3..3.3 deep region is wall + seat, solid), asserting only
-    that the 3.0 wall behind the seat stays solid (3.0 - 0.3 = 2.7 wall at
-    the seat floor -> DECLARED PERMIT: the seat region's 2.7 is a face
-    feature, and the washer loads it axially through the screw; the 3.0
-    minimum instead applies to the 3.6 passage ligaments:
-    118.2625 - 1.8 - 111.125 = 5.3375 to the opening edge, 5.3375 to the
-    exterior face, >= 3.0). Asserted at 2.1.
+    washer bears flat on the seat floor. The seat (8.25 dia) is wider than
+    the land (6.816 dia), so its floor reaches
+    118.2625 + 4.125 = 122.3875, i.e. 2.86 mm outside the land edge
+    (118.2625 + 3.408 = 121.6703), onto the plain 3.0 face wall; the wall
+    behind the seat floor is 3.0 - 0.3 = 2.7 mm -- DECLARED PERMIT: a
+    shallow face feature loaded axially through the screw, not a structural
+    ligament; the structural floor is carried by the 3.6-passage ligaments
+    (118.2625 - 1.8 - 111.125 = 5.3375 to the opening edge, 5.3375 to the
+    exterior face, all >= 3.0). Asserted at 2.1.
   - NO countersink anywhere (v2.0.0 prohibition on countersunk primary
     mounting screws); the screw head seats in the chamber at the pocket
-    floor (Z... Y = 5.8 face), washer clamped on the exterior seat face.
+    floor (the pocket opens at Y = 5.8), washer clamped on the exterior
+    seat face.
   - SHELF INTERACTION: the land reaches Y = 5.8; the bottom-row lands
     (Z = -104.775, -101.6) sit above the equipment shelf (see below); the
     shelf therefore starts at Y = 6.0 (0.2 back from the deepest land
@@ -415,29 +413,32 @@ split pieces, in-band joins, 80 mm depth).
     The Z = 0 split plane cuts the hole lands only (no other cut pair
     straddles it; full cut-pair inventory at 2.1 per structural-joins
     playbook).
-- v2.0.0 hole pattern: 5U, 3 holes per U (segments 6.35 / 15.875 / 15.875 /
-  6.35), 15 per column, 30 total, `rack_hole_z(i)` from the copied SCAD;
-  the Z = 0.0 hole is the middle hole straddling the U2/U3 boundary.
-- Equipment support: two continuous shelves (top and bottom), each 20.0 mm
-  wide, 3.0 mm thick, top surface exactly at `Z = -111.125` (equipment
-  bottom datum) respectively bottom surface at `Z = +111.125` (equipment
-  top datum, mirror), spanning the full interior width
-  `X in [-111.125, 111.125]`, `Y in [6.0, 74.0]`: 0.2 clear of the deepest
-  rack-land face (Y = 5.8) at the front, 3.0 overlap into the rear wall
-  interior (Y in [74,77] fusing into the 3.0 rear wall). The front end is
-  a documented open end (no overlap -- the rack lands occupy the front
-  wall region); side ends at |X| = 111.125 are coplanar butt joints with
-  the side walls, documented as non-load-bearing seams (equipment weight
-  path: shelf -> rear wall overlap + shelf own width on the rear face-wall
-  interior; side edges carry no declared load). Bottom shelf: bottom-row
-  rack lands (Z = -104.775 land edge to -108.183; shelf top face
-  Z = -108.125 + ... assert: land low edge -104.775 - 3.408 = -108.183 vs
-  shelf top surface -111.125 -> 2.942... CORRECTION: the shelf top surface
-  is at -111.125, BELOW the land low edge -108.183, so they do not collide
-  (gap 2.942 in Z, different features, no overlap check needed beyond the
-  Y clearance already taken). Top shelf mirror: top-row lands Z = 101.6 /
-  104.775... the 5U list's top holes are Z = 101.6, 88.9: land high edge
-  101.6 + 3.408 = 105.008 vs shelf bottom surface 111.125 -> clear.
+- v2.0.0 hole pattern (RACK-GEO-001/002): U pitch 44.45, U boundaries at
+  `Z = -111.125 / -66.675 / -22.225 / +22.225 / +66.675 / +111.125`; 3
+  holes per U at U-bottom offsets 6.35 / 22.225 / 34.925 (intra-U gaps
+  15.875 / 12.700; the repeating 15.875 / 15.875 / 12.700 sequence
+  continues across U boundaries); 15 per column, 30 total, `rack_hole_z(i)`
+  from the copied SCAD. Full list: Z = -104.775, -88.9, -76.2, -60.325,
+  -44.45, -31.75, -15.875, 0.0, 12.7, 28.575, 44.45, 57.15, 73.025, 88.9,
+  101.6. The Z = 0.0 hole is the middle hole of the center U (U3).
+- Equipment support: two continuous shelves (bottom and top), each
+  3.0 mm thick: bottom shelf top surface exactly at `Z = -111.125`
+  (equipment bottom datum, flush with the opening's bottom edge plane;
+  occupies `Z in [-114.125, -111.125]`); top shelf mirrored (bottom
+  surface `Z = +111.125`, occupies `Z in [111.125, 114.125]`). Each shelf
+  spans the full interior width `X in [-111.125, 111.125]` and full
+  interior depth `Y in [0, 77]`, fusing into the front wall (Y [0,3])
+  and the rear wall (Y [77,80]) with a 3.0 overlap at each: two verified
+  supports per shelf, each 3.0 = minimum_structural_overlap (AGENTS.md
+  section 10). Side ends at |X| = 111.125 are coplanar butt joints with
+  the side-band inner faces, documented as non-load-bearing seams
+  (equipment weight path: shelf -> wall overlaps; side edges carry no
+  declared load). No collision with any rack feature: lands sit in the
+  |X| >= 114.8545 band (entirely outside the shelves' X range) and the
+  bottom-row land Z range (low edge -104.775 - 3.408 = -108.183) never
+  reaches the shelf Z band [-114.125, -111.125] -- double separation in
+  X and Z, asserted at 2.1. Shelves are a datum for shorter equipment;
+  gap between the two shelves: 222.25 - 6.0 = 216.25.
 
 ## 2. Verification gates (approval gate)
 
@@ -450,10 +451,22 @@ split pieces, in-band joins, 80 mm depth).
 - Print verification: per-leaf bounds <= 215 mm per axis (220 - 5 reserve);
   flat footprint orientation; no unprintable overhang > 45 deg in the
   declared orientation (sections) -- or a declared support plan.
-- CGAL lesson (recorded from the deleted design): every small-cylinder cut is
-  performed in the unrotated product/local frame before the leaf is rotated
-  into print orientation; rotated frames are only ever unioned, never cut
-  with tiny bores.
+- Station and rack asserts (named, at 2.3/3.3/4.3): band budget
+  `3.8 + 3.0 + 0.7 + 5.575 + 2.8 == 15.875` EXACT; M3 x 12 tip at
+  3.3 + 12 = 15.3 <= 15.875 (0.575 clear of the opening-edge face) and
+  M3 x 14 (tip 17.3) rejected; rack land ligaments: opening-edge
+  118.2625 - 3.408 - 111.125 = 3.7295, exterior-face
+  127.0 - (118.2625 + 3.408) = 5.3295, passage ligaments
+  118.2625 - 1.8 - 111.125 = 5.3375 -- all >= 3.0; Z = 0.0 straddle: each
+  of the two front-face holes contributes a 1.8 half-passage + half-land
+  (half pocket, half seat) per leaf, complete features when assembled, and
+  the Z = 0 split plane cuts the hole lands only (full cut-pair inventory
+  per structural-joins playbook); shelves: two 3.0 wall-overlap supports
+  each + side coplanar butts documented non-load-bearing.
+- Process lesson (toolchain): every small-cylinder cut is performed in the
+  unrotated product/local frame; rotated print frames are only ever
+  unioned, never cut with tiny bores (avoids degenerate booleans in the
+  OpenSCAD CGAL kernel).
 - Artifact gates (per AGENTS.md §11): complete `scad_build_all.py` build into
   `output/cyberdeck-2/`, `--audit-only` pass, review of installed STL/PNGs,
   then assembly review bound to the installed `build_manifest.json` hash.
@@ -478,15 +491,20 @@ split pieces, in-band joins, 80 mm depth).
   - [ ] 1.4 Write `designs/cyberdeck-2/assembly.json` (product_assembly ->
     enclosure_assembly -> 4 leaves; 2 seam interfaces with their 2 stations
     each; views for assembly/exploded/leaf isolation/station sections/rack
-    section/shelf section; geometry_exports empty).
+    section/shelf section; geometry_exports with one entry: name
+    "product_assembly", integer dispatch_id whose `main.scad` case prints
+    the in-place union of the four leaves, minimum_span [254, 80, 254],
+    producing the assembled STL artifact).
   - [ ] 1.5 Run `scripts/validate_cad_assembly_contract.py` on the contract.
 - [ ] 2. Implement shell and chamber geometry.
   - [ ] 2.1 `src/parts/shell.scad`: six-wall box (3.0) with 222.25 x 222.25
     front opening; full-height front rails at +/-118.2625 with per-hole nut
     lands; two bottom shelves (§1.5); rear wall 3.0 at Y 77..80.
-  - [ ] 2.2 Rack hole cuts: 30 through passages 3.6, 30 head/washer recesses
-    8.25 x 3.8 (exterior front), 30 chamber-open nut pockets 6.816 x 2.8 --
-    all in the unrotated product frame.
+  - [ ] 2.2 Rack hole cuts: 30 through passages 3.6 (3.0 long), 30 printed
+    washer seats 8.25 dia x 0.3 deep in the exterior front face (v2.0.0
+    0.2-0.4 allowance), 30 chamber-open nut pockets 6.816 x 2.8 -- all in
+    the unrotated product frame; no 3.8-deep rack head recesses; no
+    countersinks.
   - [ ] 2.3 `assert()` guards: wall/ring widths, rail-to-hole alignment
     (hole center in rail), land depth >= pocket depth + 3.0, shelf overlap
     3.0, opening exactly 222.25 x 222.25, 5U hole positions per v2.0.0
@@ -514,7 +532,10 @@ split pieces, in-band joins, 80 mm depth).
   - [ ] 4.1 Cut the master assembly on `X = 0` and `Z = 0` into the four
     leaves; each leaf = (shell half) union (owned station geometry) minus
     (owned hardware cuts); no leaf may own an open socket mouth facing wrong,
-    and no cut may straddle a split plane except its own station passage.
+    and no cut may straddle a split plane except: (a) its own station
+    passage, and (b) the two Z = 0.0 front-face rack holes that straddle
+    the Z = 0 plane by design (1.8 half-passage + half-land + half-seat per
+    leaf; complete when assembled).
   - [ ] 4.2 `src/main.scad` part dispatch (1..4 leaves, review dispatch id)
     plus per-leaf print transform (flat 127 x 127 footprint, seam face
     vertical) applied only at export, after all Boolean work.
@@ -522,15 +543,17 @@ split pieces, in-band joins, 80 mm depth).
     footprint stability check (lowest face planar).
 - [ ] 5. Build, audit, and review artifacts.
   - [ ] 5.1 Complete build: `scripts/scad_build_all.py --design cyberdeck-2
-    --config configs/rev_0001.json --destination current` (4 STL + assembly
-    PNGs).
+    --config configs/rev_0001.json --destination current` (4 leaf STLs +
+    assembled product_assembly STL via geometry_exports + assembly PNGs).
   - [ ] 5.2 `--audit-only` pass on installed output; output flat (no
     directories/staging).
   - [ ] 5.3 Review installed STL/PNG artifacts (assembled, exploded, 4 leaf
     isolations, 4 station sections, rack section, shelf section).
   - [ ] 5.4 Generated assembly review into `output/cyberdeck-2/` bound to the
-    installed `build_manifest.json` + STL hashes; `assembly_review_manifest.json`
-    reviewed and recorded.
+    installed `build_manifest.json` + STL hashes; the assembled
+    `product_assembly.stl` and `assembly_review_manifest.json` appear in the
+    unified expected-artifact set and pass the exact-set audit;
+    `assembly_review_manifest.json` reviewed and recorded.
 - [ ] 6. Documentation.
   - [ ] 6.1 `designs/cyberdeck-2/README.md`: requirement traceability, split
     strategy, station map, hardware declaration, print orientation, KNOWN

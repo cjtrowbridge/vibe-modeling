@@ -1,0 +1,197 @@
+{
+  "schema_version": 1,
+  "primary_assembly": "product_assembly",
+  "review_dispatch_id": 90,
+  "assemblies": [
+    {
+      "assembly_id": "product_assembly",
+      "role": "product",
+      "members": [
+        { "assembly_id": "enclosure_assembly", "transform": { "translate": [0, 0, 0], "rotate": [0, 0, 0] } }
+      ]
+    },
+    {
+      "assembly_id": "enclosure_assembly",
+      "role": "enclosure",
+      "members": [
+        { "part_id": 1, "transform": { "translate": [0, 0, 0], "rotate": [0, 0, 0] } },
+        { "part_id": 2, "transform": { "translate": [0, 0, 0], "rotate": [0, 0, 0] } },
+        { "part_id": 3, "transform": { "translate": [0, 0, 0], "rotate": [0, 0, 0] } },
+        { "part_id": 4, "transform": { "translate": [0, 0, 0], "rotate": [0, 0, 0] } }
+      ]
+    }
+  ],
+  "interfaces": [
+    {
+      "interface_id": "rack_mount_interface",
+      "owner_assembly": "enclosure_assembly",
+      "type": "ten_inch_rack_module",
+      "height_u": 5,
+      "split_policy": "continuous_across_seam",
+      "local_frame": { "translate": [0, 0, 0], "rotate": [0, 0, 0] },
+      "engages_parts": [
+        "leaf_bottom_left",
+        "leaf_bottom_right",
+        "leaf_top_right",
+        "leaf_top_left"
+      ]
+    },
+    {
+      "interface_id": "seam_x0",
+      "owner_assembly": "enclosure_assembly",
+      "type": "structural_seam_registration",
+      "split_policy": "continuous_across_seam",
+      "local_frame": { "translate": [0, 0, 0], "rotate": [0, 0, 0] },
+      "engages_parts": [
+        "leaf_bottom_left",
+        "leaf_bottom_right",
+        "leaf_top_right",
+        "leaf_top_left"
+      ]
+    },
+    {
+      "interface_id": "seam_z0",
+      "owner_assembly": "enclosure_assembly",
+      "type": "structural_seam_registration",
+      "split_policy": "continuous_across_seam",
+      "local_frame": { "translate": [0, 0, 0], "rotate": [0, 0, 0] },
+      "engages_parts": [
+        "leaf_bottom_left",
+        "leaf_bottom_right",
+        "leaf_top_right",
+        "leaf_top_left"
+      ]
+    }
+  ],
+  "views": [
+    {
+      "name": "front",
+      "projection": "o",
+      "camera": [0, 0, 0, 90, 0, 0, 1000],
+      "assembly_view": "product",
+      "assembly_view_id": 0,
+      "show_proxies": false
+    },
+    {
+      "name": "isometric",
+      "projection": "p",
+      "camera": [0, 0, 0, 55, 0, 25, 1000],
+      "assembly_view": "product",
+      "assembly_view_id": 0,
+      "show_proxies": false
+    },
+    {
+      "name": "exploded",
+      "projection": "p",
+      "camera": [0, 0, 0, 55, 0, 25, 1000],
+      "assembly_view": "exploded",
+      "assembly_view_id": 1,
+      "show_proxies": false
+    },
+    {
+      "name": "leaf_bottom_left",
+      "projection": "p",
+      "camera": [0, 0, 0, 55, 0, 25, 1000],
+      "assembly_view": "leaf_isolation",
+      "assembly_view_id": 2,
+      "show_proxies": true
+    },
+    {
+      "name": "leaf_bottom_right",
+      "projection": "p",
+      "camera": [0, 0, 0, 55, 0, 25, 1000],
+      "assembly_view": "leaf_isolation",
+      "assembly_view_id": 3,
+      "show_proxies": true
+    },
+    {
+      "name": "leaf_top_right",
+      "projection": "p",
+      "camera": [0, 0, 0, 55, 0, 25, 1000],
+      "assembly_view": "leaf_isolation",
+      "assembly_view_id": 4,
+      "show_proxies": true
+    },
+    {
+      "name": "leaf_top_left",
+      "projection": "p",
+      "camera": [0, 0, 0, 55, 0, 25, 1000],
+      "assembly_view": "leaf_isolation",
+      "assembly_view_id": 5,
+      "show_proxies": true
+    },
+    {
+      "name": "station_top_section",
+      "projection": "p",
+      "camera": [0, 0, 0, 55, 0, 25, 1000],
+      "assembly_view": "station_section",
+      "assembly_view_id": 6,
+      "show_proxies": false
+    },
+    {
+      "name": "station_bottom_section",
+      "projection": "p",
+      "camera": [0, 0, 0, 55, 0, 25, 1000],
+      "assembly_view": "station_section",
+      "assembly_view_id": 7,
+      "show_proxies": false
+    },
+    {
+      "name": "station_left_section",
+      "projection": "p",
+      "camera": [0, 0, 0, 55, 0, 25, 1000],
+      "assembly_view": "station_section",
+      "assembly_view_id": 8,
+      "show_proxies": false
+    },
+    {
+      "name": "station_right_section",
+      "projection": "p",
+      "camera": [0, 0, 0, 55, 0, 25, 1000],
+      "assembly_view": "station_section",
+      "assembly_view_id": 9,
+      "show_proxies": false
+    },
+    {
+      "name": "rack_section",
+      "projection": "p",
+      "camera": [0, 0, 0, 55, 0, 25, 1000],
+      "assembly_view": "rack_section",
+      "assembly_view_id": 10,
+      "show_proxies": false
+    },
+    {
+      "name": "shelf_section",
+      "projection": "p",
+      "camera": [0, 0, 0, 55, 0, 25, 1000],
+      "assembly_view": "shelf_section",
+      "assembly_view_id": 11,
+      "show_proxies": false
+    }
+  ],
+  "view_sets": {
+    "compact": ["front", "isometric"],
+    "full": [
+      "front",
+      "isometric",
+      "exploded",
+      "leaf_bottom_left",
+      "leaf_bottom_right",
+      "leaf_top_right",
+      "leaf_top_left",
+      "station_top_section",
+      "station_bottom_section",
+      "station_left_section",
+      "station_right_section",
+      "rack_section",
+      "shelf_section"
+    ]
+  },
+  "geometry_exports": [
+    {
+      "name": "product_assembly",
+      "dispatch_id": 91,
+      "minimum_span": [254.0, 80.0, 254.0]
+    }
+  ]
+}
