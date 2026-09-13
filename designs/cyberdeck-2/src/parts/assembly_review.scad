@@ -27,8 +27,9 @@ module assembly_review(view_id = 0, proxies = true) {
         equipment_proxy();
   } else if (view_id >= 6 && view_id <= 13) {
     // Band-shaped section boxes that slice each ring band through its
-    // station zone, front (Y 0..18 / 10..28) and rear (Y 62..80 / 52..70)
-    // pads per ribbon, 0.03 overhang so no cut lands exactly on a face plane.
+    // station zone, front (tb Y 0..18, lr Y 6..24) and rear (both Y 62..80)
+    // pads per ribbon, 0.03 overhang so no cut lands exactly on a face
+    // plane.
     // top/bottom: Z band; left/right: X band.
     color("darkorange")
       intersection() {
@@ -39,22 +40,22 @@ module assembly_review(view_id = 0, proxies = true) {
         else if (view_id == 7) // bottom front: Z in [-127.03, -111.0], Y 0..18
           translate([-30.0, -0.03, -127.03])
             cube([60.0, station_tb_y1 + 0.06, 16.03], center = false);
-        else if (view_id == 8) // left front: X in [-127.03, -111.0], Y 10..28
-          translate([-127.03, -0.03, -30.0])
-            cube([16.03, station_lr_y1 + 0.06, 60.0], center = false);
-        else if (view_id == 9) // right front: X in [111.0, 127.03], Y 10..28
-          translate([111.0, -0.03, -30.0])
-            cube([16.03, station_lr_y1 + 0.06, 60.0], center = false);
+        else if (view_id == 8) // left front: X in [-127.03, -111.0], Y 6..24
+          translate([-127.03, station_lr_y0 - 0.03, -30.0])
+            cube([16.03, station_lr_y1 - station_lr_y0 + 0.06, 60.0], center = false);
+        else if (view_id == 9) // right front: X in [111.0, 127.03], Y 6..24
+          translate([111.0, station_lr_y0 - 0.03, -30.0])
+            cube([16.03, station_lr_y1 - station_lr_y0 + 0.06, 60.0], center = false);
         else if (view_id == 10) // top rear: Z in [111.0, 127.03], Y 62..80
           translate([-30.0, station_tb_y0_rear - 0.03, 111.0])
             cube([60.0, station_tb_y1_rear - station_tb_y0_rear + 0.06, 16.03], center = false);
         else if (view_id == 11) // bottom rear: Z in [-127.03, -111.0], Y 62..80
           translate([-30.0, station_tb_y0_rear - 0.03, -127.03])
             cube([60.0, station_tb_y1_rear - station_tb_y0_rear + 0.06, 16.03], center = false);
-        else if (view_id == 12) // left rear: X in [-127.03, -111.0], Y 52..70
+        else if (view_id == 12) // left rear: X in [-127.03, -111.0], Y 62..80
           translate([-127.03, station_lr_y0_rear - 0.03, -30.0])
             cube([16.03, station_lr_y1_rear - station_lr_y0_rear + 0.06, 60.0], center = false);
-        else if (view_id == 13) // right rear: X in [111.0, 127.03], Y 52..70
+        else if (view_id == 13) // right rear: X in [111.0, 127.03], Y 62..80
           translate([111.0, station_lr_y0_rear - 0.03, -30.0])
             cube([16.03, station_lr_y1_rear - station_lr_y0_rear + 0.06, 60.0], center = false);
       }

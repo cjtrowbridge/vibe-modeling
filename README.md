@@ -80,8 +80,8 @@ If the agent follows the included playbooks, it should also document what it cha
   - `parts.json` (multi-part designs): authoritative complete-build part IDs and names
   - `assembly.json` (new or modified multi-part designs): authoritative product/subassembly hierarchy, transforms, interfaces, and review views
   - `configs/rev_000N.json`: committed parameter sets
-  - Included designs: `example_box`, `helical`, `yagi`, `yagi_card`, `dtv_yagi`, `winegard_gm6000_logic_backplane`, `gigachad_xavier_void`, `cottage_pi6_plus`, `old_rca_display_baseplate`, `opi_zero_2w_carrier`, `comrade`, `cyberdeck`, `cyberdeck-2`, `ac_redirectors`
-  - `cyberdeck-2`: two-leaf, maximum-depth 2U ten-inch-rack receiver with a closed rear, twelve front M3 insert positions, flush internalized seam joints, and continuous lower device rails
+  - Included designs: `example_box`, `helical`, `yagi`, `yagi_card`, `dtv_yagi`, `winegard_gm6000_logic_backplane`, `gigachad_xavier_void`, `cottage_pi6_plus`, `old_rca_display_baseplate`, `opi_zero_2w_carrier`, `comrade`, `cyberdeck`, `cyberdeck-2`, `micro_cyberdeck_case`, `ac_redirectors`
+  - `cyberdeck-2`: fully enclosed 5U ten-inch-rack receiver (80 mm deep behind the rack) split into four printable quadrant leaves and joined by eight end-aligned M3 tongue/receiver seam stations with captive washers and hex nuts; thirty front rack holes, two internal equipment shelves, closed rear
 - `output/`
   - the single mutable destination for printable parts, combined assemblies,
     review views, probes, sections, manifests, and managed in-progress staging
@@ -346,6 +346,8 @@ embedded in one-off design notes:
   - Concept-first workspace for a modular mechanical computer using composable 3D-printed logic cubes, synchronized motor-chain expansion, and magnetic cube-to-cube attachment
 - `designs/cyberdeck/`
   - First-draft visual mockup workspace for a cassette-futurist cyberdeck with asymmetric eye module, wide touchscreen, folding keyboard, hardware toggles, and internal proxy volumes
+- `designs/micro_cyberdeck_case/`
+  - Single-piece `73 x 43 x 40 mm` open-top, open-front case blockout retaining a `67 x 37 x 37 mm` nominal equipment envelope, with a `15 x 10 mm` left-wall microSD access opening
 - `designs/ac_redirectors/`
   - Two independent rail-hung air-conditioner redirectors sharing an open 50 mm-radius quarter-turn foundation
   - Includes a straight vertical door-side guide and a bed-side guide with parametric 45-degree swept vanes

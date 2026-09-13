@@ -90,10 +90,22 @@ split pieces, in-band joins, 80 mm depth).
   15.875 station pad at one seam face). Rationale recorded: mid-side-face stations
   are mechanically impossible with the captive-nut reference profile (the fastener
   axis must run radially through the 15.875 band; the head needs an exterior face
-  and the nut pocket must open into the chamber). The confirmed placement is the
-  two band midpoints per ribbon: one at the front where the seams flank the rack
-  opening (the "four corners at the center where the four pieces meet" set) and
-  one mirrored at the rear where the leaves meet the rear wall.
+  and the nut pocket must open into the chamber).
+- RE-LOCKED 2026-09-09 (end-aligned; user-approved): per user feedback that the
+  tabs "are mostly floating at random points along the seam rather than being
+  aligned to the rail or the back of the case" and that the four-corner tabs
+  "are completely missing", all eight stations re-lock flush to the case ends.
+  The four lr stations are the "four corners" (two per case end, one on the
+  left band and one on the right band, each straddling the Z = 0 seam -- the
+  only place where four leaf edges come together at a case end): front pair
+  `Y in [6.0, 24.0]` (axis 15.0; the fully flush front window is impossible --
+  see the rail-packing rationale below), rear pair `Y in [62.0, 80.0]`
+  (axis 71.0) flush against the rear exterior face per user instruction. The
+  four tb stations ride the top/bottom seam centers, flush front
+  `Y in [0.0, 18.0]` (axis 9.0) and flush rear `Y in [62.0, 80.0]` (axis
+  71.0). Config keys `station_lr_y0..y1`, `station_lr_y0_rear..y1_rear`, and
+  `station_lr_y_center(_rear)` carry the updated values; all derived asserts
+  re-verified.
 
 - Requirement mapping: "the joins should fit in between the rack clearances and
   the edge of the case" = every station lies radially INSIDE the 15.875 mm ring
@@ -175,9 +187,10 @@ split pieces, in-band joins, 80 mm depth).
       half of the 8.25 dia recess in the tongue leaf. At offset 8.0 the
       recess spans 3.875..12.125 from the seam plane, fully inside the
       receiver half of the pad.
-    - Pad-depth direction: PAD-DEPTH CENTER, 9.0 in from the pad front
-      edge (`station_top`/`station_bottom` at Y = 9.0;
-      `station_left`/`station_right` at Y = 19.0).
+    - Pad-depth direction: PAD-DEPTH CENTER, 9.0 in from each pad-depth face
+      for all eight stations (`station_top`/`station_bottom` at Y = 9.0 front /
+      71.0 rear; `station_left`/`station_right` at Y = 15.0 front / 71.0
+      rear).
     - Radial (fastener-axis) position: FIXED BY THE STACK -- recess floor
       at 3.8, slab 3.8..6.8, axial void 6.8..7.5, receiver wall
       7.5..13.075, pocket 13.075..15.875, measured inward from the
@@ -206,14 +219,16 @@ split pieces, in-band joins, 80 mm depth).
       `station_tb_y0_rear..y_center_rear` = 62.0/80.0/71.0; the head/washer
       recess is in the rear exterior face Z = +/-127.0, the pocket aperture
       opens into the chamber through the band's opening-edge face).
-    - left/right FRONT stations: `Y in [10.0, 28.0]` (`station_lr_y0..y_center`
-      = 10.0/28.0/19.0; see rationale below).
-    - left/right REAR stations: `Y in [52.0, 70.0]` (`station_lr_y0_rear..
-      y_center_rear` = 52.0/70.0/61.0; exact mirror of the front pair about
-      Y = 40.0, per the user-confirmed table). These are NOT flush with the
-      rear wall: the 8.0-deep axial recess at the pad face spans
-      Y 62.0..70.0 (rear wall 77..80 unchanged), and the rear wall keeps its
-      plain 3.0 thickness with no pocket in it.
+    - left/right FRONT stations: `Y in [6.0, 24.0]`, axis 15.0
+      (`station_lr_y0..y_center` = 6.0/24.0/15.0; see the rail-packing
+      rationale below; the fully flush front window is impossible).
+    - left/right REAR stations: `Y in [62.0, 80.0]`, axis 71.0
+      (`station_lr_y0_rear..y_center_rear` = 62.0/80.0/71.0; flush against
+      the rear exterior face per user instruction, exact mirror of the tb rear
+      pair). The head/washer recess is in the rear exterior face at
+      Z = +/-127.0 and the pocket aperture opens into the chamber through
+      the band's opening-edge face; the rear wall keeps its plain 3.0
+      thickness with no pocket in it.
   - Eight stations (receiver side LOCKED by the 4.1 rule "the receiver is the
     leaf at the + side of the station's own seam plane" -- top/bottom: +X;
     left/right: +Z; the tongue is the other leaf; every pad is fully consistent
@@ -234,36 +249,38 @@ split pieces, in-band joins, 80 mm depth).
     - `station_left_front` (seam plane Z = 0, left band X in [-127.0,
       -111.125]; fastener axis X, head in face X = -127.0): pad
       `Z in [-3.0, +18.0]` (3.0 root zone in the -Z leaf + 18.0 receiver
-      zone in the +Z leaf), `Y in [10.0, 28.0]` (axis Y = 19.0). Receiver:
+      zone in the +Z leaf), `Y in [6.0, 24.0]` (axis Y = 15.0). Receiver:
       top_left leaf; tongue: bottom_left leaf (slab spans Z 0..14 into
       top_left).
     - `station_left_rear`: same X band, `Z in [-3.0, +18.0]`,
-      `Y in [52.0, 70.0]` (axis Y = 61.0); receiver top_left, tongue
+      `Y in [62.0, 80.0]` (axis Y = 71.0); receiver top_left, tongue
       bottom_left.
     - `station_right_front` (seam plane Z = 0, right band X in
       [111.125, 127.0]; fastener axis X, head in face X = +127.0): pad
-      `Z in [-3.0, +18.0]`, `Y in [10.0, 28.0]` (axis Y = 19.0). Receiver:
+      `Z in [-3.0, +18.0]`, `Y in [6.0, 24.0]` (axis Y = 15.0). Receiver:
       top_right leaf; tongue: bottom_right leaf.
     - `station_right_rear`: same X band, `Z in [-3.0, +18.0]`,
-      `Y in [52.0, 70.0]` (axis Y = 61.0); receiver top_right, tongue
+      `Y in [62.0, 80.0]` (axis Y = 71.0); receiver top_right, tongue
       bottom_right.
   - Per-leaf station count: bottom_left 2 tongues; bottom_right 2 receivers +
     2 tongues = 4; top_right 4 receivers; top_left 2 receivers + 2 tongues = 4.
-- Front-face rationale for the left/right FRONT pads -- why at `Y in
-  [10.0, 28.0]`, not at the front face:
-  the left/right bands at `Y 0..10` carry the rack rail columns -- 30 holes
-  (15 per column at `X = +/-118.2625` on the face, 3.6 dia passages) including
-  the hole centered at `Z = 0.0` on the seam plane and holes at
-  `Z = +12.7` and `Z = -15.875`. Row pitch 15.875 leaves no hole-free 18 mm
-  window at the front for an 18 mm pad. Moving the pad back to `Y in
-  [10.0, 28.0]` (directly behind the 10.0-deep front rail, welded into the 3.0
-  side wall) clears: equipment-plane Y boundary (pad starts at Y = 10.0,
-  equipment occupies Y > 0; pad inner face at |X| = 111.125 vs equipment
-  half-width 110.0 -> 1.125 mm lateral clear, pad does not touch the 220.0
-  envelope), all 30 hole passages (only the `Z = 0.0` hole's Y-range is even
-  near the pad, and the pad is 10 mm behind the face), and the 222.25
-  clear-opening plane. This is the one stated departure from front placement;
-  it is asserted in code (section 3.3).
+- Front-face rationale for the left/right FRONT pads -- why at `Y in [6.0,
+  24.0]` (axis Y = 15.0), not flush with the front face (end-aligned re-lock,
+  2026-09-09):
+  the fully flush window `Y in [0.0, 18.0]` is impossible in the lr corner
+  band: the 5U rail rows at `Z = 0.0` (hole-centered pocket extent Z
+  -3.408..+3.408, spanning the pad's Z range) and at `Z = +12.7` (pocket Z
+  9.292..16.108) both carry 5.8-deep lands at `X = +/-118.2625 +/- 3.408`,
+  which lies INSIDE the lr pad band |X| in [111.125, 127.0] -- a flush-front
+  pad would merge its socket and slab voids with those rack hole pockets.
+  Binding constraint: the socket near face must clear the rack land face
+  (Y = 5.8) by >= 3.0: axis 15.0 - socket half-depth 6.0 = Y 9.0 ->
+  9.0 - 5.8 = 3.2 (asserted; this forces v0 >= 5.85, and 6.0 was chosen).
+  The slab near face (Y = 10.0) clears 10.0 - 5.8 = 4.2 (asserted). All
+  other clearances hold: pad inner face |X| = 111.125 vs equipment
+  half-width 110.0 -> 1.125 mm lateral clear (pad does not touch the 220.0
+  envelope); every one of the 30 hole passages; the 222.25 clear-opening
+  plane. Asserted in code (section 3.3).
 - Receiver leaf owns, per station (receiver zone = the 18.0 of the pad on
   the receiver side of the seam plane):
   - registration socket: slot 15.0 long in the insertion direction from the
@@ -287,7 +304,8 @@ split pieces, in-band joins, 80 mm depth).
     the band's opening-edge face (chamber side), centered on the fastener
     axis. In-plane ligaments (asserted per-station at 3.3; receiver pad is
     18.0 in the insertion direction and 18.0 in the pad-depth direction,
-    axis at 8.0 from the seam plane and 9.0/19.0 in the pad-depth center):
+    axis at 8.0 from the seam plane and at pad-depth center -- 9.0 from each
+    pad-depth face at all eight stations):
     recess (r 4.125) 3.875 to the seam face / 5.875 to the pad rear / 4.875
     to each pad-depth face; pocket (r 3.408) 4.592 to the seam face / 6.592
     to the pad rear / 5.592 to each pad-depth face -- all >= 3.0. Nut M3 x
@@ -317,8 +335,8 @@ split pieces, in-band joins, 80 mm depth).
   all four):
   - Radial stack: 3.8 + 3.0 + 0.7 + 5.575 + 2.8 = 15.875 EXACT, equal to
     the band depth (opening edge 111.125 to exterior face 127.0).
-  - Head recess (r 4.125, axis at 8.0 from the seam plane and 9.0/19.0 in
-    the pad-depth direction): 3.875 to the seam face and 5.875 to the
+  - Head recess (r 4.125, axis at 8.0 from the seam plane and at pad-depth
+    center): 3.875 to the seam face and 5.875 to the
     closed end in the insertion direction (8.0 + 4.125 = 12.125 recess
     edge vs the 18.0 receiver zone rear); 4.875 to each pad-depth face
     (9.0 - 4.125). All >= 3.0; recess fully inside the receiver leaf
@@ -338,10 +356,11 @@ split pieces, in-band joins, 80 mm depth).
   - Pad footprints are disjoint from: the 222.25 x 222.25 clear opening
     (the pad radial zone IS the band [111.125, 127.0], outside the opening
     edge by definition; no pad intrudes into the opening), the rack
-    columns at +/-118.2625 (left/right pads sit at Y in [10.0, 28.0],
-    behind the 10.0-deep front rail, so the column hole passages at the
-    front face are untouched; top/bottom pads span Y in [0.0, 18.0] in
-    the |Z|/|X| bands past 111.125 where no column hole pierces), and the
+    columns at +/-118.2625 (left/right front pads sit at Y in [6.0, 24.0]
+    -- socket/slab faces clear the 5.8-deep rack lands by 3.2/4.2, asserted;
+    left/right rear pads sit at Y in [62.0, 80.0] where no rack features
+    exist; top/bottom pads span the |Z|/|X| bands past 111.125 where no
+    column hole pierces), and the
     220.0 equipment envelope (left/right pad inner face at |X| = 111.125
     vs equipment half-width 110.0 -> 1.125 mm clear; top/bottom pads are
     outside the equipment's |Z| / |X| extent).

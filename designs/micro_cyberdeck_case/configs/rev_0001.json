@@ -1,0 +1,12 @@
+{
+  "part": "micro_cyberdeck_case_body_rev_0001",
+  "part_id": 0,
+  "interior_width": 65.0,
+  "interior_depth": 37.0,
+  "interior_height": 37.0,
+  "wall_thickness": 3.0,
+  "floor_thickness": 3.0,
+  "minimum_wall_thickness": 3.0,
+  "minimum_structural_overlap": 3.0,
+  "minimum_internal_edge_width": 3.0
+}

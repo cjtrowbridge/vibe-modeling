@@ -15,16 +15,18 @@
 //   (tongue leaf) -> shank -> nut -> pocket floor (receiver leaf); reactions
 //   land on opposite leaves.
 //
-// Layout (plan section 1.3, re-locked 2026-09-09): 8 stations, two per seam
-// ribbon (front + rear, mirrors about Y = 40.0).
+// Layout (plan section 1.3, re-locked 2026-09-09, end-aligned to the case
+// ends per user direction "the tabs should be touching top and bottom" -
+// rear pairs flush against the rear face, front pairs pushed to the closest
+// rail-safe window; the tb pairs already sit at the front and rear ends):
 //   top_front    tb  pad y [0,18]   axis_y  9   receiver top_right
 //   top_rear     tb  pad y [62,80]  axis_y 71   receiver top_right
 //   bottom_front tb  pad y [0,18]   axis_y  9   receiver bottom_right
 //   bottom_rear  tb  pad y [62,80]  axis_y 71   receiver bottom_right
-//   left_front   lr  pad y [10,28]  axis_y 19   receiver top_left
-//   left_rear    lr  pad y [52,70]  axis_y 61   receiver top_left
-//   right_front  lr  pad y [10,28]  axis_y 19   receiver top_right
-//   right_rear   lr  pad y [52,70]  axis_y 61   receiver top_right
+//   left_front   lr  pad y [6,24]   axis_y 15   receiver top_left
+//   left_rear    lr  pad y [62,80]  axis_y 71   receiver top_left
+//   right_front  lr  pad y [6,24]   axis_y 15   receiver top_right
+//   right_rear   lr  pad y [62,80]  axis_y 71   receiver top_right
 // (tb = seam plane X = 0, radial along Z; lr = seam plane Z = 0, radial
 //  along X; owner rule: receiver = leaf at the + side of its seam plane.)
 //
@@ -172,23 +174,25 @@ module seam_station_pads_all() {
     cube([seam_root_overlap + receiver_zone,
           station_tb_y1_rear - station_tb_y0_rear, ring_band], center = false);
   // left ribbon (band X -127.0..-111.125, insertion = z, receiver at +z)
-  // station_left_front: pad X [-127,-111.125] y [10,28] z [-3,18]
-  // (y [10,28] is the hole-free window in front of the 30 rack holes; the
-  //  pad inner face clears the 110.0 equipment half-width by 1.125 and the
-  //  rack land depth 5.8 by 4.2.)
+  // station_left_front: pad X [-127,-111.125] y [6,24] z [-3,18] -
+  // end-aligned layout 2026-09-09 (user: tabs flush to case ends): the front
+  // Y window is pushed flush toward the front face as far as the rack hole
+  // pockets allow (front socket face clears the 5.8 rack by 3.2, slab by
+  // 4.2); the rear pairs sit flush against the rear face ([62,80]).
   translate([-case_half, station_lr_y0, -seam_root_overlap])
     cube([ring_band, station_lr_y1 - station_lr_y0,
           seam_root_overlap + receiver_zone], center = false);
-  // station_left_rear: y [52,70] (mirror of [10,28] about Y = 40)
+  // station_left_rear: y [62,80] (flush against the rear face)
   translate([-case_half, station_lr_y0_rear, -seam_root_overlap])
     cube([ring_band, station_lr_y1_rear - station_lr_y0_rear,
           seam_root_overlap + receiver_zone], center = false);
   // right ribbon (band X 111.125..127.0)
-  // station_right_front: pad X [111.125,127] y [10,28] z [-3,18]
+  // station_right_front: pad X [111.125,127] y [6,24] z [-3,18] (mirror of
+  // the left pair across the opening)
   translate([opening_edge, station_lr_y0, -seam_root_overlap])
     cube([ring_band, station_lr_y1 - station_lr_y0,
           seam_root_overlap + receiver_zone], center = false);
-  // station_right_rear: y [52,70]
+  // station_right_rear: y [62,80] (flush against the rear face)
   translate([opening_edge, station_lr_y0_rear, -seam_root_overlap])
     cube([ring_band, station_lr_y1_rear - station_lr_y0_rear,
           seam_root_overlap + receiver_zone], center = false);
@@ -331,10 +335,10 @@ module seam_station_cuts_all() {
 //   bottom_rear   x [-3,11]   y [66,76] z [-123.2,-120.2]  owner bottom_left
 //   top_front     x [-3,11]   y [4,14]  z [120.2,123.2]    owner top_left
 //   top_rear      x [-3,11]   y [66,76] z [120.2,123.2]    owner top_left
-//   left_front    x [-123.2,-120.2] y [14,24] z [-3,11]    owner bottom_left
-//   left_rear     x [-123.2,-120.2] y [56,66] z [-3,11]    owner bottom_left
-//   right_front   x [120.2,123.2] y [14,24] z [-3,11]      owner bottom_right
-//   right_rear    x [120.2,123.2] y [56,66] z [-3,11]      owner bottom_right
+  // left_front    x [-123.2,-120.2] y [10,20] z [-3,11]    owner bottom_left
+//   left_rear     x [-123.2,-120.2] y [66,76] z [-3,11]    owner bottom_left
+//   right_front   x [120.2,123.2] y [10,20] z [-3,11]      owner bottom_right
+//   right_rear    x [120.2,123.2] y [66,76] z [-3,11]      owner bottom_right
 // (top_right owns none - all four of its stations are receivers.) The slab
 // crosses its station's seam plane: the root fusion must NOT be subtracted
 // by the leaf's quadrant intersection, so slabs are unioned into the leaf
@@ -351,11 +355,11 @@ module seam_station_slabs_bottom_left() {
   translate([-seam_root_overlap, station_tb_y_center_rear - tongue_seat_width / 2.0,
              -(case_half - station_recess_depth)])
     cube([tongue_slab_len, tongue_seat_width, tongue_slab_t], center = false);
-  // station_left_front slab (Z -3..11) - axis (y 19.0, z 8.0)
+  // station_left_front slab (Z -3..11) - axis (y 15.0, z 8.0)
   translate([-(case_half - station_recess_depth),
              station_lr_y_center - tongue_seat_width / 2.0, -seam_root_overlap])
     cube([tongue_slab_t, tongue_seat_width, tongue_slab_len], center = false);
-  // station_left_rear slab (Z -3..11) - axis (y 61.0, z 8.0)
+  // station_left_rear slab (Z -3..11) - axis (y 71.0, z 8.0)
   translate([-(case_half - station_recess_depth),
              station_lr_y_center_rear - tongue_seat_width / 2.0, -seam_root_overlap])
     cube([tongue_slab_t, tongue_seat_width, tongue_slab_len], center = false);
@@ -373,11 +377,11 @@ module seam_station_slabs_top_left() {
 }
 
 module seam_station_slabs_bottom_right() {
-  // station_right_front slab (X 120.2..123.2, Z -3..11) - axis (y 19.0, z 8.0)
+  // station_right_front slab (X 120.2..123.2, Z -3..11) - axis (y 15.0, z 8.0)
   translate([case_half - station_recess_depth - tongue_slab_t,
              station_lr_y_center - tongue_seat_width / 2.0, -seam_root_overlap])
     cube([tongue_slab_t, tongue_seat_width, tongue_slab_len], center = false);
-  // station_right_rear slab (X 120.2..123.2, Z -3..11) - axis (y 61.0, z 8.0)
+  // station_right_rear slab (X 120.2..123.2, Z -3..11) - axis (y 71.0, z 8.0)
   translate([case_half - station_recess_depth - tongue_slab_t,
              station_lr_y_center_rear - tongue_seat_width / 2.0, -seam_root_overlap])
     cube([tongue_slab_t, tongue_seat_width, tongue_slab_len], center = false);
@@ -465,7 +469,9 @@ module station_asserts() {
          "socket margin to pad depth faces 3.0");
 
   // Fastener-axis containment: axis 8.0 from each seam face; pad-depth
-  // centers 9.0 (tb) / 19.0 (lr); recess r 4.125, pocket r 3.408.
+  // centers 9.0 (tb) / 15.0 front, 71.0 rear (lr); recess r 4.125, pocket
+  // r 3.408. The lr asserts below use the FRONT center (the smaller of the
+  // two, so the tighter clearances are the front ones).
   assert(seam_fastener_seam_offset - station_recess_d / 2.0 >= 3.0,
          "recess -> seam face ligament 3.875");
   assert(station_tb_y_center - station_recess_d / 2.0 >= 3.0,
@@ -479,9 +485,9 @@ module station_asserts() {
   assert(receiver_zone - seam_fastener_seam_offset - nut_pocket_d / 2.0
          >= 3.0, "pocket -> pad back-face ligament 6.592");
   assert(station_lr_y_center - station_recess_d / 2.0 >= 3.0,
-         "lr recess -> pad-depth face ligament 4.875 (center 19)");
+         "lr recess -> pad-depth face ligament 4.875 (center 15, end-aligned)");
   assert(station_lr_y_center - nut_pocket_d / 2.0 >= 3.0,
-         "lr pocket -> pad-depth face ligament 5.592 (center 19)");
+         "lr pocket -> pad-depth face ligament 5.592 (center 15, end-aligned)");
 
   // Radial stack stops.
   assert(station_recess_depth == 3.8,
@@ -519,24 +525,34 @@ module station_asserts() {
   assert(station_lr_y1_rear - station_lr_y0_rear == 18.0,
          "lr rear pad depth 18.0");
 
-  // Rear pairs are exact mirrors of the front pairs about Y = 40.0
-  // (case_depth_exterior / 2.0).
+  // Rear pairs are flush against the rear exterior face. The tb rear pair
+  // mirrors the tb front pair exactly about Y = 40.0 ([0,18] -> [62,80]);
+  // the lr front pair is rail-limited (not a mirror), the lr rear pair is
+  // flush (end-aligned layout 2026-09-09).
   assert(case_depth_exterior - station_tb_y0 == station_tb_y1_rear
          && case_depth_exterior - station_tb_y1 == station_tb_y0_rear,
          "tb rear pad mirrors tb front about Y=40 ([0,18] -> [62,80])");
-  assert(case_depth_exterior - station_lr_y0 == station_lr_y1_rear
-         && case_depth_exterior - station_lr_y1 == station_lr_y0_rear,
-         "lr rear pad mirrors lr front about Y=40 ([10,28] -> [52,70])");
+  assert(abs(station_lr_y1_rear - case_depth_exterior) < 1e-9,
+         "lr rear pads flush against the rear face (y1_rear = 80.0)");
   assert(station_tb_y_center + station_tb_y_center_rear
          == case_depth_exterior, "tb axis mirror 9.0 / 71.0");
-  assert(station_lr_y_center + station_lr_y_center_rear
-         == case_depth_exterior, "lr axis mirror 19.0 / 61.0");
+  // NOTE: the lr center SUM is intentionally NOT a mirror assert - the front
+  // axis (15.0) is rail-limited, the rear axis (71.0) is end-flush; only the
+  // REAR FLUSH is asserted (above). The lr rear pad window DOES mirror the
+  // lr front pad window about Y = 40.0 in its 18.0 depth (checked by the
+  // pad depth asserts above).
 
-  // lr FRONT pads clear the rack hardware: they start at Y 10.0, the rack
-  // land depth is 5.8 (per-hole Z clearance is proven in defaults.scad);
-  // the pad inner face clears the equipment envelope half-width.
-  assert(station_lr_y0 - rack_land_depth >= 4.2 - 0.001,
-         "lr front pad clears rack land depth by 4.2 (10.0 - 5.8)");
+  // lr FRONT pads clear the rack hole voids: the station's socket and slab
+  // faces must stay clear of the front wall's hole pockets by the wall floor
+  // (the rack 30-hole pattern is locked - no new joints there). Flush to
+  // the front face is rejected by this: socket face would merge with the
+  // z=0 and z=12.7 rack rows' 6.816 pockets (Y 2.95..5.85).
+  assert(station_lr_y_center - socket_depth / 2.0 - rack_land_depth >= 3.0 - 0.001,
+         "lr socket face clears rack hole pockets by >= 3.0 (15-6-5.8 = 3.2)");
+  assert(station_lr_y_center - tongue_seat_width / 2.0 - rack_land_depth >= 3.0 - 0.001,
+         "lr slab face clears rack hole pockets by >= 3.0 (15-5-5.8 = 4.2)");
+  assert(station_lr_y0 >= 0.0 && station_lr_y1_rear <= case_depth_exterior,
+         "lr pads inside the case depth (end-aligned)");
   assert(opening_edge - equipment_width_max / 2.0 >= 1.125 - 1e-9,
          "lr pad inner face clears equipment half-width by 1.125");
 

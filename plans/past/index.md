@@ -2,6 +2,8 @@
 
 Format: `created_at | path | title | summary`
 
+2026-09-13-01-54-03 | plans/past/2026-09-13-01-54-03_revise-micro-cyberdeck-case-width-and-microsd-opening.md | Revise Micro Cyberdeck Case Width and Add microSD Opening | Create and verify a rev_0002 candidate with a 67 mm interior width and a positioned microSD access opening through the left wall.
+2026-09-12-17-28-39 | plans/past/2026-09-12-17-28-39_create-micro-cyberdeck-case.md | Create Micro Cyberdeck Open Case Blockout | Add a single-piece open-top, open-front rectangular case with a 65 x 37 x 37 mm nominal interior and explicit 3 mm structural walls and floor.
 2026-09-07-19-58-16 | plans/past/2026-09-07-19-58-16_remove-cyberdeck-2.md | Remove Failed Cyberdeck-2 Design and Current Outputs | Remove the Cyberdeck-2 tracked design tree and its mutable generated output after preserving its reusable M3 seam pattern in engineering guidance.
 2026-09-07-19-52-29 | plans/past/2026-09-07-19-52-29_m3-captive-nut-seam-reference.md | Document M3 Captive-Nut Registration Seam Stations | Establish a reusable engineering reference for the retained cyberdeck-2 M3 tongue-and-receiver seam pattern and link it from split-print guidance.
 2026-08-29-00-00-00 | plans/past/2026-08-29-00-00-00_scaffold-triple-thor-enclosure.md | Scaffold Triple Thor Enclosure Design | Create the triple_thor_enclosure design folder layout and a starting design README for mockup-first development.
