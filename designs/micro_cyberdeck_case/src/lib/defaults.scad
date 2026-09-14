@@ -17,6 +17,12 @@ microsd_center_above_internal_floor = is_undef(microsd_center_above_internal_flo
 microsd_center_from_back_outer_edge = is_undef(microsd_center_from_back_outer_edge) ? 22.0 : microsd_center_from_back_outer_edge;
 boolean_epsilon = is_undef(boolean_epsilon) ? 0.01 : boolean_epsilon;
 
+divider_enabled = is_undef(divider_enabled) ? false : divider_enabled;
+divider_thickness = is_undef(divider_thickness) ? 3.0 : divider_thickness;
+divider_gap_above_internal_floor = is_undef(divider_gap_above_internal_floor) ? 12.0 : divider_gap_above_internal_floor;
+divider_cable_passage_width = is_undef(divider_cable_passage_width) ? 5.0 : divider_cable_passage_width;
+divider_cable_passage_depth = is_undef(divider_cable_passage_depth) ? 10.0 : divider_cable_passage_depth;
+
 minimum_wall_thickness = is_undef(minimum_wall_thickness) ? 3.0 : minimum_wall_thickness;
 minimum_structural_overlap = is_undef(minimum_structural_overlap) ? minimum_wall_thickness : minimum_structural_overlap;
 minimum_internal_edge_width = is_undef(minimum_internal_edge_width) ? minimum_wall_thickness : minimum_internal_edge_width;
@@ -24,3 +30,5 @@ minimum_internal_edge_width = is_undef(minimum_internal_edge_width) ? minimum_wa
 wall_floor_overlap = floor_thickness;
 rear_corner_overlap = wall_thickness;
 front_floor_apron_depth = wall_thickness;
+divider_side_wall_overlap = wall_thickness;
+divider_back_wall_overlap = wall_thickness;

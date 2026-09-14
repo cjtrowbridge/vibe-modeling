@@ -195,6 +195,17 @@ For multi-part designs with `designs/<design>/parts.json`, use
 `scripts/scad_build_all.py`. A directory is not a complete/current build unless
 its `build_manifest.json` passes `--audit-only`.
 
+The VS Code launch task "Rebuild stale CAD designs" runs
+`python scripts/rebuild_stale_designs.py --all`, the governed automatic build
+pipeline. Use it to rebuild updated designs; do not hand-run OpenSCAD or
+otherwise chase build/verification details. It rebuilds and audits only
+multi-part designs (those with `designs/<design>/parts.json`), and only while the
+design tree is newer than the installed `output/<design>/build_manifest.json`. Its
+config choice comes from that installed manifest's `config.path` (single-config
+directory as fallback). Single-part designs (no `parts.json`) are outside its
+scope and are built explicitly with
+`scripts/scad_build.py --design <design> --config <config>`.
+
 New or geometry-modified multipart designs must also declare
 `designs/<design>/assembly.json`, pass
 `scripts/validate_cad_assembly_contract.py`, and produce a reviewed

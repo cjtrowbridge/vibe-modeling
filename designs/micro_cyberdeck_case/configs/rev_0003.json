@@ -1,0 +1,23 @@
+{
+  "part": "micro_cyberdeck_case_body_rev_0003",
+  "part_id": 0,
+  "interior_width": 67.0,
+  "interior_depth": 37.0,
+  "interior_height": 42.0,
+  "wall_thickness": 3.0,
+  "floor_thickness": 3.0,
+  "microsd_opening_enabled": true,
+  "microsd_opening_width": 15.0,
+  "microsd_opening_height": 10.0,
+  "microsd_center_above_internal_floor": 20.0,
+  "microsd_center_from_back_outer_edge": 27.0,
+  "boolean_epsilon": 0.01,
+  "divider_enabled": true,
+  "divider_thickness": 3.0,
+  "divider_gap_above_internal_floor": 12.0,
+  "divider_cable_passage_width": 5.0,
+  "divider_cable_passage_depth": 10.0,
+  "minimum_wall_thickness": 3.0,
+  "minimum_structural_overlap": 3.0,
+  "minimum_internal_edge_width": 3.0
+}

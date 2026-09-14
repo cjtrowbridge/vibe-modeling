@@ -14,6 +14,23 @@ function microsd_front_margin() = microsd_min_y();
 function microsd_back_margin() = case_outer_depth() - microsd_max_y();
 function microsd_floor_ligament() = microsd_min_z() - floor_thickness;
 function microsd_top_margin() = case_outer_height() - microsd_max_z();
+function divider_bottom_z() = floor_thickness + divider_gap_above_internal_floor;
+function divider_top_z() = divider_bottom_z() + divider_thickness;
+function divider_front_y() = wall_thickness;
+function divider_back_y() = case_outer_depth();
+function divider_depth() = divider_back_y() - divider_front_y();
+function divider_cable_passage_x_max() = wall_thickness + divider_cable_passage_width;
+function divider_cable_passage_y_max() = divider_front_y() + divider_cable_passage_depth;
+function microsd_intersects_divider() =
+  microsd_opening_enabled &&
+  microsd_min_z() < divider_top_z() &&
+  microsd_max_z() > divider_bottom_z();
+function divider_post_cut_left_support_start_y() =
+  microsd_intersects_divider()
+    ? max(divider_cable_passage_y_max(), microsd_max_y())
+    : divider_cable_passage_y_max();
+function divider_post_cut_left_support_length() =
+  divider_back_y() - divider_post_cut_left_support_start_y();
 
 module _assert_case_dimensions() {
   assert(interior_width > 0 && interior_depth > 0 && interior_height > 0,
@@ -52,6 +69,34 @@ module _assert_case_dimensions() {
     "microSD opening leaves too little wall material above the internal floor.");
   assert(microsd_top_margin() >= minimum_internal_edge_width,
     "microSD opening leaves too little wall material below the rim.");
+  if (divider_enabled) {
+    assert(divider_thickness >= minimum_wall_thickness,
+      "Divider thickness is below the minimum wall thickness.");
+    assert(divider_gap_above_internal_floor > 0,
+      "Divider must remain above the internal floor.");
+    assert(divider_side_wall_overlap >= minimum_structural_overlap,
+      "Divider does not engage each side wall by the minimum overlap.");
+    assert(divider_back_wall_overlap >= minimum_structural_overlap,
+      "Divider does not engage the back wall by the minimum overlap.");
+    assert(divider_cable_passage_width > 0 && divider_cable_passage_depth > 0,
+      "Divider cable pass-through dimensions must be positive.");
+    assert(divider_cable_passage_x_max() > wall_thickness,
+      "Divider cable pass-through does not clear the left wall inside face.");
+    assert(divider_cable_passage_y_max() <= divider_back_y(),
+      "Divider cable pass-through exceeds the divider depth.");
+    assert(divider_post_cut_left_support_length() >= minimum_structural_overlap,
+      "Divider retains too little post-cut left-wall support.");
+    assert(divider_depth() >= minimum_structural_overlap,
+      "Divider right-wall support seam is too short.");
+    assert(case_outer_width() >= minimum_structural_overlap,
+      "Divider back-wall support seam is too short.");
+    assert(divider_top_z() < case_outer_height(),
+      "Divider must remain below the case rim.");
+    if (microsd_opening_enabled) {
+      assert(microsd_min_z() == divider_top_z(),
+        "microSD opening bottom must align with the top of the divider.");
+    }
+  }
 }
 
 module _case_floor() {
@@ -72,12 +117,40 @@ module _back_wall() {
     cube([case_outer_width(), wall_thickness, case_outer_height()]);
 }
 
+module _divider_slab() {
+  translate([0, divider_front_y(), divider_bottom_z()])
+    cube([case_outer_width(), divider_depth(), divider_thickness]);
+}
+
+module _divider_cable_passage_cut() {
+  translate([
+    -boolean_epsilon,
+    divider_front_y() - boolean_epsilon,
+    divider_bottom_z() - boolean_epsilon
+  ])
+    cube([
+      divider_cable_passage_x_max() + boolean_epsilon,
+      divider_cable_passage_depth + boolean_epsilon,
+      divider_thickness + 2 * boolean_epsilon
+    ]);
+}
+
+module _battery_sbc_divider() {
+  difference() {
+    _divider_slab();
+    _divider_cable_passage_cut();
+  }
+}
+
 module _case_positive() {
   union() {
     _case_floor();
     _left_wall();
     _right_wall();
     _back_wall();
+    if (divider_enabled) {
+      _battery_sbc_divider();
+    }
   }
 }
 

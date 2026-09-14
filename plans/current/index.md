@@ -2,6 +2,7 @@
 
 Format: `created_at | path | title | summary`
 
+2026-09-13-12-09-39 | plans/current/2026-09-13-12-09-39_revise-micro-cyberdeck-case-roof-opening-and-divider.md | Raise Micro Cyberdeck Case, Reposition microSD Opening, and Add Battery Divider | Create and verify a rev_0003 candidate with a 5 mm taller case, repositioned left-wall microSD opening, and an internally supported battery/SBC divider.
 2026-09-09-19-21-26 | plans/current/2026-09-09-19-21-26_create-cyberdeck-2-5u-enclosure.md | Create cyberdeck-2 5U fully-enclosed rack case | Build a new 5U ten-inch-rack case (254 x 254 x 80 mm), fully enclosed except the 222.25 x 222.25 mm rack opening, split into four printable quadrant leaves joined by eight M3 captive-nut registration seam stations (two per seam ribbon) located in the ring band between the rack clear opening and the case edge.
 2026-08-31-12-58-00 | plans/current/2026-08-31-12-58-00_triple-thor-geometry-blockout.md | Triple Thor Enclosure Geometry Blockout | Scaffold parametric OpenSCAD blockout geometry, parts manifest, assembly contract, and config for the triple_thor_enclosure at locked R=57mm layout.
 2026-08-13-17-44-00 | plans/current/2026-08-13-17-44-00_restore-angled-screen-2u-rails.md | Restore Distinct Angled-Screen 2U Rails | Separate the angled-screen rail, hardware-back, and exterior-closure owners so the screen presents two clear 2U rail columns rather than solid end-wall blocks.
