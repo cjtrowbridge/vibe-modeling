@@ -2,6 +2,8 @@
 
 Format: `created_at | path | title | summary`
 
+2026-09-14-09-37-44 | plans/past/2026-09-14-09-37-44_micro-cyberdeck-case-fan-and-chamber-exits.md | Add 40 mm Fan, Dual-Window Left Exits, and Retention Lips to Micro Cyberdeck Case | Right-wall 40 mm fan (center y=18, Ø28 air, 4x Ø4.2 mounts, Ø6x3 screw-head recesses on the interior face) and dual left-wall exhaust windows (34 x 24 and 34 x 12 mm, with flush 1.5 mm retention lips enforced by tightened cuts), all in-place on the rev_0003 candidate.
+2026-09-13-12-09-39 | plans/past/2026-09-13-12-09-39_revise-micro-cyberdeck-case-roof-opening-and-divider.md | Raise Micro Cyberdeck Case, Reposition microSD Opening, and Add Battery Divider | Create and verify a rev_0003 candidate with a 5 mm taller case, repositioned left-wall microSD opening, and an internally supported battery/SBC divider.
 2026-09-13-01-54-03 | plans/past/2026-09-13-01-54-03_revise-micro-cyberdeck-case-width-and-microsd-opening.md | Revise Micro Cyberdeck Case Width and Add microSD Opening | Create and verify a rev_0002 candidate with a 67 mm interior width and a positioned microSD access opening through the left wall.
 2026-09-12-17-28-39 | plans/past/2026-09-12-17-28-39_create-micro-cyberdeck-case.md | Create Micro Cyberdeck Open Case Blockout | Add a single-piece open-top, open-front rectangular case with a 65 x 37 x 37 mm nominal interior and explicit 3 mm structural walls and floor.
 2026-09-07-19-58-16 | plans/past/2026-09-07-19-58-16_remove-cyberdeck-2.md | Remove Failed Cyberdeck-2 Design and Current Outputs | Remove the Cyberdeck-2 tracked design tree and its mutable generated output after preserving its reusable M3 seam pattern in engineering guidance.

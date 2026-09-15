@@ -2,7 +2,7 @@
 plan_id: 2026-09-13-12-09-39_revise-micro-cyberdeck-case-roof-opening-and-divider
 title: Raise Micro Cyberdeck Case, Reposition microSD Opening, and Add Battery Divider
 summary: Create and verify a rev_0003 candidate with a 5 mm taller case, repositioned left-wall microSD opening, and an internally supported battery/SBC divider.
-status: current
+status: past
 created_at: 2026-09-13-12-09-39
 ---
 
@@ -30,22 +30,22 @@ Key: `[ ]` pending task, `[x]` completed task, `[?]` needs validation, `[-]` clo
 - Expected mutable output: one rev_0003 STL and 17 rev_0003 PNGs in `output/micro_cyberdeck_case/`, replacing the current output set.
 - Publication gate: candidate only; no immutable revision snapshot, commit, or push without separate approval.
 
-- [ ] 1. Add the revision 0003 configuration and structural divider.
+- [x] 1. Add the revision 0003 configuration and structural divider.
   - [x] 1.1 Create `configs/rev_0003.json` with the raised interior height, revised opening center parameters (final: 20 mm above the internal floor), and divider dimensions.
   - [x] 1.2 Preserve revision 0001 and 0002 configs and confirm their distinct geometries remain available through their explicit config values.
   - [x] 1.3 Add named divider dimensions, side/back overlap assertions, supported-span assertions, and the opening-bottom-flush-with-divider-top assertion.
   - [x] 1.4 Construct the divider with continuous positive-volume engagement into both side walls and the back wall, without closing the front.
   - [x] 1.5 Add the 5 x 10 mm front-left divider-only cable pass-through notch and assert the remaining 30 mm post-cut left-wall support seam, uninterrupted right/back supports, intact left enclosure wall, and explicit 10 mm low-load cantilever limitation.
-- [ ] 2. Update documentation.
-  - [ ] 2.1 Record revision 0003 dimensions, opening bounds, cable pass-through notch, material margins, divider support/overlap, and unverified battery/SBC assumptions in the design README.
-  - [ ] 2.2 Update the root README summary to the 73 x 43 x 45 mm outer envelope and 67 x 37 x 42 mm nominal interior.
-- [ ] 3. Build and verify installed revision 0003 artifacts.
-  - [ ] 3.1 Run the dry run and confirm the revision-specific inputs, expected artifact set, and output destination.
+- [-] 2. Update documentation. (Superseded: the final rev_0003 state, including the dual left windows, fan, and screw-head recesses, is documented by `2026-09-14-09-37-44_micro-cyberdeck-case-fan-and-chamber-exits.md`.)
+  - [-] 2.1 Record revision 0003 dimensions, opening bounds, cable pass-through notch, material margins, divider support/overlap, and unverified battery/SBC assumptions in the design README.
+  - [-] 2.2 Update the root README summary to the 73 x 43 x 45 mm outer envelope and 67 x 37 x 42 mm nominal interior.
+- [-] 3. Build and verify installed revision 0003 artifacts. (Superseded: the final build, numerical verification, and section review are recorded under items 4.1-4.4 of the 2026-09-14 plan.)
+  - [-] 3.1 Run the dry run and confirm the revision-specific inputs, expected artifact set, and output destination.
   - [x] 3.2 Replace the mutable output with a complete rev_0003 build.
-  - [ ] 3.3 Confirm 73 x 43 x 45 mm STL bounds, 15 x 10 mm opening coordinates, open top/front, visible left-wall opening, and divider bounds at `z = 15..18`.
-  - [ ] 3.4 Inspect divider sections through its remaining left support, uninterrupted right/rear supports, midpoint, open front termination, and cable pass-through notch; verify 3 mm positive overlap, 5 mm clear cable route, and intact left enclosure wall.
-  - [ ] 3.5 Recheck opening post-cut margins, wall/floor and rear-corner structural sections, connectivity, and exact output set; retain battery, SBC, slicer, and physical-fit checks as unverified.
-- [ ] 4. Close the governed checkpoint without committing or pushing automatically.
-  - [ ] 4.1 Append the work and evidence to `journal/2026-09-13.md`.
-  - [ ] 4.2 Review task-scoped changes, regenerate/check plan indexes, and archive the completed plan.
-  - [ ] 4.3 Report results and propose a commit message; seek separate approval for commit/push.
+  - [-] 3.3 Confirm 73 x 43 x 45 mm STL bounds, 15 x 10 mm opening coordinates, open top/front, visible left-wall opening, and divider bounds at `z = 15..18`.
+  - [-] 3.4 Inspect divider sections through its remaining left support, uninterrupted right/rear supports, midpoint, open front termination, and cable pass-through notch; verify 3 mm positive overlap, 5 mm clear cable route, and intact left enclosure wall.
+  - [-] 3.5 Recheck opening post-cut margins, wall/floor and rear-corner structural sections, connectivity, and exact output set; retain battery, SBC, slicer, and physical-fit checks as unverified.
+- [-] 4. Close the governed checkpoint without committing or pushing automatically. (Superseded by the closeout of the 2026-09-14 plan; work and evidence are recorded in `journal/2026-09-14.md`.)
+  - [-] 4.1 Append the work and evidence to `journal/2026-09-13.md`.
+  - [-] 4.2 Review task-scoped changes, regenerate/check plan indexes, and archive the completed plan.
+  - [-] 4.3 Report results and propose a commit message; seek separate approval for commit/push.
