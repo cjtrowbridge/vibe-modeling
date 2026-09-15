@@ -79,14 +79,17 @@ Provide a repeatable local workflow to iterate OpenSCAD prototypes, generate mul
 
 - Parameter files live in `designs/<design>/configs/`.
 - Prefer numeric `part_id` values in configs.
-- Scratch outputs go in `output/<design>/` (ignored by git).
-- Revision outputs go in `revisions/<design>/rev_000N/` (ignored by git).
+- Scratch outputs go in `output/<design>/`.
+- Revision outputs go in `revisions/<design>/rev_000N/`.
+- Built artifacts (`output/<design>/`, `revisions/<design>/rev_000N/`) are
+  committed and pushed with source and configs; the remote is the deliverable.
 - Probes, sections, partial builds, and staging remain under
   `.tmp/scad/<design>/`; successful governed commands leave `output/<design>/`
   as a flat exact set.
 - Do not invent artifact directories. In particular, `output/<design>_rev_000N/` is invalid.
 - Completed outputs contain no `.scad` source, probe file, or staging directory.
-- Only commit source (`.scad`) and config (`configs/*.json`) unless explicitly keeping generated examples.
+- Commit source (`.scad`), config (`configs/*.json`), and the built artifacts in
+  `output/<design>/` and `revisions/<design>/rev_000N/`.
 - `scad_build.py` always renders the full PNG preset set (all named isometric + orthographic views, including below/inspection views) and fails the run if any expected PNG is missing.
 - `scad_build_all.py` stages every manifest part inside the design output,
   validates exact artifact names/counts, writes hashes and provenance to

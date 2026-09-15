@@ -1,0 +1,321 @@
+{
+  "schema_version": 1,
+  "build_scope": "complete",
+  "design": "ac_redirectors",
+  "revision": "rev_0001",
+  "destination": "current",
+  "generated_at_utc": "2026-07-24T05:02:23.085655+00:00",
+  "config": {
+    "path": "designs/ac_redirectors/configs/rev_0001.json",
+    "sha256": "6e03dfb37d2e0fb33d51e8dd5b4fceaee4ce954726059487e21c1ca36cf56297"
+  },
+  "parts_manifest": {
+    "path": "designs/ac_redirectors/parts.json",
+    "sha256": "641c589e9015badd8bbfe437106f07f93a3d412674b3fcd3b88f1aeafa1f27a8"
+  },
+  "source": {
+    "path": "designs/ac_redirectors/src",
+    "sha256": "52ca09a8a3e28ccf48a28f796230eb6a24a168aff1da7e9f919192089da49c42",
+    "main_scad": "designs/ac_redirectors/src/main.scad"
+  },
+  "git": {
+    "commit": "7a8c6056605094f38fdbbea363372472106baa1f",
+    "dirty": true
+  },
+  "openscad": "C:\\Program Files (x86)\\OpenSCAD\\openscad.exe",
+  "counts": {
+    "parts": 3,
+    "stl": 3,
+    "png": 51,
+    "artifacts": 54
+  },
+  "parts": [
+    {
+      "part_id": 1,
+      "name": "ac_redirector_door_side",
+      "output_name": "ac_redirector_door_side_rev_0001"
+    },
+    {
+      "part_id": 2,
+      "name": "ac_redirector_bed_side",
+      "output_name": "ac_redirector_bed_side_rev_0001"
+    },
+    {
+      "part_id": 3,
+      "name": "ac_vent_rail_mockup",
+      "output_name": "ac_vent_rail_mockup_rev_0001"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "ac_redirector_bed_side_rev_0001.png",
+      "bytes": 24169,
+      "sha256": "7f18c921838551f4654b0039b3f0a6b81df25c8e246dcdf886d55cd901ca9012"
+    },
+    {
+      "path": "ac_redirector_bed_side_rev_0001.stl",
+      "bytes": 76471,
+      "sha256": "3ed55f8f911aff1d7c28a70997843222ced27bc3294a348618af8e9fb2a47cd2"
+    },
+    {
+      "path": "ac_redirector_bed_side_rev_0001_inspect_inside_bottom_iso.png",
+      "bytes": 47075,
+      "sha256": "eb374dd1c9b73fa6ffc633b45b0a963e4ff6acf33a5cca14f08dba17d9f7702a"
+    },
+    {
+      "path": "ac_redirector_bed_side_rev_0001_inspect_inside_bottom_ortho.png",
+      "bytes": 6058,
+      "sha256": "e85674c98901edd61cdd58d730585e98de1558d61e7249291eef9beba2ff226d"
+    },
+    {
+      "path": "ac_redirector_bed_side_rev_0001_iso_back_left.png",
+      "bytes": 25873,
+      "sha256": "cd14a59d2d630cff9c5f0b2fd802e2d08933525017da86d479a5626221cd16b7"
+    },
+    {
+      "path": "ac_redirector_bed_side_rev_0001_iso_back_right.png",
+      "bytes": 22104,
+      "sha256": "1af5f573c69f3489d5aa656b4a0ff1f7552c8430f3e304ce55278f6ab98b9e36"
+    },
+    {
+      "path": "ac_redirector_bed_side_rev_0001_iso_bottom_back_left.png",
+      "bytes": 18916,
+      "sha256": "61389a153b3db118e2092d84c8aa0b6c76cb60a0db5250f94f0c8cbd999283a5"
+    },
+    {
+      "path": "ac_redirector_bed_side_rev_0001_iso_bottom_back_right.png",
+      "bytes": 22239,
+      "sha256": "4e09b1cbc554566383033c3d9cd6f26798847ecfb47f5f24a4678a9453293f49"
+    },
+    {
+      "path": "ac_redirector_bed_side_rev_0001_iso_bottom_front_left.png",
+      "bytes": 24137,
+      "sha256": "c52ade3b330cbce940b97d0fd820888fd8010cf49573924ee08e8ab6c6e741f2"
+    },
+    {
+      "path": "ac_redirector_bed_side_rev_0001_iso_bottom_front_right.png",
+      "bytes": 19935,
+      "sha256": "2273c9612e25b6668b67822395af2df8ba7cc5c5b028599f284738a73a4e18e1"
+    },
+    {
+      "path": "ac_redirector_bed_side_rev_0001_iso_front_left.png",
+      "bytes": 23424,
+      "sha256": "5d4acacf6585852e63802c5fc93507d244e9bc6746cf3cc874eb1a12e0f7bc14"
+    },
+    {
+      "path": "ac_redirector_bed_side_rev_0001_iso_front_right.png",
+      "bytes": 24169,
+      "sha256": "7f18c921838551f4654b0039b3f0a6b81df25c8e246dcdf886d55cd901ca9012"
+    },
+    {
+      "path": "ac_redirector_bed_side_rev_0001_ortho_back.png",
+      "bytes": 6752,
+      "sha256": "6f38b6857154cb3293ab468d71b268634f83478377db75c1f2a54fdc53737020"
+    },
+    {
+      "path": "ac_redirector_bed_side_rev_0001_ortho_bottom.png",
+      "bytes": 6058,
+      "sha256": "dd7264e0cae7000f0abc16a085d10a0139dd1beab962630f0a8c8175f3354c9b"
+    },
+    {
+      "path": "ac_redirector_bed_side_rev_0001_ortho_front.png",
+      "bytes": 6726,
+      "sha256": "261728b52108917cb864fbdc2b04a938953ba7019db94a36505aa82238854651"
+    },
+    {
+      "path": "ac_redirector_bed_side_rev_0001_ortho_left.png",
+      "bytes": 5973,
+      "sha256": "05879fdbcc5ebb30b75b534bd6f8e63e8b55a8f623dbfffa776616ee41c10536"
+    },
+    {
+      "path": "ac_redirector_bed_side_rev_0001_ortho_right.png",
+      "bytes": 5944,
+      "sha256": "e2feba2d0996eadb2a275695d6beb0920736b4a62fe6a6868dde4e869fc7e836"
+    },
+    {
+      "path": "ac_redirector_bed_side_rev_0001_ortho_top.png",
+      "bytes": 6235,
+      "sha256": "ea51363279bc7b093a1994f13973202315ae5cc12649c8c82d49c0260fed483d"
+    },
+    {
+      "path": "ac_redirector_door_side_rev_0001.png",
+      "bytes": 30594,
+      "sha256": "1d67728d26df91eab322231adfc0ba39b681ed392a82a49ff5e4cda636e33355"
+    },
+    {
+      "path": "ac_redirector_door_side_rev_0001.stl",
+      "bytes": 38960,
+      "sha256": "cf30ca8ad14134cd27f3b9af8bf5d03967050b3f7510520a58ba131ae70e7e2a"
+    },
+    {
+      "path": "ac_redirector_door_side_rev_0001_inspect_inside_bottom_iso.png",
+      "bytes": 44299,
+      "sha256": "ff13fe20c3b83de2fcf361f7eec41fa1c3121933bef8bfe3feb1778ccb5ae04c"
+    },
+    {
+      "path": "ac_redirector_door_side_rev_0001_inspect_inside_bottom_ortho.png",
+      "bytes": 6052,
+      "sha256": "6a69c51a3d9af0053934e6a5bb28ccf2754232ec0b308b6c667c6b8d5144306a"
+    },
+    {
+      "path": "ac_redirector_door_side_rev_0001_iso_back_left.png",
+      "bytes": 31032,
+      "sha256": "38e11f55d2bf141faf8cd466d545564d7b338ddef2e0033ef208c1c704d798bb"
+    },
+    {
+      "path": "ac_redirector_door_side_rev_0001_iso_back_right.png",
+      "bytes": 25106,
+      "sha256": "899c44ac07d5224a182715322530bf826fed8c1dc6db32be5ea27199f6db8227"
+    },
+    {
+      "path": "ac_redirector_door_side_rev_0001_iso_bottom_back_left.png",
+      "bytes": 28065,
+      "sha256": "c41e690c35e2e671888e3539b9194990ab110b5086a8b3f6cba82d9950d83eff"
+    },
+    {
+      "path": "ac_redirector_door_side_rev_0001_iso_bottom_back_right.png",
+      "bytes": 34779,
+      "sha256": "2d22f1696609bd2aad3c73d3bbd9b88e3a1529db5d17affbcccbea03b09b47f6"
+    },
+    {
+      "path": "ac_redirector_door_side_rev_0001_iso_bottom_front_left.png",
+      "bytes": 32037,
+      "sha256": "86f167bfda52f10063ad9ca4d4fe0df17fa103a26cb866676c46a8af12a6be52"
+    },
+    {
+      "path": "ac_redirector_door_side_rev_0001_iso_bottom_front_right.png",
+      "bytes": 25260,
+      "sha256": "5438efe54b0fa0348f8327c47335e023a0a068162af8e7bb51d02e00dc127795"
+    },
+    {
+      "path": "ac_redirector_door_side_rev_0001_iso_front_left.png",
+      "bytes": 27241,
+      "sha256": "1b0cc659ab42a8e4351ab70069f2ec026246203b9f3aa5b0c5e9b09ef88edd31"
+    },
+    {
+      "path": "ac_redirector_door_side_rev_0001_iso_front_right.png",
+      "bytes": 30594,
+      "sha256": "1d67728d26df91eab322231adfc0ba39b681ed392a82a49ff5e4cda636e33355"
+    },
+    {
+      "path": "ac_redirector_door_side_rev_0001_ortho_back.png",
+      "bytes": 6021,
+      "sha256": "665e8130d0059bc8dd37299c542e72ab59a49f68b0b64f0892c59470cfa744b4"
+    },
+    {
+      "path": "ac_redirector_door_side_rev_0001_ortho_bottom.png",
+      "bytes": 6050,
+      "sha256": "426978400d5cf68e50bede0c96727754e442a25cd03338d318abfaebafa4fb55"
+    },
+    {
+      "path": "ac_redirector_door_side_rev_0001_ortho_front.png",
+      "bytes": 6006,
+      "sha256": "aacad1083cb29a9e4df10f83012151660694964dcfb23a350ad9a8a006c1648e"
+    },
+    {
+      "path": "ac_redirector_door_side_rev_0001_ortho_left.png",
+      "bytes": 5883,
+      "sha256": "c02e31accbf05e179d8eabcac3623fb5374573882b090d96e51b9b5be34b33df"
+    },
+    {
+      "path": "ac_redirector_door_side_rev_0001_ortho_right.png",
+      "bytes": 5882,
+      "sha256": "a307a529c2367daabc38ea1630f251018bd547a9600a55fa8d0dc51686c9b230"
+    },
+    {
+      "path": "ac_redirector_door_side_rev_0001_ortho_top.png",
+      "bytes": 6007,
+      "sha256": "7d8523bee91fff6f29c8c435bc4d58666817bcbbefb922d1341a00903ffb7be6"
+    },
+    {
+      "path": "ac_vent_rail_mockup_rev_0001.png",
+      "bytes": 15421,
+      "sha256": "0717b044ba4ec4321cfc9e446d2d11cd90a6519734271fdcd36db2a8c47d6341"
+    },
+    {
+      "path": "ac_vent_rail_mockup_rev_0001.stl",
+      "bytes": 8374,
+      "sha256": "bc82f7bd9a3bbab2258802cd2d49dc4a66f6f3f79eac372939f4788f4b5397ac"
+    },
+    {
+      "path": "ac_vent_rail_mockup_rev_0001_inspect_inside_bottom_iso.png",
+      "bytes": 11643,
+      "sha256": "f455e500ee78a183a58a4e27194f759067bb007576aadc0029d6833dc45de9d7"
+    },
+    {
+      "path": "ac_vent_rail_mockup_rev_0001_inspect_inside_bottom_ortho.png",
+      "bytes": 5844,
+      "sha256": "8896e4ac259f26b98927cec44bdd934214d81754590b15e36320e94771b62070"
+    },
+    {
+      "path": "ac_vent_rail_mockup_rev_0001_iso_back_left.png",
+      "bytes": 19562,
+      "sha256": "e2c2614cd24a2d040ab6fe319dfa23d445230adda2bb09beede746be517778be"
+    },
+    {
+      "path": "ac_vent_rail_mockup_rev_0001_iso_back_right.png",
+      "bytes": 17091,
+      "sha256": "f9ec923807f3de2f17a887a4a1e549fce43190264c026e21f7233fb4199d5860"
+    },
+    {
+      "path": "ac_vent_rail_mockup_rev_0001_iso_bottom_back_left.png",
+      "bytes": 14416,
+      "sha256": "6839715a7b9428d80302c9696c31c5417151ada607faf054ebddbf99eed59200"
+    },
+    {
+      "path": "ac_vent_rail_mockup_rev_0001_iso_bottom_back_right.png",
+      "bytes": 16303,
+      "sha256": "c0e64850af5b7605161eba175577875fde5150c21adffb5d6f297c34e38e6c81"
+    },
+    {
+      "path": "ac_vent_rail_mockup_rev_0001_iso_bottom_front_left.png",
+      "bytes": 17255,
+      "sha256": "1a766249badc6b1a533510fc8e923cde49bffc7074a961c49499558ef4192159"
+    },
+    {
+      "path": "ac_vent_rail_mockup_rev_0001_iso_bottom_front_right.png",
+      "bytes": 14916,
+      "sha256": "dfcfd282d156d99d36ac51057d32569a13df64881fb094dc5126e69786014176"
+    },
+    {
+      "path": "ac_vent_rail_mockup_rev_0001_iso_front_left.png",
+      "bytes": 13137,
+      "sha256": "332f01d1ae1a453589f2b60c97abe20eaf56da7016bb14a1818eb7153de0bf1c"
+    },
+    {
+      "path": "ac_vent_rail_mockup_rev_0001_iso_front_right.png",
+      "bytes": 15421,
+      "sha256": "0717b044ba4ec4321cfc9e446d2d11cd90a6519734271fdcd36db2a8c47d6341"
+    },
+    {
+      "path": "ac_vent_rail_mockup_rev_0001_ortho_back.png",
+      "bytes": 5900,
+      "sha256": "68a8ba239bdd0129decc39b2cf966194304be792d7487821ca125127fe0fd728"
+    },
+    {
+      "path": "ac_vent_rail_mockup_rev_0001_ortho_bottom.png",
+      "bytes": 5857,
+      "sha256": "f557c04717122b3dd425b359a1978d441ab6b22634854ac89741fa890e8ad047"
+    },
+    {
+      "path": "ac_vent_rail_mockup_rev_0001_ortho_front.png",
+      "bytes": 5857,
+      "sha256": "72b43ecd2fdc9b1f2d4106ea0a723a2fcfaea16d341e818b7908e9e197cb7f8f"
+    },
+    {
+      "path": "ac_vent_rail_mockup_rev_0001_ortho_left.png",
+      "bytes": 6078,
+      "sha256": "83fe0a77036820fd6b7a22fdafd1b59d0bc11d3652efc01535c501d6b5f2147d"
+    },
+    {
+      "path": "ac_vent_rail_mockup_rev_0001_ortho_right.png",
+      "bytes": 6084,
+      "sha256": "59f33dbc91a73480105fd6b87a3dc303c587afb4fb57716c5f9c229b9f55207d"
+    },
+    {
+      "path": "ac_vent_rail_mockup_rev_0001_ortho_top.png",
+      "bytes": 5875,
+      "sha256": "8287c56b87aaa193daf2a9f171a202f5193db167ab83ccb6faa51014f7ec7f96"
+    }
+  ]
+}

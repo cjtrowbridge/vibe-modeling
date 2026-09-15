@@ -1,0 +1,86 @@
+{
+  "schema_version": 1,
+  "design": "triple_thor_enclosure",
+  "primary_assembly": "product_assembly",
+  "view_set": "full",
+  "generated_at_utc": "2026-08-31T23:46:15.954532+00:00",
+  "config": {
+    "path": "designs/triple_thor_enclosure/configs/rev_0001.json",
+    "sha256": "5404b96d762fe8f156fcde9862d048e9b394cbac473d6e533ad78dcec1aef07f"
+  },
+  "parts_manifest": {
+    "path": "designs/triple_thor_enclosure/parts.json",
+    "sha256": "6c866af8afb4df65209d728ca297c46c4eef17d6d4197a34bd6180ac4d7f42e4"
+  },
+  "assembly_contract": {
+    "path": "designs/triple_thor_enclosure/assembly.json",
+    "sha256": "3147697cba5bcd3a90dce330c5ca63aae6a4287cb211c771031f1079a8020ba6"
+  },
+  "source": {
+    "path": "designs/triple_thor_enclosure/src",
+    "sha256": "fc0413b9b3ad3c5c2360ccab6a558d5952822015c1358f9382b98bf2044eb231",
+    "main_scad": "designs/triple_thor_enclosure/src/main.scad"
+  },
+  "printable_build": {
+    "path": "output/triple_thor_enclosure/build_manifest.json",
+    "directory": "output/triple_thor_enclosure",
+    "sha256": "46193ebaef05902f01fc62969a2bf6be52b14c298d4478badd12e208cf21f8a5",
+    "counts": {
+      "parts": 4,
+      "stl": 4,
+      "png": 68,
+      "artifacts": 72
+    },
+    "stl_artifacts": [
+      {
+        "part_id": 1,
+        "name": "base_sector",
+        "path": "base_sector_rev_0001.stl",
+        "bytes": 25016,
+        "sha256": "f11973dd2b5532e8bec63091c4790be35c712cb227e84d5b68ce1a385c78d788"
+      },
+      {
+        "part_id": 2,
+        "name": "column",
+        "path": "column_rev_0001.stl",
+        "bytes": 25016,
+        "sha256": "f11973dd2b5532e8bec63091c4790be35c712cb227e84d5b68ce1a385c78d788"
+      },
+      {
+        "part_id": 3,
+        "name": "cap_sector",
+        "path": "cap_sector_rev_0001.stl",
+        "bytes": 25016,
+        "sha256": "f11973dd2b5532e8bec63091c4790be35c712cb227e84d5b68ce1a385c78d788"
+      },
+      {
+        "part_id": 4,
+        "name": "exhaust_ring",
+        "path": "exhaust_ring_rev_0001.stl",
+        "bytes": 25016,
+        "sha256": "f11973dd2b5532e8bec63091c4790be35c712cb227e84d5b68ce1a385c78d788"
+      }
+    ]
+  },
+  "git": {
+    "commit": "483fee8f9ae766ee03b10902a7630efae8697e0e",
+    "dirty": true
+  },
+  "counts": {
+    "png": 2,
+    "stl": 0,
+    "artifacts": 2
+  },
+  "artifacts": [
+    {
+      "path": "product_assembly_front.png",
+      "bytes": 6052,
+      "sha256": "b4bab42509e34f502d5948bd29757e55625cce7ac09b37a43b738007c12de9f2"
+    },
+    {
+      "path": "product_assembly_isometric.png",
+      "bytes": 12472,
+      "sha256": "669da76eec9acf877a253501c91458c7521a7fe7d58861e949702c59ef23e989"
+    }
+  ]
+}

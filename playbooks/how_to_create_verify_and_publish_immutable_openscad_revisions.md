@@ -25,8 +25,9 @@ artifacts exactly once without modifying an existing numbered revision.
    `revisions/<design>/rev_000N/`.
 8. Compare config, source-tree, parts-manifest, and artifact hashes between the
    verified current build and immutable revision.
-9. Commit the new `designs/<design>/configs/rev_000N.json`, source, and revision
-   notes. Generated revision artifacts remain ignored.
+9. Commit the new `designs/<design>/configs/rev_000N.json`, source, revision
+   notes, and the built artifacts under `output/<design>/` and
+   `revisions/<design>/rev_000N/` (the remote is the deliverable).
 
 Never edit or rebuild into an existing numbered revision. If publication is
 wrong, preserve the evidence and create the next revision.

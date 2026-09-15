@@ -1,0 +1,416 @@
+{
+  "schema_version": 1,
+  "build_scope": "complete",
+  "design": "triple_thor_enclosure",
+  "revision": "rev_0001",
+  "destination": "current",
+  "generated_at_utc": "2026-08-31T23:45:03.403326+00:00",
+  "config": {
+    "path": "designs/triple_thor_enclosure/configs/rev_0001.json",
+    "sha256": "5404b96d762fe8f156fcde9862d048e9b394cbac473d6e533ad78dcec1aef07f"
+  },
+  "parts_manifest": {
+    "path": "designs/triple_thor_enclosure/parts.json",
+    "sha256": "6c866af8afb4df65209d728ca297c46c4eef17d6d4197a34bd6180ac4d7f42e4"
+  },
+  "source": {
+    "path": "designs/triple_thor_enclosure/src",
+    "sha256": "fc0413b9b3ad3c5c2360ccab6a558d5952822015c1358f9382b98bf2044eb231",
+    "main_scad": "designs/triple_thor_enclosure/src/main.scad"
+  },
+  "git": {
+    "commit": "483fee8f9ae766ee03b10902a7630efae8697e0e",
+    "dirty": true
+  },
+  "openscad": "C:\\Program Files (x86)\\OpenSCAD\\openscad.exe",
+  "counts": {
+    "parts": 4,
+    "stl": 4,
+    "png": 68,
+    "artifacts": 72
+  },
+  "parts": [
+    {
+      "part_id": 1,
+      "name": "base_sector",
+      "output_name": "base_sector_rev_0001"
+    },
+    {
+      "part_id": 2,
+      "name": "column",
+      "output_name": "column_rev_0001"
+    },
+    {
+      "part_id": 3,
+      "name": "cap_sector",
+      "output_name": "cap_sector_rev_0001"
+    },
+    {
+      "part_id": 4,
+      "name": "exhaust_ring",
+      "output_name": "exhaust_ring_rev_0001"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "base_sector_rev_0001.png",
+      "bytes": 12461,
+      "sha256": "f509fe740887c48d985a29fcff60e14395f6302f788b54c262d3d9a5a9bac454"
+    },
+    {
+      "path": "base_sector_rev_0001.stl",
+      "bytes": 25016,
+      "sha256": "f11973dd2b5532e8bec63091c4790be35c712cb227e84d5b68ce1a385c78d788"
+    },
+    {
+      "path": "base_sector_rev_0001_inspect_inside_bottom_iso.png",
+      "bytes": 15558,
+      "sha256": "c331ed939e245622d398d70f2f6bde7cd8e3bf86917639f8b9cd0fccec393d68"
+    },
+    {
+      "path": "base_sector_rev_0001_inspect_inside_bottom_ortho.png",
+      "bytes": 11563,
+      "sha256": "7fe3706b9eac64fc7342cc76fcd8f4da7e0f813f0cc225bcf664e1f7be7c8916"
+    },
+    {
+      "path": "base_sector_rev_0001_iso_back_left.png",
+      "bytes": 13515,
+      "sha256": "29c8b0a8b32c789e5aa0be4ddbcf0e748883aa0a4a9c5258862be6d3f2bc04d7"
+    },
+    {
+      "path": "base_sector_rev_0001_iso_back_right.png",
+      "bytes": 14784,
+      "sha256": "5219aea3b71556d8df63aa61e404120a8bb02180417dfe63db16f02a4da6d6e0"
+    },
+    {
+      "path": "base_sector_rev_0001_iso_bottom_back_left.png",
+      "bytes": 13946,
+      "sha256": "66d81cb6d9dcfdbe42ca04854e5294396fd2f4067971d2ff3ad2843d83cc5e6a"
+    },
+    {
+      "path": "base_sector_rev_0001_iso_bottom_back_right.png",
+      "bytes": 18433,
+      "sha256": "7fc4b656a6a7aba131ad051d5a834bc11737cb35d0d1ca492885fc22dc96ea8f"
+    },
+    {
+      "path": "base_sector_rev_0001_iso_bottom_front_left.png",
+      "bytes": 16721,
+      "sha256": "231a2ee74470dc7e863203b0149df4713397bda9b362e0e63a24e7b5c29770ec"
+    },
+    {
+      "path": "base_sector_rev_0001_iso_bottom_front_right.png",
+      "bytes": 12737,
+      "sha256": "bef4bdc574f6316647f277676b67974fc2cf6aa7831421d6b8e449204b46f155"
+    },
+    {
+      "path": "base_sector_rev_0001_iso_front_left.png",
+      "bytes": 14089,
+      "sha256": "bbe5a66f8b535183415f6542ba31a42ff30de04d4b0db87762c9c8c6e1ce3371"
+    },
+    {
+      "path": "base_sector_rev_0001_iso_front_right.png",
+      "bytes": 12461,
+      "sha256": "f509fe740887c48d985a29fcff60e14395f6302f788b54c262d3d9a5a9bac454"
+    },
+    {
+      "path": "base_sector_rev_0001_ortho_back.png",
+      "bytes": 6230,
+      "sha256": "0d008e1e3b35bc033581af8c8fa090dae5a8c6f253fe3ae919aa0ccd4997d49b"
+    },
+    {
+      "path": "base_sector_rev_0001_ortho_bottom.png",
+      "bytes": 11563,
+      "sha256": "7fe3706b9eac64fc7342cc76fcd8f4da7e0f813f0cc225bcf664e1f7be7c8916"
+    },
+    {
+      "path": "base_sector_rev_0001_ortho_front.png",
+      "bytes": 6052,
+      "sha256": "b4bab42509e34f502d5948bd29757e55625cce7ac09b37a43b738007c12de9f2"
+    },
+    {
+      "path": "base_sector_rev_0001_ortho_left.png",
+      "bytes": 6059,
+      "sha256": "10130d33db852acb11e4c93667162299ab9d4405773030426a365cbbadfca986"
+    },
+    {
+      "path": "base_sector_rev_0001_ortho_right.png",
+      "bytes": 6089,
+      "sha256": "a762aacd7f9884d80fe1099afa236bf784561d7d846167dd40ee3f69b3c7c894"
+    },
+    {
+      "path": "base_sector_rev_0001_ortho_top.png",
+      "bytes": 9586,
+      "sha256": "bd117d5070821a6e18d689d1695ee8fc5cf1141fa6251d130256cc248a0d97be"
+    },
+    {
+      "path": "cap_sector_rev_0001.png",
+      "bytes": 12461,
+      "sha256": "f509fe740887c48d985a29fcff60e14395f6302f788b54c262d3d9a5a9bac454"
+    },
+    {
+      "path": "cap_sector_rev_0001.stl",
+      "bytes": 25016,
+      "sha256": "f11973dd2b5532e8bec63091c4790be35c712cb227e84d5b68ce1a385c78d788"
+    },
+    {
+      "path": "cap_sector_rev_0001_inspect_inside_bottom_iso.png",
+      "bytes": 15558,
+      "sha256": "c331ed939e245622d398d70f2f6bde7cd8e3bf86917639f8b9cd0fccec393d68"
+    },
+    {
+      "path": "cap_sector_rev_0001_inspect_inside_bottom_ortho.png",
+      "bytes": 11563,
+      "sha256": "7fe3706b9eac64fc7342cc76fcd8f4da7e0f813f0cc225bcf664e1f7be7c8916"
+    },
+    {
+      "path": "cap_sector_rev_0001_iso_back_left.png",
+      "bytes": 13515,
+      "sha256": "29c8b0a8b32c789e5aa0be4ddbcf0e748883aa0a4a9c5258862be6d3f2bc04d7"
+    },
+    {
+      "path": "cap_sector_rev_0001_iso_back_right.png",
+      "bytes": 14784,
+      "sha256": "5219aea3b71556d8df63aa61e404120a8bb02180417dfe63db16f02a4da6d6e0"
+    },
+    {
+      "path": "cap_sector_rev_0001_iso_bottom_back_left.png",
+      "bytes": 13946,
+      "sha256": "66d81cb6d9dcfdbe42ca04854e5294396fd2f4067971d2ff3ad2843d83cc5e6a"
+    },
+    {
+      "path": "cap_sector_rev_0001_iso_bottom_back_right.png",
+      "bytes": 18433,
+      "sha256": "7fc4b656a6a7aba131ad051d5a834bc11737cb35d0d1ca492885fc22dc96ea8f"
+    },
+    {
+      "path": "cap_sector_rev_0001_iso_bottom_front_left.png",
+      "bytes": 16721,
+      "sha256": "231a2ee74470dc7e863203b0149df4713397bda9b362e0e63a24e7b5c29770ec"
+    },
+    {
+      "path": "cap_sector_rev_0001_iso_bottom_front_right.png",
+      "bytes": 12737,
+      "sha256": "bef4bdc574f6316647f277676b67974fc2cf6aa7831421d6b8e449204b46f155"
+    },
+    {
+      "path": "cap_sector_rev_0001_iso_front_left.png",
+      "bytes": 14089,
+      "sha256": "bbe5a66f8b535183415f6542ba31a42ff30de04d4b0db87762c9c8c6e1ce3371"
+    },
+    {
+      "path": "cap_sector_rev_0001_iso_front_right.png",
+      "bytes": 12461,
+      "sha256": "f509fe740887c48d985a29fcff60e14395f6302f788b54c262d3d9a5a9bac454"
+    },
+    {
+      "path": "cap_sector_rev_0001_ortho_back.png",
+      "bytes": 6230,
+      "sha256": "0d008e1e3b35bc033581af8c8fa090dae5a8c6f253fe3ae919aa0ccd4997d49b"
+    },
+    {
+      "path": "cap_sector_rev_0001_ortho_bottom.png",
+      "bytes": 11563,
+      "sha256": "7fe3706b9eac64fc7342cc76fcd8f4da7e0f813f0cc225bcf664e1f7be7c8916"
+    },
+    {
+      "path": "cap_sector_rev_0001_ortho_front.png",
+      "bytes": 6052,
+      "sha256": "b4bab42509e34f502d5948bd29757e55625cce7ac09b37a43b738007c12de9f2"
+    },
+    {
+      "path": "cap_sector_rev_0001_ortho_left.png",
+      "bytes": 6059,
+      "sha256": "10130d33db852acb11e4c93667162299ab9d4405773030426a365cbbadfca986"
+    },
+    {
+      "path": "cap_sector_rev_0001_ortho_right.png",
+      "bytes": 6089,
+      "sha256": "a762aacd7f9884d80fe1099afa236bf784561d7d846167dd40ee3f69b3c7c894"
+    },
+    {
+      "path": "cap_sector_rev_0001_ortho_top.png",
+      "bytes": 9586,
+      "sha256": "bd117d5070821a6e18d689d1695ee8fc5cf1141fa6251d130256cc248a0d97be"
+    },
+    {
+      "path": "column_rev_0001.png",
+      "bytes": 12461,
+      "sha256": "f509fe740887c48d985a29fcff60e14395f6302f788b54c262d3d9a5a9bac454"
+    },
+    {
+      "path": "column_rev_0001.stl",
+      "bytes": 25016,
+      "sha256": "f11973dd2b5532e8bec63091c4790be35c712cb227e84d5b68ce1a385c78d788"
+    },
+    {
+      "path": "column_rev_0001_inspect_inside_bottom_iso.png",
+      "bytes": 15558,
+      "sha256": "c331ed939e245622d398d70f2f6bde7cd8e3bf86917639f8b9cd0fccec393d68"
+    },
+    {
+      "path": "column_rev_0001_inspect_inside_bottom_ortho.png",
+      "bytes": 11563,
+      "sha256": "7fe3706b9eac64fc7342cc76fcd8f4da7e0f813f0cc225bcf664e1f7be7c8916"
+    },
+    {
+      "path": "column_rev_0001_iso_back_left.png",
+      "bytes": 13515,
+      "sha256": "29c8b0a8b32c789e5aa0be4ddbcf0e748883aa0a4a9c5258862be6d3f2bc04d7"
+    },
+    {
+      "path": "column_rev_0001_iso_back_right.png",
+      "bytes": 14784,
+      "sha256": "5219aea3b71556d8df63aa61e404120a8bb02180417dfe63db16f02a4da6d6e0"
+    },
+    {
+      "path": "column_rev_0001_iso_bottom_back_left.png",
+      "bytes": 13946,
+      "sha256": "66d81cb6d9dcfdbe42ca04854e5294396fd2f4067971d2ff3ad2843d83cc5e6a"
+    },
+    {
+      "path": "column_rev_0001_iso_bottom_back_right.png",
+      "bytes": 18433,
+      "sha256": "7fc4b656a6a7aba131ad051d5a834bc11737cb35d0d1ca492885fc22dc96ea8f"
+    },
+    {
+      "path": "column_rev_0001_iso_bottom_front_left.png",
+      "bytes": 16721,
+      "sha256": "231a2ee74470dc7e863203b0149df4713397bda9b362e0e63a24e7b5c29770ec"
+    },
+    {
+      "path": "column_rev_0001_iso_bottom_front_right.png",
+      "bytes": 12737,
+      "sha256": "bef4bdc574f6316647f277676b67974fc2cf6aa7831421d6b8e449204b46f155"
+    },
+    {
+      "path": "column_rev_0001_iso_front_left.png",
+      "bytes": 14089,
+      "sha256": "bbe5a66f8b535183415f6542ba31a42ff30de04d4b0db87762c9c8c6e1ce3371"
+    },
+    {
+      "path": "column_rev_0001_iso_front_right.png",
+      "bytes": 12461,
+      "sha256": "f509fe740887c48d985a29fcff60e14395f6302f788b54c262d3d9a5a9bac454"
+    },
+    {
+      "path": "column_rev_0001_ortho_back.png",
+      "bytes": 6230,
+      "sha256": "0d008e1e3b35bc033581af8c8fa090dae5a8c6f253fe3ae919aa0ccd4997d49b"
+    },
+    {
+      "path": "column_rev_0001_ortho_bottom.png",
+      "bytes": 11563,
+      "sha256": "7fe3706b9eac64fc7342cc76fcd8f4da7e0f813f0cc225bcf664e1f7be7c8916"
+    },
+    {
+      "path": "column_rev_0001_ortho_front.png",
+      "bytes": 6052,
+      "sha256": "b4bab42509e34f502d5948bd29757e55625cce7ac09b37a43b738007c12de9f2"
+    },
+    {
+      "path": "column_rev_0001_ortho_left.png",
+      "bytes": 6059,
+      "sha256": "10130d33db852acb11e4c93667162299ab9d4405773030426a365cbbadfca986"
+    },
+    {
+      "path": "column_rev_0001_ortho_right.png",
+      "bytes": 6089,
+      "sha256": "a762aacd7f9884d80fe1099afa236bf784561d7d846167dd40ee3f69b3c7c894"
+    },
+    {
+      "path": "column_rev_0001_ortho_top.png",
+      "bytes": 9586,
+      "sha256": "bd117d5070821a6e18d689d1695ee8fc5cf1141fa6251d130256cc248a0d97be"
+    },
+    {
+      "path": "exhaust_ring_rev_0001.png",
+      "bytes": 12461,
+      "sha256": "f509fe740887c48d985a29fcff60e14395f6302f788b54c262d3d9a5a9bac454"
+    },
+    {
+      "path": "exhaust_ring_rev_0001.stl",
+      "bytes": 25016,
+      "sha256": "f11973dd2b5532e8bec63091c4790be35c712cb227e84d5b68ce1a385c78d788"
+    },
+    {
+      "path": "exhaust_ring_rev_0001_inspect_inside_bottom_iso.png",
+      "bytes": 15558,
+      "sha256": "c331ed939e245622d398d70f2f6bde7cd8e3bf86917639f8b9cd0fccec393d68"
+    },
+    {
+      "path": "exhaust_ring_rev_0001_inspect_inside_bottom_ortho.png",
+      "bytes": 11563,
+      "sha256": "7fe3706b9eac64fc7342cc76fcd8f4da7e0f813f0cc225bcf664e1f7be7c8916"
+    },
+    {
+      "path": "exhaust_ring_rev_0001_iso_back_left.png",
+      "bytes": 13515,
+      "sha256": "29c8b0a8b32c789e5aa0be4ddbcf0e748883aa0a4a9c5258862be6d3f2bc04d7"
+    },
+    {
+      "path": "exhaust_ring_rev_0001_iso_back_right.png",
+      "bytes": 14784,
+      "sha256": "5219aea3b71556d8df63aa61e404120a8bb02180417dfe63db16f02a4da6d6e0"
+    },
+    {
+      "path": "exhaust_ring_rev_0001_iso_bottom_back_left.png",
+      "bytes": 13946,
+      "sha256": "66d81cb6d9dcfdbe42ca04854e5294396fd2f4067971d2ff3ad2843d83cc5e6a"
+    },
+    {
+      "path": "exhaust_ring_rev_0001_iso_bottom_back_right.png",
+      "bytes": 18433,
+      "sha256": "7fc4b656a6a7aba131ad051d5a834bc11737cb35d0d1ca492885fc22dc96ea8f"
+    },
+    {
+      "path": "exhaust_ring_rev_0001_iso_bottom_front_left.png",
+      "bytes": 16721,
+      "sha256": "231a2ee74470dc7e863203b0149df4713397bda9b362e0e63a24e7b5c29770ec"
+    },
+    {
+      "path": "exhaust_ring_rev_0001_iso_bottom_front_right.png",
+      "bytes": 12737,
+      "sha256": "bef4bdc574f6316647f277676b67974fc2cf6aa7831421d6b8e449204b46f155"
+    },
+    {
+      "path": "exhaust_ring_rev_0001_iso_front_left.png",
+      "bytes": 14089,
+      "sha256": "bbe5a66f8b535183415f6542ba31a42ff30de04d4b0db87762c9c8c6e1ce3371"
+    },
+    {
+      "path": "exhaust_ring_rev_0001_iso_front_right.png",
+      "bytes": 12461,
+      "sha256": "f509fe740887c48d985a29fcff60e14395f6302f788b54c262d3d9a5a9bac454"
+    },
+    {
+      "path": "exhaust_ring_rev_0001_ortho_back.png",
+      "bytes": 6230,
+      "sha256": "0d008e1e3b35bc033581af8c8fa090dae5a8c6f253fe3ae919aa0ccd4997d49b"
+    },
+    {
+      "path": "exhaust_ring_rev_0001_ortho_bottom.png",
+      "bytes": 11563,
+      "sha256": "7fe3706b9eac64fc7342cc76fcd8f4da7e0f813f0cc225bcf664e1f7be7c8916"
+    },
+    {
+      "path": "exhaust_ring_rev_0001_ortho_front.png",
+      "bytes": 6052,
+      "sha256": "b4bab42509e34f502d5948bd29757e55625cce7ac09b37a43b738007c12de9f2"
+    },
+    {
+      "path": "exhaust_ring_rev_0001_ortho_left.png",
+      "bytes": 6059,
+      "sha256": "10130d33db852acb11e4c93667162299ab9d4405773030426a365cbbadfca986"
+    },
+    {
+      "path": "exhaust_ring_rev_0001_ortho_right.png",
+      "bytes": 6089,
+      "sha256": "a762aacd7f9884d80fe1099afa236bf784561d7d846167dd40ee3f69b3c7c894"
+    },
+    {
+      "path": "exhaust_ring_rev_0001_ortho_top.png",
+      "bytes": 9586,
+      "sha256": "bd117d5070821a6e18d689d1695ee8fc5cf1141fa6251d130256cc248a0d97be"
+    }
+  ]
+}

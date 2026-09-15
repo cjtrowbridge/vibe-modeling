@@ -1,0 +1,416 @@
+{
+  "schema_version": 1,
+  "build_scope": "complete",
+  "design": "cyberdeck-2",
+  "revision": "rev_0001",
+  "destination": "current",
+  "generated_at_utc": "2026-09-13T09:07:31.377095+00:00",
+  "config": {
+    "path": "designs/cyberdeck-2/configs/rev_0001.json",
+    "sha256": "ab3b2fcb01085295943d367ebc21304e23d22f03f6510c850bd1b1121d2f38ad"
+  },
+  "parts_manifest": {
+    "path": "designs/cyberdeck-2/parts.json",
+    "sha256": "bda2810250a942edb0469b5bd5e3ce6a39b67e59a1e8902d61a6c7cf55f96c31"
+  },
+  "source": {
+    "path": "designs/cyberdeck-2/src",
+    "sha256": "aab853c9d8fc2c60a42b239c19784d95f43274e20fce81a9bf11e6fc2fab0687",
+    "main_scad": "designs/cyberdeck-2/src/main.scad"
+  },
+  "git": {
+    "commit": "30d282b5a7811e8d2c0b7c94eda3072e0c6ff271",
+    "dirty": true
+  },
+  "openscad": "C:\\Program Files (x86)\\OpenSCAD\\openscad.exe",
+  "counts": {
+    "parts": 4,
+    "stl": 4,
+    "png": 68,
+    "artifacts": 72
+  },
+  "parts": [
+    {
+      "part_id": 1,
+      "name": "leaf_bottom_left",
+      "output_name": "leaf_bottom_left_rev_0001"
+    },
+    {
+      "part_id": 2,
+      "name": "leaf_bottom_right",
+      "output_name": "leaf_bottom_right_rev_0001"
+    },
+    {
+      "part_id": 3,
+      "name": "leaf_top_right",
+      "output_name": "leaf_top_right_rev_0001"
+    },
+    {
+      "part_id": 4,
+      "name": "leaf_top_left",
+      "output_name": "leaf_top_left_rev_0001"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "leaf_bottom_left_rev_0001.png",
+      "bytes": 16043,
+      "sha256": "410dd0eb330cbbd91d105bb7a3d74ef31ea90c229bd0085bef3eab14dd6099c9"
+    },
+    {
+      "path": "leaf_bottom_left_rev_0001.stl",
+      "bytes": 205141,
+      "sha256": "d5f38288e6e859862ba9626f4599351678f28f78b461c0867004f372b9658a3e"
+    },
+    {
+      "path": "leaf_bottom_left_rev_0001_inspect_inside_bottom_iso.png",
+      "bytes": 11096,
+      "sha256": "0a32d8188b8e6579cce3f64d9969660fb243d4967cabde4e24c9ea19c8ba6aa4"
+    },
+    {
+      "path": "leaf_bottom_left_rev_0001_inspect_inside_bottom_ortho.png",
+      "bytes": 5921,
+      "sha256": "15b035abbe1fd142e8ae63dbe79ac0cf1840b9b903c56fb470657c5830a93850"
+    },
+    {
+      "path": "leaf_bottom_left_rev_0001_iso_back_left.png",
+      "bytes": 15833,
+      "sha256": "4a5c80ae156f7dcc64642dba9321acf6054fdac7869679903705ab89a2b67f69"
+    },
+    {
+      "path": "leaf_bottom_left_rev_0001_iso_back_right.png",
+      "bytes": 16251,
+      "sha256": "b5ae91926775e14b276207753cb545f8a1b38c1a8a0c13644a54e63cfbdd310d"
+    },
+    {
+      "path": "leaf_bottom_left_rev_0001_iso_bottom_back_left.png",
+      "bytes": 10897,
+      "sha256": "309be93b07cc3d67348d246d251190c87f287a4d3bfe4941f9da96293420485b"
+    },
+    {
+      "path": "leaf_bottom_left_rev_0001_iso_bottom_back_right.png",
+      "bytes": 14767,
+      "sha256": "100241555f8708bce5cf306d9f5102f5333bd9ac8d75ca1258f2c7c8c275028f"
+    },
+    {
+      "path": "leaf_bottom_left_rev_0001_iso_bottom_front_left.png",
+      "bytes": 11682,
+      "sha256": "53d9461f602270d42aebb8856d70ef4e69b2b5703e99eb90b1989b1f75f2aa95"
+    },
+    {
+      "path": "leaf_bottom_left_rev_0001_iso_bottom_front_right.png",
+      "bytes": 11573,
+      "sha256": "65e5a11903268f03b2871d03f4ec2a9147a46e5dc33cd43373cb7b6f91583a26"
+    },
+    {
+      "path": "leaf_bottom_left_rev_0001_iso_front_left.png",
+      "bytes": 13708,
+      "sha256": "a7648026103736023cae588f27cff43a7f11362b1e420e8f4310c3dccaf3b089"
+    },
+    {
+      "path": "leaf_bottom_left_rev_0001_iso_front_right.png",
+      "bytes": 16043,
+      "sha256": "410dd0eb330cbbd91d105bb7a3d74ef31ea90c229bd0085bef3eab14dd6099c9"
+    },
+    {
+      "path": "leaf_bottom_left_rev_0001_ortho_back.png",
+      "bytes": 6332,
+      "sha256": "9fb39351ec6dbd182136a135dc22921f0e61dfb8ecd8d481c8364580419be4f8"
+    },
+    {
+      "path": "leaf_bottom_left_rev_0001_ortho_bottom.png",
+      "bytes": 5921,
+      "sha256": "15b035abbe1fd142e8ae63dbe79ac0cf1840b9b903c56fb470657c5830a93850"
+    },
+    {
+      "path": "leaf_bottom_left_rev_0001_ortho_front.png",
+      "bytes": 6030,
+      "sha256": "f4e3b554535b61639ee46255b1a17bd78ac756d56fd27c964e6d073396576e19"
+    },
+    {
+      "path": "leaf_bottom_left_rev_0001_ortho_left.png",
+      "bytes": 6042,
+      "sha256": "d1a1ba5db57028e37147c302e791ae80deba64dd5aee5cc7b38db424feaa25b2"
+    },
+    {
+      "path": "leaf_bottom_left_rev_0001_ortho_right.png",
+      "bytes": 6147,
+      "sha256": "98cb69aecc4624a4483e83801797ef1df55dde03252ff467c9bafd1f2b8038ed"
+    },
+    {
+      "path": "leaf_bottom_left_rev_0001_ortho_top.png",
+      "bytes": 6951,
+      "sha256": "e74793bcbec01352925e16d7bf39d545979be8983dd5d50ee50fbb5ab16e4f36"
+    },
+    {
+      "path": "leaf_bottom_right_rev_0001.png",
+      "bytes": 14749,
+      "sha256": "832726ac2a738de273b87d2a08aa748a0b03b2e4907257f18f107f00ad8ab750"
+    },
+    {
+      "path": "leaf_bottom_right_rev_0001.stl",
+      "bytes": 238175,
+      "sha256": "b8d74bf4cda8d263f07bfd0c573d6809d419146d387647d43cd6150fe72025ea"
+    },
+    {
+      "path": "leaf_bottom_right_rev_0001_inspect_inside_bottom_iso.png",
+      "bytes": 9920,
+      "sha256": "6ff13b9bc52f01ba3be2f2b3be98037a07ae5cc6d83c3a2dacd23a87e959dfa3"
+    },
+    {
+      "path": "leaf_bottom_right_rev_0001_inspect_inside_bottom_ortho.png",
+      "bytes": 5888,
+      "sha256": "eaa60ac285d9c357c8578006ada7defdfdf422b21d9486cd4fec74850c97e6ab"
+    },
+    {
+      "path": "leaf_bottom_right_rev_0001_iso_back_left.png",
+      "bytes": 16701,
+      "sha256": "54d460599e65ef4060a17de0ddd365e2ee6e7a0b5e54dcda9f66a45dfaef4baf"
+    },
+    {
+      "path": "leaf_bottom_right_rev_0001_iso_back_right.png",
+      "bytes": 15657,
+      "sha256": "75ae02a5363c6820b4c7f06a9218d378052cee5116392024dceb311ed84a9b17"
+    },
+    {
+      "path": "leaf_bottom_right_rev_0001_iso_bottom_back_left.png",
+      "bytes": 14758,
+      "sha256": "488b9a160d0bc61416e4ec10ba42cebfed4507f1b1c80dcc54a471d1c18149d8"
+    },
+    {
+      "path": "leaf_bottom_right_rev_0001_iso_bottom_back_right.png",
+      "bytes": 11110,
+      "sha256": "a5fda5d0183c9ea3a8bf11884c3179d5fdfe841e93a260264359882295d97290"
+    },
+    {
+      "path": "leaf_bottom_right_rev_0001_iso_bottom_front_left.png",
+      "bytes": 12312,
+      "sha256": "908b182f09ddfafa5fff5716c68837ec45ebd10904384797f5262e3117976ba9"
+    },
+    {
+      "path": "leaf_bottom_right_rev_0001_iso_bottom_front_right.png",
+      "bytes": 11330,
+      "sha256": "02fa702086fb8af63521c0ee0fe3d48ccea4527659f9cc346c1141f92660bd77"
+    },
+    {
+      "path": "leaf_bottom_right_rev_0001_iso_front_left.png",
+      "bytes": 16031,
+      "sha256": "c106566e894cb22125c55bef220c9c5b70c1f7f4eb051a3122a795afd5193961"
+    },
+    {
+      "path": "leaf_bottom_right_rev_0001_iso_front_right.png",
+      "bytes": 14749,
+      "sha256": "832726ac2a738de273b87d2a08aa748a0b03b2e4907257f18f107f00ad8ab750"
+    },
+    {
+      "path": "leaf_bottom_right_rev_0001_ortho_back.png",
+      "bytes": 6519,
+      "sha256": "d2223db8f57e8da0d09581902bbd6a4ebd6f527b91684a18ec888dde08f49685"
+    },
+    {
+      "path": "leaf_bottom_right_rev_0001_ortho_bottom.png",
+      "bytes": 5888,
+      "sha256": "eaa60ac285d9c357c8578006ada7defdfdf422b21d9486cd4fec74850c97e6ab"
+    },
+    {
+      "path": "leaf_bottom_right_rev_0001_ortho_front.png",
+      "bytes": 6274,
+      "sha256": "845054d26ef4c55f46cf82285611a928daa1b59e4ccd2dbb95afd085a01f6287"
+    },
+    {
+      "path": "leaf_bottom_right_rev_0001_ortho_left.png",
+      "bytes": 6156,
+      "sha256": "db465bc6b7cf2a29c0bfd511c8787df4c181c5ed4a72f873c71b30d5e2e7f4be"
+    },
+    {
+      "path": "leaf_bottom_right_rev_0001_ortho_right.png",
+      "bytes": 6036,
+      "sha256": "432f5afdb37866f027a058670d7087ef90e447db7f9beb71e8430f2a85e0e631"
+    },
+    {
+      "path": "leaf_bottom_right_rev_0001_ortho_top.png",
+      "bytes": 6946,
+      "sha256": "393150a6699590ce8f5723ba208435f9f5697aa15738832901f3e2af80288de8"
+    },
+    {
+      "path": "leaf_top_left_rev_0001.png",
+      "bytes": 16207,
+      "sha256": "26125e3e3b6699e3b6ce29f9153a1f98ead66e04e0e0f277f36c7302374abea0"
+    },
+    {
+      "path": "leaf_top_left_rev_0001.stl",
+      "bytes": 237252,
+      "sha256": "11f95ce1e81327904aa0fabaab2c2db626001928f38c20771edd82f3ac6f8782"
+    },
+    {
+      "path": "leaf_top_left_rev_0001_inspect_inside_bottom_iso.png",
+      "bytes": 12313,
+      "sha256": "99114ad872e579989e5e29921e76740182f2c904790b17f045a5c401722f55cb"
+    },
+    {
+      "path": "leaf_top_left_rev_0001_inspect_inside_bottom_ortho.png",
+      "bytes": 5890,
+      "sha256": "774cec0f2c4befca08679babd24447dcd58d20015853e16057eda27179552fa6"
+    },
+    {
+      "path": "leaf_top_left_rev_0001_iso_back_left.png",
+      "bytes": 14730,
+      "sha256": "859751f6b2250d42820c4faaf8904c19d1993d670703c4e23ce52c896a71b87b"
+    },
+    {
+      "path": "leaf_top_left_rev_0001_iso_back_right.png",
+      "bytes": 16119,
+      "sha256": "95e7d1bd0d8850129357073338a745239b771fb6a03cff9883b72c6bdd209aad"
+    },
+    {
+      "path": "leaf_top_left_rev_0001_iso_bottom_back_left.png",
+      "bytes": 11381,
+      "sha256": "add906855414c1c219e48326925d9400e7305dddc2e4b9419fea221d0aa4a309"
+    },
+    {
+      "path": "leaf_top_left_rev_0001_iso_bottom_back_right.png",
+      "bytes": 11879,
+      "sha256": "9e5bec0fafc163d91be91b2cdfd18a4b60464e73c88e691c786c4d53e885f0df"
+    },
+    {
+      "path": "leaf_top_left_rev_0001_iso_bottom_front_left.png",
+      "bytes": 11065,
+      "sha256": "3d6f73d8fb808884463b4d2a01d6cbf179ceaf2cf2565e4d8e8c3e42ea22e553"
+    },
+    {
+      "path": "leaf_top_left_rev_0001_iso_bottom_front_right.png",
+      "bytes": 14527,
+      "sha256": "d7970b046948e3db0876f230fef2075552734d606e6fb1d4bd42122178ead0a3"
+    },
+    {
+      "path": "leaf_top_left_rev_0001_iso_front_left.png",
+      "bytes": 14878,
+      "sha256": "11c7b7c9be397331e458093394f6ffd05bdd84311ffe289137f4e0d479761d6a"
+    },
+    {
+      "path": "leaf_top_left_rev_0001_iso_front_right.png",
+      "bytes": 16207,
+      "sha256": "26125e3e3b6699e3b6ce29f9153a1f98ead66e04e0e0f277f36c7302374abea0"
+    },
+    {
+      "path": "leaf_top_left_rev_0001_ortho_back.png",
+      "bytes": 6037,
+      "sha256": "5663ae0fa5f252c2b8c220b6d22e00c51b7486b7faccc1a079960b46d37d7519"
+    },
+    {
+      "path": "leaf_top_left_rev_0001_ortho_bottom.png",
+      "bytes": 5890,
+      "sha256": "774cec0f2c4befca08679babd24447dcd58d20015853e16057eda27179552fa6"
+    },
+    {
+      "path": "leaf_top_left_rev_0001_ortho_front.png",
+      "bytes": 6289,
+      "sha256": "088dcb288376a56bfc6d7dad19685325df97f585674b42400347ffa711d7855f"
+    },
+    {
+      "path": "leaf_top_left_rev_0001_ortho_left.png",
+      "bytes": 6306,
+      "sha256": "a801d53376e5f25744186c074d3e68eaf9b8fe9ba65934df3fdf7f584e748497"
+    },
+    {
+      "path": "leaf_top_left_rev_0001_ortho_right.png",
+      "bytes": 6335,
+      "sha256": "95d488b70ae37b7c758fd21d710979c419669d1fed79ce2376247a4cfd8b7c25"
+    },
+    {
+      "path": "leaf_top_left_rev_0001_ortho_top.png",
+      "bytes": 6934,
+      "sha256": "8c3efb1163584f0b1bdf52d23111580be49d513de569dfdf78d7f3ec1924469c"
+    },
+    {
+      "path": "leaf_top_right_rev_0001.png",
+      "bytes": 16212,
+      "sha256": "20ac3177b0eecc119de84dde3823709439fa53fa96dc957439fb5ec97d9595af"
+    },
+    {
+      "path": "leaf_top_right_rev_0001.stl",
+      "bytes": 271894,
+      "sha256": "9a89bdb6e2889915dd1c8355c6fbd8392a5f8558fac6c1ab44d0396ab0dd874c"
+    },
+    {
+      "path": "leaf_top_right_rev_0001_inspect_inside_bottom_iso.png",
+      "bytes": 9706,
+      "sha256": "db863a9a35628201a3044a389e266e30fb47ebb3d5474a1c5ee5483616490975"
+    },
+    {
+      "path": "leaf_top_right_rev_0001_inspect_inside_bottom_ortho.png",
+      "bytes": 5856,
+      "sha256": "f0529f3bceb2078eab8002d784a5a81ccaf0488ad591a132f9dd20f979a64485"
+    },
+    {
+      "path": "leaf_top_right_rev_0001_iso_back_left.png",
+      "bytes": 17393,
+      "sha256": "27135b474a1955eb8c1b489291f88997989316f397d537fa72a026b5632b66ff"
+    },
+    {
+      "path": "leaf_top_right_rev_0001_iso_back_right.png",
+      "bytes": 14378,
+      "sha256": "9a3fa2e96fad0fab49a4708be2460c06b139e22c0e0301c580c3c8be1d9d9e86"
+    },
+    {
+      "path": "leaf_top_right_rev_0001_iso_bottom_back_left.png",
+      "bytes": 12115,
+      "sha256": "18e9f1e95ec9694d179b5f380cabde2364513b4d8803a69713fe7204eb00bcb4"
+    },
+    {
+      "path": "leaf_top_right_rev_0001_iso_bottom_back_right.png",
+      "bytes": 12268,
+      "sha256": "589dc6fe865ce2bc0c384a1d4df509c08bbc8d5cf4d7916656bb58b567ba31e2"
+    },
+    {
+      "path": "leaf_top_right_rev_0001_iso_bottom_front_left.png",
+      "bytes": 14560,
+      "sha256": "2549d9405db4bacedcfde865defc1eb715c23ccc1c1c084ec2692bb6fb2d2f4d"
+    },
+    {
+      "path": "leaf_top_right_rev_0001_iso_bottom_front_right.png",
+      "bytes": 10431,
+      "sha256": "29e3ea0b32bee2711c675f0e1a79dd0193d73315463dee86a3105f41dc6073c6"
+    },
+    {
+      "path": "leaf_top_right_rev_0001_iso_front_left.png",
+      "bytes": 16472,
+      "sha256": "d848c11ac511f7853dd3767844adf586efb30e9435dd8af4fa8e97e222c702c9"
+    },
+    {
+      "path": "leaf_top_right_rev_0001_iso_front_right.png",
+      "bytes": 16212,
+      "sha256": "20ac3177b0eecc119de84dde3823709439fa53fa96dc957439fb5ec97d9595af"
+    },
+    {
+      "path": "leaf_top_right_rev_0001_ortho_back.png",
+      "bytes": 6274,
+      "sha256": "dbdd4ce2cf76dc0f910ed1f6901e9c26317a250fef91cb89f9932baa8382f297"
+    },
+    {
+      "path": "leaf_top_right_rev_0001_ortho_bottom.png",
+      "bytes": 5856,
+      "sha256": "f0529f3bceb2078eab8002d784a5a81ccaf0488ad591a132f9dd20f979a64485"
+    },
+    {
+      "path": "leaf_top_right_rev_0001_ortho_front.png",
+      "bytes": 6493,
+      "sha256": "abb1d5292db8864b9ffb7c138f9bc602aa46aecc91c23ccc6b32150ee4b60c06"
+    },
+    {
+      "path": "leaf_top_right_rev_0001_ortho_left.png",
+      "bytes": 6335,
+      "sha256": "ec60b7ff4b629d4927319bd9941936a2bbcdb9d7c14283deb701285ba1ad70c3"
+    },
+    {
+      "path": "leaf_top_right_rev_0001_ortho_right.png",
+      "bytes": 6306,
+      "sha256": "85b87f6c8ed5001b8c21601b22e365a824cbc4c9450bb8bf9f9bbb66e7242054"
+    },
+    {
+      "path": "leaf_top_right_rev_0001_ortho_top.png",
+      "bytes": 6981,
+      "sha256": "f91c74aeed9f7f40cee1e1f9248ae56847f6e339f0a550f78c7c38e8e69fc10d"
+    }
+  ]
+}

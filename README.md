@@ -85,9 +85,9 @@ If the agent follows the included playbooks, it should also document what it cha
 - `output/`
   - the single mutable destination for printable parts, combined assemblies,
     review views, probes, sections, manifests, and managed in-progress staging
-    (`output/<design>/`; generated and ignored)
+    (`output/<design>/`; generated artifacts are committed and pushed)
 - `revisions/`
-  - revision snapshots and artifact checkpoints (generated; ignored)
+  - revision snapshots and artifact checkpoints (generated; committed and pushed)
 - `playbooks/`
   - repeatable workflows for agents and humans
 
@@ -291,7 +291,8 @@ The build pipeline always renders this full PNG set on every run (plus `<part>.p
 - Completed outputs must be flat and contain no staging directory or `.scad` file.
 - A complete/current build requires a passing `build_manifest.json` audit.
 - Revision directories are immutable. Create a new revision after geometry or config changes.
-- Generated outputs are not committed.
+- Generated outputs in `output/` and `revisions/` are committed and pushed; the
+  remote artifact set is the project deliverable (user directive, 2026-09-14).
 
 See `playbooks/how_to_design_and_verify_structural_openscad_joins.md` for the mandatory structural geometry contract and verification procedure.
 
@@ -352,4 +353,4 @@ embedded in one-off design notes:
   - Two independent rail-hung air-conditioner redirectors sharing an open 50 mm-radius quarter-turn foundation
   - Includes a straight vertical door-side guide and a bed-side guide with parametric 45-degree swept vanes
   - Includes a full-width reference mockup of the photographed AC vent, top ledge, and mounting rail
-- Generated artifacts remain local under `output/` and `revisions/`; source and configs are the committed record
+- Generated artifacts are committed and pushed under `output/` and `revisions/`; source and configs remain the canonical committed record

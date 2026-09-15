@@ -189,7 +189,8 @@ Artifact directory names are fixed:
 - Managed staging or probe source must remain under `output/<design>/` and be
   removed before success. A completed output must be flat and contain no
   directories or `.scad` files.
-- Generated `output/` and `revisions/` files must not be committed.
+- Generated artifacts in `output/` and `revisions/` MUST be committed and pushed;
+  the remote artifact set is the project deliverable (user directive, 2026-09-14).
 
 For multi-part designs with `designs/<design>/parts.json`, use
 `scripts/scad_build_all.py`. A directory is not a complete/current build unless
