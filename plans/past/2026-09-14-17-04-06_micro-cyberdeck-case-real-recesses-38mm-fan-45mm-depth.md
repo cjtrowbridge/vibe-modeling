@@ -2,7 +2,7 @@
 plan_id: 2026-09-14-17-04-06_micro-cyberdeck-case-real-recesses-38mm-fan-45mm-depth
 title: Fix Fan Head Recesses, Widen Air Bore to 38 mm, Deepen Case to 45 mm
 summary: In-place R2 amendment of the unpublished rev_0003 candidate: cut real M3-capable head recesses (currently inert due to a wrong rotation), correct the front-row hole breach by recentering the fan to the wall midpoint, widen the air bore to 38 mm, and deepen the case to 73 x 45 x 45 mm so every user-mandated 3 mm ring holds, with the single bore-to-station ligament kept as a user-approved documented exception. R3 Amendment (2026-09-14, user-approved): the right wall is deepened to a 6 mm slab; the head seats become blind half-depth bores; the M3 + O38 bores pass through the full wall; envelope 76 x 45 x 45 mm.
-status: current
+status: past
 created_at: 2026-09-14-17-04-06
 ---
 
@@ -176,58 +176,64 @@ Key: `[ ]` pending task, `[x]` completed task, `[?]` needs validation, `[-]` clo
   - [x] 6.1 `journal/2026-09-14.md`: append work-log entries (append-only - supersede, never
     edit, the earlier "recesses verified" line); set plan checkpoint linkage to this plan;
     keep `Today's Intentions` / `Notes / Reflections` as user-only `-`.
-- [ ] 7. Governance closeout
-  - [ ] 7.1 Mark completed `[x]`, uncertain `[?]`; archive the plan to `plans/past/` with
+- [x] 7. Governance closeout
+  - [x] 7.1 Mark completed `[x]`, uncertain `[?]`; archive the plan to `plans/past/` with
     `status: past` once no execution remains.
-  - [ ] 7.2 `python scripts/regenerate_plan_indexes.py --repo-root .` then
+  - [x] 7.2 `python scripts/regenerate_plan_indexes.py --repo-root .` then
     `python scripts/regenerate_plan_indexes.py --check --repo-root .` (exit 0).
-  - [ ] 7.3 Final summary with the required completion fields + propose (do NOT run) a
+  - [x] 7.3 Final summary with the required completion fields + propose (do NOT run) a
     task-scoped commit message covering the still-uncommitted R1+R2 working tree.
-  - [ ] 7.4 Commit the R1+R2 working tree (user-approved 2026-09-14: "commit everything
+  - [x] 7.4 Commit the R1+R2 working tree (user-approved 2026-09-14: "commit everything
     first") with a task-scoped imperative message; do not push.
-- [ ] 8. R3 source: `designs/micro_cyberdeck_case/src/parts/case_body.scad`
-  - [ ] 8.1 Add `right_wall_inner_x()` (= `wall_thickness + interior_width`); re-express
+    (Done: commit 326207d, not pushed.)
+- [x] 8. R3 source: `designs/micro_cyberdeck_case/src/parts/case_body.scad`
+  - [x] 8.1 Add `right_wall_inner_x()` (= `wall_thickness + interior_width`); re-express
     `case_outer_width() = right_wall_inner_x() + fan_wall_thickness`; `_right_wall()`
     becomes the 6 mm slab at x=70. Floor, back wall, and divider inherit the new width
     automatically.
-  - [ ] 8.2 Re-anchor the `_fan_air_cut` / `_fan_mount_cut` / `_fan_screw_recess_cut`
+  - [x] 8.2 Re-anchor the `_fan_air_cut` / `_fan_mount_cut` / `_fan_screw_recess_cut`
     starts from `case_outer_width() - wall_thickness` (which would be the outer face
     x=76) to `right_wall_inner_x() - boolean_epsilon`; air + mount get
     `h = fan_wall_thickness + 2 * boolean_epsilon` (full through); the seat cut keeps
     `h = fan_screw_recess_depth + 2 * boolean_epsilon` (blind, half depth).
-  - [ ] 8.3 New asserts: `fan_wall_thickness >= minimum_wall_thickness`; blind seat
+  - [x] 8.3 New asserts: `fan_wall_thickness >= minimum_wall_thickness`; blind seat
     (`fan_screw_recess_depth < fan_wall_thickness`); wall behind seat floor
     (`fan_wall_thickness - fan_screw_recess_depth >= minimum_internal_edge_width`); refresh
     the seat-ring comment to the true 4.4/3.5 margins (perimeter rings are measured on the
     internal face; outer face x=76 gets the 4.4 mm M3 rings and 3.5 mm bore rings); update
     the `_fan_screw_recess_cut` comment to blind-seat semantics.
-- [ ] 9. R3 config + defaults
-  - [ ] 9.1 `configs/rev_0003.json`: add `fan_wall_thickness` 6.0; leave every other key
+- [x] 9. R3 config + defaults
+  - [x] 9.1 `configs/rev_0003.json`: add `fan_wall_thickness` 6.0; leave every other key
     unchanged.
-  - [ ] 9.2 `defaults.scad`: add the matching `fan_wall_thickness` fallback (no other
+  - [x] 9.2 `defaults.scad`: add the matching `fan_wall_thickness` fallback (no other
     changes).
-- [ ] 10. R3 build + verify
-  - [ ] 10.1 Rebuild `rev_0003.json` (zero warnings); bounds exactly x 0..76 (76 x 45 x
+- [x] 10. R3 build + verify
+  - [x] 10.1 Rebuild `rev_0003.json` (zero warnings); bounds exactly x 0..76 (76 x 45 x
     45); record volume (expect ~32,421 mm3) + triangle count; flat `output/` set = 1 STL
-    + 17 PNGs, no directories or `.scad`.
-  - [ ] 10.2 Repo-external point probe (deleted after): at each of the 4 stations,
+    + 17 PNGs, no directories or `.scad`. (Recorded actual: zero warnings, bounds
+    [0,0,0]..[76,45,45], 32,423.77 mm3 / 1,872 tris; Volumes: 2 quirk as before; flat 18
+    files, 0 directories.)
+  - [x] 10.2 Repo-external point probe (deleted after): at each of the 4 stations,
+    (Executed: 45/45 PASS incl. seat ring, floor boundary 72.99/73.01, M3 through,
+    bore azimuths, corner land, controls; temp tool deleted after.)
     r=2.5 at x=71.5 is VOID (seat ring), r=1.5 at x=74.5 is VOID (M3 through), r=2.5 at
     x=74.5 is SOLID (seat floor; r > 2.1 M3 radius), r=12 at x=74.5 is VOID (air bore
     through), r=21 at x=74.5 is SOLID.
-  - [ ] 10.3 Repo-external 2D slice (deleted after): the x=71.5 slice shows the seat ring
+  - [x] 10.3 Repo-external 2D slice (deleted after): the x=71.5 slice shows the seat ring
+    (Executed: both slices matched the decisive expectations; temp tool deleted after.)
     VOID; the x=74.5 slice shows the seat ring SOLID with the M3 VOID - proof of the
     half-depth seats.
-- [ ] 11. R3 documentation
-  - [ ] 11.1 Design README rev_0003 section: 76 x 45 x 45 envelope, 6 mm right wall,
+- [x] 11. R3 documentation
+  - [x] 11.1 Design README rev_0003 section: 76 x 45 x 45 envelope, 6 mm right wall,
     blind O6 x 3 head seats (3 mm solid behind the seat floor), through M3 + O38 bores,
     updated margin table, supersession note, fresh verification record + provenance
     block (new STL hash).
-  - [ ] 11.2 Root `README.md` design bullet: 76 x 45 x 45, 6 mm right wall, blind head
+  - [x] 11.2 Root `README.md` design bullet: 76 x 45 x 45, 6 mm right wall, blind head
     seats, through M3 + O38.
-- [ ] 12. R3 journal + closeout
-  - [ ] 12.1 `journal/2026-09-14.md`: append the R3 work logs (append-only); user-only
+- [x] 12. R3 journal + closeout
+  - [x] 12.1 `journal/2026-09-14.md`: append the R3 work logs (append-only); user-only
     fields stay `-`.
-  - [ ] 12.2 Mark items 8-11 `[x]`; archive the plan to `plans/past/` with
+  - [x] 12.2 Mark items 8-11 `[x]`; archive the plan to `plans/past/` with
     `status: past`; regenerate + check indexes (exit 0).
-  - [ ] 12.3 Final summary with the section 12 completion fields + propose (do NOT run)
+  - [x] 12.3 Final summary with the section 12 completion fields + propose (do NOT run)
     the commit message for the R3 working tree.

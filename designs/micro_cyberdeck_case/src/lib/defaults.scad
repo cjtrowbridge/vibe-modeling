@@ -28,6 +28,10 @@ fan_air_opening_d = is_undef(fan_air_opening_d) ? 38.0 : fan_air_opening_d;
 fan_hole_spacing = is_undef(fan_hole_spacing) ? 32.0 : fan_hole_spacing;
 fan_mount_hole_d = is_undef(fan_mount_hole_d) ? 4.2 : fan_mount_hole_d;
 fan_center_y = is_undef(fan_center_y) ? 22.5 : fan_center_y;
+// Right (fan) wall thickness. The is_undef(wall_thickness) fallback keeps the
+// older rev_0001/rev_0002 configs (no fan_wall_thickness key) at a 3 mm
+// right wall; rev_0003 R3 sets it to 6.0 in the config.
+fan_wall_thickness = is_undef(fan_wall_thickness) ? wall_thickness : fan_wall_thickness;
 fan_screw_recess_d = is_undef(fan_screw_recess_d) ? 6.0 : fan_screw_recess_d;
 fan_screw_recess_depth = is_undef(fan_screw_recess_depth) ? 3.0 : fan_screw_recess_depth;
 

@@ -22,6 +22,7 @@
   "fan_hole_spacing": 32.0,
   "fan_mount_hole_d": 4.2,
   "fan_center_y": 22.5,
+  "fan_wall_thickness": 6.0,
   "fan_screw_recess_d": 6.0,
   "fan_screw_recess_depth": 3.0,
   "lip_enabled": true,

@@ -1,6 +1,8 @@
 // Single-piece rectangular case with an open top and no front wall.
-
-function case_outer_width() = interior_width + 2 * wall_thickness;
+// The right (fan) wall carries its own thickness (fan_wall_thickness); the
+// left wall and floor keep wall_thickness.
+function right_wall_inner_x() = wall_thickness + interior_width;
+function case_outer_width() = right_wall_inner_x() + fan_wall_thickness;
 function case_outer_depth() = interior_depth + 2 * wall_thickness;
 function case_outer_height() = interior_height + floor_thickness;
 function back_wall_y() = wall_thickness + interior_depth;
@@ -110,6 +112,16 @@ module _assert_case_dimensions() {
       "Battery exit top must align with the bottom of the divider.");
   }
   if (fan_enabled) {
+    assert(fan_wall_thickness >= minimum_wall_thickness,
+      "Right (fan) wall thickness is below the minimum wall thickness.");
+    // Blind screw-head seats must leave solid material behind their seat
+    // floors (rev_0003 R3: 6 mm wall, 3 mm seats -> 3 mm solid). The R2
+    // fallback (fan_wall_thickness == wall_thickness ==
+    // fan_screw_recess_depth) makes the seat floor flush with the outer face,
+    // which is the through-seat case and is allowed.
+    assert(fan_wall_thickness <= fan_screw_recess_depth ||
+           fan_wall_thickness - fan_screw_recess_depth >= minimum_internal_edge_width,
+      "Blind screw-head seats leave too little solid material behind the seat floor.");
     assert(fan_air_opening_d > 0 && fan_hole_spacing > 0 && fan_mount_hole_d > 0,
       "Fan air opening and mount hole dimensions must be positive.");
     assert(fan_center_z() == case_outer_height() / 2,
@@ -208,8 +220,8 @@ module _left_wall() {
 }
 
 module _right_wall() {
-  translate([case_outer_width() - wall_thickness, 0, 0])
-    cube([wall_thickness, case_outer_depth(), case_outer_height()]);
+  translate([right_wall_inner_x(), 0, 0])
+    cube([fan_wall_thickness, case_outer_depth(), case_outer_height()]);
 }
 
 module _back_wall() {
@@ -276,28 +288,30 @@ module _battery_exit_cut() {
 }
 
 module _fan_air_cut() {
-  translate([case_outer_width() - wall_thickness - boolean_epsilon, fan_center_y, fan_center_z()])
+  // Through-bore across the full fan wall (x: right_wall_inner_x()-eps -> case_outer_width()+eps).
+  translate([right_wall_inner_x() - boolean_epsilon, fan_center_y, fan_center_z()])
     rotate([0, 90, 0])
-      cylinder(d = fan_air_opening_d, h = wall_thickness + 2 * boolean_epsilon, $fn = 96);
+      cylinder(d = fan_air_opening_d, h = fan_wall_thickness + 2 * boolean_epsilon, $fn = 96);
 }
 
 module _fan_mount_cut() {
   for (hole_y = [fan_center_y - fan_screw_offset(), fan_center_y + fan_screw_offset()])
     for (hole_z = [fan_center_z() - fan_screw_offset(), fan_center_z() + fan_screw_offset()])
-      translate([case_outer_width() - wall_thickness - boolean_epsilon, hole_y, hole_z])
+      translate([right_wall_inner_x() - boolean_epsilon, hole_y, hole_z])
         rotate([0, 90, 0])
-          cylinder(d = fan_mount_hole_d, h = wall_thickness + 2 * boolean_epsilon, $fn = 36);
+          cylinder(d = fan_mount_hole_d, h = fan_wall_thickness + 2 * boolean_epsilon, $fn = 36);
 }
 
-// M3-capable (d6 x 3) screw-head seats, cut INTO the right wall from the
-// internal face (x = case_outer_width() - wall_thickness) toward +x, at each of
-// the four fan screw positions. Recess depth equals wall thickness, so each
-// seat is a d6 through-bore: the screw head seats flush with the internal
-// face and the shank exits the outer face to clamp the fan.
+// M3-capable (d6 x 3) BLIND screw-head seats, cut INTO the right wall from the
+// internal face (x = right_wall_inner_x()) toward +x, at each of the four fan
+// screw positions. Each seat is fan_screw_recess_depth deep, leaving
+// (fan_wall_thickness - fan_screw_recess_depth) of solid wall behind the seat
+// floor; the d4.2 through-holes (not the seats) carry the screw shanks out
+// the outer face to clamp the fan.
 module _fan_screw_recess_cut() {
   for (hole_y = [fan_center_y - fan_screw_offset(), fan_center_y + fan_screw_offset()])
     for (hole_z = [fan_center_z() - fan_screw_offset(), fan_center_z() + fan_screw_offset()])
-      translate([case_outer_width() - wall_thickness - boolean_epsilon, hole_y, hole_z])
+      translate([right_wall_inner_x() - boolean_epsilon, hole_y, hole_z])
         rotate([0, 90, 0])
           cylinder(d = fan_screw_recess_d, h = fan_screw_recess_depth + 2 * boolean_epsilon, $fn = 48);
 }
