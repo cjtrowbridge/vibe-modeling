@@ -104,7 +104,7 @@ front):
   - [x] 4.1 Move this plan to `plans/past/`, regenerate plan indexes
     (`python scripts/regenerate_plan_indexes.py --repo-root .`), verify
     `--check` exits 0.
-  - [ ] 4.2 Present the task-scoped commit message and the exact staged file
+  - [x] 4.2 Present the task-scoped commit message and the exact staged file
     set (including the 18 output artifacts per the 2026-09-14 artifact
     directive); commit and push only after explicit user approval of the
     exact message. The earlier 2 x 2 mm candidate's still-pending commit

@@ -1,6 +1,8 @@
 // Single-piece rectangular case with an open top and no front wall.
 // The right (fan) wall carries its own thickness (fan_wall_thickness); the
-// left wall and floor keep wall_thickness.
+// left wall and floor keep wall_thickness, except that the top band of the
+// left wall above the micro-SD window extends into the cavity by
+// top_band_cavity_extension (rev_0004 amend, when enabled).
 function right_wall_inner_x() = wall_thickness + interior_width;
 function case_outer_width() = right_wall_inner_x() + fan_wall_thickness;
 function case_outer_depth() = interior_depth + 2 * wall_thickness;
@@ -27,6 +29,12 @@ function microsd_front_margin() = microsd_min_y();
 function microsd_back_margin() = case_outer_depth() - microsd_max_y();
 function microsd_floor_ligament() = microsd_min_z() - floor_thickness;
 function microsd_top_margin() = case_outer_height() - microsd_max_z();
+// Left-wall top band above the micro-SD (upper) window (rev_0004 amend):
+// the solid band z = microsd_max_z()..case_outer_height() crossing the top
+// opening; top_band_cavity_extension grows its thickness into the cavity
+// (internal face x = wall_thickness -> + top_band_cavity_extension).
+function left_top_band_bottom_z() = microsd_max_z();
+function left_top_band_top_z() = case_outer_height();
 function divider_bottom_z() = floor_thickness + divider_gap_above_internal_floor;
 function divider_top_z() = divider_bottom_z() + divider_thickness;
 function divider_front_y() = wall_thickness;
@@ -221,6 +229,19 @@ module _assert_case_dimensions() {
         "Lip tightening must leave a positive battery exit opening.");
     }
   }
+  if (top_band_extension_enabled) {
+    assert(top_band_cavity_extension > 0 &&
+           top_band_cavity_extension <= wall_thickness,
+      "Left top band cavity extension must be positive and stay inside the left wall thickness.");
+    assert(left_top_band_bottom_z() < left_top_band_top_z(),
+      "Left top band must be a positive-height band.");
+    // User-directed exception (rev_0004 amend, 2026-09-16): the 1 mm shelf
+    // thickness deliberately runs below the declared
+    // minimum_internal_edge_width; it is a flat retention ledge with no
+    // expected load path (documented in the design README).
+    assert(top_band_cavity_extension >= 1.0,
+      "Left top band cavity extension is below the documented 1.0 mm floor.");
+  }
   if (divider_enabled) {
     assert(divider_thickness >= minimum_wall_thickness,
       "Divider thickness is below the minimum wall thickness.");
@@ -262,6 +283,25 @@ module _left_wall() {
 module _right_wall() {
   translate([right_wall_inner_x(), 0, 0])
     cube([fan_wall_thickness, case_outer_depth(), case_outer_height()]);
+}
+
+// Left-wall top band extension (rev_0004 amend, 2026-09-16): the band above
+// the micro-SD (upper) window gains a shelf of top_band_cavity_extension
+// into the cavity: x = wall_thickness..wall_thickness +
+// top_band_cavity_extension over the full wall width y = 0..back_wall_y()
+// (the y = back_wall_y()..case_outer_depth() portion is already back wall)
+// and z = microsd_max_z()..case_outer_height(). Flat retention ledge: it
+// unites to the left wall over a back_wall_y() x band-depth face and
+// overlaps the back wall (3 x band-depth cross-section at y = 42..45); no
+// load path is expected, and the shelf's 1 mm bottom overhang is a 1:1
+// cantilever.
+module _left_wall_top_band_extension() {
+  translate([wall_thickness, 0, left_top_band_bottom_z()])
+    cube([
+      top_band_cavity_extension,
+      back_wall_y(),
+      left_top_band_top_z() - left_top_band_bottom_z()
+    ]);
 }
 
 module _back_wall() {
@@ -307,6 +347,9 @@ module _case_positive() {
   union() {
     _case_floor();
     _left_wall();
+    if (top_band_extension_enabled) {
+      _left_wall_top_band_extension();
+    }
     _right_wall();
     _back_wall();
     if (rail_enabled) {
