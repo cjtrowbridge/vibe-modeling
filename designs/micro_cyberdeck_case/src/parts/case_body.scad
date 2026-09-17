@@ -30,10 +30,11 @@ function microsd_back_margin() = case_outer_depth() - microsd_max_y();
 function microsd_floor_ligament() = microsd_min_z() - floor_thickness;
 function microsd_top_margin() = case_outer_height() - microsd_max_z();
 // Left-wall top band above the micro-SD (upper) window (rev_0004 amend):
-// the solid band z = microsd_max_z()..case_outer_height() crossing the top
-// opening; top_band_cavity_extension grows its thickness into the cavity
+// the solid band z = case_outer_height() - top_band_height ..
+// case_outer_height() (top-aligned to the rim) crossing the top opening;
+// top_band_cavity_extension grows its thickness into the cavity
 // (internal face x = wall_thickness -> + top_band_cavity_extension).
-function left_top_band_bottom_z() = microsd_max_z();
+function left_top_band_bottom_z() = case_outer_height() - top_band_height;
 function left_top_band_top_z() = case_outer_height();
 function divider_bottom_z() = floor_thickness + divider_gap_above_internal_floor;
 function divider_top_z() = divider_bottom_z() + divider_thickness;
@@ -233,19 +234,31 @@ module _assert_case_dimensions() {
     assert(top_band_cavity_extension > 0 &&
            top_band_cavity_extension <= wall_thickness,
       "Left top band cavity extension must be positive and stay inside the left wall thickness.");
+    assert(top_band_height > 0 && top_band_height <= case_outer_height(),
+      "Top band height must be positive and not exceed the case outer height.");
     assert(left_top_band_bottom_z() < left_top_band_top_z(),
       "Left top band must be a positive-height band.");
+    assert(left_top_band_bottom_z() >= microsd_max_z(),
+      "Left top band bottom must stay at or above the upper (micro-SD) window top.");
     assert(top_band_cavity_extension >= minimum_internal_edge_width,
       "Left top band cavity extension is below the minimum internal edge width.");
+    assert(top_band_height >= 2.0,
+      "Top band height is below its documented 2.0 mm user-directed floor.");
   }
   if (top_band_right_enabled) {
     assert(top_band_cavity_extension > 0 &&
            top_band_cavity_extension <= fan_wall_thickness,
       "Right top band cavity extension must be positive and stay inside the fan wall thickness.");
+    assert(top_band_height > 0 && top_band_height <= case_outer_height(),
+      "Top band height must be positive and not exceed the case outer height.");
     assert(left_top_band_bottom_z() < left_top_band_top_z(),
       "Right top band must be a positive-height band.");
+    assert(left_top_band_bottom_z() >= microsd_max_z(),
+      "Right top band bottom must stay at or above the upper (micro-SD) window top.");
     assert(top_band_cavity_extension >= minimum_internal_edge_width,
       "Right top band cavity extension is below the minimum internal edge width.");
+    assert(top_band_height >= 2.0,
+      "Top band height is below its documented 2.0 mm user-directed floor.");
   }
   if (divider_enabled) {
     assert(divider_thickness >= minimum_wall_thickness,
@@ -290,16 +303,20 @@ module _right_wall() {
     cube([fan_wall_thickness, case_outer_depth(), case_outer_height()]);
 }
 
-// Top-band ledges (rev_0004 amend, 2026-09-16): the band above the
-// micro-SD (upper) window gains a shelf of top_band_cavity_extension into
-// the cavity on each enabled side wall, over the full wall width
-// y = 0..back_wall_y() (the y = back_wall_y()..case_outer_depth() portion
-// is already back wall) and z = microsd_max_z()..case_outer_height().
+// Top-band ledges (rev_0004 amend, 2026-09-16 / 2026-09-17): the band
+// above the micro-SD (upper) window gains a shelf of
+// top_band_cavity_extension into the cavity on each enabled side wall,
+// over the full wall width y = 0..back_wall_y() (the
+// y = back_wall_y()..case_outer_depth() portion is already back wall) and
+// z = case_outer_height() - top_band_height .. case_outer_height()
+// (top-aligned to the rim, z = 43..45 at the configured 2 mm).
 // Flat retention ledges: each unites to its side wall over a
 // back_wall_y() x band-depth face and overlaps the back wall (a
 // top_band_cavity_extension x band-depth cross-section at y = 42..45);
-// no load path is expected. At the configured 3 mm each shelf meets
-// minimum_internal_edge_width; no exception applies.
+// no load path is expected. The ledge depth (3 mm) meets
+// minimum_internal_edge_width; the ledge height (2 mm) is a user-directed
+// dimension on a flat retention ledge, asserted at a documented 2.0 mm
+// floor above.
 module _left_wall_top_band_extension() {
   translate([wall_thickness, 0, left_top_band_bottom_z()])
     cube([

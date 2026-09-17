@@ -57,20 +57,24 @@ rail_section = is_undef(rail_section) ? 3.0 : rail_section;
 rail_top_below_rim = is_undef(rail_top_below_rim) ? 5.0 : rail_top_below_rim;
 
 // Top-band ledges on the left and right walls above the micro-SD (upper)
-// window (rev_0004 amend, 2026-09-16): thicken the band
-// z = microsd_max_z()..case_outer_height() into the cavity on both side
-// walls; the left internal face moves x = wall_thickness ->
-// x = wall_thickness + top_band_cavity_extension and the right internal
-// face moves x = right_wall_inner_x() ->
-// x = right_wall_inner_x() - top_band_cavity_extension. Flat retention
-// ledges; at the configured 3 mm the shelf thickness meets
-// minimum_internal_edge_width (no exception applies; asserted in
-// case_body.scad). top_band_right_enabled defaults to false and the
-// is_undef fallbacks keep the older rev_0001..rev_0003 configs rendering
-// unchanged.
+// window (rev_0004 amend, 2026-09-16 / 2026-09-17): thicken a band
+// z = case_outer_height() - top_band_height .. case_outer_height()
+// (top-aligned to the rim) into the cavity on both side walls; the left
+// internal face moves x = wall_thickness -> x = wall_thickness +
+// top_band_cavity_extension and the right internal face moves
+// x = right_wall_inner_x() -> x = right_wall_inner_x() -
+// top_band_cavity_extension. Flat retention ledges; the ledge depth
+// (top_band_cavity_extension) at the configured 3 mm meets
+// minimum_internal_edge_width directly. The ledge height
+// (top_band_height, configured 2 mm in rev_0004) is a user-directed
+// dimension on a flat retention ledge with no expected load path, asserted
+// at a documented 2.0 mm floor in case_body.scad. top_band_right_enabled
+// defaults to false and the is_undef fallbacks keep the older
+// rev_0001..rev_0003 configs rendering unchanged.
 top_band_extension_enabled = is_undef(top_band_extension_enabled) ? false : top_band_extension_enabled;
 top_band_cavity_extension = is_undef(top_band_cavity_extension) ? 1.0 : top_band_cavity_extension;
 top_band_right_enabled = is_undef(top_band_right_enabled) ? false : top_band_right_enabled;
+top_band_height = is_undef(top_band_height) ? 3.0 : top_band_height;
 
 minimum_wall_thickness = is_undef(minimum_wall_thickness) ? 3.0 : minimum_wall_thickness;
 minimum_structural_overlap = is_undef(minimum_structural_overlap) ? minimum_wall_thickness : minimum_structural_overlap;
