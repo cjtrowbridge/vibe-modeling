@@ -7,9 +7,10 @@ function case_outer_depth() = interior_depth + 2 * wall_thickness;
 function case_outer_height() = interior_height + floor_thickness;
 function back_wall_y() = wall_thickness + interior_depth;
 // Back-rail placement (rev_0004 R4): x = 8..65 (5 mm in from each internal
-// side wall), z top 5 mm below the rim, ledge 2 mm deep in front of the back
-// wall's internal face (y = 40..42), tenon through the full back wall
-// (y = 42..45, flush with the rear outer face).
+// side wall), z top 5 mm below the rim (band z = 37..40), ledge 3 mm deep in
+// front of the back wall's internal face (y = 39..42), tenon through the full
+// back wall (y = 42..45, flush with the rear outer face). The 3 mm section
+// equals the declared minimum_internal_edge_width; no relaxation applies.
 function rail_min_x() = wall_thickness + rail_x_inset;
 function rail_max_x() = right_wall_inner_x() - rail_x_inset;
 function rail_top_z() = case_outer_height() - rail_top_below_rim;
@@ -190,12 +191,11 @@ module _assert_case_dimensions() {
       "Rail tenon engagement is below the minimum structural overlap.");
     assert(rail_top_below_rim >= minimum_internal_edge_width,
       "Rail leaves too little material to the rim.");
-    // Documented relaxation (R4, user-approved 2 x 2 mm section): the rail
-    // section is below the declared 3.0 mm minimum_internal_edge_width. The
-    // rail is a non-structural ledge; this is the same documented-exception
-    // pattern as the fan ligament relaxations above (2026-09-14 R2).
-    assert(rail_section >= 2.0,
-      "Rail section is below the documented 2 mm floor.");
+    // The 3 x 3 mm rail section (user decision 2026-09-16) meets the
+    // declared minimum_internal_edge_width directly; the earlier 2 mm
+    // relaxation is retired.
+    assert(rail_section >= minimum_internal_edge_width,
+      "Rail section is below the minimum internal edge width.");
     assert(rail_min_x() > wall_thickness,
       "Rail start does not clear the left internal wall face.");
     assert(rail_max_x() < right_wall_inner_x(),

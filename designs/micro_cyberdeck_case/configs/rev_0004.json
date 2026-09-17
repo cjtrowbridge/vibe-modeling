@@ -33,6 +33,7 @@
   "divider_cable_passage_width": 5.0,
   "divider_cable_passage_depth": 10.0,
   "rail_enabled": true,
+  "rail_section": 3.0,
   "minimum_wall_thickness": 3.0,
   "minimum_structural_overlap": 3.0,
   "minimum_internal_edge_width": 3.0

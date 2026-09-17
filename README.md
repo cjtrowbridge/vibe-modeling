@@ -348,7 +348,7 @@ embedded in one-off design notes:
 - `designs/cyberdeck/`
   - First-draft visual mockup workspace for a cassette-futurist cyberdeck with asymmetric eye module, wide touchscreen, folding keyboard, hardware toggles, and internal proxy volumes
 - `designs/micro_cyberdeck_case/`
-  - Single-piece `76 x 45 x 45 mm` open-top, open-front dual-chamber case retaining a `67 x 39 x 42 mm` nominal equipment envelope, with a left-wall micro-SD / battery window pair (flush retention lips), a divider forming the two chambers, a right-wall 6 mm fan wall (Ø38 through air opening + 4 x Ø4.2 through mounts on 32 mm pitch + Ø6 x 3 mm blind screw-head seats with 3 mm solid behind each seat floor), and a back-wall internal 2 mm x 2 mm rail (rev_0004; x = 8..65, ledge y = 40..42 at z = 38..40, through-wall tenon flush with the rear outer face)
+  - Single-piece `76 x 45 x 45 mm` open-top, open-front dual-chamber case retaining a `67 x 39 x 42 mm` nominal equipment envelope, with a left-wall micro-SD / battery window pair (flush retention lips), a divider forming the two chambers, a right-wall 6 mm fan wall (Ø38 through air opening + 4 x Ø4.2 through mounts on 32 mm pitch + Ø6 x 3 mm blind screw-head seats with 3 mm solid behind each seat floor), and a back-wall internal 3 mm x 3 mm rail (rev_0004; x = 8..65, ledge y = 39..42 at z = 37..40, through-wall tenon flush with the rear outer face)
 - `designs/ac_redirectors/`
   - Two independent rail-hung air-conditioner redirectors sharing an open 50 mm-radius quarter-turn foundation
   - Includes a straight vertical door-side guide and a bed-side guide with parametric 45-degree swept vanes
