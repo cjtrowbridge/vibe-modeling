@@ -35,7 +35,8 @@ documentation in the same task. Review and update when relevant:
 3. `playbooks/*.md`: repeatable execution workflows.
 4. `references/**` and `templates/*.md`: shared operational and engineering guidance.
 5. `journal/*.md`: approved repository-state checkpoints.
-6. `downtime/*` and `docs/*`: maintenance and supplemental artifacts.
+6. `docs/solarpunk_series.md`: all details of the `solarpunk_*` designs, whenever they change.
+7. `downtime/*` and `docs/*`: maintenance and supplemental artifacts.
 
 ## 3. Plan-Governed Operational Protocol
 
@@ -178,6 +179,13 @@ Keep the documented repository layout synchronized with `README.md`:
 - `designs/`: committed OpenSCAD source and configs.
 - `output/`: generated current/scratch outputs.
 - `revisions/`: generated numbered snapshots.
+- `docs/`: supplemental artifacts, including `docs/solarpunk_series.md`, the
+  canonical source of truth for all `solarpunk_*` designs.
+
+Design-series canonical: every design whose directory prefix is `solarpunk_`
+must link to `docs/solarpunk_series.md` from its design README. That document
+is the single source of truth for series-level decisions and for the details of
+every member design; design-scoped docs must not conflict with it.
 
 Artifact directory names are fixed:
 
