@@ -87,11 +87,23 @@ One main printed opaque-TPU part per tray:
 4. **Bell seat** — receives the commodity bottle-base cap.
 5. **Drain path** — integrated ~90° swept bend routing to a rear-wall outlet
    port (~1/2" ID) accepting a commodity fitting. Rear-wall exit supersedes the
-   original spec's bottom-exit proposal.
+   original spec's bottom-exit proposal. The drain channel is **light-blocking**
+   (closed top, opened to the bell only through the internal feed opening) so
+   LED light cannot pass through the structure into the standing water, and the
+   channel is sealed at both plumbing penetrations.
 6. **Inlet** — socket for the 1/4" feed fitting.
 
 Reinforcement: thickened rim, vertical ribs, reinforced corners (mitigates TPU
 wall flex when flooded).
+
+Forward-looking assumptions:
+
+- **Roots will grow** down through the perforated cell bottoms toward the
+  chamber. Ledge clearances, mask openings, and the bell/standpipe access all
+  assume roots will eventually reach this space and must stay serviceable.
+- **No inaccessible cavities** — the model must be constructible from named
+  cuts only; do not create hidden internal voids that could collect organic
+  material.
 
 ### 5.4 Bottle-Base Bell (commodity)
 
@@ -102,8 +114,11 @@ wall flex when flooded).
   tuning knobs (phase 4).
 - A typical 2 L bottle base is ~85–90 mm ID versus the original spec's ¾–1" bell
   baseline; the larger bell makes siphon initiation easier.
-- Exact bottle interface (diameter, skirt height, notch dimensions) is open
-  until phase-4 experimentation.
+- The cut bottle base sits over the standpipe tower as a friction fit; the cut
+  skirt must stay **above the maximum flood level** so the cap seal remains in
+  the dry zone, and low enough that the notch openings pass the siphon-break
+  air line below the standpipe crest. Skirt engagement and friction fit are
+  open until the bottle is chosen.
 
 ### 5.5 Operating Cycle
 
@@ -132,6 +147,22 @@ wall flex when flooded).
 | Bell (bottle base) | ~2 L bottle |
 | Support/deck clearance | 30–50 mm baseline; may shrink (no downleg to house) |
 
+The parametric surface (original spec §33, adapted to the integrated
+architecture):
+
+- **Tray:** `tray_outer_length`, `tray_outer_width`, `tray_outer_height`,
+  `wall_thickness`, `floor_thickness`, `floor_slope`, corner radii, lid
+  interface L/W/H (plus rim cross-section from the physical kit)
+- **Insert:** `insert_length`, `insert_width`, `insert_support_height`,
+  `insert_support_width`
+- **Cells:** `cell_pitch_x`, `cell_pitch_y`, `cell_opening_width`,
+  `cell_opening_length`, cell bottom height, perforation pattern
+- **Hydraulics:** `flood_chamber_depth`, `maximum_flood_height`,
+  `standpipe_inner_diameter`, `standpipe_height`, `feed_port_diameter`,
+  `drain_inner_diameter` (standpipe, bend, and rear port all on this
+  parameter), `elbow_clearance` (~0 — the 90° turn is inside the tray body)
+- **Support:** `platform_clearance`
+
 ### 5.7 Print and Structural Parameters
 
 - Material: TPU 95A, opaque (black preferred).
@@ -143,7 +174,30 @@ wall flex when flooded).
 - Avoid: fine printed threads, microscopic passages, rigid dimensional fits
   (TPU concerns).
 
-### 5.8 Support / Platform
+### 5.8 Design Against (Failure Modes)
+
+Adapted from the original spec; the listed causes act as design probes, not
+verdicts.
+
+- **Siphon does not start** — restricted drain bore; bell too large or too
+  loosely seated; standpipe too small; feed rate too low; insufficient vertical
+  drop from crest to outlet; downstream backpressure.
+- **Siphon will not stop** — feed rate too high relative to drain; bell
+  admits no air (notches blocked or too high); drain channel stays full after
+  the bell break.
+- **Tray overflows** — siphon clogged, roots in the siphon, wrong standpipe
+  choice. An emergency overflow is a candidate for later iterations only.
+- **Algae growth** — LED light reaching the standing nutrient solution;
+  mitigated by the integrated opaque mask and the light-blocking drain
+  channel (see 5.3 item 5). The siphon bell region and both plumbing
+  penetrations are the features to keep dark.
+- **Roots block siphon** — see the 5.3 root-growth assumption; the bell/standpipe
+  access must remain serviceable.
+- **Trays interact through the plumbing** — the return manifold is commodity;
+  keep it continuous-fall and keep the atmospheric stage at the
+  siphon-filter end so one tray's siphon cannot pressurize another's outlet.
+
+### 5.9 Support / Platform
 
 - Trays sit on a simple support that keeps the plumbing accessible behind/below
   them.
@@ -152,7 +206,7 @@ wall flex when flooded).
 - Printed vs. commodity support: open; the support is the simplest item in the
   design.
 
-### 5.9 Open Decisions
+### 5.10 Open Decisions
 
 1. Siphon/standpipe location within the tray (current lean: rear corner, aligned
    with the rear drain exit, behind the edge cells).
@@ -166,8 +220,10 @@ wall flex when flooded).
 5. Printed vs. commodity rear outlet fitting.
 6. Printed vs. commodity platform/support.
 7. Mask Option A (integrated) is the v1 lean; final call at blockout.
+8. Whether an emergency overflow is needed after phase-4 siphon testing
+   (see 5.8).
 
-### 5.10 Phase 1 Measurement List
+### 5.11 Phase 1 Measurement List
 
 - Original tray outer L/W/H.
 - Rim cross-section: lid sits outside the walls, locates in a groove/lip, or
@@ -179,7 +235,7 @@ wall flex when flooded).
 - Corner radii; locating tabs/recesses.
 - Chosen bottle: base ID/OD at the intended cut line.
 
-### 5.11 Recorded Deviations from the Original Specification (2026-09-17)
+### 5.12 Recorded Deviations from the Original Specification (2026-09-17)
 
 - §18 bottom-exit siphon → integrated **rear-wall** drain exit.
 - §14–16 swappable printed standpipe/bell/guard cartridge → **integrated
@@ -188,7 +244,7 @@ wall flex when flooded).
 - §22 printed return manifold → **commodity pipe and fittings**.
 - Platform height target relaxed (no downleg to house).
 
-### 5.12 Development Sequence and Acceptance
+### 5.13 Development Sequence and Acceptance
 
 Phases (per spec, adapted): 1. measure the physical tray (+ chosen bottle) →
 2. print static tray, no siphon (lid fit, insert fit, water tightness, light
@@ -199,8 +255,39 @@ with commodity manifolds → 7. integrate with the siphon-filter stage.
 A tray passes when: it fills predictably, reaches the target flood height, the
 siphon starts and breaks reliably across repeated unattended cycles, other trays
 on the manifold are not significantly affected, and it passes leak testing
-(overfill + soak + flex) and light-leak testing (dark room, LEDs on, chamber
-essentially dark around cell openings, rim, and the siphon area).
+(overfill + soak + flex) and light-leak testing. The light-leak test runs in
+a dark room with the LED lid installed: inspect the flood chamber for light
+around the cell openings, the tray rim, the siphon region, and **both plumbing
+penetrations** (feed socket and rear drain port); the chamber should remain
+essentially dark at all four features.
+
+Design priorities (original spec §42, in order):
+
+1. reliable bell-siphon behavior
+2. water-tight tray
+3. compatibility with the existing LED lid
+4. compatibility with the existing cell insert
+5. light exclusion (including the drain channel — see 5.3 item 5)
+6. easy cleaning
+7. modular plumbing
+8. compact physical footprint
+9. minimal additional hardware
+10. low-cost printing
+
+### 5.14 Maintenance and Service
+
+Routine maintenance, no tools, in order:
+
+1. Remove the clear LED lid.
+2. Lift out the 12-cell insert (rockwool, roots, cleaning).
+3. Access the siphon — the bell cap lifts off the standpipe tower; no
+   disassembly required.
+4. Flush the flood chamber and inspect the drain channel.
+5. Disconnect feed and rear drain fittings.
+6. Move the tray.
+
+Related CAD constraint: the model must not create a cavity unreachable with
+the insert lifted out (see the 5.3 no-inaccessible-cavities assumption).
 
 ## 6. Design: `solarpunk_siphon_filter`
 
