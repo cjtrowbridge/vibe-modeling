@@ -122,6 +122,43 @@ SHA-256 provenance for the R2 candidate (superseded):
 - Part source `case_body.scad`: `4AE33EB504B45BB5736CA6FD6D9420C511C33BFCB3008367C423C6FF7142129B`
 - Installed STL: `F7624F3A8AE1D43C814CABAF8BA68C692D5D485C71B601D5A1C6607342A681BA`
 
+## Revision 0004 dimensions, back-wall rail
+
+- Back-wall rail (R4): a horizontal 2 mm (y) x 2 mm (z) section running `x = 8..65` (a 57 mm span) across the back wall's internal face, 5 mm in from each internal side wall face and with its top 5 mm below the case rim (`z = 38..40`).
+- One solid cube: 2 mm deep ledge `y = 40..42` in front of the back-wall internal face, plus a through-wall tenon `y = 42..45` spanning the full 3 mm back-wall thickness, flush with the rear outer face (`y = 45`). The tenon provides 57 mm of continuous structural engagement across the rail-to-wall seam.
+- New material: only the ledge volume, 57 x 2 x 2 = +228.000000 mm³; the tenon volume already existed as back wall. No envelope change: the body spans exactly `[0, 0, 0]` to `[76, 45, 45]` as in R3.
+- No cut intersects the rail band (`x = 8..65`, `y = 40..45`, `z = 38..40`): the left-wall windows/exit are at `x = 0..3`, the divider top is `z = 18`, the fan air opening, seats, and mount holes are in the right wall only (`x = 70..76`) or in the `z <= 41.5` fan-wall band (asserted by the rail clears-the-divider check at the shared `z` limits).
+
+### Revision 0004 candidate artifact verification - 2026-09-16 (R4, supersedes the R3 record as current candidate)
+
+- Source revision/config: mutable `rev_0004` candidate / `configs/rev_0004.json`; `rev_0001.json`, `rev_0002.json`, and `rev_0003.json` remain unchanged (older configs keep working through the `is_undef(rail_enabled)` fallback in `defaults.scad`, so `rail_enabled` is false for them and their geometry is byte-identical to before).
+- Build scope and destination: one printable part built with `scripts/scad_build.py` into `output/micro_cyberdeck_case/`.
+- Expected/actual artifacts: 1/1 STL and 17/17 PNG files; 18 total files, no directories or staged `.scad` files.
+- Build log: zero OpenSCAD warnings or errors; all dimension, margin, lip, fan-wall, blind-seat, divider, and rail assertions passed (OpenSCAD: 930 vertices, 467 facets at export; `Volumes: 2` reported as usual for this design).
+- STL bounds: `[0, 0, 0]` to `[76, 45, 45]` mm, a 76 x 45 x 45 mm span.
+- Signed STL volume: 32,651.77 mm³ across 1,888 triangles; exact +228.000000 mm³ versus revision 0003 (32,423.77 mm³ recorded in the R3 record above), matching the solid-ledge volume 57 x 2 x 2 with the tenon already interior to the back wall. The exporter reports `Volumes: 2`; this is a known, user-accepted export characteristic of this design and is not chased.
+- Installed render review: passed for the 76 x 45 x 45 mm envelope, back-wall rail (57 mm ledge band `z = 38..40` on the back-wall internal face, flush rear tenon), both left-wall windows, the divider band, and the right-wall fan interface.
+- Numeric STL verification (repo-external temporary probe script, deleted after review): passed. A 3D construction-model parity check at 20 point positions (ledge core solid, tenon core solid, and points in front of / below / above the rail and beyond both rail ends void, consistent with the R3 cavity/floor/wall model) matched 20/20, and the capped-material-volume cross-check confirmed the recorded 32,423.77 mm³ for rev_0003 and 32,651.77 mm³ for rev_0004.
+- Governed temporary section probes (gated behind `-D sect=N`, rendered, viewed, and removed with the probe file): (a) horizontal section at `z = 39` shows the 57 x 2 mm ledge bar at `x = 8..65`, `y = 40..42` along the back rim with the wall band intact; (b) constant-`x` section at `x = 36.5` shows a clean L profile - the 2 mm x 2 mm ledge running continuously into the 3 mm back wall with no seam gap and the tenon flush with the rear outer face; (c) rear ortho view shows the tenon flush with the `y = 45` face, with no overhang or protrusion.
+- Full-mesh identity check (temporary script, deleted after review): relabeling the facet multisets of the freshly rebuilt rev_0003 and rev_0004 STLs, 1,870 facets are byte-identical in both meshes; the only removed facets are two rev_0003 triangles of the back-wall internal face at `y = 42` (`z = 18..45`) and the only added facets are 18 rev_0004 triangles, of which 10 are the flat new ledge faces and 8 are the re-triangulation of the `y = 42` face around the ledge junction. All new material is confined to the rail ledge band `y = 40..42`, `z = 38..40`; the re-triangulated facets lie on the unchanged `y = 42` back-wall face.
+- Structural joins: passed for all R3 joins (unchanged: 1,870 shared facets) plus the new rail join. The rail occupies a positive 57 x 2 x 3 mm volume across the full 3 mm back-wall thickness - a 3 mm `minimum_structural_overlap`-meeting continuous engagement along the entire 57 mm seam, with no cuts in the rail band; asserted (`rail_tenon_rear_y() - back_wall_y() == wall_thickness`, `wall_thickness >= minimum_structural_overlap`).
+- Minimum internal edge/material width: passed with the documented 2 mm rail-section relaxation - the rail's 2 x 2 mm section is below the declared 3.0 mm `minimum_internal_edge_width` (user-approved, treated as a non-structural ledge, the same documented-exception pattern as the R2 fan ligament relaxations above, asserted >= 2.0 mm). Every other named member is at or above 3 mm: each internal side-wall face is 5 mm away from the rail ends, the rail-to-rim material is 5 mm, the rail ledge to divider top is 20 mm, and the material behind the rail tenon is 3 mm (the rear wall face itself).
+- Supersession: this record replaces the R3 record as current candidate; the R3 source (`configs/rev_0003.json` and the current source tree) remains buildable unchanged. Exact R3 bytes are no longer reproducible from the current tree: the OpenSCAD ASCII STL exporter emits CRLF line endings on this host (the committed git blob is pure LF, differing only by 13,106 carriage returns) and facet triangle ordering is not deterministic between builds, so a fresh rev_0003 rebuild matches the R3 geometry (same 1,872-triangle surface, identical bounds, 32,423.77 mm³) but not the R3 record's exact file hash.
+  - R3 record installed STL `589CBC6AB9332E642CE3A0BD6D5C4179BD49C32EB5DA6672F586531DEA43FED7` was the R3-time on-host working file (CRLF line endings).
+  - Committed rev_0003 STL git blob `517c562772df7ed12c28f17cfa7ef52b1b981f2d` (pure LF): SHA-256 `9394C2D6CA39A72D5E244C295F2FEC90D276155F0F55948878CC17594E0D7F26`.
+  - Rev_0003 rebuilt from the current (post-R4) source tree, on-disk bytes (CRLF): SHA-256 `4E8FE0704EA676E89BF03FD9C3D2706B4A277B45620D6660CF08B57C58220CA5`; identical geometry after CRLF-to-LF normalization: SHA-256 `57CE45B5AE3184622248A1C4A130A211C61018C038A7A92833BC402384D1ADB1`.
+- Thermal behavior: unverified.
+- Physical fit of whatever mounts on the rail, target-printer build volume, and slicer layer-path review: unverified; this candidate is not yet fabrication-ready.
+- Manifest audit: not applicable to this single-part design.
+
+SHA-256 provenance for the verified revision 0004 candidate (R4, 2026-09-16):
+
+- Config `rev_0004.json`: `D92759CE6CD2F0DDA6010DA51CD98C5928FCD41C60E842C2B2E809E79F0B84D1`
+- Entrypoint `main.scad`: `20B10F91D42D4D880944F6917BAEE1D11A116B410D2F93943937227FFEEE8118` (unchanged since R2)
+- Defaults `defaults.scad`: `223E7930986B3CEC8C24C02556A119EC9C8823228F5342938D9D7C2C852258B5`
+- Part source `case_body.scad`: `E5B7886CBB308C083ADFB678DB531C4007E0FA844F98BF92441FD37EC2746AAB`
+- Installed STL: `A0B6D0A70F9940E4879E6D2377FE531C5D921BBDA2F480741B4E60844FA45707`
+
 ## Export classification
 
 `part_id = 0` exports the config's named case body, the only printable part.
@@ -166,7 +203,7 @@ SHA-256 provenance for the verified candidate:
 ## Build
 
 ```powershell
-python scripts/scad_build.py --design micro_cyberdeck_case --config designs/micro_cyberdeck_case/configs/rev_0003.json
+python scripts/scad_build.py --design micro_cyberdeck_case --config designs/micro_cyberdeck_case/configs/rev_0004.json
 ```
 
 Generated scratch artifacts are installed under `output/micro_cyberdeck_case/`.

@@ -6,6 +6,16 @@ function case_outer_width() = right_wall_inner_x() + fan_wall_thickness;
 function case_outer_depth() = interior_depth + 2 * wall_thickness;
 function case_outer_height() = interior_height + floor_thickness;
 function back_wall_y() = wall_thickness + interior_depth;
+// Back-rail placement (rev_0004 R4): x = 8..65 (5 mm in from each internal
+// side wall), z top 5 mm below the rim, ledge 2 mm deep in front of the back
+// wall's internal face (y = 40..42), tenon through the full back wall
+// (y = 42..45, flush with the rear outer face).
+function rail_min_x() = wall_thickness + rail_x_inset;
+function rail_max_x() = right_wall_inner_x() - rail_x_inset;
+function rail_top_z() = case_outer_height() - rail_top_below_rim;
+function rail_bottom_z() = rail_top_z() - rail_section;
+function rail_front_y() = back_wall_y() - rail_section;
+function rail_tenon_rear_y() = back_wall_y() + wall_thickness;
 function microsd_center_y() = case_outer_depth() - microsd_center_from_back_outer_edge;
 function microsd_center_z() = floor_thickness + microsd_center_above_internal_floor;
 function microsd_min_y() = microsd_center_y() - microsd_opening_width / 2;
@@ -169,6 +179,36 @@ module _assert_case_dimensions() {
         "Fan cut leaves too little divider back leg at the right wall.");
     }
   }
+  if (rail_enabled) {
+    assert(rail_section > 0 && rail_x_inset > 0 && rail_top_below_rim > 0,
+      "Rail dimensions must be positive.");
+    // The through tenon fills the full back-wall thickness: continuous
+    // structural engagement across the entire rail seam (rev_0004 R4).
+    assert(rail_tenon_rear_y() - back_wall_y() == wall_thickness,
+      "Rail tenon must span the full back-wall thickness.");
+    assert(wall_thickness >= minimum_structural_overlap,
+      "Rail tenon engagement is below the minimum structural overlap.");
+    assert(rail_top_below_rim >= minimum_internal_edge_width,
+      "Rail leaves too little material to the rim.");
+    // Documented relaxation (R4, user-approved 2 x 2 mm section): the rail
+    // section is below the declared 3.0 mm minimum_internal_edge_width. The
+    // rail is a non-structural ledge; this is the same documented-exception
+    // pattern as the fan ligament relaxations above (2026-09-14 R2).
+    assert(rail_section >= 2.0,
+      "Rail section is below the documented 2 mm floor.");
+    assert(rail_min_x() > wall_thickness,
+      "Rail start does not clear the left internal wall face.");
+    assert(rail_max_x() < right_wall_inner_x(),
+      "Rail end does not clear the right internal wall face.");
+    assert(rail_max_x() - rail_min_x() > 2 * minimum_internal_edge_width,
+      "Rail span is too short for the declared internal edge minimums.");
+    assert(rail_front_y() > wall_thickness,
+      "Rail ledge intrudes into the left wall band.");
+    if (divider_enabled) {
+      assert(rail_bottom_z() > divider_top_z(),
+        "Rail ledge interferes with the divider.");
+    }
+  }
   if (lip_enabled) {
     assert(lip_width > 0 && lip_width < wall_thickness,
       "Retention lip tightening must be positive and stay inside the left wall face thickness.");
@@ -254,12 +294,24 @@ module _battery_sbc_divider() {
   }
 }
 
+module _back_rail() {
+  translate([rail_min_x(), rail_front_y(), rail_bottom_z()])
+    cube([
+      rail_max_x() - rail_min_x(),
+      rail_tenon_rear_y() - rail_front_y(),
+      rail_top_z() - rail_bottom_z()
+    ]);
+}
+
 module _case_positive() {
   union() {
     _case_floor();
     _left_wall();
     _right_wall();
     _back_wall();
+    if (rail_enabled) {
+      _back_rail();
+    }
     if (divider_enabled) {
       _battery_sbc_divider();
     }

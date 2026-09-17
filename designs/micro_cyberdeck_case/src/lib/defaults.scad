@@ -44,6 +44,16 @@ divider_gap_above_internal_floor = is_undef(divider_gap_above_internal_floor) ? 
 divider_cable_passage_width = is_undef(divider_cable_passage_width) ? 5.0 : divider_cable_passage_width;
 divider_cable_passage_depth = is_undef(divider_cable_passage_depth) ? 10.0 : divider_cable_passage_depth;
 
+// Back-rail (rev_0004 R4): a horizontal 2 mm (y) x 2 mm (z) rail on the back
+// wall's internal face, 5 mm below the rim, 5 mm in from each side wall, with
+// a through-wall tenon (2 mm ledge + full back-wall thickness, flush with the
+// rear outer face). The is_undef(rail_enabled) fallback keeps the older
+// rev_0001..rev_0003 configs (no rail_enabled key) geometry unchanged.
+rail_enabled = is_undef(rail_enabled) ? false : rail_enabled;
+rail_x_inset = is_undef(rail_x_inset) ? 5.0 : rail_x_inset;
+rail_section = is_undef(rail_section) ? 2.0 : rail_section;
+rail_top_below_rim = is_undef(rail_top_below_rim) ? 5.0 : rail_top_below_rim;
+
 minimum_wall_thickness = is_undef(minimum_wall_thickness) ? 3.0 : minimum_wall_thickness;
 minimum_structural_overlap = is_undef(minimum_structural_overlap) ? minimum_wall_thickness : minimum_structural_overlap;
 minimum_internal_edge_width = is_undef(minimum_internal_edge_width) ? minimum_wall_thickness : minimum_internal_edge_width;
