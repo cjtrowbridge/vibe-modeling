@@ -35,7 +35,8 @@
   "rail_enabled": true,
   "rail_section": 3.0,
   "top_band_extension_enabled": true,
-  "top_band_cavity_extension": 1.0,
+  "top_band_cavity_extension": 3.0,
+  "top_band_right_enabled": true,
   "minimum_wall_thickness": 3.0,
   "minimum_structural_overlap": 3.0,
   "minimum_internal_edge_width": 3.0
