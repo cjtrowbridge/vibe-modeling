@@ -163,6 +163,23 @@ architecture):
   parameter), `elbow_clearance` (~0 — the 90° turn is inside the tray body)
 - **Support:** `platform_clearance`
 
+Multi-size requirement (2026-09-17):
+
+- The series targets many different physical seed-tray sizes, so the design
+  must be fully parameterized: **no hardcoded size-derived constant may appear
+  in the OpenSCAD source.** Every dimension, feature placement, and derived
+  layout (rim, ledge, cell grid, tower position, drain bend, ports, rib
+  pattern) must compute from the parameter surface above.
+- One config file = one concrete size/variant (repo convention, cf.
+  `designs/cyberdeck/configs/`); each size is built, audited, and revised
+  independently through the normal manifest pipeline.
+- Parameters that must remain size-independent and stay in source: the
+  structural minimums (`minimum_wall_thickness`, `minimum_structural_overlap`),
+  tube standards (1/4" feed, ~1/2" drain), and material/print defaults.
+- Adding a new size must not require editing `src/`; it must be expressible as
+  a new config that passes the same structural asserts (wall, drain-ID
+  uniformity, min feature width) at that size.
+
 ### 5.7 Print and Structural Parameters
 
 - Material: TPU 95A, opaque (black preferred).
