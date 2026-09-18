@@ -26,7 +26,7 @@
 
 | Design | Status | Role |
 |---|---|---|
-| `solarpunk_seed_tray` | design phase; no geometry yet | Per-tray converter: TPU flood tray with integrated bell siphon |
+| `solarpunk_seed_tray` | scaffold complete; placeholder configs, Phase 1 measurement pending | Per-tray converter: TPU flood tray with integrated bell siphon |
 | `solarpunk_siphon_filter` | deferred | Siphon-based filtration stage between return manifold and reservoir |
 
 ## 4. Common System Architecture
@@ -179,6 +179,18 @@ Multi-size requirement (2026-09-17):
 - Adding a new size must not require editing `src/`; it must be expressible as
   a new config that passes the same structural asserts (wall, drain-ID
   uniformity, min feature width) at that size.
+
+Concrete config instances (scaffold, 2026-09-17 — placeholder dimensions
+derived from marketing imagery; **pending Phase 1 physical measurement**):
+
+| Config | Kit | Placeholder tray (L×W×H) | Cell grid |
+|---|---|---|---|
+| `configs/rev_0001.json` | 12-cell | 172.5 × 130 × 70 mm | 3 × 4 |
+| `configs/rev_0002.json` | 6-cell | 175 × 135 × 55 mm | 3 × 2 |
+
+Both pass the same structural asserts at their respective sizes. The two
+kits-in-transit are the initial targets; additional sizes add new
+`configs/rev_000N.json` without source edits.
 
 ### 5.7 Print and Structural Parameters
 

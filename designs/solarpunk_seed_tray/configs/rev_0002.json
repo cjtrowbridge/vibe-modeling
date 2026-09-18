@@ -1,0 +1,23 @@
+{
+  "status": "PLACEHOLDER — pending Phase 1 physical measurement of the 6-cell kit (dimensions are marketing figures, not measured)",
+  "part": "solarpunk_seed_tray",
+  "part_id": 1,
+  "tray_outer_length": 175.0,
+  "tray_outer_width": 135.0,
+  "tray_outer_height": 55.0,
+  "wall_thickness": 3.0,
+  "floor_thickness": 3.0,
+  "corner_radius": 6.0,
+  "cell_columns": 3,
+  "cell_rows": 2,
+  "cell_pitch_x": 45.0,
+  "cell_pitch_y": 60.0,
+  "cell_opening_width": 36.0,
+  "cell_opening_length": 48.0,
+  "insert_support_height": 25.0,
+  "mask_thickness": 3.0,
+  "maximum_flood_height": 38.0,
+  "drain_channel_height": 12.0,
+  "minimum_wall_thickness": 2.4,
+  "minimum_structural_overlap": 2.4
+}
