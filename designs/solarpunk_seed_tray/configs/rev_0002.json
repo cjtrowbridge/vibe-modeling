@@ -17,6 +17,7 @@
   "insert_support_height": 25.0,
   "mask_thickness": 3.0,
   "maximum_flood_height": 38.0,
+  "well_floor_z": 30.0,
   "drain_channel_height": 12.0,
   "minimum_wall_thickness": 2.4,
   "minimum_structural_overlap": 2.4

@@ -80,7 +80,7 @@ If the agent follows the included playbooks, it should also document what it cha
   - `parts.json` (multi-part designs): authoritative complete-build part IDs and names
   - `assembly.json` (new or modified multi-part designs): authoritative product/subassembly hierarchy, transforms, interfaces, and review views
   - `configs/rev_000N.json`: committed parameter sets
-  - Included designs: `example_box`, `helical`, `yagi`, `yagi_card`, `dtv_yagi`, `winegard_gm6000_logic_backplane`, `gigachad_xavier_void`, `cottage_pi6_plus`, `old_rca_display_baseplate`, `opi_zero_2w_carrier`, `comrade`, `cyberdeck`, `cyberdeck-2`, `micro_cyberdeck_case`, `ac_redirectors`, `solarpunk_seed_tray`, `solarpunk_siphon_filter`
+  - Included designs: `example_box`, `helical`, `yagi`, `yagi_card`, `dtv_yagi`, `winegard_gm6000_logic_backplane`, `gigachad_xavier_void`, `cottage_pi6_plus`, `old_rca_display_baseplate`, `opi_zero_2w_carrier`, `comrade`, `cyberdeck`, `cyberdeck-2`, `micro_cyberdeck_case`, `fan_guard`, `ac_redirectors`, `solarpunk_seed_tray`, `solarpunk_siphon_filter`
   - The two `solarpunk_*` designs are in the design phase (no geometry yet); their canonical details live in `docs/solarpunk_series.md`
   - `cyberdeck-2`: fully enclosed 5U ten-inch-rack receiver (80 mm deep behind the rack) split into four printable quadrant leaves and joined by eight end-aligned M3 tongue/receiver seam stations with captive washers and hex nuts; thirty front rack holes, two internal equipment shelves, closed rear
 - `output/`
@@ -353,6 +353,8 @@ embedded in one-off design notes:
   - First-draft visual mockup workspace for a cassette-futurist cyberdeck with asymmetric eye module, wide touchscreen, folding keyboard, hardware toggles, and internal proxy volumes
 - `designs/micro_cyberdeck_case/`
   - Single-piece `76 x 45 x 45 mm` open-top, open-front dual-chamber case retaining a `67 x 39 x 42 mm` nominal equipment envelope, with a left-wall micro-SD / battery window pair (flush retention lips), a divider forming the two chambers, a right-wall 6 mm fan wall (Ø38 through air opening + 4 x Ø4.2 through mounts on 32 mm pitch + Ø6 x 3 mm blind screw-head seats with 3 mm solid behind each seat floor), a back-wall internal 3 mm x 3 mm rail (rev_0004; x = 8..65, ledge y = 39..42 at z = 37..40, through-wall tenon flush with the rear outer face), and top-band retention ledges on both side walls (rev_0004 amend, user-directed; left ledge x = 3..6 and right ledge x = 67..70, both at z = 43..45 full wall width, 3 mm deep meeting the minimum internal edge width and 2 mm tall after the 2026-09-17 height amend)
+- `designs/fan_guard/`
+  - Single-part flat air guard for the `micro_cyberdeck_case` 40 mm fan: a 46 x 3 mm plate with a centered Ø38 mm air opening, held 3 mm off the fan face by four Ø6 / Ø4.2 bored posts at the fan's 32 mm corner stations (clamps with the case's existing M3 fan screws)
 - `designs/ac_redirectors/`
   - Two independent rail-hung air-conditioner redirectors sharing an open 50 mm-radius quarter-turn foundation
   - Includes a straight vertical door-side guide and a bed-side guide with parametric 45-degree swept vanes

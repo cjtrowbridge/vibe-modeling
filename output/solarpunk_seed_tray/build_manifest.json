@@ -4,10 +4,10 @@
   "design": "solarpunk_seed_tray",
   "revision": "rev_0002",
   "destination": "current",
-  "generated_at_utc": "2026-09-18T03:08:24.633527+00:00",
+  "generated_at_utc": "2026-09-21T01:25:52.684114+00:00",
   "config": {
     "path": "designs/solarpunk_seed_tray/configs/rev_0002.json",
-    "sha256": "6645272cc62400cbf21c58fd9f2cc1e9d5c58e592b7118e9a9c6c2f2a2491399"
+    "sha256": "c1e21e3ae84b3d8c10007007f2f4b2e19db20a3ae359c4d6b09b0e1e8ad17695"
   },
   "parts_manifest": {
     "path": "designs/solarpunk_seed_tray/parts.json",
@@ -15,11 +15,11 @@
   },
   "source": {
     "path": "designs/solarpunk_seed_tray/src",
-    "sha256": "54f13fed72b39291db84686189a48557cfb9d6b2c1df11c3257ec3f5ed2bb01a",
+    "sha256": "3bb0808a165e9ab873e4641b5fe475374ffe2346cb30899cdd36a73e980f437f",
     "main_scad": "designs/solarpunk_seed_tray/src/main.scad"
   },
   "git": {
-    "commit": "8e157c45b1c24fab4ae06be5b4cd8cb9e704fc23",
+    "commit": "0b9bf347b4793f2eb45320ff346a155e5d860343",
     "dirty": true
   },
   "openscad": "C:\\Program Files (x86)\\OpenSCAD\\openscad.exe",
@@ -39,93 +39,93 @@
   "artifacts": [
     {
       "path": "solarpunk_seed_tray_rev_0002.png",
-      "bytes": 33322,
-      "sha256": "285759121e947cd7b8f9cc8a05da574a8f5e9a4503a7155a09135f8e4814575a"
+      "bytes": 32681,
+      "sha256": "a70a16a210f0135fff0e0ba5cdd7f0f79e7d6303a7096c3586bd070e47091a02"
     },
     {
       "path": "solarpunk_seed_tray_rev_0002.stl",
-      "bytes": 234221,
-      "sha256": "a6be09f51700289b6b9dcb9faf44c5de2d16c20a6871d76a5fbe7bd058bdee57"
+      "bytes": 261121,
+      "sha256": "2951e44cfd400231c4ed350149f9729adf90f94805ef2121b01396f9f8a6b44f"
     },
     {
       "path": "solarpunk_seed_tray_rev_0002_inspect_inside_bottom_iso.png",
-      "bytes": 15644,
-      "sha256": "6df03fb484aed8e64a6387fe06a863657d9201f5686770f1c3caee1a4b20ad7f"
+      "bytes": 17647,
+      "sha256": "dd29e6630307bb8e34875bb9f604158ed007d92810967645dff0a53c7b20ab80"
     },
     {
       "path": "solarpunk_seed_tray_rev_0002_inspect_inside_bottom_ortho.png",
-      "bytes": 6174,
-      "sha256": "04477b56c5efa9496b48cc0b314c0940d47e5b785c14aa02488102d3e344e542"
+      "bytes": 7615,
+      "sha256": "eb23affd131da41fd5f3916d0dfce35758e15f54cef00de7d7eba73c0137b7bb"
     },
     {
       "path": "solarpunk_seed_tray_rev_0002_iso_back_left.png",
-      "bytes": 35013,
-      "sha256": "6913fb24cd5532906f32e4b926b0375d298b1b1a65e8afc06b17c845b1a56a4a"
+      "bytes": 37721,
+      "sha256": "2831ab2b45ae65a2fff6f9a374258398ad626b80ee1271274266603ec152411f"
     },
     {
       "path": "solarpunk_seed_tray_rev_0002_iso_back_right.png",
-      "bytes": 33078,
-      "sha256": "7d6c532047eacc4606d7c205dd5f9094922e69b178d19362ab5dcc1b498c9acf"
+      "bytes": 35446,
+      "sha256": "a97b4662f780f649ecda8682ab20d1826be966e27612e4bbf4b6fc3c664939b0"
     },
     {
       "path": "solarpunk_seed_tray_rev_0002_iso_bottom_back_left.png",
-      "bytes": 20821,
-      "sha256": "0623b704da6a920ba3800a7dcd673087fbaba68f00295b5ec995c1843956d948"
+      "bytes": 19772,
+      "sha256": "7843590183a723743403db0515b60242470327c4f2fb6415e301b1c9355411fa"
     },
     {
       "path": "solarpunk_seed_tray_rev_0002_iso_bottom_back_right.png",
-      "bytes": 24115,
-      "sha256": "0d6a1d414bff998eecb2ef50788c332975ffc1ee0db274e29502bedb6dd7d7cb"
+      "bytes": 22677,
+      "sha256": "bf42e04c7ca09d4ab109ef680a48a43c0931921739525b3aefb84d71192072bc"
     },
     {
       "path": "solarpunk_seed_tray_rev_0002_iso_bottom_front_left.png",
-      "bytes": 22234,
-      "sha256": "5a134a9f0f783bb695ae69afc7a99e5056a5fbd11548780bd51c53264bd0538d"
+      "bytes": 18949,
+      "sha256": "78ad4a00095c656e009bd16c1d5eadfaa70085ad920fa0256d9756c47d1a0f94"
     },
     {
       "path": "solarpunk_seed_tray_rev_0002_iso_bottom_front_right.png",
-      "bytes": 21012,
-      "sha256": "b46b2233fa1b5701daafffcee9d6249af8d05aa6f33858559b26c4d520a96105"
+      "bytes": 19950,
+      "sha256": "624edfd88864154140d1fc0cd5091151fdcb560459346deb5cabdd72dce26cf2"
     },
     {
       "path": "solarpunk_seed_tray_rev_0002_iso_front_left.png",
-      "bytes": 32116,
-      "sha256": "920aaea2c1eb2b6ca8ce958340dab72fb329711782e40fc2959cd44636d5ca46"
+      "bytes": 30457,
+      "sha256": "60543e9887a2afc4d04e6317778f94fe73d1db62404d0895a09135421a994d25"
     },
     {
       "path": "solarpunk_seed_tray_rev_0002_iso_front_right.png",
-      "bytes": 33322,
-      "sha256": "285759121e947cd7b8f9cc8a05da574a8f5e9a4503a7155a09135f8e4814575a"
+      "bytes": 32681,
+      "sha256": "a70a16a210f0135fff0e0ba5cdd7f0f79e7d6303a7096c3586bd070e47091a02"
     },
     {
       "path": "solarpunk_seed_tray_rev_0002_ortho_back.png",
-      "bytes": 6275,
-      "sha256": "a75edd3c25dc1fc209b1ba6c8d97af593ed4b4eaaaed9cd30fe6df83cc379e78"
+      "bytes": 6102,
+      "sha256": "3ec76dde6060d644993655c04d8e8d29e02a220adfeb9e7fcaa56e8ee6a5c49a"
     },
     {
       "path": "solarpunk_seed_tray_rev_0002_ortho_bottom.png",
-      "bytes": 6174,
-      "sha256": "04477b56c5efa9496b48cc0b314c0940d47e5b785c14aa02488102d3e344e542"
+      "bytes": 7615,
+      "sha256": "eb23affd131da41fd5f3916d0dfce35758e15f54cef00de7d7eba73c0137b7bb"
     },
     {
       "path": "solarpunk_seed_tray_rev_0002_ortho_front.png",
-      "bytes": 6116,
-      "sha256": "18daf417d448219f4c5a6c368ab8e3e942b8c1e04c8654964376c72a598beb2d"
+      "bytes": 6495,
+      "sha256": "42da25333f9d6dcb5932cc5fa54944afba3f2f1da259ae6bf3d4aa5d638653c1"
     },
     {
       "path": "solarpunk_seed_tray_rev_0002_ortho_left.png",
-      "bytes": 6148,
-      "sha256": "ea8110d71ef5054850ed4c3541b4f30145bb5e5f05dc68a31f178ae368fd6302"
+      "bytes": 6374,
+      "sha256": "131feea120c78b2cd459d7023d2bd6603aa5b453315003a6529ffdeeeb6579c7"
     },
     {
       "path": "solarpunk_seed_tray_rev_0002_ortho_right.png",
-      "bytes": 6158,
-      "sha256": "5291ff3509d0e6e36ac95aee28d4e81e3d2101c1c8c7d5b6aa5de8f55dc30a56"
+      "bytes": 6422,
+      "sha256": "4a888bdb55559c0e2d8f8118e5f6ab36b393c83b5c221491e09d022e2e87767b"
     },
     {
       "path": "solarpunk_seed_tray_rev_0002_ortho_top.png",
-      "bytes": 6670,
-      "sha256": "671ba7337a8a2dd1668c9a32483e9a18d022a9c457c908e9567f763a7919212e"
+      "bytes": 9357,
+      "sha256": "830d46a4b328da44ea62d8cc4ebc649d9d87614e55d1b4a4e72f7902cf0247d3"
     }
   ]
 }

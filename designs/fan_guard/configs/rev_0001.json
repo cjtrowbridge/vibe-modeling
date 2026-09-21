@@ -1,0 +1,17 @@
+{
+  "part": "fan_guard_rev_0001",
+  "part_id": 1,
+  "plate_size": 46.0,
+  "plate_thickness": 3.0,
+  "center_cutout_d": 38.0,
+  "standoff_height": 3.0,
+  "stud_outer_d": 6.0,
+  "stud_bore_d": 4.2,
+  "stud_pitch": 32.0,
+  "fan_face_d": 40.0,
+  "fan_blade_d": 38.0,
+  "blade_clearance": 0.5,
+  "minimum_wall_thickness": 3.0,
+  "minimum_structural_overlap": 3.0,
+  "minimum_internal_edge_width": 3.0
+}
