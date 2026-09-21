@@ -1,0 +1,226 @@
+{
+  "schema_version": 1,
+  "build_scope": "complete",
+  "design": "solarpunk_intelligence_hub",
+  "revision": "rev_0002",
+  "destination": "current",
+  "generated_at_utc": "2026-09-21T05:56:06.363044+00:00",
+  "config": {
+    "path": "designs/solarpunk_intelligence_hub/configs/rev_0002.json",
+    "sha256": "4e846d4e7829e1604cb2673dcdf6fdb6936c0b200ec3a009626e078bc2b10dc3"
+  },
+  "parts_manifest": {
+    "path": "designs/solarpunk_intelligence_hub/parts.json",
+    "sha256": "738def6dbaa33e4516c3d549c7c70ca1f58dcd6667fc95ac22b3f0029378b894"
+  },
+  "source": {
+    "path": "designs/solarpunk_intelligence_hub/src",
+    "sha256": "3c5346af88e9d223beba08d559a43b682d68e7d4ad0aaa110199fb70292d3b99",
+    "main_scad": "designs/solarpunk_intelligence_hub/src/main.scad"
+  },
+  "git": {
+    "commit": "0b9bf347b4793f2eb45320ff346a155e5d860343",
+    "dirty": true
+  },
+  "openscad": "C:\\Program Files (x86)\\OpenSCAD\\openscad.exe",
+  "counts": {
+    "parts": 2,
+    "stl": 2,
+    "png": 34,
+    "artifacts": 36
+  },
+  "parts": [
+    {
+      "part_id": 1,
+      "name": "solarpunk_intelligence_hub",
+      "output_name": "solarpunk_intelligence_hub_rev_0002"
+    },
+    {
+      "part_id": 2,
+      "name": "backplane_blockout_mockup",
+      "output_name": "backplane_blockout_mockup_rev_0002"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "backplane_blockout_mockup_rev_0002.png",
+      "bytes": 32268,
+      "sha256": "ac51de65f6c7c1bbdbc1b8c8e4b17dbf2e29ffc37fbb2bc67f3eb03ac205bdf8"
+    },
+    {
+      "path": "backplane_blockout_mockup_rev_0002.stl",
+      "bytes": 413552,
+      "sha256": "2421466e7ea8a0cac14b370ae0d1a912ed58862707e46326c207ae4cc602d0e6"
+    },
+    {
+      "path": "backplane_blockout_mockup_rev_0002_inspect_inside_bottom_iso.png",
+      "bytes": 16328,
+      "sha256": "236290dcac3c0920398f96feb9f541e1defb088b5bc233f017aa1297a30729da"
+    },
+    {
+      "path": "backplane_blockout_mockup_rev_0002_inspect_inside_bottom_ortho.png",
+      "bytes": 5968,
+      "sha256": "e27d5c56873e262b3c7d5c893c8e252af47300b06b8fda04de6b1675708ddb08"
+    },
+    {
+      "path": "backplane_blockout_mockup_rev_0002_iso_back_left.png",
+      "bytes": 32453,
+      "sha256": "3f280e711ea39f3b6d86ed11062309771785f1d013111aecaa8e348dd971fdaa"
+    },
+    {
+      "path": "backplane_blockout_mockup_rev_0002_iso_back_right.png",
+      "bytes": 32042,
+      "sha256": "08f61446db4e752c5eb55de82c8803f9b25b6d2fbc07eb05764db62a358ddfa9"
+    },
+    {
+      "path": "backplane_blockout_mockup_rev_0002_iso_bottom_back_left.png",
+      "bytes": 19536,
+      "sha256": "b0c4a9803ddb64bc0fe8c3ed2bb7f366233aa9f18e4378fcdc70047c4803fc74"
+    },
+    {
+      "path": "backplane_blockout_mockup_rev_0002_iso_bottom_back_right.png",
+      "bytes": 20705,
+      "sha256": "19ae29df906af7eaa56bb928de2be5b9cb723c1714ab7883848494280844df0d"
+    },
+    {
+      "path": "backplane_blockout_mockup_rev_0002_iso_bottom_front_left.png",
+      "bytes": 20161,
+      "sha256": "52dce2fc97a0d41ee48a4e4ab87c8af462ad2ae5e6a61db051ba9cbb898451c2"
+    },
+    {
+      "path": "backplane_blockout_mockup_rev_0002_iso_bottom_front_right.png",
+      "bytes": 19533,
+      "sha256": "2f43a02419307911ad889941e1aaa1efd67e57d647c2e040fe8c3cf985eb51e3"
+    },
+    {
+      "path": "backplane_blockout_mockup_rev_0002_iso_front_left.png",
+      "bytes": 31255,
+      "sha256": "faec7f82be942876984c608e2447409e687aecb45d296cc31ba41506efc827d8"
+    },
+    {
+      "path": "backplane_blockout_mockup_rev_0002_iso_front_right.png",
+      "bytes": 32268,
+      "sha256": "ac51de65f6c7c1bbdbc1b8c8e4b17dbf2e29ffc37fbb2bc67f3eb03ac205bdf8"
+    },
+    {
+      "path": "backplane_blockout_mockup_rev_0002_ortho_back.png",
+      "bytes": 5923,
+      "sha256": "5b872cf21f46af8777e6410f7eeba9919218895d77a037fff92ab9cabf700d8d"
+    },
+    {
+      "path": "backplane_blockout_mockup_rev_0002_ortho_bottom.png",
+      "bytes": 5968,
+      "sha256": "e27d5c56873e262b3c7d5c893c8e252af47300b06b8fda04de6b1675708ddb08"
+    },
+    {
+      "path": "backplane_blockout_mockup_rev_0002_ortho_front.png",
+      "bytes": 5915,
+      "sha256": "bb4e1e22ce2ae20b62d8a930bf5a63ec947d0b342a66cac52297addd7a4427f3"
+    },
+    {
+      "path": "backplane_blockout_mockup_rev_0002_ortho_left.png",
+      "bytes": 5909,
+      "sha256": "8ccb5f96c6d37c3213ffa5051ffcfaee0b54d0deb6b6fddb9815471f9b6d666d"
+    },
+    {
+      "path": "backplane_blockout_mockup_rev_0002_ortho_right.png",
+      "bytes": 5916,
+      "sha256": "beb6cfaf558fa499333358126c4e400bf294c778ef17b7c13fd80bba065bc827"
+    },
+    {
+      "path": "backplane_blockout_mockup_rev_0002_ortho_top.png",
+      "bytes": 6158,
+      "sha256": "59ad29a7b5800be340a7ae3b712eed050338ee9f8856c78cc9040cace9ce428c"
+    },
+    {
+      "path": "solarpunk_intelligence_hub_rev_0002.png",
+      "bytes": 56076,
+      "sha256": "59a176a76252fe5bd5d52e0adeec29229ec872122dd511fe2282d18231c7c9fb"
+    },
+    {
+      "path": "solarpunk_intelligence_hub_rev_0002.stl",
+      "bytes": 2784585,
+      "sha256": "95f9225fdd5d12a23dfb647292c609e93717d1a42dc753377cdc93ca15fda3d1"
+    },
+    {
+      "path": "solarpunk_intelligence_hub_rev_0002_inspect_inside_bottom_iso.png",
+      "bytes": 22143,
+      "sha256": "f7988003a72bd1af8ec1bd3311a1ca7199eb1e3227b9aad585917ed91ee519ac"
+    },
+    {
+      "path": "solarpunk_intelligence_hub_rev_0002_inspect_inside_bottom_ortho.png",
+      "bytes": 5858,
+      "sha256": "a54e1ec41e068e225a2accfe3a5f5adaa57184443e5b66bff1b5e6e3b4d59d14"
+    },
+    {
+      "path": "solarpunk_intelligence_hub_rev_0002_iso_back_left.png",
+      "bytes": 53800,
+      "sha256": "d491d761231426e8a8444ea4948c9de67baec328958e3f0d7addc8bc3706e3e5"
+    },
+    {
+      "path": "solarpunk_intelligence_hub_rev_0002_iso_back_right.png",
+      "bytes": 56105,
+      "sha256": "5bb77130de2adbcdefca9e1e2074ae481e57de45a60b5e25b204cd122bb81a54"
+    },
+    {
+      "path": "solarpunk_intelligence_hub_rev_0002_iso_bottom_back_left.png",
+      "bytes": 19803,
+      "sha256": "c3435474954d625a4a92d6415a0b00777e5e65067428975961179bbc82ad0782"
+    },
+    {
+      "path": "solarpunk_intelligence_hub_rev_0002_iso_bottom_back_right.png",
+      "bytes": 20314,
+      "sha256": "a4569daa3e815ac11560804358e1d77f9b1335145ab48632cf81c76c6037fc54"
+    },
+    {
+      "path": "solarpunk_intelligence_hub_rev_0002_iso_bottom_front_left.png",
+      "bytes": 20116,
+      "sha256": "570dafd348c2f1369dc3fb907bf8748193f99ff2326d61f6fac2d0e0c2132116"
+    },
+    {
+      "path": "solarpunk_intelligence_hub_rev_0002_iso_bottom_front_right.png",
+      "bytes": 19870,
+      "sha256": "71f2041501f2d0b1ad68f939356fd56a38f111fd1ae3b8351685070bcf38046a"
+    },
+    {
+      "path": "solarpunk_intelligence_hub_rev_0002_iso_front_left.png",
+      "bytes": 58389,
+      "sha256": "6fdf503a04a7b319cf5bf830f89772db88dd81c5256e860741d4911a577dcdc3"
+    },
+    {
+      "path": "solarpunk_intelligence_hub_rev_0002_iso_front_right.png",
+      "bytes": 56076,
+      "sha256": "59a176a76252fe5bd5d52e0adeec29229ec872122dd511fe2282d18231c7c9fb"
+    },
+    {
+      "path": "solarpunk_intelligence_hub_rev_0002_ortho_back.png",
+      "bytes": 6405,
+      "sha256": "f2eae3f1ef4ef847380dc4d504b4bd97ba38e31ab80b25d02385febecc382ec1"
+    },
+    {
+      "path": "solarpunk_intelligence_hub_rev_0002_ortho_bottom.png",
+      "bytes": 5858,
+      "sha256": "a54e1ec41e068e225a2accfe3a5f5adaa57184443e5b66bff1b5e6e3b4d59d14"
+    },
+    {
+      "path": "solarpunk_intelligence_hub_rev_0002_ortho_front.png",
+      "bytes": 6326,
+      "sha256": "60b7262f8e3b7da9598954e97a9105a9ca803c5e02725404692f66a3e31621e1"
+    },
+    {
+      "path": "solarpunk_intelligence_hub_rev_0002_ortho_left.png",
+      "bytes": 6292,
+      "sha256": "3c00bf2a930668778d292dbb5f53aab0ed799d8c7eeb1b311d957e61fddb4a16"
+    },
+    {
+      "path": "solarpunk_intelligence_hub_rev_0002_ortho_right.png",
+      "bytes": 6298,
+      "sha256": "4e355098ea53bf796fc0c661e947b3a3687156af4d8e641e6fde6017fe092d14"
+    },
+    {
+      "path": "solarpunk_intelligence_hub_rev_0002_ortho_top.png",
+      "bytes": 10994,
+      "sha256": "cacf2fdf5d91829078302c723ed031558365176aea97664af103063db97ad0ca"
+    }
+  ]
+}

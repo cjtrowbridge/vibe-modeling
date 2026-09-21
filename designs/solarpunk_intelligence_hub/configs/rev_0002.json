@@ -1,0 +1,42 @@
+{
+  "part": "solarpunk_intelligence_hub_rev_0002",
+  "part_id": 1,
+
+  "edge_margin": 3.0,
+  "gap": 3.0,
+  "velcro_gap": 3.0,
+  "velcro_slot_w": 20.0,
+  "velcro_slot_h": 5.0,
+  "velcro_edge_margin": 10.0,
+
+  "plate_t": 3.0,
+  "comp_h": 20.0,
+
+  "m3_d": 3.2,
+  "velcro_n": 4,
+
+  "outline_h": 1.0,
+  "outline_w": 3.0,
+  "text_h": 1.0,
+  "label_size": 4.0,
+  "standoff_h": 3.0,
+  "standoff_od": 9.2,
+  "standoff_h_tall": 15.0,
+  "standoff_od_tall": 9.2,
+
+  "relay_w": 52.0,
+  "relay_h": 73.0,
+  "pi_w": 90.0,
+  "pi_h": 60.0,
+  "cam_w": 25.0,
+  "cam_h": 25.0,
+  "scr_w": 100.0,
+  "scr_h": 62.0,
+
+  "relay_hole_inset": 9.0,
+  "pi_hole_inset": 9.0,
+  "cam_hole_inset": 6.5,
+  "scr_hole_inset": 9.0,
+
+  "maximum_print_dimension": 220.0
+}

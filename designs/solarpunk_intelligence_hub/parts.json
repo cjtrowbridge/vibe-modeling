@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "parts": [
+    {
+      "part_id": 1,
+      "name": "solarpunk_intelligence_hub"
+    },
+    {
+      "part_id": 2,
+      "name": "backplane_blockout_mockup"
+    }
+  ]
+}

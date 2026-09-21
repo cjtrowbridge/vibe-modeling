@@ -26,6 +26,7 @@
 
 | Design | Status | Role |
 |---|---|---|
+| `solarpunk_intelligence_hub` | rev_0002 built and audited (2026-09-20) | Electrical/IoT mounting hub: single flat hanging plate carrying the series electronics on one standoff plane |
 | `solarpunk_seed_tray` | scaffold complete; placeholder configs, Phase 1 measurement pending | Per-tray converter: TPU flood tray with integrated bell siphon |
 | `solarpunk_siphon_filter` | deferred | Siphon-based filtration stage between return manifold and reservoir |
 
@@ -318,7 +319,63 @@ Routine maintenance, no tools, in order:
 Related CAD constraint: the model must not create a cavity unreachable with
 the insert lifted out (see the 5.3 no-inaccessible-cavities assumption).
 
-## 6. Design: `solarpunk_siphon_filter`
+## 6. Design: `solarpunk_intelligence_hub`
+
+- **Status:** rev_0002 built, audited, and installed (2026-09-20); complete
+  manifest in `output/solarpunk_intelligence_hub/` (2 STL + 34 PNG +
+  `build_manifest.json`; `scad_build_all.py --audit-only` passes; the
+  "Rebuild stale CAD designs" task lists the design `CURRENT`).
+- **Role:** the series' electrical/IoT mounting backplane — one flat hanging
+  plate to which every series electronic attaches through a single shared M3
+  standoff plane. Raised Ø9.2 mm standoff collars on the top face set each
+  device's standoff height, and 1 mm raised device outlines and centered
+  labels make the assembled stack self-identifying.
+- **Layout decisions (rev_0002, 2026-09-20):** the row-1 relays were swapped
+  and rotated 90° vs rev_0001 (relay 2 is now portrait 52 × 73 at the left
+  edge, relay 1 is now landscape 73 × 52 at the right edge); the camera sits
+  centered between their nearest edges on the top-right relay's (relay 1's)
+  center line; the Pi sits with its bottom edge on the bottom hanging band's
+  top line (no longer corner-flush); relay labels are unnumbered ("RELAY")
+  because the swap and rotation would otherwise tie the numbering to physical
+  relay sockets rather than to the boards.
+- **Carried components (commodity, not designed here):** 3 × ESP32-Relay
+  boards (52 × 73), 1 × display screen (100 × 62), 1 × camera module (25 × 25),
+  1 × Raspberry Pi (90 × 60, in a 60 × 90 rotated footprint), 1 × meshtastic
+  node (dimensions/pattern **open** — will land as a new revision).
+- **Geometry (rev_0002):** flat 169 × 194 × 3 mm plate; 24 Ø3.2 mm M3
+  component through-holes (4 per component) + 8 × 20 × 5 mm hanging slots
+  (4 per band, mirrored: top band y 186..191, bottom band y 3..8, slot
+  centers at x 20/63/106/149 — slot edges 10 mm from the plate sides); each
+  band is an 11 mm zone (3 mm gap + 5 mm slot + 3 mm gap). The bottom band
+  grew the plate 184.2 → 194 mm tall and moved the Pi / relay 3 row up 8 mm
+  onto the band's top line. Uniform 3 mm edge margin and 3 mm gaps. Approved
+  per-component hole spans: relay 34 × 55 (natural orientation, rotates with
+  the board), screen 82 × 44, Pi 42 × 72 (9 mm inset in the 60 × 90 rotated
+  footprint), camera 12 × 12 (6.5 mm inset in the 25 × 25 body). Raised
+  Ø9.2 mm M3 standoff collars (Ø3.2 bore, 3.0 mm wall): 22 collars at 24
+  holes — 16 × 3 mm (relays + Pi) and 6 × 15 mm (screen 4 + camera top 2;
+  the camera's lower pair stays open) for electronics clearance. Top-face
+  marking: a 1 mm raised outline ring per footprint (camera exempt — its
+  standoffs would merge into the ring band) plus 1 mm raised centered
+  labels; label vertical centering compensates the OpenSCAD 2021.01 text
+  baseline anchor (`label_y_off = 0.955 × label_size`, measured residual
+  ≤ 0.25 mm on the built STL). Mounting-side bores are bare holes — no
+  captive nuts, bosses, or countersinks.
+- **Structural minimums (asserted at render):** `minimum_wall_thickness =
+  3.0`; governing internal minimum is `minimum_internal_edge_width = 11.8 mm`
+  — the tightest in-pattern ligament (camera 12 + 3 − 3.2).
+- **Mockup part:** part 2 `backplane_blockout_mockup` is non-printable
+  reference geometry (20 mm footprint blocks with hole patterns on the same
+  plate), managed per
+  `playbooks/how_to_manage_reference_mockups_and_non_printable_geometry.md`;
+  the pre-conversion reference `src/mockups/backplane_blockout.scad` is frozen
+  and is not part of the manifest.
+- **Open:** meshtastic node dimensions/pattern; material (working proposal
+  PETG); cable management (unspecified).
+- **Assembly governance:** not applicable — a single printable part plus a
+  reference mockup (no `assembly.json`); precedent: `ac_redirectors`.
+
+## 7. Design: `solarpunk_siphon_filter`
 
 - **Status:** deferred — no geometry this phase.
 - **Role:** siphon-based filtration stage handling the combined drainage from
@@ -332,7 +389,7 @@ the insert lifted out (see the 5.3 no-inaccessible-cavities assumption).
 - **Open:** full design deferred; tray-side work only needs to expose a clean
   connection point.
 
-## 7. Cross-Design Contracts
+## 8. Cross-Design Contracts
 
 - The tray drain port and the siphon-filter inlet must stay on the same ~1/2"
   commodity plumbing standard (see 5.6).
@@ -343,7 +400,7 @@ the insert lifted out (see the 5.3 no-inaccessible-cavities assumption).
   `playbooks/how_to_manage_reference_mockups_and_non_printable_geometry.md` and
   must never appear as print artifacts.
 
-## 8. Maintenance
+## 9. Maintenance
 
 - Update this document in the same task as any detail change to a solarpunk
   design (dimensions, decisions, scope, deviations, open items).
