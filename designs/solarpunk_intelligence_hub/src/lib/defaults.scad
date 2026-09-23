@@ -9,7 +9,9 @@
 // / labels and raised M3 standoffs (3 mm; camera + screen 15 mm, camera on
 // its top two collars only). The hanging band is mirrored on the bottom:
 // the Pi / relay 3 row seats on the band's top line (2026-09-20), plate
-// 169 x 194).
+// 169 x 194). The hole pattern spans are the user-provided values recorded
+// in the frozen reference (rev_0003, 2026-09-22: the rev_0001/0002
+// uniform-inset rule had replaced the user's layout and was corrected).
 
 // ---- Layout parameters ----------------------------------------------------
 
@@ -70,16 +72,22 @@ cam_h = is_undef(cam_h) ? 25.0 : cam_h;
 scr_w = is_undef(scr_w) ? 100.0 : scr_w;
 scr_h = is_undef(scr_h) ? 62.0 : scr_h;
 
-// Per-component M3 hole insets (hole center distance from the enclosing
-// component edge), from the user-provided hole layout (approved 2026-09-20):
-//  - relays / screen: holes 9 mm inside the rectangle -> relay 34×55,
-//    screen 82×44 span
-//  - Pi: holes 9 mm from the edge -> 42×72 span (rotated footprint 60×90)
-//  - camera: 12 mm hole pattern on the 25 mm body -> 12×12 span (inset 6.5)
-relay_hole_inset = is_undef(relay_hole_inset) ? 9.0 : relay_hole_inset;
-pi_hole_inset = is_undef(pi_hole_inset) ? 9.0 : pi_hole_inset;
-cam_hole_inset = is_undef(cam_hole_inset) ? 6.5 : cam_hole_inset;
-scr_hole_inset = is_undef(scr_hole_inset) ? 9.0 : scr_hole_inset;
+// Per-component M3 hole pattern spans (center-to-center distance of the 4
+// mounting holes, natural component orientation), from the user-provided
+// hole layout recorded in src/mockups/backplane_blockout.scad (frozen
+// 2026-09-20). Corrected in rev_0003 (2026-09-22): rev_0001/0002 had
+// replaced these with a uniform "body - 2 x inset" rule (relay/screen/Pi
+// inset 9, camera inset 6.5) that did not match the user's pattern.
+// Derivable edge insets (inset = (body - span) / 2): relay 3.5 / 4.0,
+// screen 3.5 / 4.0, Pi 6.0 / 16.0, camera 2.0 / 6.5.
+relay_span_nat_x = is_undef(relay_span_nat_x) ? 45.0 : relay_span_nat_x;
+relay_span_nat_y = is_undef(relay_span_nat_y) ? 65.0 : relay_span_nat_y;
+pi_span_nat_x = is_undef(pi_span_nat_x) ? 58.0 : pi_span_nat_x;
+pi_span_nat_y = is_undef(pi_span_nat_y) ? 48.0 : pi_span_nat_y;
+scr_span_nat_x = is_undef(scr_span_nat_x) ? 93.0 : scr_span_nat_x;
+scr_span_nat_y = is_undef(scr_span_nat_y) ? 54.0 : scr_span_nat_y;
+cam_span_nat_x = is_undef(cam_span_nat_x) ? 21.0 : cam_span_nat_x;
+cam_span_nat_y = is_undef(cam_span_nat_y) ? 12.0 : cam_span_nat_y;
 
 maximum_print_dimension = is_undef(maximum_print_dimension) ? 220.0 : maximum_print_dimension;
 
@@ -122,16 +130,19 @@ function board_h() =
 
 // ---- Hole pattern spans -----------------------------------------------------
 
-function relay_ss_span_x() = relay_ss_w - 2 * relay_hole_inset;    // 34
-function relay_ss_span_y() = relay_ss_h - 2 * relay_hole_inset;    // 55
-function relay_ls_span_x() = relay_ss_span_y();                     // 55 (rotated)
-function relay_ls_span_y() = relay_ss_span_x();                     // 34 (rotated)
-function cam_span_x() = cam_w - 2 * cam_hole_inset;                 // 12
-function cam_span_y() = cam_h - 2 * cam_hole_inset;                 // 12
-function pi_ss_span_x() = pi_ss_w - 2 * pi_hole_inset;              // 42 (rotated, 9 mm inset)
-function pi_ss_span_y() = pi_ss_h - 2 * pi_hole_inset;              // 72 (rotated)
-function scr_span_x() = scr_ls_w - 2 * scr_hole_inset;              // 82
-function scr_span_y() = scr_ls_h - 2 * scr_hole_inset;              // 44
+// Span in each physical orientation, derived from the natural-orientation
+// user-provided spans above (rotated footprints swap x/y, per the frozen
+// mockup's orientation blocks).
+function relay_ss_span_x() = relay_span_nat_x;   // 45
+function relay_ss_span_y() = relay_span_nat_y;   // 65
+function relay_ls_span_x() = relay_span_nat_y;   // 65 (rotated)
+function relay_ls_span_y() = relay_span_nat_x;   // 45 (rotated)
+function cam_span_x() = cam_span_nat_x;          // 21
+function cam_span_y() = cam_span_nat_y;          // 12
+function pi_ss_span_x() = pi_span_nat_y;         // 48 (rotated)
+function pi_ss_span_y() = pi_span_nat_x;         // 58 (rotated)
+function scr_span_x() = scr_span_nat_x;          // 93
+function scr_span_y() = scr_span_nat_y;          // 54
 
 // Ligament between adjacent mounting holes of a pattern: span + gap - d.
 function pattern_ligament(span) = span + gap - m3_d;

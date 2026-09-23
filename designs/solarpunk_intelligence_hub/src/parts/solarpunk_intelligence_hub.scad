@@ -3,7 +3,7 @@
 // Single 169 x 194 x 3 mm flat plate carrying 24 M3 (Ø3.2) through-holes
 // (6 components × 4 mounting holes) + 8 hanging slots each 20 x 5 mm (4 per
 // band, mirrored top and bottom). Hole pattern spans per the user-provided
-// layout: relay 34×55, screen 82×44, Pi (rotated) 42×72, camera 12×12.
+// layout: relay 45×65, screen 93×54, Pi (rotated) 48×58, camera 21×12.
 // Camera centered between the row-1 relays on the top-right relay's center
 // line; the Pi / relay 3 row seats on the bottom band's top line. Top
 // surface: 1 mm raised device outlines and
@@ -35,11 +35,29 @@ module solarpunk_intelligence_hub() {
     assert(tightest_ligament() >= minimum_internal_edge_width,
            str("tightest in-pattern ligament (", tightest_ligament(),
                " mm) is below minimum_internal_edge_width (", minimum_internal_edge_width, ")"));
-    // Every component hole keeps at least minimum_wall_thickness to the
-    // nearest plate edge. Tightest: camera (smallest inset 6.5 mm) ->
-    // 6.5 - 1.6 + 3 = 7.9 mm.
-    assert(cam_hole_inset - 2 * m3_d / 2 + edge_margin >= minimum_wall_thickness,
-           "component hole rim to plate edge below minimum_wall_thickness");
+    // Every M3 bore keeps at least minimum_wall_thickness of material to
+    // the nearest plate edge (bore radius, not diameter, against the hole
+    // edge). Edge-anchored bodies (relays, Pi, screen — each edge_margin
+    // from a plate side in x): tightest rev_0003 case is relay 2's left
+    // holes and the screen's right holes, 3.5 mm inset -> 3 + 3.5 - 1.6 =
+    // 4.9 mm. The formula is conservative where a body is band-anchored
+    // instead (underestimates the true margin, never overestimates it).
+    assert(edge_margin + min([(relay_ss_w - relay_ss_span_x()) / 2,
+                              (relay_ss_h - relay_ss_span_y()) / 2,
+                              (pi_ss_w - pi_ss_span_x()) / 2,
+                              (pi_ss_h - pi_ss_span_y()) / 2,
+                              (scr_ls_w - scr_span_x()) / 2,
+                              (scr_ls_h - scr_span_y()) / 2]) - m3_d / 2
+           >= minimum_wall_thickness,
+           "component hole bore to plate edge below minimum_wall_thickness");
+    // The camera is surrounded by plate (not edge-anchored); its bores are
+    // far from every edge — nearest is 31 mm to the top, minus radius.
+    assert(min(cam_cx() - cam_span_x() / 2,
+               board_w() - cam_cx() - cam_span_x() / 2,
+               cam_cy() - cam_span_y() / 2,
+               board_h() - cam_cy() - cam_span_y() / 2) - m3_d / 2
+           >= minimum_wall_thickness,
+           "camera hole bore to plate edge below minimum_wall_thickness");
     assert(edge_margin >= minimum_wall_thickness,
            "component body to plate edge below minimum_wall_thickness");
     // Hanging slots (rev_0002 approved 2026-09-20): 20 x 5, slot edges
@@ -67,9 +85,7 @@ module solarpunk_intelligence_hub() {
     assert(abs(cam_cy() - rly1_cy()) <= boolean_epsilon,
            "camera not on the top-right relay's center line");
     // Raised top-surface features (rev_0002, approved 2026-09-20). Ring and
-    // standoff wall are internal rims and must meet minimum_wall_thickness;
-    // every standoff must fit its footprint (tightest case: camera — smallest
-    // body, nearest hole-to-edge).
+    // standoff wall are internal rims and must meet minimum_wall_thickness.
     assert(outline_w >= minimum_wall_thickness,
            "outline ring width below minimum_wall_thickness");
     assert(standoff_od - m3_d >= 2 * minimum_wall_thickness - 2 * boolean_epsilon,
@@ -78,10 +94,29 @@ module solarpunk_intelligence_hub() {
     assert(standoff_od_tall - m3_d >= 2 * minimum_wall_thickness - 2 * boolean_epsilon,
            str("tall standoff wall (", (standoff_od_tall - m3_d) / 2,
                " mm) below minimum_wall_thickness"));
-    assert(cam_hole_inset + standoff_od / 2 <= cam_w / 2,
-           "standoff collar exceeds its footprint (tightest case: camera)");
-    assert(cam_hole_inset + standoff_od_tall / 2 <= cam_w / 2,
-           "tall standoff collar exceeds the camera footprint");
+    // Collar fit: the camera carries only its TOP-pair tall collars
+    // (bottom-pair holes stay bare), standing on solid plate — the camera
+    // has no outline ring band. The Ø9.2 tall-collar discs span
+    // y [158.4, 167.6] = (cam_cy() + cam_span_y()/2) ± standoff_od_tall/2:
+    // 13.9 mm above the camera block's bottom edge (assert below),
+    // 1.9 mm inboard of its top edge. The nearest plate edge to any
+    // camera collar is the plate top, 194 - 167.6 = 26.4 mm from the disc
+    // edge (assert below). DOCUMENTED LIMITATION (rev_0003, approved
+    // 2026-09-22): the user-provided camera x-span (21) is wider in x than
+    // a Ø9.2 collar pair would allow inside the 25 mm blockout — each
+    // collar overhangs the camera's outline edge by
+    // cam_span_x()/2 + standoff_od/2 - cam_w/2 = 10.5 + 4.6 - 12.5 = 2.6 mm
+    // (also visible on top in the frozen reference mockup). The overhang is
+    // cosmetic; the mountable hardware truth is the hole pattern.
+    assert(cam_cy() + cam_span_y() / 2 - standoff_od_tall / 2 - (cam_cy() - cam_h / 2)
+           >= minimum_wall_thickness,
+           "tall camera collar (top pair) closer to the camera block's bottom edge than minimum_wall_thickness");
+    assert(min(cam_cx() - cam_span_x() / 2 - standoff_od / 2,
+               board_w() - (cam_cx() + cam_span_x() / 2 + standoff_od / 2),
+               cam_cy() - cam_span_y() / 2 - standoff_od_tall / 2,
+               board_h() - (cam_cy() + cam_span_y() / 2 + standoff_od_tall / 2))
+           >= minimum_wall_thickness,
+           "camera collar exceeds the plate");
     // Label fit: text is centered (halign) and the build's default
     // uppercase render measures 16.3 mm wide for "CAMERA" at size 4
     // (revised STL top-face measurement, 2026-09-21); every other label

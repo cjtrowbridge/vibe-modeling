@@ -3,12 +3,18 @@
 Canonical source of truth for this design and the solarpunk series:
 [`docs/solarpunk_series.md`](../../docs/solarpunk_series.md)
 
-*Status: rev_0002 built, audited, and installed (2026-09-20). Complete manifest
-build produced a flat 37-file artifact set in `output/solarpunk_intelligence_hub/`
-(2 STL + 34 PNG + `build_manifest.json`); `scad_build_all.py --audit-only` passes
-and the "Rebuild stale CAD designs" task lists the design `CURRENT`. Two parts:
-the printable plate (part 1) and a non-printable block-diagram mockup
-(part 2, reference geometry only).*
+*Status: rev_0003 built, audited, and installed (2026-09-22). rev_0003
+corrects the four component mounting-hole patterns to the user-provided spans
+(relay 45 × 65, screen 93 × 54, Pi 58 × 48 natural, camera 21 × 12):
+rev_0001/rev_0002 had built them from a derived uniform-inset rule instead of
+the user's layout (see the 2026-09-22 decision in §4). Complete manifest build
+produced a flat 37-file artifact set in
+`output/solarpunk_intelligence_hub/` (2 STL + 34 PNG +
+`build_manifest.json`); `scad_build_all.py --audit-only` passes, the numeric
+STL hole-coverage check confirms every bore at its corrected position, and the
+"Rebuild stale CAD designs" task lists the design `CURRENT`. Two parts: the
+printable plate (part 1) and a non-printable block-diagram mockup (part 2,
+reference geometry only).*
 
 ## 1. Role
 
@@ -26,22 +32,31 @@ the assembled stack is self-identifying.
 
 | Component | Count | Body (w × h) | Orientation on plate | Mounting-hole pattern (w × h) |
 |---|---|---|---|---|
-| ESP32-Relay board | 3 | 52 × 73 | relay 1 landscape 73 × 52; relay 2 portrait 52 × 73; relay 3 landscape 73 × 52 (row-1 relays swapped and rotated 90° vs rev_0001, 2026-09-20) | 34 × 55 |
-| Display screen | 1 | 100 × 62 | landscape | 82 × 44 |
-| Camera module | 1 | 25 × 25 | — | 12 × 12 |
-| Raspberry Pi (4B/5 footprint) | 1 | 90 × 60 | rotated 90° (60 × 90 footprint) | 42 × 72 |
+| ESP32-Relay board | 3 | 52 × 73 | relay 1 landscape 73 × 52; relay 2 portrait 52 × 73; relay 3 landscape 73 × 52 (row-1 relays swapped and rotated 90° vs rev_0001, 2026-09-20) | 45 × 65 |
+| Display screen | 1 | 100 × 62 | landscape | 93 × 54 |
+| Camera module | 1 | 25 × 25 | — | 21 × 12 |
+| Raspberry Pi (4B/5 footprint) | 1 | 90 × 60 | rotated 90° (60 × 90 footprint) | 58 × 48 (natural) |
 | Meshtastic node | 1 | **open** | **open** | **open** |
 
-- Hole patterns are the user-provided component mounting images, approved as the
-  final patterns on 2026-09-20.
-- The Pi's 42 × 72 pattern fits inside the rotated 60 × 90 footprint with a
-  9 mm inset on every side.
+- Hole patterns are the user-provided component mounting images. The spans
+  above are the center-to-center spans in each board's natural orientation,
+  recorded as the user's layout in the frozen reference
+  `src/mockups/backplane_blockout.scad`. **Correction, 2026-09-22 (rev_0003):**
+  rev_0001/rev_0002 had built the patterns from a derived uniform-inset rule
+  (body − 2 × 9 mm insets; camera − 2 × 6.5 mm — hence 34 × 55 / 82 × 44 /
+  42 × 72 / 12 × 12) instead of carrying the user's spans through the
+  manifest conversion; the corrected values above are authoritative and all
+  other layout content of rev_0002 is unchanged.
+- The Pi's 58 × 48 natural pattern sits inside the 60 × 90 rotated footprint
+  with a 6 mm inset in width and a 16 mm inset along the long axis.
+- 45 × 65 is the relay pattern span in the board's natural orientation and
+  rotates with the board: landscape footprints (relay 1, relay 3) read
+  65 × 45, portrait (relay 2) reads 45 × 65 (orientation disambiguated
+  2026-09-20; spans corrected 2026-09-22).
 - The row-1 relays were swapped and rotated 90° (2026-09-20): relay 2 is now
   at the left edge (portrait, 52 wide × 73 tall), relay 1 at the right edge
   (landscape, 73 wide × 52 tall); the camera sits centered between their
-  nearest edges on the top-right relay's (relay 1's) center line. 34 × 55 is
-  the pattern span in the board's natural orientation and rotates with the
-  board (orientation disambiguated 2026-09-20).
+  nearest edges on the top-right relay's (relay 1's) center line.
 - A later series member (1 × meshtastic node) still needs to land on this plane;
   its dimensions and mounting pattern are not yet known. Adding it will be a new
   revision (it will not invalidate the current component layout unless the user
@@ -92,7 +107,8 @@ the assembled stack is self-identifying.
 | 2026-09-20 | Single shared standoff plane for all carried components. |
 | 2026-09-20 | Plate thickness **3 mm** (supersedes the 2 mm working decision). |
 | 2026-09-20 | All 24 component mounting holes are M3: Ø3.2 mm through (6 components × 4 holes). |
-| 2026-09-20 | Per-component M3 patterns fixed from user-provided component images: relays 34 × 55 (natural orientation, rotates with the board), screen 82 × 44, Pi 42 × 72 (9 mm inset in the 60 × 90 rotated footprint), camera 12 × 12 (6.5 mm inset in the 25 × 25 body). |
+| 2026-09-20 | Per-component M3 patterns fixed "from user-provided component images": relays 34 × 55, screen 82 × 44, Pi 42 × 72 (9 mm inset in the 60 × 90 rotated footprint), camera 12 × 12 (6.5 mm inset in the 25 × 25 body). **Superseded on 2026-09-22:** these values came from a derived uniform-inset rule created during the manifest conversion, not from the user's actual layout. |
+| 2026-09-22 | **rev_0003 — mounting-hole patterns corrected to the user-provided spans:** relay 45 × 65 (natural, rotates with the board), screen 93 × 54, Pi 58 × 48 (natural; 6 mm / 16 mm insets in the 60 × 90 rotated footprint), camera 21 × 12. The rotation/swap logic was unchanged; only the span values were wrong. Documented limitation: the Ø9.2 camera collars overhang the 25 × 25 camera outline by 2.6 mm each side in x (cosmetic; the hole pattern is the hardware truth). |
 | 2026-09-20 | Hanging interface: **8 × 20 × 5 mm slots, 4 per band, mirrored top and bottom** (supersedes the rev_0001 top-only Ø3.2 row); slot edges 10 mm from the side edges. |
 | 2026-09-20 | Row-1 relays swapped and rotated 90° vs rev_0001 (relay 2 now portrait 52 × 73 at the left edge, relay 1 now landscape 73 × 52 at the right edge); the camera is centered between their nearest edges on the top-right relay's (relay 1's) center line. |
 | 2026-09-20 | Top-face marking: 1 mm raised device outline ring + 1 mm raised centered label per footprint; **relay labels unnumbered** ("RELAY"); camera: label, no ring. |
@@ -114,7 +130,7 @@ the assembled stack is self-identifying.
 The placement layout, final plate size, plate thickness, and hanging-slot spec
 were all resolved on 2026-09-20 and are recorded in §3–§4 instead.
 
-## 6. Layout Envelope (final, rev_0002)
+## 6. Layout Envelope (final, rev_0003)
 
 - Plate: **169 × 194 × 3 mm**, flat. Origin at the bottom-left corner.
 - **3 mm edge margin** on the left and right sides and between component
@@ -134,9 +150,13 @@ were all resolved on 2026-09-20 and are recorded in §3–§4 instead.
     top line (y = 11); bottom band slots at y 3..8.
   - Row widths 156 (row 1) / 163 (row 2) give the plate width:
     169 = 2 · 3 + 163.
-- **24 Ø3.2 mm M3 through-holes** (4 per component, 9 mm inset per the approved
-  patterns; camera inset 6.5 mm) + **8 × 20 × 5 mm hanging slots** (4 top,
-  4 bottom).
+- **24 Ø3.2 mm M3 through-holes** (4 per component) at the user-provided
+  center-to-center spans — relay 45 × 65 (natural, swapped per the frozen
+  layout), screen 93 × 54, Pi 58 × 48 (natural, read 48 × 58 on the rotated
+  footprint), camera 21 × 12. In-board edge insets: relay 3.5 / 4.0, screen
+  3.5 / 4.0, Pi 6.0 / 16.0, camera 2.0 / 6.5 mm; the tightest hole edge to a
+  plate edge is 4.9 mm (3 mm margin + 3.5 mm in-board inset + 1.6 mm bore
+  radius). Plus **8 × 20 × 5 mm hanging slots** (4 top, 4 bottom).
 - Raised top-face features per §2: 5 outline rings (3 mm wide, 1 mm tall), 6
   centered labels, 22 standoff collars at 24 holes (16 × Ø9.2 × 3 mm +
   6 × Ø9.2 × 15 mm — screen four + camera top pair).
@@ -144,12 +164,17 @@ were all resolved on 2026-09-20 and are recorded in §3–§4 instead.
   `minimum_structural_overlap = 3.0` (not applicable — no joins),
   `minimum_internal_edge_width = 11.8 mm`, governed by the tightest in-pattern
   ligament: the camera's 12 mm hole span, i.e. `12 + 3 − 3.2 = 11.8`. Rim /
-  width checks: component-hole edge to plate edge — tightest is the camera
-  (smallest inset 6.5 mm) → `6.5 − 3.2/2 + 3 = 7.9 ≥ 3.0`; slot edge to plate
+  width checks: component-hole edge to plate edge — tightest pair is the
+  relay-2 left / screen right edge-anchored holes (in-board inset 3.5 mm) →
+  `3.0 + 3.5 − 3.2/2 = 4.9 ≥ 3.0`; the camera pattern is fully plate-
+  surrounded → nearest plate edge 31 mm to the hole center,
+  `31 − 3.2/2 = 29.4 ≥ 3.0`; slot edge to plate
   side edge `velcro_edge_margin = 10 ≥ 3.0`; slot edge to plate
   top/bottom edge and to row 1 / bottom row `velcro_gap = 3 ≥ 3.0`; outline
   ring width and every standoff collar wall `= 3.0 ≥ 3.0`; the tall camera
-  collar fits its 25 mm body (`6.5 + 9.2/2 = 11.1 ≤ 12.5`). The Pi at
+  collars overhang the camera's 25 mm outline edge by 2.6 mm each side in x
+  (`21/2 + 9.2/2 − 25/2`) — a documented cosmetic limitation of the
+  user-provided 21 mm span, not a structural element. The Pi at
   x 3..63 clears slot 1 (x 10..30, y 3..8) and the camera's column by far more
   than the minimum; the tightest slot-related clearances asserted above are the
   3 mm band edges. Exact asserts are in
@@ -165,9 +190,13 @@ were all resolved on 2026-09-20 and are recorded in §3–§4 instead.
 - `parts.json` — parts manifest: part 1 `solarpunk_intelligence_hub` (the
   printable plate), part 2 `backplane_blockout_mockup` (non-printable
   reference geometry).
-- `configs/rev_0002.json` — active configuration (3 mm plate, Ø3.2 M3
-  component holes, 8 × 20 × 5 hanging slots, 1 mm outlines / labels, 3 mm /
-  15 mm standoffs, 3 mm margins/gaps, max print 220 mm).
+- `configs/rev_0003.json` — active configuration (3 mm plate, Ø3.2 M3
+  component holes at the user-provided spans — relay 45 × 65, screen
+  93 × 54, Pi 58 × 48 natural, camera 21 × 12; 8 × 20 × 5 hanging slots,
+  1 mm outlines / labels, 3 mm / 15 mm standoffs, 3 mm margins/gaps, max
+  print 220 mm).
+- `configs/rev_0002.json` — retained working configuration (pre-correction
+  uniform-inset hole patterns; otherwise identical to rev_0003).
 - `configs/rev_0001.json` — retained working configuration from the
   rev_0001 working cycle (no `revisions/` publication of rev_0001).
 - `src/main.scad` — top-level dispatch on `part_id` (1 → printable plate,
@@ -175,10 +204,11 @@ were all resolved on 2026-09-20 and are recorded in §3–§4 instead.
   `scad_build_all.py`.
 - `src/lib/defaults.scad` — parametric defaults and layout math shared by both
   parts: envelope 169 × 194, the two mirrored hanging bands, row widths,
-  component positions, hole-inset constants (9 / 9 / 6.5 / 9), slot centers,
-  standoff heights (3 mm / 15 mm), label box-centering, and the
-  structural-assertion helpers (`tightest_ligament()` → 11.8, rim-margin
-  check).
+  component positions, the user-provided per-component hole-span parameters
+  (relay 45 × 65, Pi 58 × 48, screen 93 × 54, camera 21 × 12 — natural
+  orientation, rotated footprints swap x/y), slot centers, standoff heights
+  (3 mm / 15 mm), label box-centering, and the structural-assertion helpers
+  (`tightest_ligament()` → 11.8, rim-margin check).
 - `src/parts/solarpunk_intelligence_hub.scad` — the printable plate: 169 ×
   194 × 3 mm with 24 Ø3.2 through-holes, 8 hanging slots, 1 mm raised
   outlines / labels, 22 raised M3 standoff collars (3 mm / 15 mm), and the

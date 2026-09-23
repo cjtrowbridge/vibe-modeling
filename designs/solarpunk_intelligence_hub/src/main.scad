@@ -1,6 +1,6 @@
 // Scripted export entry point for the Solarpunk Intelligence Hub.
 // part_id map:
-// 1 = printable backplane plate (169 x 187 x 3 mm, 22x M3 holes)
+// 1 = printable backplane plate (169 x 194 x 3 mm, 24 M3 holes + 8 hanging slots)
 // 2 = block diagram mockup (reference only, NOT printable)
 
 include <lib/defaults.scad>;

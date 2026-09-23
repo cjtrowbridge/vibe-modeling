@@ -321,10 +321,15 @@ the insert lifted out (see the 5.3 no-inaccessible-cavities assumption).
 
 ## 6. Design: `solarpunk_intelligence_hub`
 
-- **Status:** rev_0002 built, audited, and installed (2026-09-20); complete
+- **Status:** rev_0003 built, audited, and installed (2026-09-22); complete
   manifest in `output/solarpunk_intelligence_hub/` (2 STL + 34 PNG +
   `build_manifest.json`; `scad_build_all.py --audit-only` passes; the
-  "Rebuild stale CAD designs" task lists the design `CURRENT`).
+  "Rebuild stale CAD designs" task lists the design `CURRENT`). rev_0003
+  corrects the four component mounting-hole patterns to the user-provided
+  spans (relay 45 × 65, Pi 58 × 48, screen 93 × 54, camera 21 × 12),
+  replacing rev_0001's fabricated uniform-inset rule (relay 34 × 55, Pi
+  42 × 72, screen 82 × 44, camera 12 × 12); the hole centers were
+  numerically re-verified against the installed rev_0003 mesh.
 - **Role:** the series' electrical/IoT mounting backplane — one flat hanging
   plate to which every series electronic attaches through a single shared M3
   standoff plane. Raised Ø9.2 mm standoff collars on the top face set each
@@ -338,23 +343,34 @@ the insert lifted out (see the 5.3 no-inaccessible-cavities assumption).
   top line (no longer corner-flush); relay labels are unnumbered ("RELAY")
   because the swap and rotation would otherwise tie the numbering to physical
   relay sockets rather than to the boards.
+- **Hole-pattern correction (rev_0003, 2026-09-22):** rev_0001's conversion of
+  the user-provided blockout replaced the real (asymmetric) hole spans with a
+  fabricated uniform-inset rule (body − 2×9 mm; camera − 2×6.5 mm), so the
+  mounted components would not have reached their holes. rev_0003 restores
+  the user-provided natural-orientation spans — relay 45 × 65 (rotates with
+  the board), screen 93 × 54, Pi 58 × 48 (48 × 58 in the rotated footprint),
+  camera 21 × 12 — keeping every other layout decision of rev_0002.
 - **Carried components (commodity, not designed here):** 3 × ESP32-Relay
   boards (52 × 73), 1 × display screen (100 × 62), 1 × camera module (25 × 25),
   1 × Raspberry Pi (90 × 60, in a 60 × 90 rotated footprint), 1 × meshtastic
   node (dimensions/pattern **open** — will land as a new revision).
-- **Geometry (rev_0002):** flat 169 × 194 × 3 mm plate; 24 Ø3.2 mm M3
+- **Geometry (rev_0003):** flat 169 × 194 × 3 mm plate; 24 Ø3.2 mm M3
   component through-holes (4 per component) + 8 × 20 × 5 mm hanging slots
   (4 per band, mirrored: top band y 186..191, bottom band y 3..8, slot
   centers at x 20/63/106/149 — slot edges 10 mm from the plate sides); each
   band is an 11 mm zone (3 mm gap + 5 mm slot + 3 mm gap). The bottom band
   grew the plate 184.2 → 194 mm tall and moved the Pi / relay 3 row up 8 mm
-  onto the band's top line. Uniform 3 mm edge margin and 3 mm gaps. Approved
-  per-component hole spans: relay 34 × 55 (natural orientation, rotates with
-  the board), screen 82 × 44, Pi 42 × 72 (9 mm inset in the 60 × 90 rotated
-  footprint), camera 12 × 12 (6.5 mm inset in the 25 × 25 body). Raised
+  onto the band's top line. Uniform 3 mm edge margin and 3 mm gaps.
+  User-provided per-component hole spans (rev_0003 correction): relay
+  45 × 65 (natural orientation, rotates with the board), screen 93 × 54,
+  Pi 58 × 48 (48 × 58 in the 60 × 90 rotated footprint), camera 21 × 12;
+  in-board insets relay 3.5 / 4.0 mm, screen 3.5 / 4.0 mm, Pi 6.0 / 16.0 mm,
+  camera 2.0 / 6.5 mm (tightest hole edge to plate edge 4.9 mm). Raised
   Ø9.2 mm M3 standoff collars (Ø3.2 bore, 3.0 mm wall): 22 collars at 24
   holes — 16 × 3 mm (relays + Pi) and 6 × 15 mm (screen 4 + camera top 2;
-  the camera's lower pair stays open) for electronics clearance. Top-face
+  the camera's lower pair stays open) for electronics clearance. Documented
+  limitation: the tall camera collar (top pair) overhangs the 25 × 25 camera
+  outline by 2.6 mm in x (`10.5 + 4.6 − 12.5`), cosmetic. Top-face
   marking: a 1 mm raised outline ring per footprint (camera exempt — its
   standoffs would merge into the ring band) plus 1 mm raised centered
   labels; label vertical centering compensates the OpenSCAD 2021.01 text
