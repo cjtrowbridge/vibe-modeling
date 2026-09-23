@@ -28,6 +28,7 @@
 |---|---|---|
 | `solarpunk_intelligence_hub` | rev_0002 built and audited (2026-09-20) | Electrical/IoT mounting hub: single flat hanging plate carrying the series electronics on one standoff plane |
 | `solarpunk_seed_tray` | scaffold complete; placeholder configs, Phase 1 measurement pending | Per-tray converter: TPU flood tray with integrated bell siphon |
+| `solarpunk_exhaust` | scaffold complete (rev_0001, plan V4 + V5 magnet-pocket addendum, rebuilt + audited 2026-09-23); placeholder config pending fan measurement | 120 mm fan mounting plate over the ventilation screen: Ø116 airflow opening, adjacent-edge velcro bands, 8 back-face magnet pockets |
 | `solarpunk_siphon_filter` | deferred | Siphon-based filtration stage between return manifold and reservoir |
 
 ## 4. Common System Architecture
@@ -47,6 +48,17 @@ RETURN MANIFOLD (commodity pipe/fittings, continuous fall)
 SIPHON FILTER (solarpunk_siphon_filter)
    ▼
 RESERVOIR
+
+Ventilation / exhaust branch (air, passive stack):
+GREENHOUSE TOP (warm air)
+   ▼
+HOSE (commodity aluminum dryer hose — out of scope, user-supplied)
+   ▼
+FAN (commodity 120 mm) intake
+   ▼
+FAN PLATE (solarpunk_exhaust) — velcroed over the ventilation screen
+   ▼
+GREENHOUSE VENTILATION SCREEN -> OUTSIDE
 ```
 
 Rules:
@@ -391,7 +403,84 @@ the insert lifted out (see the 5.3 no-inaccessible-cavities assumption).
 - **Assembly governance:** not applicable — a single printable part plus a
   reference mockup (no `assembly.json`); precedent: `ac_redirectors`.
 
-## 7. Design: `solarpunk_siphon_filter`
+## 7. Design: `solarpunk_exhaust`
+
+- **Status:** scaffold complete (rev_0001, plan V4 + V5 magnet-pocket
+  addendum, user 2026-09-23); rebuilt, audited, and installed 2026-09-23 in
+  `output/solarpunk_exhaust/` (2 STL + 36 PNG + 2 manifests;
+  `scad_build_all.py --audit-only` passes). The config is a placeholder
+  pending measurement of the real 120 mm fan's mounting span / hole pattern /
+  depth, and `rev_0001` remains the mutable scaffold config (no immutable
+  revision published; the geometry was reworked in place from the rejected
+  original to V4, then extended to V5 under the same scaffold name, still
+  uncommitted at the time of this phase — the single planned commit for one
+  scaffold carries the final V5 state).
+- **Role:** the printed mounting plate for the greenhouse's exhaust fan — one
+  120 mm commodity fan with a large airflow cutout, velcroed over the
+  greenhouse's ventilation screen so the fan blows through the screen to the
+  outside. The hose/duct upstream of the fan is out of scope (commodity
+  aluminum dryer hose, user-supplied).
+- **Parts:** part 1 `solarpunk_exhaust` is the single 134 × 141 × 3 mm
+  printable plate. Part 2 `fan_proxy` is a non-printable reference mockup of a
+  120 mm fan: a 120 × 120 × 25 mm block with a 1:1 Ø116 mm through-hole, an
+  M4-class Ø4.3 mm mounting bore, and a Ø110 mm intake side-notch — managed as
+  reference geometry per
+  `playbooks/how_to_manage_reference_mockups_and_non_printable_geometry.md`.
+- **Design decisions (rev_0001, plan V4):**
+  - Airflow opening: a Ø116 mm through-cut at the fan center — the 120 mm fan
+    blows through it to the outside. This corrects the rejected original
+    geometry, which had no opening and put the velcro bands on two *opposite*
+    edges inside the fan footprint.
+  - Adjacent-edge velcro bands: 8 closed 20 mm × 5 mm through-windows in two
+    bands on the two *adjacent* edges (left + top), outside the fan footprint.
+    Each band carries two windows centered on the 1/4 and 3/4 lines of its
+    edge, kept 3 mm (`velcro_gap`) from both the plate edge and the fan box
+    edge.
+  - Fan mount: four M4-class Ø4.3 mm through-bores in a 105 mm square centered
+    on the fan, plus four raised Ø10.3 mm × 3 mm standoff collars. Placeholder —
+    the real fan model sets the spans/pattern.
+  - Fan intake: a Ø110 mm intake side-notch, 5 mm deep (fan proxy).
+  - Front-face label; the outline ring around the opening is dropped (it would
+    be a 2.0 mm internal rim).
+  - Magnet retention (V5 addendum): 8 closed recessed pockets Ø6.1 × 2.0 mm in
+    the back face, one flanking each station bore along both of its adjacent
+    sides (11.5 mm offset from the bore center along the 105 mm station line —
+    refined from the user's provisional 11.0 mm so every pocket void keeps the
+    3.0 mm minimum against the collar OD). They take Ø6 × 2 mm neodymium
+    retention discs pressing the plate to the ventilation screen; retention
+    only — the discs are pulled *away* from the 1.0 mm back membrane, so the
+    membrane carries only fan static pressure. The 1.0 mm membrane is a
+    documented, user-accepted (2026-09-23) structural sub-minimum, asserted.
+    Real magnet size / grade remains open.
+- **Geometry (rev_0001, placeholder):** plate 134 × 141 × 3 mm; the fan box sits
+  at x 11..131, y 10..130, center (71, 70); the opening is Ø116 mm at the
+  center; bores Ø4.3 mm in a 105 mm square at (18.5, 17.5), (123.5, 17.5),
+  (18.5, 122.5), (123.5, 122.5); collars 10.3 mm OD × 3 mm tall. Left-band
+  windows x 3..8, y centers 35.25 / 105.75; top-band windows y 133..138, x
+  centers 33.5 / 100.5. Velcro gap 3 mm. Magnet pockets (V5): Ø6.1 × 2.0
+  recesses in the back face at (30, 17.5), (112, 17.5), (30, 122.5),
+  (112, 122.5), (18.5, 29), (18.5, 111), (123.5, 29), (123.5, 111) — 11.5 mm
+  from each flanked bore center along the station line; nearest-void
+  clearances: 3.30 mm (collar OD, tightest), bore 6.30, Ø116 opening 5.56,
+  plate edge / windows ≥ 7.45; back membrane 1.0 mm (documented sub-minimum).
+- **Structural minimums (asserted at render):** `minimum_wall_thickness = 3.0`;
+  `minimum_structural_overlap = 3.0`. The governing internal minimum is the
+  3.0 mm plate thickness. Documented sub-minimums (asserted positive, not
+  claimed as plate ligaments): (1) the 2.0 mm plateau between the Ø116 mm
+  opening and the 120 mm fan box, bridged by the fan's frame at service; (2)
+  the 1.0 mm back membrane below the 8 magnet pockets (V5, user-accepted
+  2026-09-23, retention-only — away from the membrane).
+- **Assembly governance:** this design has an `assembly.json` (contrast
+  `solarpunk_intelligence_hub`, which is standalone with no `assembly.json`):
+  primary `exhaust_system`, subassembly `exhaust_mount_assembly`, 2 parts, 3
+  interfaces, 2 views. The assembly review manifest is bound to the build
+  manifest hash and both STL hashes.
+- **Out of scope (this phase):** hose/duct intake (commodity aluminum dryer
+  hose, user-supplied); the velcro hardware; the real fan model.
+- **Open:** the real 120 mm fan model (mounting span / hole pattern / depth);
+  material (working proposal PETG); the hose intake method (user-owned).
+
+## 8. Design: `solarpunk_siphon_filter`
 
 - **Status:** deferred — no geometry this phase.
 - **Role:** siphon-based filtration stage handling the combined drainage from
@@ -405,7 +494,7 @@ the insert lifted out (see the 5.3 no-inaccessible-cavities assumption).
 - **Open:** full design deferred; tray-side work only needs to expose a clean
   connection point.
 
-## 8. Cross-Design Contracts
+## 9. Cross-Design Contracts
 
 - The tray drain port and the siphon-filter inlet must stay on the same ~1/2"
   commodity plumbing standard (see 5.6).
@@ -416,7 +505,7 @@ the insert lifted out (see the 5.3 no-inaccessible-cavities assumption).
   `playbooks/how_to_manage_reference_mockups_and_non_printable_geometry.md` and
   must never appear as print artifacts.
 
-## 9. Maintenance
+## 10. Maintenance
 
 - Update this document in the same task as any detail change to a solarpunk
   design (dimensions, decisions, scope, deviations, open items).

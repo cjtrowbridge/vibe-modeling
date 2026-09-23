@@ -1,0 +1,98 @@
+{
+  "schema_version": 1,
+  "primary_assembly": "exhaust_system",
+  "review_dispatch_id": 90,
+  "assemblies": [
+    {
+      "assembly_id": "exhaust_system",
+      "role": "product",
+      "members": [
+        {
+          "assembly_id": "exhaust_mount_assembly",
+          "transform": {
+            "translate": [0, 0, 0],
+            "rotate": [0, 0, 0]
+          }
+        }
+      ]
+    },
+    {
+      "assembly_id": "exhaust_mount_assembly",
+      "role": "subassembly",
+      "members": [
+        {
+          "part_id": 1,
+          "transform": {
+            "translate": [0, 0, 0],
+            "rotate": [0, 0, 0]
+          }
+        },
+        {
+          "part_id": 2,
+          "transform": {
+            "translate": [71, 70, 3],
+            "rotate": [0, 0, 0]
+          }
+        }
+      ]
+    }
+  ],
+  "interfaces": [
+    {
+      "interface_id": "fan_mount_interface",
+      "owner_assembly": "exhaust_mount_assembly",
+      "type": "structural_mount",
+      "split_policy": "intentionally_terminated",
+      "local_frame": {
+        "translate": [71, 70, 3],
+        "rotate": [0, 0, 0]
+      },
+      "engages_parts": ["fan_proxy"]
+    },
+    {
+      "interface_id": "velcro_band_interface_left",
+      "owner_assembly": "exhaust_mount_assembly",
+      "type": "structural_mount",
+      "split_policy": "intentionally_terminated",
+      "local_frame": {
+        "translate": [5.5, 70.5, 0],
+        "rotate": [0, 0, 0]
+      },
+      "engages_parts": ["solarpunk_exhaust"]
+    },
+    {
+      "interface_id": "velcro_band_interface_top",
+      "owner_assembly": "exhaust_mount_assembly",
+      "type": "structural_mount",
+      "split_policy": "intentionally_terminated",
+      "local_frame": {
+        "translate": [67, 135.5, 0],
+        "rotate": [0, 0, 0]
+      },
+      "engages_parts": ["solarpunk_exhaust"]
+    }
+  ],
+  "views": [
+    {
+      "name": "front",
+      "projection": "o",
+      "camera": [0, 0, 0, 90, 0, 0, 800],
+      "assembly_view": "product",
+      "assembly_view_id": 0,
+      "show_proxies": true
+    },
+    {
+      "name": "isometric",
+      "projection": "p",
+      "camera": [0, 0, 0, 55, 0, 25, 800],
+      "assembly_view": "product",
+      "assembly_view_id": 0,
+      "show_proxies": true
+    }
+  ],
+  "view_sets": {
+    "compact": ["front", "isometric"],
+    "full": ["front", "isometric"]
+  },
+  "geometry_exports": []
+}

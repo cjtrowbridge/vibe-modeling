@@ -80,8 +80,8 @@ If the agent follows the included playbooks, it should also document what it cha
   - `parts.json` (multi-part designs): authoritative complete-build part IDs and names
   - `assembly.json` (new or modified multi-part designs): authoritative product/subassembly hierarchy, transforms, interfaces, and review views
   - `configs/rev_000N.json`: committed parameter sets
-  - Included designs: `example_box`, `helical`, `yagi`, `yagi_card`, `dtv_yagi`, `winegard_gm6000_logic_backplane`, `gigachad_xavier_void`, `cottage_pi6_plus`, `old_rca_display_baseplate`, `opi_zero_2w_carrier`, `comrade`, `cyberdeck`, `cyberdeck-2`, `micro_cyberdeck_case`, `fan_guard`, `ac_redirectors`, `solarpunk_seed_tray`, `solarpunk_siphon_filter`
-  - The two `solarpunk_*` designs are in the design phase (no geometry yet); their canonical details live in `docs/solarpunk_series.md`
+  - Included designs: `example_box`, `helical`, `yagi`, `yagi_card`, `dtv_yagi`, `winegard_gm6000_logic_backplane`, `gigachad_xavier_void`, `cottage_pi6_plus`, `old_rca_display_baseplate`, `opi_zero_2w_carrier`, `comrade`, `cyberdeck`, `cyberdeck-2`, `micro_cyberdeck_case`, `fan_guard`, `ac_redirectors`, `solarpunk_exhaust`, `solarpunk_seed_tray`, `solarpunk_siphon_filter`
+  - The `solarpunk_*` designs are at mixed stages (seed_tray: scaffold, placeholder configs; siphon_filter: deferred; solarpunk_exhaust: scaffold, rev_0001 blockout built and audited); their canonical details live in `docs/solarpunk_series.md`
   - `cyberdeck-2`: fully enclosed 5U ten-inch-rack receiver (80 mm deep behind the rack) split into four printable quadrant leaves and joined by eight end-aligned M3 tongue/receiver seam stations with captive washers and hex nuts; thirty front rack holes, two internal equipment shelves, closed rear
 - `output/`
   - the single mutable destination for printable parts, combined assemblies,

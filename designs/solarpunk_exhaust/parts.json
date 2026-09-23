@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "parts": [
+    {
+      "part_id": 1,
+      "name": "solarpunk_exhaust"
+    },
+    {
+      "part_id": 2,
+      "name": "fan_proxy"
+    }
+  ]
+}

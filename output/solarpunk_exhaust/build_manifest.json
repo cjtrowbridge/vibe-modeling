@@ -1,0 +1,226 @@
+{
+  "schema_version": 1,
+  "build_scope": "complete",
+  "design": "solarpunk_exhaust",
+  "revision": "rev_0001",
+  "destination": "current",
+  "generated_at_utc": "2026-09-23T22:34:58.121145+00:00",
+  "config": {
+    "path": "designs/solarpunk_exhaust/configs/rev_0001.json",
+    "sha256": "34d4a841dc23664ab12ec8d35c6d1e5895acd9142a2e6864b077e9054054c256"
+  },
+  "parts_manifest": {
+    "path": "designs/solarpunk_exhaust/parts.json",
+    "sha256": "a59153f45814417719a2827a6568c825bdfc4f9c4ade247e182b0cd0e7897be2"
+  },
+  "source": {
+    "path": "designs/solarpunk_exhaust/src",
+    "sha256": "7c3a708b95578bde2d7b18a5d5980d23d74b24b7d08a842701b01677b1dcd8c7",
+    "main_scad": "designs/solarpunk_exhaust/src/main.scad"
+  },
+  "git": {
+    "commit": "1443a7e761e4cd0c56af659596e50a036e54e6cd",
+    "dirty": true
+  },
+  "openscad": "C:\\Program Files (x86)\\OpenSCAD\\openscad.exe",
+  "counts": {
+    "parts": 2,
+    "stl": 2,
+    "png": 34,
+    "artifacts": 36
+  },
+  "parts": [
+    {
+      "part_id": 1,
+      "name": "solarpunk_exhaust",
+      "output_name": "solarpunk_exhaust_rev_0001"
+    },
+    {
+      "part_id": 2,
+      "name": "fan_proxy",
+      "output_name": "fan_proxy_rev_0001"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "fan_proxy_rev_0001.png",
+      "bytes": 25721,
+      "sha256": "5f8a7ae5c65e857e305aad932daedf02e9f3a911c85cd4d4019caee4fd547fa3"
+    },
+    {
+      "path": "fan_proxy_rev_0001.stl",
+      "bytes": 154434,
+      "sha256": "c24ee202f534e73bebee3738bf72bf47d762139d7c70e7f5903f87f68c46f355"
+    },
+    {
+      "path": "fan_proxy_rev_0001_inspect_inside_bottom_iso.png",
+      "bytes": 27764,
+      "sha256": "3e1aae3d8c19ce42f32fcc6b660e8f0d715d1fcdf7de2b9e0e1e9e8244ac0eca"
+    },
+    {
+      "path": "fan_proxy_rev_0001_inspect_inside_bottom_ortho.png",
+      "bytes": 5859,
+      "sha256": "73312d60e333c10afeec5133be893d2965d6dff6e7d4ff1ca1c0e9450c5e1ff2"
+    },
+    {
+      "path": "fan_proxy_rev_0001_iso_back_left.png",
+      "bytes": 25721,
+      "sha256": "5f8a7ae5c65e857e305aad932daedf02e9f3a911c85cd4d4019caee4fd547fa3"
+    },
+    {
+      "path": "fan_proxy_rev_0001_iso_back_right.png",
+      "bytes": 26586,
+      "sha256": "02a3badc3eccfbde4137e002faa74782172c7b0acd07df4b3ddd3c34b9af033d"
+    },
+    {
+      "path": "fan_proxy_rev_0001_iso_bottom_back_left.png",
+      "bytes": 24729,
+      "sha256": "fba3c6a20fe46007c36e89a01b512f6e8b36130cfef2d7b88446d5ccc8f0d1a0"
+    },
+    {
+      "path": "fan_proxy_rev_0001_iso_bottom_back_right.png",
+      "bytes": 24990,
+      "sha256": "073d97a1eb82bbacd888eb03f7369c216a52db0733491eb096b11232407ce082"
+    },
+    {
+      "path": "fan_proxy_rev_0001_iso_bottom_front_left.png",
+      "bytes": 24990,
+      "sha256": "073d97a1eb82bbacd888eb03f7369c216a52db0733491eb096b11232407ce082"
+    },
+    {
+      "path": "fan_proxy_rev_0001_iso_bottom_front_right.png",
+      "bytes": 24729,
+      "sha256": "fba3c6a20fe46007c36e89a01b512f6e8b36130cfef2d7b88446d5ccc8f0d1a0"
+    },
+    {
+      "path": "fan_proxy_rev_0001_iso_front_left.png",
+      "bytes": 26586,
+      "sha256": "02a3badc3eccfbde4137e002faa74782172c7b0acd07df4b3ddd3c34b9af033d"
+    },
+    {
+      "path": "fan_proxy_rev_0001_iso_front_right.png",
+      "bytes": 25721,
+      "sha256": "5f8a7ae5c65e857e305aad932daedf02e9f3a911c85cd4d4019caee4fd547fa3"
+    },
+    {
+      "path": "fan_proxy_rev_0001_ortho_back.png",
+      "bytes": 5859,
+      "sha256": "67a88a8c93b3b03027d29d7365e301bf5719354e3ba2cf9782a9aa5cae4cece3"
+    },
+    {
+      "path": "fan_proxy_rev_0001_ortho_bottom.png",
+      "bytes": 5859,
+      "sha256": "73312d60e333c10afeec5133be893d2965d6dff6e7d4ff1ca1c0e9450c5e1ff2"
+    },
+    {
+      "path": "fan_proxy_rev_0001_ortho_front.png",
+      "bytes": 5859,
+      "sha256": "67a88a8c93b3b03027d29d7365e301bf5719354e3ba2cf9782a9aa5cae4cece3"
+    },
+    {
+      "path": "fan_proxy_rev_0001_ortho_left.png",
+      "bytes": 5859,
+      "sha256": "67a88a8c93b3b03027d29d7365e301bf5719354e3ba2cf9782a9aa5cae4cece3"
+    },
+    {
+      "path": "fan_proxy_rev_0001_ortho_right.png",
+      "bytes": 5859,
+      "sha256": "67a88a8c93b3b03027d29d7365e301bf5719354e3ba2cf9782a9aa5cae4cece3"
+    },
+    {
+      "path": "fan_proxy_rev_0001_ortho_top.png",
+      "bytes": 5859,
+      "sha256": "73312d60e333c10afeec5133be893d2965d6dff6e7d4ff1ca1c0e9450c5e1ff2"
+    },
+    {
+      "path": "solarpunk_exhaust_rev_0001.png",
+      "bytes": 28480,
+      "sha256": "51c9d1cd7ef5821afe769adf611768141c6d764559ab01e2226a19ad7fadc889"
+    },
+    {
+      "path": "solarpunk_exhaust_rev_0001.stl",
+      "bytes": 807372,
+      "sha256": "4c8e9528d820070caf4dd9a8e0f4de639081ba294efa293c495766b6c5516453"
+    },
+    {
+      "path": "solarpunk_exhaust_rev_0001_inspect_inside_bottom_iso.png",
+      "bytes": 26925,
+      "sha256": "35ffcbaae5cb93442ae86405bf5d516d03ca9de326f8e7f825888c838998226a"
+    },
+    {
+      "path": "solarpunk_exhaust_rev_0001_inspect_inside_bottom_ortho.png",
+      "bytes": 10948,
+      "sha256": "6e5bae34661822afda91191b050dec0ef55eac8628826421fa560785b925ef99"
+    },
+    {
+      "path": "solarpunk_exhaust_rev_0001_iso_back_left.png",
+      "bytes": 28028,
+      "sha256": "ef6201080374d7a2805e182a7a2fbf8bc77e7be9db11f7f994595ea56c71791e"
+    },
+    {
+      "path": "solarpunk_exhaust_rev_0001_iso_back_right.png",
+      "bytes": 27759,
+      "sha256": "3f157d6e51204ae03672429c795d59c6459c63e2cbb868c2a80035cf62daa74e"
+    },
+    {
+      "path": "solarpunk_exhaust_rev_0001_iso_bottom_back_left.png",
+      "bytes": 26137,
+      "sha256": "25fc7fc4db57777d196feb387742f1d0f2105549f800601c23b04d9b8ccc5c2b"
+    },
+    {
+      "path": "solarpunk_exhaust_rev_0001_iso_bottom_back_right.png",
+      "bytes": 26033,
+      "sha256": "89f80c8499e4dba157404cee0070d88fc2e010c62daa17455713b7b8dc141c71"
+    },
+    {
+      "path": "solarpunk_exhaust_rev_0001_iso_bottom_front_left.png",
+      "bytes": 25516,
+      "sha256": "c6bd73f1599f1e957ad0142374e3c5038077af502604dd768cc3d3241a1d07d0"
+    },
+    {
+      "path": "solarpunk_exhaust_rev_0001_iso_bottom_front_right.png",
+      "bytes": 25631,
+      "sha256": "536fd4079467515cd5f01f502a5b696292917f49c2500235c3bb78235e48624e"
+    },
+    {
+      "path": "solarpunk_exhaust_rev_0001_iso_front_left.png",
+      "bytes": 27861,
+      "sha256": "eb8e3c430f3dd05b4f99324e583a109c84d6f3ea2587b32cd5296fab301c5ab8"
+    },
+    {
+      "path": "solarpunk_exhaust_rev_0001_iso_front_right.png",
+      "bytes": 28480,
+      "sha256": "51c9d1cd7ef5821afe769adf611768141c6d764559ab01e2226a19ad7fadc889"
+    },
+    {
+      "path": "solarpunk_exhaust_rev_0001_ortho_back.png",
+      "bytes": 6270,
+      "sha256": "92adcafe923db08fd8df828c1beca4b6eeb43b7126deb0df78354697755bb274"
+    },
+    {
+      "path": "solarpunk_exhaust_rev_0001_ortho_bottom.png",
+      "bytes": 10948,
+      "sha256": "6e5bae34661822afda91191b050dec0ef55eac8628826421fa560785b925ef99"
+    },
+    {
+      "path": "solarpunk_exhaust_rev_0001_ortho_front.png",
+      "bytes": 6232,
+      "sha256": "d2555b470590cfcfc470eba11edfbb403da410f655d2800db3737536014c3bd7"
+    },
+    {
+      "path": "solarpunk_exhaust_rev_0001_ortho_left.png",
+      "bytes": 6069,
+      "sha256": "23d2b18361e64c104f0b11a96e4878af9f95b162fa771e1f7d67ff0b73f12caf"
+    },
+    {
+      "path": "solarpunk_exhaust_rev_0001_ortho_right.png",
+      "bytes": 6055,
+      "sha256": "d8ccc414a15b316484a88b6a68db747a7f498a2ecc3f230bf48f033f8674e86a"
+    },
+    {
+      "path": "solarpunk_exhaust_rev_0001_ortho_top.png",
+      "bytes": 9624,
+      "sha256": "5e3a754f53182bbdd1cd8b9526dce1bba39d2c8b4dd53106bcc67f04b2e290a8"
+    }
+  ]
+}

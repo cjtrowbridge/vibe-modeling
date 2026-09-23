@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "design": "solarpunk_exhaust",
+  "primary_assembly": "exhaust_system",
+  "view_set": "full",
+  "generated_at_utc": "2026-09-23T22:35:48.484497+00:00",
+  "config": {
+    "path": "designs/solarpunk_exhaust/configs/rev_0001.json",
+    "sha256": "34d4a841dc23664ab12ec8d35c6d1e5895acd9142a2e6864b077e9054054c256"
+  },
+  "parts_manifest": {
+    "path": "designs/solarpunk_exhaust/parts.json",
+    "sha256": "a59153f45814417719a2827a6568c825bdfc4f9c4ade247e182b0cd0e7897be2"
+  },
+  "assembly_contract": {
+    "path": "designs/solarpunk_exhaust/assembly.json",
+    "sha256": "b93bfbec027d976357be35ff7ff25ed447100e921c92367febef61b7095897f8"
+  },
+  "source": {
+    "path": "designs/solarpunk_exhaust/src",
+    "sha256": "7c3a708b95578bde2d7b18a5d5980d23d74b24b7d08a842701b01677b1dcd8c7",
+    "main_scad": "designs/solarpunk_exhaust/src/main.scad"
+  },
+  "printable_build": {
+    "path": "output/solarpunk_exhaust/build_manifest.json",
+    "directory": "output/solarpunk_exhaust",
+    "sha256": "a5f8c40d3f5bb29f06732f827c97d53cc41f5e0b68c80acccfc19522bc2fde20",
+    "counts": {
+      "parts": 2,
+      "stl": 2,
+      "png": 34,
+      "artifacts": 36
+    },
+    "stl_artifacts": [
+      {
+        "part_id": 1,
+        "name": "solarpunk_exhaust",
+        "path": "solarpunk_exhaust_rev_0001.stl",
+        "bytes": 807372,
+        "sha256": "4c8e9528d820070caf4dd9a8e0f4de639081ba294efa293c495766b6c5516453"
+      },
+      {
+        "part_id": 2,
+        "name": "fan_proxy",
+        "path": "fan_proxy_rev_0001.stl",
+        "bytes": 154434,
+        "sha256": "c24ee202f534e73bebee3738bf72bf47d762139d7c70e7f5903f87f68c46f355"
+      }
+    ]
+  },
+  "git": {
+    "commit": "1443a7e761e4cd0c56af659596e50a036e54e6cd",
+    "dirty": true
+  },
+  "counts": {
+    "png": 2,
+    "stl": 0,
+    "artifacts": 2
+  },
+  "artifacts": [
+    {
+      "path": "exhaust_system_front.png",
+      "bytes": 6193,
+      "sha256": "01f94ac2e651e26a8d8dd1f25147d8ad784c0a2d31c4d74e8bf07dea1318219f"
+    },
+    {
+      "path": "exhaust_system_isometric.png",
+      "bytes": 33048,
+      "sha256": "655fdd71d76eccaf192c7638f77d4689e7b789d83a715538aad185ecf62e82cb"
+    }
+  ]
+}
