@@ -2,7 +2,7 @@
 plan_id: 2026-09-23-14-18-41_solarpunk-exhaust
 title: Solarpunk Exhaust Scaffold and Blockout
 summary: Add solarpunk_exhaust — a single printable 3 mm 120 mm fan mounting plate over the greenhouse ventilation screen: Ø116 airflow opening, 4 M4-class station collars, and intelligence-hub 20x5 velcro slot bands on two adjacent edges (left + top). The hose/duct intake connection is out of scope (user-handled).
-status: current
+status: past
 created_at: 2026-09-23-14-18-41
 ---
 
@@ -252,13 +252,16 @@ message is amended below to cover the addendum.
         placeholders, build/audit/review results, and open items.
   - [x] 3.6 `python scripts/regenerate_plan_indexes.py --repo-root .` run and
         `--check` passes.
-- [ ] 4. Commit (pending explicit user approval)
-  - [ ] 4.1 Suggested message (amended V5 to cover the pocket addendum;
-        same uncommitted change set): "Add solarpunk_exhaust scaffold: 120
-        mm fan mounting plate with 116 mm airflow opening, adjacent-side
-        velcro slot bands, and 8 recessed magnet pockets".
-  - [ ] 4.2 Request user approval before `git commit`.
-  - [ ] 4.3 Push only if the user explicitly requests it.
+- [x] 4. Commit (done 2026-09-23 15:38 local with explicit user approval)
+  - [x] 4.1 Suggested message (amended V5 to cover the pocket addendum;
+        same uncommitted change set) used verbatim for commit `815d757`:
+        "Add solarpunk_exhaust scaffold: 120 mm fan mounting plate with 116
+        mm airflow opening, adjacent-side velcro slot bands, and 8 recessed
+        magnet pockets". (54 files, +41977/−5; `main` ahead 1 of origin,
+        NOT pushed.)
+  - [x] 4.2 User approval obtained ("go ahead") before `git commit`.
+  - [-] 4.3 Push only if the user explicitly requests it. — push not
+        requested; closed without action (still ahead 1, unpushed).
 
 ### 5. Revision V5 — 8 back-face magnet pockets (approved addendum)
 

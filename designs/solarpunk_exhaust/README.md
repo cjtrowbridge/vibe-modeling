@@ -6,22 +6,27 @@ The fan (user-supplied commodity part, not in this repo) mounts onto the
 plate's 4 raised M4-class collar bores, and 8 closed 20 mm × 5 mm velcro
 through-windows in two bands on two adjacent edges (left + top, outside the
 fan footprint) fasten the plate's back face to the greenhouse ventilation
-screen behind it. 8 recessed Ø6.1 × 2.0 mm neodymium-magnet pockets on the
-back face (V5) flank the four station bores and hold Ø6 × 2 mm retention
-discs against the screen.
+screen behind it. 8 recessed Ø6.1 × 2.0 mm neodymium-magnet pockets flank the
+four station bores, open on the front (fan) face (V5 addendum, flipped to the
+front in V6), and hold Ø6 × 2 mm retention discs that seat the fan frame to
+the plate. A 45-degree full-through corner chamfer (20 mm legs) is cut from
+the top-left corner (V6) to clear the bracket's corner margin.
 
 Canonical source of truth for this design and the solarpunk series:
 [`docs/solarpunk_series.md`](../../docs/solarpunk_series.md)
 
-*Status: scaffold (rev_0001, in phase, plan V4). All commodity fan values are
+*Status: scaffold (rev_0001, in phase, plan V4 + V5 magnet-pocket addendum +
+V6 corner chamfer and front-face recess flip). All commodity fan values are
 placeholders pending physical measurement of the target fan —
 `minimum_wall_thickness` / `minimum_structural_overlap` (3.0 / 3.0), the
 derived layout, and the 134 × 141 blockout are locked. (The original
 rev_0001 geometry — no airflow opening, velcro slots on two opposite edges
 inside the fan footprint — was rejected by the user and reworked to V4 in
 place, still under `rev_0001` while the config remains a measured-
-placeholder scaffold; V5 adds the 8 magnet pockets, still under `rev_0001`;
-no immutable revision has been published yet.)*
+placeholder scaffold; V5 added the 8 magnet pockets, still under
+`rev_0001`; V6 flipped those recesses to the front face and cut the top-left
+corner chamfer, still under `rev_0001`; no immutable revision has been
+published yet.)*
 
 ## 1. Role
 
@@ -80,20 +85,40 @@ a commodity part and is not modeled as a printable element.
   out-of-scope hose connects). It is **reference mockup geometry** — present
   in the build/export only so the assembled stack previews correctly; it is
   never a print target.
-- **Back-face magnet pockets (V5 addendum, user 2026-09-23):** 8 closed
-  recessed circles Ø6.1 × 2.0 mm (`magnet_pocket_d`, `magnet_recess_depth`)
-  in the back face, one on each of the two adjacent sides flanking every
-  station bore (`magnet_offset` along the station line — refined by the
-  agent from the user's provisional 11.0 mm to 11.5 mm so that every pocket
-  void keeps the 3.0 mm minimum against the collar OD; 11.5 is the declared
-  value). The pockets take Ø6 × 2 mm neodymium retention discs that press
-  the plate to the ventilation screen; they are retention only — magnetic
-  force pulls the discs *away* from the membrane toward the screen, so the
-  membrane carries only the fan's static pressure. Each pocket leaves a
-  1.0 mm back membrane (`plate_t` − `magnet_recess_depth`): a **documented,
-  user-accepted structural sub-minimum** (asserted). Pocket voids: 52.5 mm
-  from the fan center (planar) — all clear of the Ø116 opening and the
-  velcro windows (tightest 7.45 mm vs right-edge and adjacent-band
+- **Top-left corner chamfer (V6, user 2026-09-23):** a 45-degree
+  full-through cut of the corner between the two slotted (velcro-band)
+  edges — the triangle (0, `plate_h() − leg`) → (leg, `plate_h()`) →
+  (0, `plate_h()`) with `corner_chamfer_leg` = 20 mm; face line
+  `x + (plate_h() − y) = leg`, endpoints (0, 121) → (20, 141). Purpose:
+  clear the bracket's corner margin where the two intake pipes come together
+  into the fitting. Hard ceiling: the face reaches the fan box's top-left
+  corner (11, 130) at leg = 22, so leg = 20 leaves a **documented 1.41 mm
+  fan-box margin sub-minimum** (the fan box is a reference part, not plate
+  material — same class as the 2.0 mm opening plateau). All other features
+  keep ≥ 3.0 mm: face endpoints 5.25 / 3.50 to the nearest window of their
+  side, windows 6.05 / 4.61, 4 collars 6.87, 8 recesses 17.10, opening
+  28.27 (all asserted).
+- **Front-face magnet recesses (V5 addendum, user 2026-09-23; flipped to
+  the front face in the V6 addendum, user 2026-09-23 — "the recesses are on
+  the wrong side. they should be on the front, not the back."):** 8 closed
+  recessed circles Ø6.1 × 2.0 mm (`magnet_pocket_d`,
+  `magnet_recess_depth`) open on the **front (fan) face**, one on each of
+  the two adjacent sides flanking every station bore (`magnet_offset` along
+  the station line — refined by the agent from the user's provisional
+  11.0 mm to 11.5 mm so that every pocket void keeps the 3.0 mm minimum
+  against the collar OD; 11.5 is the declared value). The pockets take
+  Ø6 × 2 mm neodymium retention discs that seat **flush with the front face,
+  under the fan frame**, clamping the frame to the plate; the M4 screws at
+  the corners carry the corner loads. Every opening lies entirely inside
+  the fan box with ≥ 3.0 mm to the nearest box edge (tightest 4.45 mm, top
+  row — asserted). Each pocket leaves a 1.0 mm back membrane (z 0..1
+  = `plate_t` − `magnet_recess_depth`): a **documented, user-accepted
+  structural sub-minimum** (asserted). The V5 rationale (pockets in the
+  back face holding the discs against the ventilation screen) is
+  **superseded** by the user-directed V6 flip; provenance is user-directed
+  (2026-09-23) — no new functional rationale is claimed. Pocket voids are
+  52.5 mm from the fan center (planar) — all clear of the Ø116 opening and
+  the velcro windows (tightest 7.45 mm vs right-edge and adjacent-band
   windows).
 - **Out of scope (user-handled):** the exhaust duct / dryer-hose section
   (`exhaust_duct`) and the screen frame.
@@ -117,10 +142,12 @@ velcro windows (20 x 5, closed): left band  x 3..8, rows y-centered
                                  top band   y 133..138, rows x-centered
                                  33.5 / 100.5 (ligament 47 row, 23.5 end)
 label "120MM FAN" (size 4, raised 1 mm): center (71,5), top edge y 7
-magnet pockets (V5, Ø6.1 x 2.0 recess, back face z 0..2): (30,17.5) (112,17.5)
-                                                        (30,122.5) (112,122.5)
-                                                        (18.5,29) (18.5,111)
-                                                        (123.5,29) (123.5,111)
+corner chamfer (V6): 45-degree full-through, leg 20 (corner_chamfer_leg);
+                 face (0,121) -> (20,141); clears the bracket corner; fan-
+                 box-corner margin 1.41 (documented sub-minimum, ceiling 22)
+magnet recesses (V5, front face in V6; Ø6.1 x 2.0 recess, front face z 1..3, back membrane z 0..1):
+                 (30,17.5) (112,17.5) (30,122.5) (112,122.5)
+                 (18.5,29) (18.5,111) (123.5,29) (123.5,111)
 ligaments: opening edge to bore edge 14.1; bore to nearest plate edge
            8.35 (right edge, tightest); in-pattern bore ligament 100.7;
            collar to nearest edge 5.35 (right edge); window to fan box
@@ -130,9 +157,14 @@ ligaments: opening edge to bore edge 14.1; bore to nearest plate edge
            asserted > 0, deliberately sub-minimum); pocket edge to nearest
            void 3.30 (collar OD, tightest; bore 6.30, opening 5.56);
            pocket to plate edge / window min 7.45 (right-edge rows and
-           adjacent-band windows); pocket ligaments same-side 75.9, corner
-           10.16; back membrane 1.0 (documented sub-minimum, V5); minimum
-           wall throughout 3.0 (except the two documented sub-minimums)
+           adjacent-band windows); pocket to fan-box edge min 4.45 (top
+           row, V6); pocket ligaments same-side 75.9, corner 10.16;
+           chamfer face: window endpoints 5.25 (left) / 3.50 (top), nearest
+           window 6.05 (left-band top window, vertex) / 4.61 (top-band left
+           window, vertex), collar OD 6.87, recess 17.10, opening 28.27,
+           fan-box corner 1.41 (documented sub-minimum, V6); back membrane
+           1.0 (documented sub-minimum, V5/V6); minimum wall throughout 3.0
+           (except the three documented sub-minimums)
 printable artifact: plate 134 x 141 x 3, prints flat (plate normal = Z);
                     with the 3 mm collars the stack is 6 mm tall
 ```
@@ -148,15 +180,25 @@ printable artifact: plate 134 x 141 x 3, prints flat (plate normal = Z);
   fan box to every plate edge ≥ 3 (11 / 10 / 11 / 3); `fan_opening_d <
   fan_size` and per-edge opening-to-fan-box clearance > 0 (2.0, documented
   sub-minimum, fan-rim-bridged); opening edge to nearest station-bore edge
-  ≥ 3 (14.1, diagonal via `station_radius()`); magnet recess closed on the
-  back face and back membrane ≥ 1.0 − ε (exactly 1.0, **documented,
-  user-accepted sub-minimum** — retention only, away from the membrane);
+  ≥ 3 (14.1, diagonal via `station_radius()`); magnet recess open on the
+  front face and not breaking through the back face, with the back membrane
+  at z 0..1 ≥ 1.0 − ε (exactly 1.0, **documented, user-accepted
+  sub-minimum**); every pocket opening's planar footprint inside the fan
+  box with ≥ 3 to the nearest box edge (min 4.45, top row — V6 addendum);
   every pocket void edge to its nearest void ≥ 3 (bore 6.30, collar OD 3.30,
   opening 5.56; `magnet_offset = 11.5` keeps all of these at the minimum,
   refined from the user's provisional 11.0 mm); every pocket to every plate
   edge ≥ 3 (min 7.45, right-edge rows); every pocket to every velcro window
   (clamped-corner) ≥ 3 (min 7.45, adjacent band); pocket ligaments ≥ 3
-  (same-side 75.9; corner 10.16); in-pattern station ligament
+  (same-side 75.9; corner 10.16); chamfer face endpoints to the nearest
+  window of their slotted edge ≥ 3 (5.25 left / 3.50 top — V6); chamfer to
+  the airflow opening ≥ 3 (28.27, radial at 45 degrees); chamfer to every
+  station collar OD ≥ 3 (min 6.87, top-left); chamfer to every magnet
+  recess ≥ 3 (min 17.10); chamfer to every velcro window (4-corner min)
+  ≥ 3 (min 6.05 left-band top window / 4.61 top-band left window); chamfer
+  to the fan-box top-left corner ≥ 1.0 − ε (1.41 — **documented
+  sub-minimum**, reference part, not plate material); in-pattern station
+  ligament
   ≥ 3 (100.7); every station bore to the nearest plate edge ≥ 3 (min 8.35,
   right edge); collar wall ≥ 3 (3.0, exactly); every collar to the nearest
   plate edge ≥ 3 (min 5.35, right edge); slot dimensions and `velcro_gap`
@@ -170,21 +212,30 @@ printable artifact: plate 134 x 141 x 3, prints flat (plate normal = Z);
   ligaments):** (1) opening edge → fan-box edge is 2.0 mm on all four
   sides — the fan's own 5 mm frame rim spans this plateau at service; the
   plate never carries it as structure. (2) The back membrane below the 8
-  magnet pockets is 1.0 mm (V5 — user-accepted 2026-09-23, asserted
-  ≥ 1.0 − ε): retention-only, away from the membrane; it carries only the
-  fan's static pressure.
+  front-face magnet recesses is 1.0 mm at z 0..1 (V5/V6 — user-accepted
+  2026-09-23, asserted ≥ 1.0 − ε). (3) Chamfer face → fan-box top-left
+  corner is 1.41 mm (V6, asserted ≥ 1.0 − ε) — the fan box is a reference
+  part, not plate material; the face reaches that corner at leg = 22.
+  Since V6 the back face carries no open recess (the 8 recesses were
+  moved to the front face): the velcro bands are the screen retention.
 - **Connectivity:** single manifold solid per printable part (OpenSCAD
   render reports `Simple: yes` per part; reviewer-confirmed on the
   installed renders).
 - **Artifact-bound review:** contract gate via
   `validate_cad_assembly_contract.py` (PASS: primary=exhaust_system,
   assemblies=2, parts=2, interfaces=3, views=2) then
-  `scad_render_assembly_review.py`: `assembly_review_manifest.json` bound
-  to the `build_manifest.json` hash and every STL hash (front view: proxy
-  seated at the station, its Ø116 through-hole aligned with the plate
-  opening, 4 collars through the 4 bores, 8 windows in the two adjacent
-  bands clear of the fan box; back face: 8 magnet-pocket recesses flanking
-  the 4 collar bores, all clear of the opening and windows).
+  `scad_render_assembly_review.py`: `assembly_review_manifest.json` (sha256
+  `20c2ebf45ae4…`) bound to the `build_manifest.json` hash (sha256
+  `968b94abd5ce…`) and every STL hash (plate `22db9c7196df…`, 807423 B —
+  V6; proxy `da6c37a758bd…`, 154434 B, canonically identical to the
+  committed proxy — byte-level export variation only), reviewed on the
+  installed artifacts 2026-09-23 (front view: proxy seated at the station,
+  its Ø116 through-hole aligned with the plate opening, 4 collars through
+  the 4 bores, 8 windows in the two adjacent bands clear of the fan box,
+  chamfer clear at the top-left corner with the fan box 1.41 mm from the
+  face; back face: solid — 8 magnet recesses open on the front face
+  under the fan box, 20 mm corner chamfer, no pocket openings on the
+  back).
 - **Print orientation:** flat (plate normal = Z, back face on the bed);
   no supporting structure required for the 3 mm features; the fan box and
   duct are not modeled (user-supplied parts).
@@ -194,9 +245,9 @@ printable artifact: plate 134 x 141 x 3, prints flat (plate normal = Z);
 - `configs/rev_0001.json` — single config (landscape, 2-slot bands, all
   placeholder commodity values, incl. the V5 magnet-pocket triple
   `magnet_pocket_d` 6.1 / `magnet_recess_depth` 2.0 / `magnet_offset`
-  11.5; `part_id` 1 = plate, 2 = fan proxy, 90 = assembly review) — no
-  parameter set has been frozen/locked: rev_0001 remains the mutable
-  scaffold (plan item 4).
+  11.5 and the V6 `corner_chamfer_leg` 20.0; `part_id` 1 = plate,
+  2 = fan proxy, 90 = assembly review) — no parameter set has been
+  frozen/locked: rev_0001 remains the mutable scaffold (plan item 4).
 - `src/main.scad` — entry point, dispatches `part_id` 1/2/90.
 - `src/lib/defaults.scad` — parametric defaults (all values `-D`
   overridable; derived layout lives here, not in the part sources).

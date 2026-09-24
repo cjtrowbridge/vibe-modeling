@@ -8,8 +8,11 @@
 // 116 mm through-airflow opening and velcro slots on two ADJACENT edges
 // outside the fan footprint (hub convention: gap between the velcro holes
 // and both the board edge and the parts below). V5 addendum (2026-09-23,
-// user): 8 recessed Ø6.1 x 2.0 neodymium-magnet pockets on the back face
-// flank the station bores (1.0 mm membrane — documented sub-minimum).
+// user): 8 recessed Ø6.1 x 2.0 neodymium-magnet recesses flank the
+// station bores (1.0 mm membrane — documented sub-minimum). V6 addendum
+// (2026-09-23, user): those recesses open on the FRONT face, and a 45
+// degree full-through chamfer (20 mm legs) cuts the top-left corner for
+// the bracket's corner margin.
 //
 // Commodity dimensions (120 mm fan, 116 mm airflow opening, 105 mm
 // M4-class span, 25 mm depth, Ø110 intake notch) are PLACEHOLDERS pending
@@ -58,19 +61,35 @@ fan_bore_d = is_undef(fan_bore_d) ? 4.3 : fan_bore_d;
 standoff_h = is_undef(standoff_h) ? 3.0 : standoff_h;
 standoff_od = is_undef(standoff_od) ? 10.3 : standoff_od;
 
-// ---- Back-face magnet pockets (V5 addendum, user 2026-09-23) ----
+// ---- Magnet recesses (V5 addendum; front face in V6, user 2026-09-23) ----
 // 8 closed pockets, one per side line of the station square
 // (magnet_offset from each bore toward the side midpoint — the literal
-// midpoints sit inside the Ø116 opening, where there is no material),
-// holding Ø6 x 2 mm neodymium retention discs against the ventilation
-// screen (velcro is the seal). Pockets are Ø6.1 (0.05 mm/side
-// clearance), 2.0 deep from z = 0, leaving a 1.0 mm membrane that is a
-// documented, user-accepted sub-minimum: the magnetic force pulls the
-// magnet AWAY from the membrane (toward the screen), so it carries only
-// fan static pressure.
+// midpoints sit inside the Ø116 opening, where there is no material).
+// V5: on the back face, holding retention discs against the ventilation
+// screen. V6 addendum (user: "the recesses are on the wrong side. they
+// should be on the front, not the back."): the recesses open on the
+// FRONT (fan) face, 2.0 deep from z = plate_t — the 1.0 mm membrane
+// (z 0..1) is now on the back side, a documented, user-accepted
+// sub-minimum (the back face is solid under every recess; the velcro
+// bands carry all screen retention, and the membrane carries only fan
+// static pressure). Seated Ø6 x 2 magnets sit flush with the front face
+// under the fan frame (magnetic retention of the fan to the plate; the
+// M4s carry the corner loads). Pockets are Ø6.1 (0.05 mm/side
+// clearance).
 magnet_pocket_d = is_undef(magnet_pocket_d) ? 6.1 : magnet_pocket_d;
 magnet_recess_depth = is_undef(magnet_recess_depth) ? 2.0 : magnet_recess_depth;
 magnet_offset = is_undef(magnet_offset) ? 11.5 : magnet_offset;
+
+// ---- Top-left corner chamfer (V6, user 2026-09-23) ----
+// 45-degree full-through cut of the corner between the two slotted
+// (velcro-band) edges, to clear the bracket's corner margin where the
+// two intake pipes come together into the fitting. leg = 20 mm along
+// each edge; the face line x + (plate_h - y) = leg runs from
+// (0, plate_h - leg) to (leg, plate_h). The face reaches the reference
+// fan box's top-left corner at leg = 22, so leg = 20 leaves a documented
+// 1.41 mm fan-box margin (reference part, not plate material — same
+// class as the 2.0 mm opening plateau).
+corner_chamfer_leg = is_undef(corner_chamfer_leg) ? 20.0 : corner_chamfer_leg;
 
 // ---- Velcro slot bands (intelligence-hub slot language, adjacent edges) ----
 // Closed 20 x 5 through-window slots on the LEFT and TOP plate edges
@@ -108,6 +127,9 @@ boolean_epsilon = is_undef(boolean_epsilon) ? 0.001 : boolean_epsilon;
 // config defaults).
 function band_margin() = velcro_gap + velcro_slot_h + velcro_gap;
 
+// Top-left corner chamfer leg (V6): face line x + (plate_h() - y) = leg.
+function corner_cut_d() = corner_chamfer_leg;
+
 // Plate footprint: band_margin() on the left + top edges, the 120 mm fan
 // box, fan_bottom_margin below it, edge_margin (3 mm) beyond it on the
 // right. Locked blockout V4: 134 x 141.
@@ -125,8 +147,9 @@ function fan_z() = plate_t;
 function station_offset() = fan_mount_span / 2;
 function station_radius() = sqrt(2) * station_offset();
 
-// Magnet pocket centers (V5): one per side line of the station square,
-// magnet_offset from each of its 4 corner bores toward that side's
+// Magnet recess centers (V5; on the front face in the V6 addendum):
+// one per side line of the station square, magnet_offset from each of
+// its 4 corner bores toward that side's
 // midpoint. Locked blockout: (30/112, 17.5/122.5) and (18.5/123.5,
 // 29/111); planar radius sqrt((span/2 - offset)^2 + (span/2)^2) ≈ 66.6
 // from the fan center for all 8.

@@ -14,11 +14,20 @@
 // closed 20 x 5 through-window slots (intelligence-hub slot language) in
 // two bands on ADJACENT plate edges (left + top), 2 per band on the 1/4
 // and 3/4 lines of the plate edge; every window is outside the fan box.
+// (V6, user 2026-09-23): the top-left corner is chamfered 45 degrees
+// (corner_cut_d() = 20 mm legs, full through) to clear the bracket's
+// corner margin where the two intake pipes come together into the
+// fitting; the chamfer face keeps a documented 1.41 mm margin to the
+// reference fan box corner (the fan box is not plate material — same
+// class as the 2.0 mm opening plateau).
 // Plus (V5 addendum, user 2026-09-23): 8 recessed Ø6.1 x 2.0
-// neodymium-magnet pockets on the back face flanking the station bores,
-// holding Ø6 x 2 mm retention discs against the ventilation screen —
-// each leaves a 1.0 mm back membrane (documented, user-accepted
-// sub-minimum).
+// neodymium-magnet recesses flanking the station bores, each leaving a
+// 1.0 mm membrane (documented, user-accepted sub-minimum). (V6 addendum,
+// user 2026-09-23, "the recesses are on the wrong side. they should be
+// on the front, not the back.": the recesses open on the FRONT face,
+// with the membrane now on the back side; the seated Ø6 x 2 magnets sit
+// flush under the fan frame — magnetic retention of the fan to the
+// plate, the M4s carry the corner loads.)
 //
 // Geometry provenance: the original rev_0001 geometry (no opening; slots
 // on opposite edges INSIDE the fan footprint) was rejected by the user;
@@ -135,21 +144,47 @@ module solarpunk_exhaust() {
            str("bottom-edge collar to plate edge (",
                fan_cy() - station_offset() - standoff_od / 2,
                " mm) below minimum_wall_thickness (", minimum_wall_thickness, ")"));
-    // ---- Back-face magnet pockets (V5 addendum, user 2026-09-23) ----
-    // 8 closed Ø6.1 x 2.0 pockets flank the station bores along the 4
-    // side lines of the 105 mm station square (magnet_offset from each
+    // ---- Front-face magnet recesses (V5 addendum; face flipped to the
+    // front in the V6 addendum — user 2026-09-23: "the recesses are on
+    // the wrong side. they should be on the front, not the back.") ----
+    // 8 closed Ø6.1 x 2.0 recesses open on the front (fan) face, one per
+    // side line of the 105 mm station square (magnet_offset from each
     // bore toward the side midpoint — the literal midpoints sit inside
-    // the Ø116 opening, where there is no material). Each leaves a
-    // (plate_t - magnet_recess_depth) = 1.0 mm back membrane: the
-    // documented, user-accepted sub-minimum (the magnetic force pulls
-    // the magnet AWAY from it, toward the screen; it carries only fan
-    // static pressure). Every other pocket-to-void separation is
-    // asserted against minimum_wall_thickness.
+    // the Ø116 opening, where there is no material). Closed bottom at
+    // z = plate_t - magnet_recess_depth: the (plate_t -
+    // magnet_recess_depth) = 1.0 mm membrane is now on the BACK side
+    // (z 0..1), the documented, user-accepted sub-minimum — the back
+    // face is solid under every recess, and the velcro bands carry all
+    // screen retention. The seated Ø6 x 2 magnets sit flush with the
+    // front face under the fan frame (magnetic retention of the fan;
+    // the M4s carry the corner loads), so every opening must stay
+    // inside the fan footprint (asserted below). Every other
+    // pocket-to-void separation is asserted against
+    // minimum_wall_thickness.
     assert(magnet_recess_depth < plate_t,
-           "magnet recess must stay closed on the back face");
+           "magnet recess must not break through the back face (it opens on the front face)");
     assert(plate_t - magnet_recess_depth >= 1.0 - boolean_epsilon,
-           str("magnet back membrane (", plate_t - magnet_recess_depth,
-               " mm) below the documented 1.0 mm sub-minimum (V5)"));
+           str("magnet back membrane (z 0..", plate_t - magnet_recess_depth,
+               " mm) below the documented 1.0 mm sub-minimum (V5/V6)"));
+    // Every opening fully inside the 120 x 120 fan footprint, with >=
+    // minimum_wall_thickness to the nearest box edge (locked blockout:
+    // 4.45 mm, the top-row openings to the box top edge).
+    for (pi = [0:7]) {
+        _px = magnet_pocket_centers()[pi][0];
+        _py = magnet_pocket_centers()[pi][1];
+        assert(min(_px - (fan_cx() - fan_size / 2),
+                   (fan_cx() + fan_size / 2) - _px,
+                   _py - (fan_cy() - fan_size / 2),
+                   (fan_cy() + fan_size / 2) - _py)
+               - magnet_pocket_d / 2 >= minimum_wall_thickness,
+               str("magnet pocket ", pi, " opening escapes the fan footprint (",
+                   min(_px - (fan_cx() - fan_size / 2),
+                       (fan_cx() + fan_size / 2) - _px,
+                       _py - (fan_cy() - fan_size / 2),
+                       (fan_cy() + fan_size / 2) - _py)
+                   - magnet_pocket_d / 2,
+                   " mm) below minimum_wall_thickness (", minimum_wall_thickness, ")"));
+    }
     // Void separations, identical by symmetry for all 8 pockets at the
     // locked blockout (offset 11.5): to the nearest station-bore edge
     // 6.30, to the nearest collar OD edge 3.30, to the airflow opening
@@ -301,6 +336,109 @@ module solarpunk_exhaust() {
                    " mm) below minimum_wall_thickness (", minimum_wall_thickness, ")"));
     }
 
+    // ---- Top-left corner chamfer (V6, user 2026-09-23) ----
+    // 45-degree full-through cut of the corner between the two slotted
+    // (velcro-band) edges: the triangle (0, plate_h() - leg),
+    // (leg, plate_h()), (0, plate_h()) with leg = corner_cut_d() = 20;
+    // face line x + (plate_h() - y) = leg. Purpose: clear the bracket's
+    // corner margin where the two intake pipes come together into the
+    // fitting. Distance to the cut triangle uses clamped feet onto each
+    // of its 3 edges (same nearest-point math as the window checks).
+    function chamfer_edge_dist(px, py, a, b) =
+        let (
+            ab = b - a,
+            l2 = ab[0] * ab[0] + ab[1] * ab[1],
+            t = max(0, min(1, ((px - a[0]) * ab[0] + (py - a[1]) * ab[1]) / l2)),
+            qx = a[0] + t * ab[0],
+            qy = a[1] + t * ab[1]
+        )
+        sqrt(pow(px - qx, 2) + pow(py - qy, 2));
+    function chamfer_dist(px, py) = min(
+        chamfer_edge_dist(px, py, [0, plate_h() - corner_cut_d()], [corner_cut_d(), plate_h()]),
+        chamfer_edge_dist(px, py, [0, plate_h() - corner_cut_d()], [0, plate_h()]),
+        chamfer_edge_dist(px, py, [0, plate_h()], [corner_cut_d(), plate_h()]));
+    // Face endpoints clear the nearest feature of their slotted edge by
+    // >= minimum_wall_thickness of solid strip (locked blockout: left
+    // 5.25 to the left-band top window; top 3.50 to the top-band left
+    // window):
+    assert(plate_h() - corner_cut_d() - (velcro_slot_y_left(velcro_n - 1) + velcro_slot_w / 2) >= minimum_wall_thickness,
+           str("chamfer face start to left-band top window (",
+               plate_h() - corner_cut_d() - (velcro_slot_y_left(velcro_n - 1) + velcro_slot_w / 2),
+               " mm) below minimum_wall_thickness (", minimum_wall_thickness, ")"));
+    assert(velcro_slot_x_top(0) - velcro_slot_w / 2 - corner_cut_d() >= minimum_wall_thickness,
+           str("chamfer face end to top-band left window (",
+               velcro_slot_x_top(0) - velcro_slot_w / 2 - corner_cut_d(),
+               " mm) below minimum_wall_thickness (", minimum_wall_thickness, ")"));
+    // Chamfer to the airflow opening (corner-to-center distance minus
+    // radius — locked blockout 28.27, the 45-degree radial):
+    assert(chamfer_dist(fan_cx(), fan_cy()) - fan_opening_d / 2 >= minimum_wall_thickness,
+           str("chamfer to airflow opening edge (",
+               chamfer_dist(fan_cx(), fan_cy()) - fan_opening_d / 2,
+               " mm) below minimum_wall_thickness (", minimum_wall_thickness, ")"));
+    // Chamfer to every station collar OD (the bore is coaxial and
+    // smaller, so the collar governs — locked blockout 6.87, top-left):
+    for (sx = [-1, 1])
+        for (sy = [-1, 1]) {
+            _bx = fan_cx() + sx * station_offset();
+            _by = fan_cy() + sy * station_offset();
+            assert(chamfer_dist(_bx, _by) - standoff_od / 2 >= minimum_wall_thickness,
+                   str("chamfer to station collar OD edge (",
+                       chamfer_dist(_bx, _by) - standoff_od / 2,
+                       " mm) below minimum_wall_thickness (", minimum_wall_thickness, ")"));
+        }
+    // Chamfer to every magnet recess opening (locked blockout 17.10,
+    // top-left):
+    for (pi = [0:7]) {
+        _px = magnet_pocket_centers()[pi][0];
+        _py = magnet_pocket_centers()[pi][1];
+        assert(chamfer_dist(_px, _py) - magnet_pocket_d / 2 >= minimum_wall_thickness,
+               str("chamfer to magnet pocket ", pi, " (",
+                   chamfer_dist(_px, _py) - magnet_pocket_d / 2,
+                   " mm) below minimum_wall_thickness (", minimum_wall_thickness, ")"));
+    }
+    // Chamfer to every velcro window (min over the window's 4 corners —
+    // locked blockout 4.61, the top-band window nearest the cut, corner
+    // (23.5, 138) to the chamfer vertex (20, 141)):
+    for (i = [0:velcro_n - 1]) {
+        _ly0 = velcro_slot_y_left(i) - velcro_slot_w / 2;
+        _ly1 = velcro_slot_y_left(i) + velcro_slot_w / 2;
+        _lx1 = velcro_slot_x_left() + velcro_slot_h;
+        assert(min(chamfer_dist(velcro_slot_x_left(), _ly0),
+                   chamfer_dist(velcro_slot_x_left(), _ly1),
+                   chamfer_dist(_lx1, _ly0), chamfer_dist(_lx1, _ly1))
+               >= minimum_wall_thickness,
+               str("chamfer to left-band window ", i, " (",
+                   min(chamfer_dist(velcro_slot_x_left(), _ly0),
+                       chamfer_dist(velcro_slot_x_left(), _ly1),
+                       chamfer_dist(_lx1, _ly0), chamfer_dist(_lx1, _ly1)),
+                   " mm) below minimum_wall_thickness (", minimum_wall_thickness, ")"));
+        _tx0 = velcro_slot_x_top(i) - velcro_slot_w / 2;
+        _tx1 = velcro_slot_x_top(i) + velcro_slot_w / 2;
+        _ty1 = velcro_slot_y_top() + velcro_slot_h;
+        assert(min(chamfer_dist(_tx0, velcro_slot_y_top()),
+                   chamfer_dist(_tx0, _ty1),
+                   chamfer_dist(_tx1, velcro_slot_y_top()),
+                   chamfer_dist(_tx1, _ty1))
+               >= minimum_wall_thickness,
+               str("chamfer to top-band window ", i, " (",
+                   min(chamfer_dist(_tx0, velcro_slot_y_top()),
+                       chamfer_dist(_tx0, _ty1),
+                       chamfer_dist(_tx1, velcro_slot_y_top()),
+                       chamfer_dist(_tx1, _ty1)),
+                   " mm) below minimum_wall_thickness (", minimum_wall_thickness, ")"));
+    }
+    // Chamfer to the reference fan box: a DOCUMENTED 1.0 mm sub-minimum
+    // floor, NOT minimum_wall_thickness — the fan box is a reference
+    // part, not plate material (at service the fan's own corner spans
+    // that margin, same class as the 2.0 mm opening plateau). Face-line
+    // distance to the fan box top-left corner (locked blockout 1.41);
+    // the face reaches that corner at leg = 22, so leg = 20 is bounded.
+    assert(((fan_cx() - fan_size / 2) + (plate_h() - fan_cy() - fan_size / 2) - corner_cut_d()) / sqrt(2)
+           >= 1.0 - boolean_epsilon,
+           str("chamfer face to fan box top-left corner (",
+               ((fan_cx() - fan_size / 2) + (plate_h() - fan_cy() - fan_size / 2) - corner_cut_d()) / sqrt(2),
+               " mm) below the documented 1.0 mm sub-minimum (V6; reference fan box)"));
+
     // ---- Front-face marking ----
     // "120MM FAN" = 9 glyphs; default-font width estimate 19.8 mm +
     // 2 mm margin. The label sits in the bottom strip (top edge at
@@ -354,13 +492,27 @@ module solarpunk_exhaust() {
                 translate([fan_cx() + sx * station_offset(),
                            fan_cy() + sy * station_offset(), -boolean_epsilon])
                     cylinder(h = cut_h, d = fan_bore_d, $fn = 32);
-        // 8 back-face magnet pockets (V5, Ø6.1 x 2.0): closed recesses
-        // holding the Ø6 x 2 mm retention magnets against the
-        // ventilation screen. Confined to the back half (z 0..2) of the
-        // plate; the 1.0 mm back membrane is the documented sub-minimum.
+        // Top-left corner chamfer (V6): 45-degree full-through cut, leg
+        // corner_cut_d() along the left + top edges; the face line
+        // x + (plate_h - y) = corner_cut_d() runs from (0, plate_h() -
+        // leg) to (leg, plate_h()), and the cut corner is (0, plate_h()).
+        // Z-biased by boolean_epsilon as with the other through-cuts.
+        translate([0, plate_h() - corner_cut_d(), -boolean_epsilon])
+            linear_extrude(height = plate_t + 2 * boolean_epsilon)
+                polygon([[0, 0], [corner_cut_d(), corner_cut_d()],
+                         [0, corner_cut_d()]]);
+        // 8 front-face magnet recesses (V5; face flipped to the front in
+        // the V6 addendum per user 2026-09-23): Ø6.1 x 2.0, open on the
+        // front (fan) face at z = plate_t, closed bottom at z = plate_t
+        // - magnet_recess_depth; the 1.0 mm back membrane (z 0..1) is
+        // the documented sub-minimum. Seated magnets sit flush under the
+        // fan frame (every opening is inside the fan footprint, with
+        // >= minimum_wall_thickness to the nearest box edge — asserted
+        // above).
         for (pi = [0:7])
             translate([magnet_pocket_centers()[pi][0],
-                       magnet_pocket_centers()[pi][1], -boolean_epsilon])
+                       magnet_pocket_centers()[pi][1],
+                       plate_t - magnet_recess_depth - boolean_epsilon])
                 cylinder(h = magnet_recess_depth + 2 * boolean_epsilon,
                          d = magnet_pocket_d, $fn = 32);
         // Left band: 2 closed 20 x 5 velcro through-windows on the 1/4 and

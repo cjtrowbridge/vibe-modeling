@@ -1,11 +1,12 @@
 {
-  "status": "placeholder pending physical measurement of the target 120 mm fan (user 2026-09-23: 116 mm airflow cutout per the user-specified 120 mm fan cutout, 105 mm station span, M4-class 4.3–4.5 mm bores with 4.3 working default, Ø110 intake circle, 25 mm depth are commodity defaults; 8 back-face magnet pockets V5: Ø6.1 x 2.0 pockets for Ø6 x 2 mm neodymium discs, 1.0 mm back membrane documented sub-minimum)",
+  "status": "placeholder pending physical measurement of the target 120 mm fan (user 2026-09-23: 116 mm airflow cutout per the user-specified 120 mm fan cutout, 105 mm station span, M4-class 4.3–4.5 mm bores with 4.3 working default, Ø110 intake circle, 25 mm depth are commodity defaults; 8 magnet recesses V5 on the FRONT (fan) face per the V6 user-directed face flip (2026-09-23): Ø6.1 x 2.0 for Ø6 x 2 mm neodymium discs, 1.0 mm back membrane documented sub-minimum; top-left 45-degree corner chamfer V6: 20 mm legs, documented 1.41 mm margin to the reference fan box corner)",
   "part": "solarpunk_exhaust_rev_0001",
   "part_id": 1,
   "minimum_wall_thickness": 3.0,
   "minimum_structural_overlap": 3.0,
   "plate_t": 3.0,
   "edge_margin": 3.0,
+  "corner_chamfer_leg": 20.0,
   "fan_bottom_margin": 10.0,
   "fan_size": 120.0,
   "fan_depth": 25.0,

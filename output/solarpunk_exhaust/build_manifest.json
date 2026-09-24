@@ -4,10 +4,10 @@
   "design": "solarpunk_exhaust",
   "revision": "rev_0001",
   "destination": "current",
-  "generated_at_utc": "2026-09-23T22:34:58.121145+00:00",
+  "generated_at_utc": "2026-09-23T22:46:21.546014+00:00",
   "config": {
     "path": "designs/solarpunk_exhaust/configs/rev_0001.json",
-    "sha256": "34d4a841dc23664ab12ec8d35c6d1e5895acd9142a2e6864b077e9054054c256"
+    "sha256": "99dc0987fc31dafc8c8616f96f5b380e70b5970391ecc84a00436ae660c7518d"
   },
   "parts_manifest": {
     "path": "designs/solarpunk_exhaust/parts.json",
@@ -15,11 +15,11 @@
   },
   "source": {
     "path": "designs/solarpunk_exhaust/src",
-    "sha256": "7c3a708b95578bde2d7b18a5d5980d23d74b24b7d08a842701b01677b1dcd8c7",
+    "sha256": "25378bf1484a977f13fdfd6a796e05cfc65c33751a5c73961da05a3c77e8dffb",
     "main_scad": "designs/solarpunk_exhaust/src/main.scad"
   },
   "git": {
-    "commit": "1443a7e761e4cd0c56af659596e50a036e54e6cd",
+    "commit": "815d757e80a86b943f06becb7ee7fc5cdd074312",
     "dirty": true
   },
   "openscad": "C:\\Program Files (x86)\\OpenSCAD\\openscad.exe",
@@ -50,7 +50,7 @@
     {
       "path": "fan_proxy_rev_0001.stl",
       "bytes": 154434,
-      "sha256": "c24ee202f534e73bebee3738bf72bf47d762139d7c70e7f5903f87f68c46f355"
+      "sha256": "da6c37a758bd3ebfda91ebf232d84603f82572cc65776835d3fda464d2d8bae6"
     },
     {
       "path": "fan_proxy_rev_0001_inspect_inside_bottom_iso.png",
@@ -134,63 +134,63 @@
     },
     {
       "path": "solarpunk_exhaust_rev_0001.png",
-      "bytes": 28480,
-      "sha256": "51c9d1cd7ef5821afe769adf611768141c6d764559ab01e2226a19ad7fadc889"
+      "bytes": 31852,
+      "sha256": "470dea28a6ac20e3e7741329346c3ff5011a214c10461c548b78a55ec6cf65ec"
     },
     {
       "path": "solarpunk_exhaust_rev_0001.stl",
-      "bytes": 807372,
-      "sha256": "4c8e9528d820070caf4dd9a8e0f4de639081ba294efa293c495766b6c5516453"
+      "bytes": 807423,
+      "sha256": "22db9c7196df8f0e43a1816d07066097d7d85e08ffd1cb9b9605d9745efeb83d"
     },
     {
       "path": "solarpunk_exhaust_rev_0001_inspect_inside_bottom_iso.png",
-      "bytes": 26925,
-      "sha256": "35ffcbaae5cb93442ae86405bf5d516d03ca9de326f8e7f825888c838998226a"
+      "bytes": 23915,
+      "sha256": "7528834946f87b831e0b64fa16e807d62a3694e08852da92c5786afcede0497c"
     },
     {
       "path": "solarpunk_exhaust_rev_0001_inspect_inside_bottom_ortho.png",
-      "bytes": 10948,
-      "sha256": "6e5bae34661822afda91191b050dec0ef55eac8628826421fa560785b925ef99"
+      "bytes": 10373,
+      "sha256": "c27455aa952e6d37f805500196f2da6755738689e11df3256f568ad7f2826c2c"
     },
     {
       "path": "solarpunk_exhaust_rev_0001_iso_back_left.png",
-      "bytes": 28028,
-      "sha256": "ef6201080374d7a2805e182a7a2fbf8bc77e7be9db11f7f994595ea56c71791e"
+      "bytes": 31078,
+      "sha256": "1f65b306fff9a29286b9a34fd1b12910e2f1365532e91cc6d6a1f2d5b46d6cb9"
     },
     {
       "path": "solarpunk_exhaust_rev_0001_iso_back_right.png",
-      "bytes": 27759,
-      "sha256": "3f157d6e51204ae03672429c795d59c6459c63e2cbb868c2a80035cf62daa74e"
+      "bytes": 31481,
+      "sha256": "45c7f076804176a5163c888a0899989b9755d08a97178cde75a269ccc83b4ed2"
     },
     {
       "path": "solarpunk_exhaust_rev_0001_iso_bottom_back_left.png",
-      "bytes": 26137,
-      "sha256": "25fc7fc4db57777d196feb387742f1d0f2105549f800601c23b04d9b8ccc5c2b"
+      "bytes": 23508,
+      "sha256": "b1802f767653a7baa3da71984218117efb0b9525dc1efe9e2ed2131cf276421e"
     },
     {
       "path": "solarpunk_exhaust_rev_0001_iso_bottom_back_right.png",
-      "bytes": 26033,
-      "sha256": "89f80c8499e4dba157404cee0070d88fc2e010c62daa17455713b7b8dc141c71"
+      "bytes": 24207,
+      "sha256": "72811be90582a9212dbc8f5247e6cd6cdd1aa7da5fceaa04861716a47074ed0b"
     },
     {
       "path": "solarpunk_exhaust_rev_0001_iso_bottom_front_left.png",
-      "bytes": 25516,
-      "sha256": "c6bd73f1599f1e957ad0142374e3c5038077af502604dd768cc3d3241a1d07d0"
+      "bytes": 22870,
+      "sha256": "2f4da0627d1fd932c3938b5b4d3d197c58e5e8b611de10aa0142632932eb577f"
     },
     {
       "path": "solarpunk_exhaust_rev_0001_iso_bottom_front_right.png",
-      "bytes": 25631,
-      "sha256": "536fd4079467515cd5f01f502a5b696292917f49c2500235c3bb78235e48624e"
+      "bytes": 22864,
+      "sha256": "27cd185171d648689abbf8fce8a695b8b9a061cbcb30514364ac8de4c94d28e6"
     },
     {
       "path": "solarpunk_exhaust_rev_0001_iso_front_left.png",
-      "bytes": 27861,
-      "sha256": "eb8e3c430f3dd05b4f99324e583a109c84d6f3ea2587b32cd5296fab301c5ab8"
+      "bytes": 31299,
+      "sha256": "c29fd5448048fbbdb0ba6015c576de5f0b4432e9b958e8945c0331c9d6fdfca9"
     },
     {
       "path": "solarpunk_exhaust_rev_0001_iso_front_right.png",
-      "bytes": 28480,
-      "sha256": "51c9d1cd7ef5821afe769adf611768141c6d764559ab01e2226a19ad7fadc889"
+      "bytes": 31852,
+      "sha256": "470dea28a6ac20e3e7741329346c3ff5011a214c10461c548b78a55ec6cf65ec"
     },
     {
       "path": "solarpunk_exhaust_rev_0001_ortho_back.png",
@@ -199,8 +199,8 @@
     },
     {
       "path": "solarpunk_exhaust_rev_0001_ortho_bottom.png",
-      "bytes": 10948,
-      "sha256": "6e5bae34661822afda91191b050dec0ef55eac8628826421fa560785b925ef99"
+      "bytes": 10373,
+      "sha256": "c27455aa952e6d37f805500196f2da6755738689e11df3256f568ad7f2826c2c"
     },
     {
       "path": "solarpunk_exhaust_rev_0001_ortho_front.png",

@@ -28,7 +28,7 @@
 |---|---|---|
 | `solarpunk_intelligence_hub` | rev_0002 built and audited (2026-09-20) | Electrical/IoT mounting hub: single flat hanging plate carrying the series electronics on one standoff plane |
 | `solarpunk_seed_tray` | scaffold complete; placeholder configs, Phase 1 measurement pending | Per-tray converter: TPU flood tray with integrated bell siphon |
-| `solarpunk_exhaust` | scaffold complete (rev_0001, plan V4 + V5 magnet-pocket addendum, rebuilt + audited 2026-09-23); placeholder config pending fan measurement | 120 mm fan mounting plate over the ventilation screen: Ø116 airflow opening, adjacent-edge velcro bands, 8 back-face magnet pockets |
+| `solarpunk_exhaust` | scaffold in phase (rev_0001, plan V4 + V5 magnet-pocket addendum + V6 corner chamfer / front-face recesses, rebuilt + audited 2026-09-23); placeholder config pending fan measurement | 120 mm fan mounting plate over the ventilation screen: Ø116 airflow opening, adjacent-edge velcro bands, 8 front-face magnet recesses (V5, flipped front in V6), 45-degree top-left corner chamfer (V6) |
 | `solarpunk_siphon_filter` | deferred | Siphon-based filtration stage between return manifold and reservoir |
 
 ## 4. Common System Architecture
@@ -405,16 +405,16 @@ the insert lifted out (see the 5.3 no-inaccessible-cavities assumption).
 
 ## 7. Design: `solarpunk_exhaust`
 
-- **Status:** scaffold complete (rev_0001, plan V4 + V5 magnet-pocket
-  addendum, user 2026-09-23); rebuilt, audited, and installed 2026-09-23 in
+- **Status:** scaffold in phase (rev_0001, plan V4 + V5 magnet-pocket
+  addendum + V6 corner chamfer and front-face recess flip, user
+  2026-09-23); rebuilt, audited, and installed 2026-09-23 in
   `output/solarpunk_exhaust/` (2 STL + 36 PNG + 2 manifests;
   `scad_build_all.py --audit-only` passes). The config is a placeholder
   pending measurement of the real 120 mm fan's mounting span / hole pattern /
   depth, and `rev_0001` remains the mutable scaffold config (no immutable
   revision published; the geometry was reworked in place from the rejected
-  original to V4, then extended to V5 under the same scaffold name, still
-  uncommitted at the time of this phase — the single planned commit for one
-  scaffold carries the final V5 state).
+  original to V4, then extended to V5 (commit `815d757`), then extended to
+  V6 under the same scaffold name, its single planned commit pending).
 - **Role:** the printed mounting plate for the greenhouse's exhaust fan — one
   120 mm commodity fan with a large airflow cutout, velcroed over the
   greenhouse's ventilation screen so the fan blows through the screen to the
@@ -442,34 +442,62 @@ the insert lifted out (see the 5.3 no-inaccessible-cavities assumption).
   - Fan intake: a Ø110 mm intake side-notch, 5 mm deep (fan proxy).
   - Front-face label; the outline ring around the opening is dropped (it would
     be a 2.0 mm internal rim).
-  - Magnet retention (V5 addendum): 8 closed recessed pockets Ø6.1 × 2.0 mm in
-    the back face, one flanking each station bore along both of its adjacent
-    sides (11.5 mm offset from the bore center along the 105 mm station line —
-    refined from the user's provisional 11.0 mm so every pocket void keeps the
-    3.0 mm minimum against the collar OD). They take Ø6 × 2 mm neodymium
-    retention discs pressing the plate to the ventilation screen; retention
-    only — the discs are pulled *away* from the 1.0 mm back membrane, so the
-    membrane carries only fan static pressure. The 1.0 mm membrane is a
-    documented, user-accepted (2026-09-23) structural sub-minimum, asserted.
-    Real magnet size / grade remains open.
+  - Magnet retention (V5 addendum; front face in V6 addendum): 8 closed
+    recessed pockets Ø6.1 × 2.0 mm, one flanking each station bore along
+    both of its adjacent sides (11.5 mm offset from the bore center along
+    the 105 mm station line — refined from the user's provisional 11.0 mm
+    so every pocket void keeps the 3.0 mm minimum against the collar OD).
+    V5 had the recesses open on the *back* face holding Ø6 × 2 mm
+    neodymium retention discs against the ventilation screen (retention
+    only — the discs were pulled *away* from the 1.0 mm front-side
+    membrane, which carried only fan static pressure). In V6 the user
+    flipped the recesses to the *front* face ("the recesses are on the
+    wrong side. they should be on the front, not the back." —
+    2026-09-23), superseding that rationale without a new functional story
+    (provenance: user-directed). Mechanical consequence (fact): with the
+    fan mounted, the discs seat flush with the front face, under the fan
+    frame — every opening lies entirely inside the fan box with ≥ 3.0 mm
+    to the nearest box edge (tightest 4.45 mm, asserted) — and the M4
+    screws at the corners carry the corner loads. The back face is now
+    solid 3 mm under every pocket, so the velcro bands carry all screen
+    retention; the 1.0 mm membrane (now z 0..1, back side) remains a
+    documented, user-accepted (2026-09-23) structural sub-minimum,
+    asserted. Real magnet size / grade remains open.
+  - Corner chamfer (V6 addendum, user 2026-09-23): a 45-degree full-through
+    cut of the top-left corner between the two slotted (velcro-band)
+    edges — 20 mm legs (`corner_chamfer_leg`), face from (0, 121) to
+    (20, 141) — clearing the bracket's corner margin where the two intake
+    pipes come together into the fitting. The face reaches the fan box's
+    top-left corner (11, 130) at leg = 22, so leg = 20 adds a documented
+    1.41 mm fan-box-corner sub-minimum (the fan box is a reference part,
+    not plate material); every remaining plate feature keeps ≥ 3.0 mm
+    (asserted: face endpoints 5.25 / 3.50; windows 6.05 / 4.61; collars
+    6.87; recesses 17.10; opening 28.27).
 - **Geometry (rev_0001, placeholder):** plate 134 × 141 × 3 mm; the fan box sits
   at x 11..131, y 10..130, center (71, 70); the opening is Ø116 mm at the
   center; bores Ø4.3 mm in a 105 mm square at (18.5, 17.5), (123.5, 17.5),
   (18.5, 122.5), (123.5, 122.5); collars 10.3 mm OD × 3 mm tall. Left-band
   windows x 3..8, y centers 35.25 / 105.75; top-band windows y 133..138, x
-  centers 33.5 / 100.5. Velcro gap 3 mm. Magnet pockets (V5): Ø6.1 × 2.0
-  recesses in the back face at (30, 17.5), (112, 17.5), (30, 122.5),
-  (112, 122.5), (18.5, 29), (18.5, 111), (123.5, 29), (123.5, 111) — 11.5 mm
-  from each flanked bore center along the station line; nearest-void
-  clearances: 3.30 mm (collar OD, tightest), bore 6.30, Ø116 opening 5.56,
-  plate edge / windows ≥ 7.45; back membrane 1.0 mm (documented sub-minimum).
+  centers 33.5 / 100.5. Velcro gap 3 mm. Top-left corner chamfer (V6):
+  45-degree full-through, `corner_chamfer_leg` = 20 mm, face (0, 121) →
+  (20, 141). Magnet recesses (V5, front face in V6): Ø6.1 × 2.0 mm recesses
+  open on the front face (cut z `plate_t − 2.0` .. `plate_t` = 1..3 mm) at
+  (30, 17.5), (112, 17.5), (30, 122.5), (112, 122.5), (18.5, 29),
+  (18.5, 111), (123.5, 29), (123.5, 111) — 11.5 mm from each flanked bore
+  center along the station line; nearest-void clearances: 3.30 mm (collar
+  OD, tightest), bore 6.30, Ø116 opening 5.56, plate edge / windows ≥ 7.45,
+  fan box edge ≥ 4.45 (V6 addendum); back membrane 1.0 mm at z 0..1
+  (documented sub-minimum).
 - **Structural minimums (asserted at render):** `minimum_wall_thickness = 3.0`;
   `minimum_structural_overlap = 3.0`. The governing internal minimum is the
   3.0 mm plate thickness. Documented sub-minimums (asserted positive, not
   claimed as plate ligaments): (1) the 2.0 mm plateau between the Ø116 mm
-  opening and the 120 mm fan box, bridged by the fan's frame at service; (2)
-  the 1.0 mm back membrane below the 8 magnet pockets (V5, user-accepted
-  2026-09-23, retention-only — away from the membrane).
+  opening and the 120 mm fan box, bridged by the fan's frame at service;
+  (2) the 1.0 mm back membrane below the 8 front-face magnet recesses
+  (z 0..1; V5/V6, user-accepted 2026-09-23); (3) the 1.41 mm from the
+  chamfer face to the fan-box top-left corner (V6 — the fan box is a
+  reference part, not plate material; the cut reaches that corner at
+  leg = 22).
 - **Assembly governance:** this design has an `assembly.json` (contrast
   `solarpunk_intelligence_hub`, which is standalone with no `assembly.json`):
   primary `exhaust_system`, subassembly `exhaust_mount_assembly`, 2 parts, 3
