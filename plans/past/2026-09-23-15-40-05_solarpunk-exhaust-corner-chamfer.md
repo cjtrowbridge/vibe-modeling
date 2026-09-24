@@ -2,7 +2,7 @@
 plan_id: 2026-09-23-15-40-05_solarpunk-exhaust-corner-chamfer
 title: solarpunk_exhaust V6: top-left corner chamfer + front-face magnet recesses
 summary: Cut a 45-degree full-through corner chamfer (20 mm legs) off the plate's top-left corner for the bracket's corner margin, and flip the 8 magnet recesses from the back face to the front face (user: "the recesses are on the wrong side. they should be on the front, not the back."). One build, one audit, one review re-run, one commit.
-status: current
+status: past
 created_at: 2026-09-23-15-40-05
 ---
 
@@ -268,5 +268,5 @@ No changes to `fan_proxy.scad` (geometry), `parts.json`, or
 - [x] 3. Assembly review re-run (mandatory): re-bind + disk-verify 40 files (2 STL + 36 PNG + 2 manifests, flat); visual check of chamfer + front-face pockets; proxy STL hash unchanged.
 - [x] 4. Docs: README decision bullets (chamfer + front-face recesses, superseded V5 rationale), ligament table (three documented sub-minimums), assert list, review line; `docs/solarpunk_series.md` sections 3 + 7.
 - [x] 5. Journal append + plan items [x] + index regenerate + `--check` (exit 0/0).
-- [ ] 6. STOP for explicit commit approval: single commit (suggested message + artifact set from disk review). `git status -sb` shows ahead 2 after commit; push only if requested.
-- [ ] 7. Post-commit: journal checkpoint entry, close item 6, archive plan to `plans/past/` with `status: past` + index regen + `--check`, STOP for checkpoint-commit approval.
+- [x] 6. STOP for explicit commit approval: single commit (suggested message + artifact set from disk review). `git status -sb` shows ahead 2 after commit; push only if requested.
+- [x] 7. Post-commit: journal checkpoint entry, close item 6, archive plan to `plans/past/` with `status: past` + index regen + `--check`, STOP for checkpoint-commit approval.
